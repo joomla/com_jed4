@@ -80,11 +80,10 @@ $userId    = $user->get('id');
                     </td>
                     <td class="center" width="50">
                         <div class="btn-group">
-							<?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'extensions.', $canChange,
-								'cb', $item->publish_up, $item->publish_down); ?>
+							<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'extensions.', $canChange); ?>
 							<?php
 							// Create dropdown items
-							$action = ($item->state === 1) ? 'unpublish' : 'publish';
+							$action = ($item->published === 1) ? 'unpublish' : 'publish';
 							HTMLHelper::_('actionsdropdown.' . $action, 'cb' . $i, 'extensions');
 
 							// Render dropdown list
