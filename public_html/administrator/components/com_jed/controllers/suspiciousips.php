@@ -9,8 +9,8 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Session\Session;
 
 /**
  * Suspiciousips list controller class.

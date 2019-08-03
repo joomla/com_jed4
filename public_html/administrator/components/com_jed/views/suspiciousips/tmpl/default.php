@@ -15,8 +15,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 $user       = Factory::getUser();
@@ -91,55 +91,55 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 
 					<?php
 
-						foreach ($this->items as $i => $item):
+					foreach ($this->items as $i => $item):
 
-							$ordering = ($listOrder == 't.id');
-							$canCreate  = $user->authorise('core.create', 'com_jed.suspiciousip.' . $item->id);
-							$canEdit    = $user->authorise('core.edit', 'com_jed.suspiciousip.' . $item->id);
-							$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-							$canEditOwn = $user->authorise('core.edit.own', 'com_jed.suspiciousip.' . $item->id) && $item->created_by == $userId;
-							$canChange  = $user->authorise('core.edit.state', 'com_jed.suspiciousip.' . $item->id) && $canCheckin;
-					?>
-							<tr class="row<?php echo $i % 2; ?>">
-								<td>
-									<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
-								</td>
-								<td class="center" width="50">
-									<div class="btn-group">
-										<?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'suspiciousips.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-										<?php
-											// Create dropdown items
-											$action = ($item->state == 1) ? 'unpublish' : 'publish';
-											HTMLHelper::_('actionsdropdown.' . $action, 'cb' . $i, 'suspiciousips');
+						$ordering = ($listOrder == 't.id');
+						$canCreate = $user->authorise('core.create', 'com_jed.suspiciousip.' . $item->id);
+						$canEdit = $user->authorise('core.edit', 'com_jed.suspiciousip.' . $item->id);
+						$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+						$canEditOwn = $user->authorise('core.edit.own', 'com_jed.suspiciousip.' . $item->id) && $item->created_by == $userId;
+						$canChange = $user->authorise('core.edit.state', 'com_jed.suspiciousip.' . $item->id) && $canCheckin;
+						?>
+						<tr class="row<?php echo $i % 2; ?>">
+							<td>
+								<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
+							</td>
+							<td class="center" width="50">
+								<div class="btn-group">
+									<?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'suspiciousips.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+									<?php
+									// Create dropdown items
+									$action = ($item->state == 1) ? 'unpublish' : 'publish';
+									HTMLHelper::_('actionsdropdown.' . $action, 'cb' . $i, 'suspiciousips');
 
-											// Render dropdown list
-											echo HTMLHelper::_('actionsdropdown.render', $this->escape($item->name));
-										?>
-									</div>
-								</td>
-								<td>
-									<?php echo $item->created_date; ?>
-								</td>
-								<td>
-									<?php echo $item->created_by; ?>
-								</td>
-								<td>
-									<?php echo $item->ipaddr; ?>
-								</td>
-								<td>
-									<?php echo $item->reason; ?>
-								</td>
-								<td>
-									<?php echo $item->id; ?>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-
-						<tr>
-							<td colspan="7">
-								<?php echo $this->pagination->getListFooter(); ?>
+									// Render dropdown list
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($item->name));
+									?>
+								</div>
+							</td>
+							<td>
+								<?php echo $item->created_date; ?>
+							</td>
+							<td>
+								<?php echo $item->created_by; ?>
+							</td>
+							<td>
+								<?php echo $item->ipaddr; ?>
+							</td>
+							<td>
+								<?php echo $item->reason; ?>
+							</td>
+							<td>
+								<?php echo $item->id; ?>
 							</td>
 						</tr>
+					<?php endforeach; ?>
+
+					<tr>
+						<td colspan="7">
+							<?php echo $this->pagination->getListFooter(); ?>
+						</td>
+					</tr>
 
 					<tfoot><?php echo $this->loadTemplate('foot'); ?></tfoot>
 				</table>
@@ -151,4 +151,5 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
 			<?php echo HTMLHelper::_('form.token'); ?>
+		</div>
 </form>

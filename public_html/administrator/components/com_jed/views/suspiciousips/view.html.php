@@ -8,9 +8,9 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView;
 
 /**
  * View for JED Suspicions IPs.
