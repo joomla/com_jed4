@@ -141,4 +141,36 @@ class JedModelExtensions extends ListModel
 
 		return $query;
 	}
+
+	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getItems()
+	{
+		$items = parent::getItems();
+
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('COUNT(' . $db->quoteName('id') . ')')
+			->from($db->quoteName('#__jed_reviews'));
+
+		array_walk($items,
+			static function ($item) use ($db, $query)
+			{
+				// Get the number of reviews
+				$query->clear('where')
+					->where($db->quoteName('extension_id') . ' = ' . (int) $item->id);
+				$db->setQuery($query);
+				$item->reviewCount = $db->loadResult();
+			}
+		);
+
+		return $items;
+	}
+
+
 }

@@ -61,6 +61,14 @@ class JedViewExtensions extends HtmlView
 	protected $state;
 
 	/**
+	 * The sidebar menu
+	 *
+	 * @var    string
+	 * @since  4.0.0
+	 */
+	protected $sidebar = '';
+
+	/**
 	 * Display method of extensions view
 	 *
 	 * @param   string  $tpl  The template name
@@ -89,6 +97,10 @@ class JedViewExtensions extends HtmlView
 
 		// Add the toolbar
 		$this->addToolBar();
+
+		$helper = new JedHelper;
+		$helper->addSubmenu('home');
+		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 	}

@@ -59,7 +59,7 @@ $userId    = $user->get('id');
             </thead>
             <tfoot>
             <tr>
-                <td colspan="3"><?php echo $this->pagination->getListFooter(); ?></td>
+                <td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
             </tr>
             </tfoot>
             <tbody>
@@ -98,7 +98,7 @@ $userId    = $user->get('id');
 						<?php echo $item->category; ?>
                     </td>
                     <td>
-						<?php echo $item->approved; ?>
+						<?php echo $item->approved ? Text::_('JYES') : Text::_('JNO'); ?>
                     </td>
                     <td>
 						<?php echo $item->developer; ?>
@@ -107,7 +107,7 @@ $userId    = $user->get('id');
 						<?php echo $item->type; ?>
                     </td>
                     <td>
-						<?php echo $item->no_of_reviews; ?>
+						<?php echo $item->reviewCount; ?>
                     </td>
 
                     <td>
