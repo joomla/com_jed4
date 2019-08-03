@@ -13,9 +13,10 @@
 
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Factory;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
-use \Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Text;
 
 class JFormFieldTimecreated extends FormField
 {
@@ -32,7 +33,6 @@ class JFormFieldTimecreated extends FormField
 	 *
 	 * @return  string    The field input markup.
 	 * @since 4.0.0
-	 *
 	 */
 	protected function getInput()
 	{
@@ -51,7 +51,7 @@ class JFormFieldTimecreated extends FormField
 
 		if ($hidden == null || !$hidden)
 		{
-			$jdate       = new JDate($time_created);
+			$jdate       = new Date($time_created);
 			$pretty_date = $jdate->format(Text::_('DATE_FORMAT_LC2'));
 			$html[]      = "<div>" . $pretty_date . "</div>";
 		}
