@@ -134,12 +134,12 @@ class JedViewSuspiciousips extends HtmlView
 	protected function getSortFields()
 	{
 		return array(
-			't.published'   => Text::_('COM_JED_SUSPICIOUSIPS_PUBLISHED'),
-			't.created_by'  => Text::_('COM_JED_SUSPICIOUSIPS_CREATED_BY'),
-			't.created_date'=> Text::_('COM_JED_SUSPICIOUSIPS_CREATED_DATE'),
-			't.ipaddr'      => Text::_('COM_JED_SUSPICIOUSIPS_IPADDR'),
-			't.reason'      => Text::_('COM_JED_SUSPICIOUSIPS_REASON'),
-			't.id'          => Text::_('JGRID_HEADING_ID')
+			'suspiciousips.published'   => Text::_('COM_JED_SUSPICIOUSIPS_PUBLISHED'),
+			'suspiciousips.created_by'  => Text::_('COM_JED_SUSPICIOUSIPS_CREATED_BY'),
+			'suspiciousips.created_date'=> Text::_('COM_JED_SUSPICIOUSIPS_CREATED_DATE'),
+			'suspiciousips.ipaddr'      => Text::_('COM_JED_SUSPICIOUSIPS_IPADDR'),
+			'suspiciousips.reason'      => Text::_('COM_JED_SUSPICIOUSIPS_REASON'),
+			'suspiciousips.id'          => Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

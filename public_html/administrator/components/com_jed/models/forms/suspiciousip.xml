@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="suspiciousip">
+
+        <field name="id"
+               type="text"
+               readonly="true"
+               class="readonly"
+               default="0"
+               description="JGLOBAL_FIELD_ID_DESC"
+        />
+        <field
+                name="created_date"
+                type="timecreated"
+                label="COM_JED_SUSPICIOUSIPS_CREATED_DATE"
+                description="COM_JED_SUSPICIOUSIPS_CREATED_DATE"
+                hidden="true"
+                hint="COM_JED_SUSPICIOUSIPS_CREATED_DATE"
+        />
+        <field name="checked_out"
+               type="hidden"
+               filter="unset"
+        />
+        <field name="checked_out_time"
+               default="0000-00-00 00:00:00"
+               type="hidden"
+               filter="unset"
+        />
+        <field name="published"
+               default="1"
+               type="list"
+               label="JSTATUS"
+               description="JFIELD_PUBLISHED_DESC"
+               class="inputbox" size="1">
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+        <field name="reason"
+               maxlength="150"
+               filter="safehtml"
+               type="text"
+               label="COM_JED_SUSPICIOUSIPS_REASON"
+               description="COM_JED_SUSPICIOUSIPS_REASON_DESC"
+        />
+        <field
+                name="ipaddr"
+                type="text"
+                maxlength="23"
+                label="COM_JED_SUSPICIOUSIPS_IPADDR"
+                description="COM_JED_SUSPICIOUSIPS_IPADDR_DESC"
+        />
+
+    </fieldset>
+
+</form>
