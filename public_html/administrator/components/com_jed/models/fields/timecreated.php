@@ -13,12 +13,11 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.form.formfield');
-
 use \Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 use \Joomla\CMS\Language\Text;
 
-class JFormFieldTimecreated extends \Joomla\CMS\Form\FormField
+class JFormFieldTimecreated extends FormField
 {
 	/**
 	 * The form field type.
