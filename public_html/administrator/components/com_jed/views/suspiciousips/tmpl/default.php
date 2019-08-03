@@ -1,14 +1,9 @@
 <?php
 /**
- * Jed
+ * @package    JED
  *
- * @package   Matware.Jed
- * @version   $Id:
- * @copyright Copyright (C) 2004 - 2019 Matware. All rights reserved.
- * @author    Matias Aguirre
- * @email maguirre@matware.com.ar
- * @link      http://www.matware.com.ar/
- * @license   GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
