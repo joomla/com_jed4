@@ -13,7 +13,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 
 /**
- * JED Extension Model
+ * JED Review Model
  *
  * @package  JED
  * @since    4.0.0
@@ -65,4 +65,77 @@ class JedModelReview extends AdminModel
 
 		return $data;
 	}
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  \JObject|boolean  Object on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function getItem($pk = null)
+	{
+		$item = parent::getItem($pk);
+
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// @TODO calculation for overall_score column
+		$query->select($db->quoteName(
+			[
+				'reviews.published',
+				'reviews.id',
+				'reviews.title',
+				'reviews.created_on',
+				'reviews.ipAddress',
+				'reviews.flagged',
+				'reviews.extension_id',
+				'reviews.created_by',
+				'users.id',
+				'users.username',
+				'extensions.title',
+				'extensions.created_by',
+				'developers.username',
+			],
+			[
+				'published',
+				'id',
+				'title',
+				'created_on',
+				'ipAddress',
+				'flagged',
+				'extension_id',
+				'created_by',
+				'userId',
+				'username',
+				'extensionname',
+				'developerId',
+				'developer',
+			]
+		))
+			->from($db->quoteName('#__jed_reviews', 'reviews'))
+			->leftJoin(
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('reviews.created_by')
+			)
+			->leftJoin(
+				$db->quoteName('#__jed_extensions', 'extensions')
+				. ' ON ' . $db->quoteName('extensions.id') . ' = ' . $db->quoteName('reviews.extension_id')
+			)
+			->leftJoin(
+				$db->quoteName('#__users', 'developers')
+				. ' ON ' . $db->quoteName('developers.id') . ' = ' . $db->quoteName('extensions.created_by')
+			)
+			->where($db->quoteName('reviews.id') . ' = ' . (int) $item->id);
+
+		$db->setQuery($query);
+		$data = $db->loadObject;
+		$item->developer = $data->developer;
+
+		return $item;
+	}
+
+
 }

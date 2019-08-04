@@ -19,23 +19,5 @@
             <option value="1">JPUBLISHED</option>
             <option value="0">JUNPUBLISHED</option>
         </field>
-
-        <field
-                name="actions"
-                type="hidden"
-                multiple="true"
-        />
-
-        <field
-                name="lft"
-                type="hidden"
-                filter="unset"
-        />
-
-        <field
-                name="rgt"
-                type="hidden"
-                filter="unset"
-        />
     </fieldset>
 </form>
