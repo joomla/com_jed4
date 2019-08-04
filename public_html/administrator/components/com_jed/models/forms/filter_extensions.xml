@@ -52,6 +52,7 @@
         <field
             name="developer"
             type="jed.developers"
+            class="advancedSelect"
             />
 
         <field
@@ -67,6 +68,21 @@
             <option value="free">COM_JED_EXTENSIONS_TYPE_FREE</option>
             <option value="paid">COM_JED_EXTENSIONS_TYPE_PAID</option>
             <option value="cloud">COM_JED_EXTENSIONS_TYPE_CLOUD</option>
+        </field>
+
+        <field
+                name="includes"
+                type="list"
+                label="COM_JED_EXTENSIONS_INCLUDES"
+                class="advancedSelect"
+                size="1"
+                default=""
+                onchange="this.form.submit();"
+        >
+            <option value="">COM_JED_EXTENSIONS_INCLUDES_SELECT</option>
+            <option value="com">COM_JED_EXTENSIONS_INCLUDES_COM</option>
+            <option value="mod">COM_JED_EXTENSIONS_INCLUDES_MOD</option>
+            <option value="plugin">COM_JED_EXTENSIONS_INCLUDES_PLUGIN</option>
         </field>
 
     </fields>
