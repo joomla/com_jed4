@@ -27,13 +27,13 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span3">
 				<div class="form-horizontal">
-					<?php echo $this->form->renderFieldset('ipaddr'); ?>
+					<?php echo $this->form->renderField('ipaddr'); ?>
 				</div>
 			</div>
 			<div class="span9">
 
 				<div class="form-horizontal">
-					<?php echo $this->form->renderFieldset('reason'); ?>
+					<?php echo $this->form->renderField('reason'); ?>
 				</div>
 			</div>
 		</div>

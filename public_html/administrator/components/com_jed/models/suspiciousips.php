@@ -116,7 +116,6 @@ class JedModelSuspiciousips extends ListModel
 
 		return parent::getStoreId($id);
 	}
-
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -126,12 +125,15 @@ class JedModelSuspiciousips extends ListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = Factory::getDBO();
+		$db = $this->getDbo();
 
 		$query = $db->getQuery(true);
 
 		// Select some fields
-		$query->select('id', 'created_time', 'created_by', 'checked_out', 'checked_out_time', 'published', 'reason', 'ipaddr');
+		$query->select(
+			$db->quoteName([
+				'id', 'created_time', 'created_by', 'checked_out', 'checked_out_time', 'published', 'reason', 'ipaddr'
+			]));
 
 		// From the #__jed_suspiciousips table
 		$query->from($db->quoteName('#__jed_suspiciousips') . ' AS suspiciousips');
@@ -159,55 +161,5 @@ class JedModelSuspiciousips extends ListModel
 		return $query;
 	}
 
-	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
-	 *
-	 * @since   4.0.0
-	 */
-	protected function canDelete($record)
-	{
-		$user = Factory::getUser();
 
-		return $user->authorise('core.delete', $this->option);
-	}
-
-	/**
-	 * Method to delete groups.
-	 *
-	 * @param   array  An array of item ids.
-	 *
-	 * @return  boolean  Returns true on success, false on failure.
-	 *
-	 * @since   4.0.0
-	 */
-	public function delete($itemIds)
-	{
-		// Sanitize the ids.
-		$itemIds = (array) $itemIds;
-
-		ArrayHelper::toInteger($itemIds);
-
-		// Get a group row instance.
-		$table = $this->getTable();
-
-		// Iterate the items to delete each one.
-		foreach ($itemIds as $itemId)
-		{
-			if (!$table->delete($itemId))
-			{
-				$this->setError($table->getError());
-
-				return false;
-			}
-		}
-
-		// Clean the cache
-		$this->cleanCache();
-
-		return true;
-	}
 }

@@ -66,7 +66,7 @@ class JConfig {
 	public $smtpport = '1025';
 	public $smtpsecure = 'none';
 	public $smtpuser = 'joomla-osm';
-	public $tmp_path = '/usr/local/var/www/jed/tmp';
+	public $tmp_path = '/home/wadcom/jed4.webappzdigital.com/tmp';
 	public $unicodeslugs = '0';
 	public $debug_lang_const = '1';
 	public $mailonline = '1';

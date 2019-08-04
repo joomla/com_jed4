@@ -15,7 +15,7 @@ use Joomla\CMS\Table\Table;
  *
  * @since  4.0.0
  */
-class TableReview extends Table
+class TableSuspiciousip extends Table
 {
 	/**
 	 * Constructor

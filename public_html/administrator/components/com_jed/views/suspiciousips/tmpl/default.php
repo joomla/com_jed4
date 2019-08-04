@@ -19,8 +19,6 @@ $userId     = $user->get('id');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $canOrder   = $user->authorise('core.edit.state', 'com_jed.suspiciousips');
-$saveOrder  = $listOrder == 't.ordering';
-$sortFields = $this->getSortFields();
 
 HTMLHelper::_('formbehavior.chosen', 'select');
 ?>
@@ -87,7 +85,6 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 					<?php
 
 					foreach ($this->items as $i => $item):
-
 						$ordering = ($listOrder == 't.id');
 						$canCreate = $user->authorise('core.create', 'com_jed.suspiciousip.' . $item->id);
 						$canEdit = $user->authorise('core.edit', 'com_jed.suspiciousip.' . $item->id);
@@ -101,19 +98,18 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 							</td>
 							<td class="center" width="50">
 								<div class="btn-group">
-									<?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'suspiciousips.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 									<?php
 									// Create dropdown items
-									$action = ($item->state == 1) ? 'unpublish' : 'publish';
+									$action = ($item->published == 1) ? 'unpublish' : 'publish';
 									HTMLHelper::_('actionsdropdown.' . $action, 'cb' . $i, 'suspiciousips');
 
 									// Render dropdown list
-									echo HTMLHelper::_('actionsdropdown.render', $this->escape($item->name));
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($item->ipaddr));
 									?>
 								</div>
 							</td>
 							<td>
-								<?php echo $item->created_date; ?>
+								<?php echo $item->created_time; ?>
 							</td>
 							<td>
 								<?php echo $item->created_by; ?>
@@ -136,7 +132,6 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 						</td>
 					</tr>
 
-					<tfoot><?php echo $this->loadTemplate('foot'); ?></tfoot>
 				</table>
 			<?php endif; ?>
 

@@ -102,7 +102,7 @@ class JedViewSuspiciousips extends HtmlView
 	{
 		$canDo = ContentHelper::getActions('com_jed', 'suspiciousip', $this->state->get('filter.published'));
 
-		JToolBarHelper::title(Text::_('COM_JED_TITLE_SUSPICIOSIPS'), 'plugin.png');
+		JToolBarHelper::title(Text::_('COM_JED_TITLE_SUSPICIOUSIPS'), 'plugin.png');
 
 		if ($canDo->get('core.create'))
 		{
@@ -124,22 +124,5 @@ class JedViewSuspiciousips extends HtmlView
 		JToolBarHelper::spacer();
 	}
 
-	/**
-	 * Returns an array of fields the table can be sorted by
-	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
-	 *
-	 * @since   3.0
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'suspiciousips.published'   => Text::_('COM_JED_SUSPICIOUSIPS_PUBLISHED'),
-			'suspiciousips.created_by'  => Text::_('COM_JED_SUSPICIOUSIPS_CREATED_BY'),
-			'suspiciousips.created_date'=> Text::_('COM_JED_SUSPICIOUSIPS_CREATED_DATE'),
-			'suspiciousips.ipaddr'      => Text::_('COM_JED_SUSPICIOUSIPS_IPADDR'),
-			'suspiciousips.reason'      => Text::_('COM_JED_SUSPICIOUSIPS_REASON'),
-			'suspiciousips.id'          => Text::_('JGRID_HEADING_ID')
-		);
-	}
+
 }
