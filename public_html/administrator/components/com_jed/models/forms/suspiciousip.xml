@@ -14,15 +14,6 @@
 		/>
 
 		<field
-			name="created_date"
-			type="timecreated"
-			label="COM_JED_SUSPICIOUSIPS_CREATED_DATE"
-			description="COM_JED_SUSPICIOUSIPS_CREATED_DATE"
-			hidden="true"
-			hint="COM_JED_SUSPICIOUSIPS_CREATED_DATE"
-		/>
-
-		<field
 			name="checked_out"
 			type="hidden"
 			filter="unset"

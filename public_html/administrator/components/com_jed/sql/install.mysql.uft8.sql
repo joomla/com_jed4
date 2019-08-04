@@ -314,21 +314,16 @@ CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE IF NOT EXISTS `#__jed_emails`
+CREATE TABLE IF NOT EXISTS `#__jed_suspiciousips`
 (
-    `id`               INT(10)          NOT NULL AUTO_INCREMENT
-        COMMENT 'Auto increment ID',
-    `subject`          VARCHAR(150)     NOT NULL
-        COMMENT 'The subject',
-    `body`             TEXT             NOT NULL
-        COMMENT 'The body text',
-    `created`          DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
-    `created_by`       INT(10) UNSIGNED NOT NULL DEFAULT '0',
-    `modified`         DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
-    `modified_by`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
-    `checked_out`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
-    `checked_out_time` DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `id`                int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `created_time`      datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `created_by`        int(11)          NOT NULL,
+    `checked_out`       int(11)          NOT NULL,
+    `checked_out_time`  char(45)         NOT NULL,
+    `published`         tinyint(1)       NOT NULL DEFAULT '1',
+    `reason`            varchar(150)     NOT NULL,
+    `ipaddr`            varchar(23)      NOT NULL,
     PRIMARY KEY (`id`)
-)
-    CHARSET = utf8
-    COMMENT = 'E-mail templates';
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;

@@ -131,7 +131,7 @@ class JedModelSuspiciousips extends ListModel
 		$query = $db->getQuery(true);
 
 		// Select some fields
-		$query->select('*');
+		$query->select('id', 'created_time', 'created_by', 'checked_out', 'checked_out_time', 'published', 'reason', 'ipaddr');
 
 		// From the #__jed_suspiciousips table
 		$query->from($db->quoteName('#__jed_suspiciousips') . ' AS suspiciousips');
