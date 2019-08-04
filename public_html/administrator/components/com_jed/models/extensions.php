@@ -26,24 +26,89 @@ class JedModelExtensions extends ListModel
 	 * @see     ListModel
 	 * @since   4.0.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
-				'id', 't.id',
-				'title', 't.title',
-				'category', 't.category',
-				'published', 't.published',
-				'approved', 't.approved',
-				'developer', 't.developer',
-				'type', 't.type',
-				'reviewCount', 't.reviewCount',
-
-			);
+			$config['filter_fields'] = [
+				'published',
+				'category',
+				'approved',
+				'type',
+				'extensions.published',
+				'extensions.approved',
+				'extensions.title',
+				'categories.title',
+				'extensions.modified_on',
+				'extensions.created_on',
+				'users.name',
+				'extensions.type',
+				'extensions.reviewcount',
+				'extensions.id',
+			];
 		}
 
 		parent::__construct($config);
+	}
+
+	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getItems()
+	{
+		$items = parent::getItems();
+
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('COUNT(' . $db->quoteName('id') . ')')
+			->from($db->quoteName('#__jed_reviews'));
+
+		array_walk($items,
+			static function ($item) use ($db, $query) {
+				// Get the number of reviews
+				$query->clear('where')
+					->where($db->quoteName('extension_id') . ' = ' . (int) $item->id);
+				$db->setQuery($query);
+				$item->reviewCount = $db->loadResult();
+			}
+		);
+
+		return $items;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	protected function populateState($ordering = null, $direction = null): void
+	{
+		if ($ordering === null)
+		{
+			$ordering = 'extensions.created_on';
+		}
+
+		if ($direction === null)
+		{
+			$direction = 'DESC';
+		}
+
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -62,8 +127,7 @@ class JedModelExtensions extends ListModel
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.access');
-		$id .= ':' . $this->getState('filter.state');
+		$id .= ':' . $this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
@@ -86,6 +150,8 @@ class JedModelExtensions extends ListModel
 						'extensions.id',
 						'extensions.title',
 						'extensions.created_by',
+						'extensions.modified_on',
+						'extensions.created_on',
 						'extensions.approved',
 						'extensions.published',
 						'extensions.type',
@@ -94,8 +160,10 @@ class JedModelExtensions extends ListModel
 					],
 					[
 						'id',
-						'name',
+						'title',
 						'created_by',
+						'modified_on',
+						'created_on',
 						'approved',
 						'published',
 						'type',
@@ -126,8 +194,22 @@ class JedModelExtensions extends ListModel
 			else
 			{
 				$search = $db->quote('%' . $db->escape($search, true) . '%');
-				$query->where($db->quoteName('extensions.id') . ' LIKE ' . $search);
+				$query->where($db->quoteName('extensions.title') . ' LIKE ' . $search);
 			}
+		}
+
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where($db->quoteName('extensions.published') . ' = ' . (int) $published);
+		}
+
+		$approved = $this->getState('filter.approved');
+
+		if ($approved !== '')
+		{
+			$query->where($db->quoteName('extensions.approved') . ' = ' . $db->quote($approved));
 		}
 
 		// Add the list ordering clause.
@@ -140,36 +222,6 @@ class JedModelExtensions extends ListModel
 		);
 
 		return $query;
-	}
-
-	/**
-	 * Method to get an array of data items.
-	 *
-	 * @return  mixed  An array of data items on success, false on failure.
-	 *
-	 * @since   4.0.0
-	 */
-	public function getItems()
-	{
-		$items = parent::getItems();
-
-		$db = $this->getDbo();
-		$query = $db->getQuery(true)
-			->select('COUNT(' . $db->quoteName('id') . ')')
-			->from($db->quoteName('#__jed_reviews'));
-
-		array_walk($items,
-			static function ($item) use ($db, $query)
-			{
-				// Get the number of reviews
-				$query->clear('where')
-					->where($db->quoteName('extension_id') . ' = ' . (int) $item->id);
-				$db->setQuery($query);
-				$item->reviewCount = $db->loadResult();
-			}
-		);
-
-		return $items;
 	}
 
 

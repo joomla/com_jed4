@@ -99,7 +99,7 @@ class JedViewExtensions extends HtmlView
 		$this->addToolBar();
 
 		$helper = new JedHelper;
-		$helper->addSubmenu('home');
+		$helper->addSubmenu('extensions');
 		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
@@ -118,7 +118,7 @@ class JedViewExtensions extends HtmlView
 	{
 		$canDo = ContentHelper::getActions('com_jed', 'extension');
 
-		ToolBarHelper::title(Text::_('COM_JED_TITLE_EXTENSIONS'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_TITLE_EXTENSIONS'), 'play');
 
 		if ($canDo->get('core.create'))
 		{
@@ -136,6 +136,6 @@ class JedViewExtensions extends HtmlView
 			ToolbarHelper::unpublish('extensions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 
-		JToolBarHelper::cancel('extensions.cancel', 'JTOOLBAR_CLOSE');
+		ToolBarHelper::cancel('extensions.cancel', 'JTOOLBAR_CLOSE');
 	}
 }
