@@ -6,6 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
 defined('_JEXEC') or die;
@@ -17,24 +19,22 @@ defined('_JEXEC') or die;
 	<div class="jed-container">
 		<div class="jed-extension-header__content">
 			<div class="jed-extension-header__item">
-				<h1 class="heading heading--xl">PWT Image</h1>
+				<h1 class="heading heading--xl"><?php echo $this->item->title; ?></h1>
 				<div class="jed-extension-header__info">
-					<div class="jed-extension-header__developer">By <a href="#">Perfect Web Team</a></div>
+					<div class="jed-extension-header__developer">By
+						<a href="#"><?php echo $this->item->developer; ?></a></div>
 					<div class="stars-wrapper">
-						<div class="stars">
-							<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-							<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-							<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-							<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-							<div class="star"><span aria-hidden="true" class="icon-star-empty"></span></div>
-						</div>
-						<a href="#">132 reviews</a>
+						<?php echo LayoutHelper::render('elements.stars', ['score' => $this->item->score]); ?>
+						<a href="#reviews"><?php echo $this->item->reviews; ?> reviews</a>
 					</div>
 				</div>
 			</div>
 			<div class="jed-extension-header__item">
 				<div class="jed-extension-header__buttons button-group">
-					<a href="#" class="button button--blue button--big">Get extension</a>
+					<?php if ($this->item->homepageLink): ?>
+						<a href="<?php echo $this->item->homepageLink; ?>" class="button button--blue button--big">Get extension</a>
+					<?php endif; ?>
+
 					<a href="#" class="button button--blue button--big button--icon-only">
 						<span aria-hidden="true" class="icon-heart-2"></span>
 						<span class="visually-hidden">Favourite</span>
@@ -59,27 +59,41 @@ defined('_JEXEC') or die;
 <div class="jed-wrapper jed-extension margin-bottom">
 	<div class="jed-container">
 		<div class="jed-extension__image">
-			<div class="image-placeholder">Image</div>
+			<div class="image-placeholder">
+				<?php if ($this->item->image): ?>
+					<img src="<?php echo JedHelper::formatImage($this->item->image, 'large'); ?>" alt="<?php echo $this->item->title; ?>"/>
+				<?php endif; ?>
+			</div>
 		</div>
 		<div class="jed-grid jed-grid--2-1 margin-bottom">
 			<div class="jed-grid__item">
 				<p class="extension-tags font-size-s">
 					<span aria-hidden="true" class="icon-tag"></span>
-					<a href="#">Main category</a>
-					<a href="#">Sub category</a>
-					<a href="#">Sub category</a>
-					<a href="#">Sub category</a>
+					<a href="#">Main category</a>,
+					<a href="#">Sub category</a>,
+					<a href="#">Sub category</a>,
+					<a href="#">Sub category</a>,
 					<a href="#">Sub category</a>
 				</p>
 				<p class="font-size-xl">
-					The most user-friendly way of working with images in your Joomla! site. Easy image cropping & resizing for your end-users. PWT Images replaces the default Joomla core image selector. It will provide a end-user friendly solution that any content editor can use. Thanks to PWT Image your end-user no longer will upload huge images and distort the layout of the website.
+					<?php echo $this->item->intro; ?>
 				</p>
 				<p class="button-group">
-					<a href="#" class="button button--grey">Website</a>
-					<a href="#" class="button button--grey">Demo</a>
-					<a href="#" class="button button--grey">Documentation</a>
-					<a href="#" class="button button--grey">Support</a>
-					<a href="#" class="button button--grey">License</a>
+					<?php if ($this->item->downloadLink): ?>
+						<a href="<?php echo $this->item->downloadLink; ?>" class="button button--grey">Download</a>
+					<?php endif; ?>
+					<?php if ($this->item->demoLink): ?>
+						<a href="<?php echo $this->item->demoLink; ?>" class="button button--grey">Demo</a>
+					<?php endif; ?>
+					<?php if ($this->item->documentationLink): ?>
+						<a href="<?php echo $this->item->documentationLink; ?>" class="button button--grey">Documentation</a>
+					<?php endif; ?>
+					<?php if ($this->item->supportLink): ?>
+						<a href="<?php echo $this->item->supportLink; ?>" class="button button--grey">Support</a>
+					<?php endif; ?>
+					<?php if ($this->item->licenseLink): ?>
+						<a href="<?php echo $this->item->licenseLink; ?>" class="button button--grey">License</a>
+					<?php endif; ?>
 				</p>
 			</div>
 			<div class="jed-grid__item">
@@ -92,15 +106,15 @@ defined('_JEXEC') or die;
 				<dl class="deflist">
 					<div>
 						<dt>Version</dt>
-						<dd>1.3.1</dd>
+						<dd><?php echo $this->item->version; ?></dd>
 					</div>
 					<div>
 						<dt>Last updated</dt>
-						<dd>Nov 06 2018</dd>
+						<dd><?php echo HTMLHelper::_('date', $this->item->updated, Text::_('F d, Y')); ?></dd>
 					</div>
 					<div>
 						<dt>Date added</dt>
-						<dd>Nov 26 2017</dd>
+						<dd><?php echo HTMLHelper::_('date', $this->item->added, Text::_('F d, Y')); ?></dd>
 					</div>
 					<div>
 						<dt>Includes</dt>
@@ -108,7 +122,7 @@ defined('_JEXEC') or die;
 					</div>
 					<div>
 						<dt>Compatibility</dt>
-						<dd>Joomla! 3</dd>
+						<dd><?php echo JedHelper::formatCompatibility($this->item->compatibility, true, true); ?></dd>
 					</div>
 				</dl>
 			</div>
@@ -127,24 +141,20 @@ defined('_JEXEC') or die;
 		<div class="jed-grid jed-grid--2-1 margin-bottom">
 			<div class="jed-grid__item">
 				<h2 class="heading heading--m">Description</h2>
-				<h3>Image cropping & resizing</h3>
-				<p>PWT Image allows the editor to crop an image from within the article. No need to go to a media manager first. By using the preset aspect ratios images can be added in the same sizes and ratio for all articles. Images will be resized to the dimensions configured.</p>
+				<?php
+				// @TODO Parse markdown, show part of text after read all
+				echo HTMLHelper::_('string.truncate', $this->item->body, 1000, true);
+				?>
 				<p><a href="#">Read all</a></p>
 			</div>
 			<div class="jed-grid__item"></div>
 		</div>
-		<div class="jed-grid jed-grid--1-2">
+		<div class="jed-grid jed-grid--1-2" id="reviews">
 			<div class="jed-grid__item">
 				<h2 class="heading heading--m">Reviews for free version</h2>
-				<strong>4.0</strong>
-				<div class="stars">
-					<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-					<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-					<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-					<div class="star"><span aria-hidden="true" class="icon-star"></span></div>
-					<div class="star"><span aria-hidden="true" class="icon-star-empty"></span></div>
-				</div>
-				<a href="#">132 reviews</a>
+				<strong><?php echo $this->item->score / 10; ?></strong>
+				<?php echo LayoutHelper::render('elements.stars', ['score' => $this->item->score]); ?>
+				<a href="#"><?php echo $this->item->reviews; ?> reviews</a>
 			</div>
 			<div class="jed-grid__item">
 				<h2 class="heading heading--m">Most valuable reviews</h2>
@@ -177,7 +187,7 @@ defined('_JEXEC') or die;
 					'image'         => 'https://extensionscdn.joomla.org/cache/fab_image/596c962509d22_resizeDown400px175px16.jpg',
 					'title'         => 'Akeeba Backup',
 					'developer'     => 'Akeeba Ltd',
-					'rating'        => 5,
+					'score'         => 99,
 					'reviews'       => 1061,
 					'compatibility' => ['3', '4 alpha'],
 					'description'   => 'Akeeba Backup Core is the most widely used open-source backup component for the Joomla! CMS. Its mission is simple: create a site backup that can be restored on any Joomla!-capable server.',
@@ -199,7 +209,7 @@ defined('_JEXEC') or die;
 					'image'         => 'https://extensionscdn.joomla.org/cache/fab_image/596c962509d22_resizeDown400px175px16.jpg',
 					'title'         => 'Akeeba Backup',
 					'developer'     => 'Akeeba Ltd',
-					'rating'        => 5,
+					'score'         => 99,
 					'reviews'       => 1061,
 					'compatibility' => ['3', '4 alpha'],
 					'description'   => 'Akeeba Backup Core is the most widely used open-source backup component for the Joomla! CMS. Its mission is simple: create a site backup that can be restored on any Joomla!-capable server.',

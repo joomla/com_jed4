@@ -19,15 +19,17 @@ use Joomla\CMS\Component\ComponentHelper;
 class JedHelper
 {
 	/**
-	 * Function to decode Compatibility JSON string to an array of Compatibility version
+	 * Function to decode compatibility JSON string to an array or string of versions
 	 *
 	 * @param   string|null  $compatibilityJson  The json string
+	 * @param   boolean      $joomla             Add Joomla to version names
+	 * @param   boolean      $string             Return as string
 	 *
-	 * @return  array   An array of version compatibility
+	 * @return  array|string   An array or string of version compatibility
 	 *
 	 * @since   4.0.0
 	 */
-	static public function formatCompatibility($compatibilityJson): array
+	static public function formatCompatibility($compatibilityJson, $joomla = false, $string = false)
 	{
 		$jedConfig           = ComponentHelper::getComponent('com_jed')->getParams();
 		$compatibility       = json_decode($compatibilityJson);
@@ -51,7 +53,13 @@ class JedHelper
 		// Convert to compatibility array for rendering
 		foreach ($compatibility as $k => $version)
 		{
-			$formatCompatibility[$k] = $joomlaVersionsOutput[$version];
+			$formatCompatibility[$k] = (($joomla) ? 'Joomla ' : '') . $joomlaVersionsOutput[$version];
+		}
+
+		// Convert to string for rendering
+		if ($string)
+		{
+			$formatCompatibility = implode(', ', $formatCompatibility);
 		}
 
 		return $formatCompatibility;

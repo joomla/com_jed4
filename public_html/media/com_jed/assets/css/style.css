@@ -418,7 +418,18 @@ p:last-child {
 }
 
 .jed-extension__image {
+  position: relative;
   margin: -32px -32px 32px;
+  overflow: hidden;
+  border-radius: 3px 3px 0 0;
+}
+
+.jed-extension__image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: none;
 }
 
 .extension-tags {
