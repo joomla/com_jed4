@@ -31,10 +31,13 @@ class JedModelExtensions extends ListModel
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
+				'category_id',
 				'published',
-				'category',
 				'approved',
+				'developer',
+				'user_id',
 				'type',
+				'includes',
 				'extensions.published',
 				'extensions.approved',
 				'extensions.title',
@@ -78,6 +81,42 @@ class JedModelExtensions extends ListModel
 		);
 
 		return $items;
+	}
+
+	/**
+	 * Retrieve a list of developers matching a search query.
+	 *
+	 * @param   string  $search  The string to filter on
+	 *
+	 * @return  array List of developers.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getDevelopers(string $search): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select(
+				$db->quoteName(
+					[
+						'users.id',
+						'users.name'
+					],
+					[
+						'data',
+						'value'
+					]
+				)
+			)
+			->from($db->quoteName('#__users', 'users'))
+			->leftJoin(
+				$db->quoteName('#__jed_extensions', 'extensions')
+				. ' ON ' . $db->quoteName('extensions.created_by') . ' = ' . $db->quoteName('users.id')
+			)
+			->where($db->quoteName('users.name') . ' LIKE ' . $db->quote('%' . $search . '%'));
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
 	}
 
 	/**
@@ -178,6 +217,10 @@ class JedModelExtensions extends ListModel
 				. ' ON ' . $db->quoteName('categories.id') . ' = ' . $db->quoteName('extensions.category_id')
 			)
 			->leftJoin(
+				$db->quoteName('#__jed_extensions_types', 'types')
+				. ' ON ' . $db->quoteName('types.extension_id') . ' = ' . $db->quoteName('extensions.id')
+			)
+			->leftJoin(
 				$db->quoteName('#__users', 'users')
 				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('extensions.created_by')
 			);
@@ -198,6 +241,13 @@ class JedModelExtensions extends ListModel
 			}
 		}
 
+		$categoryIds = $this->getState('filter.category_id');
+
+		if ($categoryIds)
+		{
+			$query->where($db->quoteName('extensions.category_id') . ' IN (' . implode(',', $categoryIds) . ')');
+		}
+
 		$published = $this->getState('filter.published');
 
 		if (is_numeric($published))
@@ -205,12 +255,36 @@ class JedModelExtensions extends ListModel
 			$query->where($db->quoteName('extensions.published') . ' = ' . (int) $published);
 		}
 
-		$approved = $this->getState('filter.approved');
+		$approved = $this->getState('filter.approved', '');
 
 		if ($approved !== '')
 		{
 			$query->where($db->quoteName('extensions.approved') . ' = ' . $db->quote($approved));
 		}
+
+		$userId = $this->getState('filter.user_id');
+
+		if ($userId)
+		{
+			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $userId);
+		}
+
+		$type      = $this->getState('filter.type');
+
+		if ($type)
+		{
+			$query->where($db->quoteName('extensions.type') . ' = ' . $db->quote($type));
+		}
+
+		$includes = $this->getState('filter.includes');
+
+		if ($includes && $includes[0] !== '')
+		{
+			$query->where($db->quoteName('types.type') . ' IN (' . implode(',', $db->quote($includes, false)) . ')');
+		}
+
+		// Group by ID to ensure unique results
+		$query->group($db->quoteName('extensions.id'));
 
 		// Add the list ordering clause.
 		$query->order(
@@ -223,6 +297,5 @@ class JedModelExtensions extends ListModel
 
 		return $query;
 	}
-
 
 }

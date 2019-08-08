@@ -16,6 +16,8 @@ defined('_JEXEC') or die;
 /** @var JedViewExtensions $this */
 
 HTMLHelper::_('formbehavior.chosen');
+HTMLHelper::_('script', 'jui/jquery.autocomplete.min.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('stylesheet', 'com_finder/finder.css', ['version' => 'auto', 'relative' => true]);
 
 $user      = Factory::getUser();
 $userId    = $user->get('id');
@@ -71,7 +73,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
             </thead>
             <tfoot>
             <tr>
-                <td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
+                <td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
             </tr>
             </tfoot>
             <tbody>
@@ -153,3 +155,17 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 		<?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
+
+<script type="text/javascript">
+    var suggest = jQuery('#filter_developer').autocomplete({
+        serviceUrl: 'index.php?option=com_jed&task=ajax.developers&format=json&tmpl=component',
+        minChars: 3,
+        maxHeight: 400,
+        width: 300,
+        zIndex: 9999,
+        deferRequestBy: 500,
+        onSelect: function (suggestion) {
+            document.getElementById('filter_user_id').value = suggestion.data;
+        }
+    });
+</script>

@@ -11,7 +11,7 @@
         />
 
         <field
-                name="category"
+                name="category_id"
                 type="category"
                 class="advancedSelect"
                 extension="com_jed"
@@ -51,9 +51,11 @@
 
         <field
             name="developer"
-            type="jed.developers"
-            class="advancedSelect"
-            />
+            type="text" />
+
+        <field
+            name="user_id"
+            type="hidden" />
 
         <field
                 name="type"
@@ -75,11 +77,10 @@
                 type="list"
                 label="COM_JED_EXTENSIONS_INCLUDES"
                 class="advancedSelect"
-                size="1"
+                multiple="true"
                 default=""
-                onchange="this.form.submit();"
+                hint="COM_JED_EXTENSIONS_INCLUDES_SELECT"
         >
-            <option value="">COM_JED_EXTENSIONS_INCLUDES_SELECT</option>
             <option value="com">COM_JED_EXTENSIONS_INCLUDES_COM</option>
             <option value="mod">COM_JED_EXTENSIONS_INCLUDES_MOD</option>
             <option value="plugin">COM_JED_EXTENSIONS_INCLUDES_PLUGIN</option>
