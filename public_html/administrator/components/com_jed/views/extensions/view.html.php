@@ -136,6 +136,11 @@ class JedViewExtensions extends HtmlView
 			ToolbarHelper::unpublish('extensions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 
+		if ($canDo->get('core.edit.state'))
+		{
+			ToolbarHelper::checkin('extensions.checkin');
+		}
+
 		ToolBarHelper::cancel('extensions.cancel', 'JTOOLBAR_CLOSE');
 	}
 }

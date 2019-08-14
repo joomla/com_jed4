@@ -188,26 +188,34 @@ class JedModelExtensions extends ListModel
 					[
 						'extensions.id',
 						'extensions.title',
+						'extensions.alias',
 						'extensions.created_by',
 						'extensions.modified_on',
 						'extensions.created_on',
+						'extensions.checked_out',
+						'extensions.checked_out_time',
 						'extensions.approved',
 						'extensions.published',
 						'extensions.type',
 						'categories.title',
 						'users.name',
+						'staff.name',
 					],
 					[
 						'id',
 						'title',
+						'alias',
 						'created_by',
 						'modified_on',
 						'created_on',
+						'checked_out',
+						'checked_out_time',
 						'approved',
 						'published',
 						'type',
 						'category',
-						'developer'
+						'developer',
+						'editor'
 					]
 				)
 			)
@@ -223,6 +231,10 @@ class JedModelExtensions extends ListModel
 			->leftJoin(
 				$db->quoteName('#__users', 'users')
 				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('extensions.created_by')
+			)
+			->leftJoin(
+				$db->quoteName('#__users', 'staff')
+				. ' ON ' . $db->quoteName('staff.id') . ' = ' . $db->quoteName('extensions.checked_out')
 			);
 
 		// Filter by search in id

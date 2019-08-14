@@ -122,7 +122,19 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 		                ?>
                     </td>
                     <td>
-		                <?php echo HTMLHelper::_('link', 'index.php?option=com_jed&task=extension.edit&id=' . $item->id, $item->title); ?>
+                        <div class="pull-left break-word">
+		                    <?php if ($item->checked_out) : ?>
+			                    <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'extensions.', $canCheckin); ?>
+		                    <?php endif; ?>
+		                    <?php if ($canEdit) : ?>
+			                    <?php echo HTMLHelper::_('link', 'index.php?option=com_jed&task=extension.edit&id=' . $item->id, $item->title); ?>
+		                    <?php else : ?>
+			                    <?php echo $this->escape($item->title); ?>
+		                    <?php endif; ?>
+                            <span class="small break-word">
+                                <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
+                            </span>
+                        </div>
                     </td>
                     <td>
 		                <?php echo $item->category; ?>
