@@ -31,7 +31,6 @@
 				type="list"
 				label="COM_JED_EXTENSIONS_JED_CHECKER"
 				class="chzn-color-state advancedSelect"
-				id="published"
 				size="1"
 				default="1"
 				filter="integer"
@@ -51,7 +50,7 @@
                 extension="com_jed"
                 default=""
                 filter="integer"
-                multiple="true"
+                multiple="false"
                 required="true"
         />
 
@@ -59,34 +58,11 @@
                 name="related"
                 type="category"
                 label="COM_JED_EXTENSIONS_RELATED"
+                class="advancedSelect"
                 extension="com_jed"
                 default=""
                 filter="integer"
                 multiple="true"
-        />
-
-        <field
-                name="type"
-                type="list"
-                label="COM_JED_EXTENSIONS_TYPE"
-                description="COM_JED_EXTENSIONS_TYPE"
-                class="chzn-color-state"
-                id="published"
-                size="1"
-                default="1"
-                filter="integer"
-        >
-            <option value="1">Free</option>
-            <option value="2">Paid</option>
-            <option value="3">Cloud</option>
-        </field>
-
-        <field
-                name="numReviews"
-                type="text"
-                label="COM_JED_EXTENSIONS_REVIEWCOUNT"
-                default="0"
-                readonly="true"
         />
 
         <field
@@ -141,26 +117,23 @@
                 name="version"
                 type="text"
                 label="COM_JED_EXTENSIONS_VERSION"
-                description="COM_JED_EXTENSIONS_VERSION"
+                class="input-mini"
         />
 
         <field
                 name="phpVersion"
                 type="list"
                 label="COM_JED_EXTENSIONS_PHP_VERSION"
-                description="COM_JED_EXTENSIONS_PHP_VERSION"
-                class="chzn-color-state"
-                id="published"
+                class="advancedSelect"
                 size="1"
-                default="1"
-                filter="integer"
+                filter="cmd"
                 multiple="true"
         >
-            <option value="5.6">5.6</option>
-            <option value="7.0">7.0</option>
-            <option value="7.1">7.1</option>
-            <option value="7.2">7.2</option>
-            <option value="7.3">7.3</option>
+            <option value="5.6.0">5.6.0</option>
+            <option value="7.0.0">7.0.0</option>
+            <option value="7.1.0">7.1.0</option>
+            <option value="7.2.0">7.2.0</option>
+            <option value="7.3.0">7.3.0</option>
         </field>
 
         <field
@@ -176,7 +149,6 @@
                 label="COM_JED_EXTENSIONS_PARENT_EXTENSION"
                 description="COM_JED_EXTENSIONS_PARENT_EXTENSION"
                 class="chzn-color-state"
-                id="published"
                 size="1"
                 default="1"
                 filter="integer"
@@ -374,6 +346,14 @@
         />
 
         <field
+                name="numReviews"
+                type="text"
+                label="COM_JED_EXTENSIONS_REVIEWCOUNT"
+                default="0"
+                readonly="true"
+        />
+
+        <field
                 name="state"
                 type="list"
                 label="JSTATUS"
@@ -399,7 +379,6 @@
                 type="list"
                 label="COM_JED_EXTENSIONS_APPROVED"
                 class="chzn-color-state"
-                id="published"
                 size="1"
                 default="0"
                 filter="integer"

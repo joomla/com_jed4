@@ -41,8 +41,6 @@ JS
 
 	<?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
-
-
     <div class="form-horizontal">
 	    <?php echo $this->form->renderField('created_by'); ?>
 	    <?php echo $this->form->renderField('jedChecker'); ?>
