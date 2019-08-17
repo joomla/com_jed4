@@ -137,6 +137,19 @@
         </field>
 
         <field
+                name="joomlaVersion"
+                type="list"
+                label="COM_JED_EXTENSIONS_JOOMLA_VERSION"
+                class="advancedSelect"
+                size="1"
+                filter="cmd"
+                multiple="true"
+        >
+            <option value="3.0.0">Joomla 3</option>
+            <option value="4.0.0">Joomla 4</option>
+        </field>
+
+        <field
                 name="downloadLink"
                 type="text"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_LINK"
@@ -165,28 +178,10 @@
         />
 
         <field
-                name="logo"
-                type="imagelist"
-                label="COM_JED_EXTENSIONS_LOGO"
-                description="COM_JED_EXTENSIONS_LOGO"
-                directory="/images"
-                hide_none="1"
-        />
-
-        <field
-                name="images"
-                type="imagelist"
-                label="COM_JED_EXTENSIONS_IMAGES"
-                description="COM_JED_EXTENSIONS_IMAGES"
-                directory="/images"
-                hide_none="1"
-        />
-
-        <field
                 name="video"
                 type="text"
                 label="COM_JED_EXTENSIONS_VIDEO_LINK"
-                description="COM_JED_EXTENSIONS_VIDEO_LINK"
+                class="input-xxlarge"
         />
 
     </fieldset>

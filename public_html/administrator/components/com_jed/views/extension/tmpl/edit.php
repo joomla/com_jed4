@@ -62,7 +62,6 @@ JS
             <div class="span3">
                 <div class="form-vertical">
 					<?php echo $this->form->renderFieldset('publication'); ?>
-                    <?php echo HTMLHelper::_('link', '', Text::_('COM_JED_DOWNLOAD_EXTENSION')); ?>
                 </div>
             </div>
         </div>

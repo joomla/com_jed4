@@ -16,7 +16,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
  * JED Extension Model
  *
  * @package  JED
- * @since    1.0.0
+ * @since    4.0.0
  */
 class JedModelExtension extends AdminModel
 {
@@ -28,7 +28,7 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @return  mixed   A JForm object on success, false on failure
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 */
 	public function getForm($data = [], $loadData = true)
 	{
@@ -51,7 +51,7 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @return  boolean  True on success, False on error.
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 *
 	 * @throws  Exception
 	 */
@@ -74,7 +74,10 @@ class JedModelExtension extends AdminModel
 		$this->storeRelatedCategories($extensionId, $data['related']);
 
 		// Store the PHP versions
-		$this->storePhpVersions($extensionId, $data['phpVersion']);
+		$this->storeVersions($extensionId, $data['phpVersion'], 'php');
+
+		// Store the Joomla versions
+		$this->storeVersions($extensionId, $data['joomlaVersion'], 'joomla');
 
 		return true;
 	}
@@ -87,7 +90,7 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @return  void
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 */
 	private function storeRelatedCategories(int $extensionId, array $relatedCategoryIds): void
 	{
@@ -121,40 +124,41 @@ class JedModelExtension extends AdminModel
 	}
 
 	/**
-	 * Store supported PHP versions for an extension.
+	 * Store supported versions for an extension.
 	 *
-	 * @param   int    $extensionId  The extension ID to save the versions for
-	 * @param   array  $phpVersions  The PHP versions to store
+	 * @param   int     $extensionId  The extension ID to save the versions for
+	 * @param   array   $versions     The versions to store
+	 * @param   string  $type         THe type of versions to store
 	 *
 	 * @return  void
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 */
-	private function storePhpVersions(int $extensionId, array $phpVersions): void
+	private function storeVersions(int $extensionId, array $versions, string $type): void
 	{
 		$db = $this->getDbo();
 
 		// Delete any existing relations
 		$query = $db->getQuery(true)
-			->delete($db->quoteName('#__jed_extensions_phpversions'))
+			->delete($db->quoteName('#__jed_extensions_' . $type . '_versions'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query)
 			->execute();
 
 		$query->clear()
-			->insert($db->quoteName('#__jed_extensions_phpversions'))
+			->insert($db->quoteName('#__jed_extensions_' . $type . '_versions'))
 			->columns(
 				$db->quoteName(
 					[
 						'extension_id',
-						'phpVersion'
+						'version'
 					]
 				)
 			);
 
-		array_walk($phpVersions,
-			static function ($phpVersion) use (&$query, $db, $extensionId) {
-				$query->values($extensionId . ',' . $db->quote($phpVersion));
+		array_walk($versions,
+			static function ($version) use (&$query, $db, $extensionId) {
+				$query->values($extensionId . ',' . $db->quote($version));
 			});
 
 		$db->setQuery($query)
@@ -202,7 +206,7 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @return      mixed   The data for the form.
 	 *
-	 * @since       1.0.0
+	 * @since       4.0.0
 	 *
 	 * @throws      Exception
 	 */
@@ -226,7 +230,7 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @return  \JObject|boolean  Object on success, false on failure.
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 */
 	public function getItem($pk = null)
 	{
@@ -234,7 +238,8 @@ class JedModelExtension extends AdminModel
 		$item = parent::getItem($pk);
 
 		$item->related    = $this->getRelatedCategories($item->id);
-		$item->phpVersion = $this->getPhpVersions($item->id);
+		$item->phpVersion = $this->getVersions($item->id, 'php');
+		$item->joomlaVersion = $this->getVersions($item->id, 'joomla');
 
 		return $item;
 	}
@@ -246,7 +251,7 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @return  array  List of related categories.
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 */
 	public function getRelatedCategories(int $extensionId): array
 	{
@@ -264,19 +269,20 @@ class JedModelExtension extends AdminModel
 	/**
 	 * Get the supported PHP versions.
 	 *
-	 * @param   int  $extensionId  The extension ID to get the PHP versions for
+	 * @param   int     $extensionId  The extension ID to get the PHP versions for
+	 * @param   string  $type         The type of version to get
 	 *
 	 * @return  array  List of supported PHP versions.
 	 *
-	 * @since   1.0.0
+	 * @since   4.0.0
 	 */
-	public function getPhpVersions(int $extensionId): array
+	public function getVersions(int $extensionId, string $type): array
 	{
 		// Get the related categories
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
-			->select($db->quoteName('phpVersion'))
-			->from($db->quoteName('#__jed_extensions_phpversions'))
+			->select($db->quoteName('version'))
+			->from($db->quoteName('#__jed_extensions_' . $type . '_versions'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query);
 
