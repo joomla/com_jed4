@@ -19,19 +19,25 @@ HTMLHelper::_('formbehavior.chosen');
 HTMLHelper::_('behavior.formvalidator');
 
 $extensionUrl = Uri::root() . 'extension/' . $this->item->alias;
+$downloadUrl  = 'index.php?option=com_jed&task=extension.download&id=' . $this->item->id;
 
 Factory::getDocument()->addScriptDeclaration(<<<JS
 	Joomla.submitbutton = function(task)
 	{
-	    if (task === 'extension.preview') {
-	        window.open('{$extensionUrl}');  
+	    switch (task) {
+            case 'extension.preview':
+                window.open('{$extensionUrl}');
+                break;
+            case 'extension.download':
+                window.open('{$downloadUrl}');
+                break;
+            default:
+                if (task === "extension.cancel" || document.formvalidator.isValid(document.getElementById("extension-form")))
+                {
+                    Joomla.submitform(task, document.getElementById("extension-form"));
+                }
+                break;
 	    }
-	    else {
-            if (task === "extension.cancel" || document.formvalidator.isValid(document.getElementById("extension-form")))
-            {
-                Joomla.submitform(task, document.getElementById("extension-form"));
-            }
-		}
 	}
 JS
 );
@@ -56,6 +62,7 @@ JS
             <div class="span3">
                 <div class="form-vertical">
 					<?php echo $this->form->renderFieldset('publication'); ?>
+                    <?php echo HTMLHelper::_('link', '', Text::_('COM_JED_DOWNLOAD_EXTENSION')); ?>
                 </div>
             </div>
         </div>

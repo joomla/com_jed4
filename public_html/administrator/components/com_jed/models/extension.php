@@ -230,7 +230,7 @@ class JedModelExtension extends AdminModel
 	/**
 	 * Get the supported PHP versions.
 	 *
-	 * @param   int  $extensionId The extension ID to get the categories for
+	 * @param   int  $extensionId The extension ID to get the PHP versions for
 	 *
 	 * @return  array  List of supported PHP versions.
 	 *
@@ -247,5 +247,33 @@ class JedModelExtension extends AdminModel
 		$db->setQuery($query);
 
 		return $db->loadColumn();
+	}
+
+	/**
+	 * Get the filename of the given extension ID.
+	 *
+	 * @param   int  $extensionId The extension ID to get the filename for
+	 *
+	 * @return  stdClass  The extension file information.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getFilename(int $extensionId): stdClass
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select(
+				$db->quoteName(
+					[
+						'file',
+						'originalFile'
+					]
+				)
+			)
+			->from($db->quoteName('#__jed_extensions_files'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadObject();
 	}
 }

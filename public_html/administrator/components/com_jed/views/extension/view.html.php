@@ -110,7 +110,8 @@ class JedViewExtension extends HtmlView
 			ToolBarHelper::cancel('extension.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		ToolbarHelper::custom('extension.preview', 'new-tab', '', 'View Frontend', false);
+		ToolbarHelper::custom('extension.preview', 'new-tab', '', 'COM_JED_EXTENSIONS_VIEW_FRONTEND', false);
+		ToolbarHelper::custom('extension.download', 'file', '', 'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false);
 	}
 
 }
