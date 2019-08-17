@@ -112,8 +112,7 @@ class JedModelExtension extends AdminModel
 			);
 
 		array_walk($relatedCategoryIds,
-			static function ($relatedCategoryId) use (&$query, $extensionId)
-			{
+			static function ($relatedCategoryId) use (&$query, $extensionId) {
 				$query->values($extensionId . ',' . $relatedCategoryId);
 			});
 
@@ -154,13 +153,48 @@ class JedModelExtension extends AdminModel
 			);
 
 		array_walk($phpVersions,
-			static function ($phpVersion) use (&$query, $db, $extensionId)
-			{
+			static function ($phpVersion) use (&$query, $db, $extensionId) {
 				$query->values($extensionId . ',' . $db->quote($phpVersion));
 			});
 
 		$db->setQuery($query)
 			->execute();
+	}
+
+	/**
+	 * Get the filename of the given extension ID.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the filename for
+	 *
+	 * @return  stdClass  The extension file information.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getFilename(int $extensionId): stdClass
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select(
+				$db->quoteName(
+					[
+						'file',
+						'originalFile'
+					]
+				)
+			)
+			->from($db->quoteName('#__jed_extensions_files'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		$fileDetails = $db->loadObject();
+
+		if ($fileDetails === null)
+		{
+			$fileDetails       = new stdClass;
+			$fileDetails->file = '';
+		}
+
+		return $fileDetails;
 	}
 
 	/**
@@ -199,7 +233,7 @@ class JedModelExtension extends AdminModel
 		// Get the base details
 		$item = parent::getItem($pk);
 
-		$item->related = $this->getRelatedCategories($item->id);
+		$item->related    = $this->getRelatedCategories($item->id);
 		$item->phpVersion = $this->getPhpVersions($item->id);
 
 		return $item;
@@ -208,7 +242,7 @@ class JedModelExtension extends AdminModel
 	/**
 	 * Get the related categories.
 	 *
-	 * @param   int  $extensionId The extension ID to get the categories for
+	 * @param   int  $extensionId  The extension ID to get the categories for
 	 *
 	 * @return  array  List of related categories.
 	 *
@@ -217,7 +251,7 @@ class JedModelExtension extends AdminModel
 	public function getRelatedCategories(int $extensionId): array
 	{
 		// Get the related categories
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('category_id'))
 			->from($db->quoteName('#__jed_extensions_categories'))
@@ -230,7 +264,7 @@ class JedModelExtension extends AdminModel
 	/**
 	 * Get the supported PHP versions.
 	 *
-	 * @param   int  $extensionId The extension ID to get the PHP versions for
+	 * @param   int  $extensionId  The extension ID to get the PHP versions for
 	 *
 	 * @return  array  List of supported PHP versions.
 	 *
@@ -239,7 +273,7 @@ class JedModelExtension extends AdminModel
 	public function getPhpVersions(int $extensionId): array
 	{
 		// Get the related categories
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('phpVersion'))
 			->from($db->quoteName('#__jed_extensions_phpversions'))
@@ -247,33 +281,5 @@ class JedModelExtension extends AdminModel
 		$db->setQuery($query);
 
 		return $db->loadColumn();
-	}
-
-	/**
-	 * Get the filename of the given extension ID.
-	 *
-	 * @param   int  $extensionId The extension ID to get the filename for
-	 *
-	 * @return  stdClass  The extension file information.
-	 *
-	 * @since   4.0.0
-	 */
-	public function getFilename(int $extensionId): stdClass
-	{
-		$db = $this->getDbo();
-		$query = $db->getQuery(true)
-			->select(
-				$db->quoteName(
-					[
-						'file',
-						'originalFile'
-					]
-				)
-			)
-			->from($db->quoteName('#__jed_extensions_files'))
-			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
-		$db->setQuery($query);
-
-		return $db->loadObject();
 	}
 }

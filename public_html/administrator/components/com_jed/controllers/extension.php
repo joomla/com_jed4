@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 
 /**
@@ -35,15 +36,17 @@ class JedControllerExtension extends FormController
 		$id          = $this->input->getInt('id');
 		$fileDetails = $model->getFilename($id);
 
-		if (file_exists($fileDetails->file))
+		if (!file_exists($fileDetails->file))
 		{
-			header('Content-type: application/zip');
-			header('Content-Disposition: attachment; filename=' . $fileDetails->originalFile);
-			header('Content-length: ' . filesize($fileDetails->file));
-			header('Pragma: no-cache');
-			header('Expires: 0');
-			readfile($fileDetails->file);
+			throw new InvalidArgumentException(Text::sprintf('COM_JED_EXTENSIONS_DOWNLOAD_NOT_FOUND', $fileDetails->file));
 		}
+
+		header('Content-type: application/zip');
+		header('Content-Disposition: attachment; filename=' . $fileDetails->originalFile);
+		header('Content-length: ' . filesize($fileDetails->file));
+		header('Pragma: no-cache');
+		header('Expires: 0');
+		readfile($fileDetails->file);
 
 		Factory::getApplication()->close();
 	}
