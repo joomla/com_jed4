@@ -186,6 +186,61 @@
 
     </fieldset>
 
+    <fieldset name="publication">
+
+        <field
+                name="id"
+                type="text"
+                default="0"
+                label="COM_JED_EXTENSIONS_ID"
+                readonly="true"
+                description="JGLOBAL_FIELD_ID_DESC"
+                primary="true"
+        />
+
+        <field
+                name="created_on"
+                type="calendar"
+                label="COM_JED_FIELD_CREATED_TIME_LABEL"
+                format="%d-%m-%Y %H:%M:%S"
+                readonly="true"
+        />
+
+        <field
+                name="numReviews"
+                type="text"
+                label="COM_JED_EXTENSIONS_REVIEWCOUNT"
+                default="0"
+                readonly="true"
+        />
+
+        <field
+                name="published"
+                type="list"
+                label="JSTATUS"
+                description="JFIELD_PUBLISHED_DESC"
+                class="chzn-color-state advancedSelect"
+                size="1"
+                default="1"
+        >
+            <option value="0">JUNPUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+        </field>
+
+        <field
+                name="approved"
+                type="list"
+                label="COM_JED_EXTENSIONS_APPROVED"
+                class="chzn-color-state advancedSelect"
+                size="1"
+                default="0"
+                filter="integer"
+        >
+            <option value="0">COM_JED_EXTENSIONS_REJECTED</option>
+            <option value="1">COM_JED_EXTENSIONS_APPROVED</option>
+        </field>
+    </fieldset>
+
     <fieldset name="content">
 
         <field
@@ -301,73 +356,6 @@
                groupByFieldset="true"
                label=""
                icon="list"
-        />
-
-    </fieldset>
-
-    <fieldset name="publication">
-
-        <field
-                name="id"
-                type="text"
-                default="0"
-                label="COM_JED_EXTENSIONS_ID"
-                readonly="true"
-                description="JGLOBAL_FIELD_ID_DESC"
-                primary="true"
-        />
-
-        <field
-                name="numReviews"
-                type="text"
-                label="COM_JED_EXTENSIONS_REVIEWCOUNT"
-                default="0"
-                readonly="true"
-        />
-
-        <field
-                name="state"
-                type="list"
-                label="JSTATUS"
-                description="JFIELD_PUBLISHED_DESC"
-                class="inputbox chzn-color-state"
-                size="1"
-                default="1"
-        >
-            <option value="0">JUNPUBLISHED</option>
-            <option value="1">JPUBLISHED</option>
-        </field>
-
-        <filter name="checked_out"
-                type="datetime"
-                label="COM_JED_FIELD_CHECKED_OUT_LABEL"/>
-
-        <filter name="created"
-                type="datetime"
-                label="COM_JED_FIELD_CREATED_TIME_LABEL"/>
-
-        <field
-                name="approved"
-                type="list"
-                label="COM_JED_EXTENSIONS_APPROVED"
-                class="chzn-color-state"
-                size="1"
-                default="0"
-                filter="integer"
-        >
-            <option value="0">COM_JED_EXTENSIONS_REJECTED</option>
-            <option value="1">COM_JED_EXTENSIONS_APPROVED</option>
-        </field>
-
-
-
-        <field
-                name="notesButton"
-                type="button"
-                default="0"
-                class="btn btn-primary"
-                link="index.php?option=com_jed&amp;view=extension&amp;layout=edit#history"
-                label="COM_JED_NOTES"
         />
 
     </fieldset>
