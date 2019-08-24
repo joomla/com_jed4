@@ -26,18 +26,18 @@
                 label="COM_JED_EXTENSIONS_DEVELOPER"
         />
 
-		<field
-				name="jedChecker"
-				type="list"
-				label="COM_JED_EXTENSIONS_JED_CHECKER"
-				class="chzn-color-state advancedSelect"
-				size="1"
-				default="1"
-				filter="integer"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+        <field
+                name="jedChecker"
+                type="list"
+                label="COM_JED_EXTENSIONS_JED_CHECKER"
+                class="chzn-color-state advancedSelect"
+                size="1"
+                default="1"
+                filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
 
     </fieldset>
 
@@ -73,10 +73,10 @@
         />
 
         <field
-            name="extensionTypes"
-            type="checkboxes"
-            label="COM_JED_EXTENSIONS_EXTENSION_TYPES"
-            >
+                name="extensionTypes"
+                type="checkboxes"
+                label="COM_JED_EXTENSIONS_EXTENSION_TYPES"
+        >
             <option value="component">COM_JED_EXTENSIONS_COMPONENT</option>
             <option value="module">COM_JED_EXTENSIONS_MODULE</option>
             <option value="plugin">COM_JED_EXTENSIONS_PLUGIN</option>
@@ -262,12 +262,11 @@
     <fieldset name="content">
 
         <field
-                name="description"
-                type="textarea"
+                name="body"
+                type="editor"
                 label="COM_JED_EXTENSIONS_DESCRIPTION"
                 buttons="true"
-                size="30"
-        />
+                filter="safehtml"/>
 
     </fieldset>
 

@@ -171,8 +171,8 @@ class JedModelExtension extends AdminModel
 	/**
 	 * Store used extension types for an extension.
 	 *
-	 * @param   int     $extensionId  The extension ID to save the types for
-	 * @param   array   $types        The extension types to store
+	 * @param   int    $extensionId  The extension ID to save the types for
+	 * @param   array  $types        The extension types to store
 	 *
 	 * @return  void
 	 *
@@ -287,10 +287,11 @@ class JedModelExtension extends AdminModel
 		// Get the base details
 		$item = parent::getItem($pk);
 
-		$item->related    = $this->getRelatedCategories($item->id);
-		$item->phpVersion = $this->getVersions($item->id, 'php');
-		$item->joomlaVersion = $this->getVersions($item->id, 'joomla');
+		$item->related        = $this->getRelatedCategories($item->id);
+		$item->phpVersion     = $this->getVersions($item->id, 'php');
+		$item->joomlaVersion  = $this->getVersions($item->id, 'joomla');
 		$item->extensionTypes = $this->getExtensionTypes($item->id);
+		$item->body           = nl2br($item->body);
 
 		return $item;
 	}
@@ -343,7 +344,7 @@ class JedModelExtension extends AdminModel
 	/**
 	 * Get the used extension types.
 	 *
-	 * @param   int     $extensionId  The extension ID to get the types for
+	 * @param   int  $extensionId  The extension ID to get the types for
 	 *
 	 * @return  array  List of used extension types.
 	 *
