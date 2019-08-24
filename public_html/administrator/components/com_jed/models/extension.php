@@ -79,6 +79,9 @@ class JedModelExtension extends AdminModel
 		// Store the Joomla versions
 		$this->storeVersions($extensionId, $data['joomlaVersion'], 'joomla');
 
+		// Store the extension types
+		$this->storeExtensionTypes($extensionId, $data['extensionTypes'] ?? []);
+
 		return true;
 	}
 
@@ -166,6 +169,53 @@ class JedModelExtension extends AdminModel
 	}
 
 	/**
+	 * Store used extension types for an extension.
+	 *
+	 * @param   int     $extensionId  The extension ID to save the types for
+	 * @param   array   $types        The extension types to store
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function storeExtensionTypes(int $extensionId, array $types): void
+	{
+		$db = $this->getDbo();
+
+		// Delete any existing relations
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__jed_extensions_types'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query)
+			->execute();
+
+		// Do not do anything else if no options are checked
+		if (empty($types))
+		{
+			return;
+		}
+
+		$query->clear()
+			->insert($db->quoteName('#__jed_extensions_types'))
+			->columns(
+				$db->quoteName(
+					[
+						'extension_id',
+						'type'
+					]
+				)
+			);
+
+		array_walk($types,
+			static function ($type) use (&$query, $db, $extensionId) {
+				$query->values($extensionId . ',' . $db->quote($type));
+			});
+
+		$db->setQuery($query)
+			->execute();
+	}
+
+	/**
 	 * Get the filename of the given extension ID.
 	 *
 	 * @param   int  $extensionId  The extension ID to get the filename for
@@ -240,6 +290,7 @@ class JedModelExtension extends AdminModel
 		$item->related    = $this->getRelatedCategories($item->id);
 		$item->phpVersion = $this->getVersions($item->id, 'php');
 		$item->joomlaVersion = $this->getVersions($item->id, 'joomla');
+		$item->extensionTypes = $this->getExtensionTypes($item->id);
 
 		return $item;
 	}
@@ -283,6 +334,28 @@ class JedModelExtension extends AdminModel
 		$query = $db->getQuery(true)
 			->select($db->quoteName('version'))
 			->from($db->quoteName('#__jed_extensions_' . $type . '_versions'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadColumn();
+	}
+
+	/**
+	 * Get the used extension types.
+	 *
+	 * @param   int     $extensionId  The extension ID to get the types for
+	 *
+	 * @return  array  List of used extension types.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getExtensionTypes(int $extensionId): array
+	{
+		// Get the related categories
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('type'))
+			->from($db->quoteName('#__jed_extensions_types'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query);
 

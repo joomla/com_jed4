@@ -66,6 +66,24 @@
         />
 
         <field
+                name="communityChoice"
+                type="checkbox"
+                label="COM_JED_EXTENSIONS_COMMUNITY_CHOICE"
+                default="1"
+        />
+
+        <field
+            name="extensionTypes"
+            type="checkboxes"
+            label="COM_JED_EXTENSIONS_EXTENSION_TYPES"
+            >
+            <option value="component">COM_JED_EXTENSIONS_COMPONENT</option>
+            <option value="module">COM_JED_EXTENSIONS_MODULE</option>
+            <option value="plugin">COM_JED_EXTENSIONS_PLUGIN</option>
+            <option value="specific">COM_JED_EXTENSIONS_SPECIFIC</option>
+        </field>
+
+        <field
                 name="requiresRegistration"
                 type="radio"
                 label="COM_JED_EXTENSIONS_REQUIRE_REGISTRATION"
@@ -112,13 +130,6 @@
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-
-        <field
-            name="communityChoice"
-            type="checkbox"
-            label="COM_JED_EXTENSIONS_COMMUNITY_CHOICE"
-            default="1"
-        />
 
         <field
                 name="version"
