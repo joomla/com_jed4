@@ -114,6 +114,13 @@
         </field>
 
         <field
+            name="communityChoice"
+            type="checkbox"
+            label="COM_JED_EXTENSIONS_COMMUNITY_CHOICE"
+            default="1"
+        />
+
+        <field
                 name="version"
                 type="text"
                 label="COM_JED_EXTENSIONS_VERSION"
