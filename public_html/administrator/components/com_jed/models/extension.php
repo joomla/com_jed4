@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 
 /**
  * JED Extension Model
@@ -278,20 +279,25 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  \JObject|boolean  Object on success, false on failure.
+	 * @return  CMSObject  Object with item details.
 	 *
 	 * @since   4.0.0
 	 */
-	public function getItem($pk = null)
+	public function getItem($pk = null): CMSObject
 	{
 		// Get the base details
 		$item = parent::getItem($pk);
 
-		$item->related        = $this->getRelatedCategories($item->id);
-		$item->phpVersion     = $this->getVersions($item->id, 'php');
-		$item->joomlaVersion  = $this->getVersions($item->id, 'joomla');
-		$item->extensionTypes = $this->getExtensionTypes($item->id);
-		$item->body           = nl2br($item->body);
+		if (!$item instanceof CMSObject)
+		{
+			return new CMSObject;
+		}
+
+		$item->set('related', $this->getRelatedCategories($item->id));
+		$item->set('phpVersion', $this->getVersions($item->id, 'php'));
+		$item->set('joomlaVersion', $this->getVersions($item->id, 'joomla'));
+		$item->set('extensionTypes', $this->getExtensionTypes($item->id));
+		$item->set('body', nl2br($item->get( 'body')));
 
 		return $item;
 	}
