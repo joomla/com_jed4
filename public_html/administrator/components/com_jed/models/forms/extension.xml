@@ -377,4 +377,22 @@
 
     </fieldset>
 
+    <fieldset name="approve">
+        <fields name="approve">
+        <field
+                name="approvedReason"
+                type="jed.approved"
+                label="COM_JED_EXTENSIONS_APPROVE_REASON"
+                class="advancedSelect input-xxlarge"
+                multiple="false"/>
+
+        <field
+                name="approvedNotes"
+                type="textarea"
+                label="COM_JED_EXTENSIONS_APPROVE_NOTES"
+                class="input-xxlarge"
+                rows="10"/>
+        </fields>
+    </fieldset>
+
 </form>

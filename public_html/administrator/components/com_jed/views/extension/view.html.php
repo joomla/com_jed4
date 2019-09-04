@@ -12,7 +12,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
 
@@ -111,7 +113,16 @@ class JedViewExtension extends HtmlView
 		}
 
 		ToolbarHelper::custom('extension.preview', 'new-tab', '', 'COM_JED_EXTENSIONS_VIEW_FRONTEND', false);
-		ToolbarHelper::custom('extension.download', 'file', '', 'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false);
+		ToolbarHelper::custom('extension.download', 'arrow-down-4', '', 'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false);
+
+		// Get the toolbar object instance
+		$bar = Toolbar::getInstance('toolbar');
+
+		// Instantiate a new JLayoutFile instance and render the batch button
+		$layout = new FileLayout('joomla.toolbar.approve');
+
+		$dhtml = $layout->render(['title' => 'Approve']);
+		$bar->appendButton('Custom', $dhtml, 'approve');
 	}
 
 }

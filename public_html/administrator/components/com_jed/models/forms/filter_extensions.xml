@@ -36,17 +36,13 @@
 
         <field
                 name="approved"
-                type="list"
+                type="jed.approved"
                 label="COM_JED_APPROVED_LABEL"
                 class="advancedSelect"
 				default=""
                 onchange="this.form.submit();"
         >
             <option value="">COM_JED_EXTENSIONS_APPROVED_SELECT</option>
-            <option value="-1">COM_JED_EXTENSIONS_REJECTED</option>
-            <option value="0">COM_JED_EXTENSIONS_PENDING</option>
-            <option value="1">COM_JED_EXTENSIONS_APPROVED</option>
-            <option value="2">COM_JED_EXTENSIONS_AWAITING_RESPONSE</option>
         </field>
 
         <field

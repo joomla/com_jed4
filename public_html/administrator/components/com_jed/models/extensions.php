@@ -281,7 +281,7 @@ class JedModelExtensions extends ListModel
 			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $userId);
 		}
 
-		$type      = $this->getState('filter.type');
+		$type = $this->getState('filter.type');
 
 		if ($type)
 		{

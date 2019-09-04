@@ -121,6 +121,17 @@ JS
 
     </div>
 
+	<?php echo HTMLHelper::_(
+		'bootstrap.renderModal',
+		'approveModal',
+		[
+			'title'  => Text::_('COM_JED_EXTENSIONS_APPROVE'),
+			'footer' => $this->loadTemplate('batch_footer'),
+            'modalWidth' => '30vh'
+		],
+		$this->loadTemplate('batch_body')
+	); ?>
+
     <input type="hidden" name="option" value="com_jed"/>
     <input type="hidden" name="task" value=""/>
     <input name="jform[id]" id="jform_id" value="<?php echo !empty($this->item->id) ? $this->item->id : 0; ?>" class="readonly" readonly="" type="hidden">

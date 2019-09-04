@@ -101,6 +101,8 @@ CREATE TABLE IF NOT EXISTS `#__jed_extensions`
     `communityChoice`         tinyint(1)                DEFAULT NULL,
     `score`                   double(6, 2)              DEFAULT NULL,
     `approved`                int(2)                    DEFAULT NULL,
+    `approvedNotes`           varchar(255)              DEFAULT '',
+    `approvedReason`          varchar(3)                DEFAULT '',
     `approvedTime`            datetime                  DEFAULT NULL,
     `extensionFile`           varchar(150)              DEFAULT NULL,
     `downloadIntegrationType` varchar(100)              DEFAULT NULL,

@@ -10,8 +10,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Table\Extension;
 
 /**
  * JED Extension Model
@@ -72,18 +74,49 @@ class JedModelExtension extends AdminModel
 		$extensionId = $this->getState($this->getName() . '.id');
 
 		// Store the related categories
-		$this->storeRelatedCategories($extensionId, $data['related']);
+        $this->storeRelatedCategories($extensionId, $data['related'] ?? []);
 
 		// Store the PHP versions
-		$this->storeVersions($extensionId, $data['phpVersion'], 'php');
+		$this->storeVersions($extensionId, $data['phpVersion'] ?? [], 'php');
 
 		// Store the Joomla versions
-		$this->storeVersions($extensionId, $data['joomlaVersion'], 'joomla');
+        $this->storeVersions($extensionId, $data['joomlaVersion'] ?? [], 'joomla');
 
 		// Store the extension types
 		$this->storeExtensionTypes($extensionId, $data['extensionTypes'] ?? []);
 
 		return true;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 *
+	 * @throws  Exception
+	 */
+	public function saveApprove($data): void
+	{
+	    if (!$data['id'])
+        {
+            throw new \InvalidArgumentException(Text::_('COM_JED_EXTENSION_ID_MISSING'));
+        }
+
+	    /** @var TableExtension $table */
+	    $table = $this->getTable('Extension');
+
+	    // Load the data
+	    $table->load($data['id']);
+
+	    // Store the data
+        if (!$table->save($data))
+        {
+            throw new \RuntimeException($table->getError());
+        }
 	}
 
 	/**
@@ -106,6 +139,12 @@ class JedModelExtension extends AdminModel
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query)
 			->execute();
+
+		// If there are no categories, return
+		if (empty($relatedCategoryIds))
+		{
+			return;
+		}
 
 		$query->clear()
 			->insert($db->quoteName('#__jed_extensions_categories'))
@@ -148,6 +187,12 @@ class JedModelExtension extends AdminModel
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query)
 			->execute();
+
+		// If there are no versions to store, return
+		if (empty($versions))
+		{
+			return;
+		}
 
 		$query->clear()
 			->insert($db->quoteName('#__jed_extensions_' . $type . '_versions'))
@@ -292,6 +337,18 @@ class JedModelExtension extends AdminModel
 		{
 			return new CMSObject;
 		}
+
+		// If we have an empty object, we cannot fill it
+		if (!$item->id)
+        {
+            return $item;
+        }
+
+		// Rework the approved
+        $approved = [];
+		$approved['approvedReason'] = $item->get('approvedReason');
+		$approved['approvedNotes'] = $item->get('approvedNotes');
+		$item->set('approve', $approved);
 
 		$item->set('related', $this->getRelatedCategories($item->id));
 		$item->set('phpVersion', $this->getVersions($item->id, 'php'));

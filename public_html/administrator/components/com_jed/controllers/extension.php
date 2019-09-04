@@ -11,6 +11,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Router\Route;
 
 /**
  * Extension list controller class.
@@ -49,5 +50,37 @@ class JedControllerExtension extends FormController
 		readfile($fileDetails->file);
 
 		Factory::getApplication()->close();
+	}
+
+	/**
+	 * Set the approval for the extension.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+     *
+	 * @throws  Exception
+	 */
+	public function approve(): void
+	{
+		$data = $this->input->get('jform', [], 'array');
+		/** @var JedModelExtension $model */
+		$model = $this->getModel();
+		$form = $model->getForm();
+		$validData = $model->validate($form, $data, 'approve');
+
+		// Add the ID to be able to save the data
+        $validData['approve']['id'] = $data['id'];
+
+        // Save the data
+        $model->saveApprove($validData['approve']);
+
+		// Redirect back to the edit screen.
+		$this->setRedirect(
+			Route::_(
+				'index.php?option=com_jed&view=extension'
+				. $this->getRedirectToItemAppend($data['id']), false
+			)
+		);
 	}
 }
