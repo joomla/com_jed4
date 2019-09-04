@@ -118,11 +118,17 @@ class JedViewExtension extends HtmlView
 		// Get the toolbar object instance
 		$bar = Toolbar::getInstance('toolbar');
 
-		// Instantiate a new JLayoutFile instance and render the batch button
+		// Instantiate a new FileLayout instance and render the batch button
 		$layout = new FileLayout('joomla.toolbar.approve');
 
-		$dhtml = $layout->render(['title' => 'Approve']);
+		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE')]);
 		$bar->appendButton('Custom', $dhtml, 'approve');
+
+		// Instantiate a new FileLayout instance and render the batch button
+		$layout = new FileLayout('joomla.toolbar.publish');
+
+		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE')]);
+		$bar->appendButton('Custom', $dhtml, 'publish');
 	}
 
 }

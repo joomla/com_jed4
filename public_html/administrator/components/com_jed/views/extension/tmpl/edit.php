@@ -125,11 +125,22 @@ JS
 		'bootstrap.renderModal',
 		'approveModal',
 		[
-			'title'  => Text::_('COM_JED_EXTENSIONS_APPROVE'),
-			'footer' => $this->loadTemplate('batch_footer'),
+			'title'  => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'),
+			'footer' => $this->loadTemplate('approve_footer'),
             'modalWidth' => '30vh'
 		],
-		$this->loadTemplate('batch_body')
+		$this->loadTemplate('approve_body')
+	); ?>
+
+	<?php echo HTMLHelper::_(
+		'bootstrap.renderModal',
+		'publishModal',
+		[
+			'title'  => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'),
+			'footer' => $this->loadTemplate('publish_footer'),
+			'modalWidth' => '30vh'
+		],
+		$this->loadTemplate('publish_body')
 	); ?>
 
     <input type="hidden" name="option" value="com_jed"/>

@@ -39,7 +39,8 @@ class JedControllerExtension extends FormController
 
 		if (!file_exists($fileDetails->file))
 		{
-			throw new InvalidArgumentException(Text::sprintf('COM_JED_EXTENSIONS_DOWNLOAD_NOT_FOUND', $fileDetails->file));
+			throw new InvalidArgumentException(Text::sprintf('COM_JED_EXTENSIONS_DOWNLOAD_NOT_FOUND',
+				$fileDetails->file));
 		}
 
 		header('Content-type: application/zip');
@@ -53,27 +54,59 @@ class JedControllerExtension extends FormController
 	}
 
 	/**
-	 * Set the approval for the extension.
+	 * Set the approval state for the extension.
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
-     *
+	 *
 	 * @throws  Exception
 	 */
 	public function approve(): void
 	{
 		$data = $this->input->get('jform', [], 'array');
 		/** @var JedModelExtension $model */
-		$model = $this->getModel();
-		$form = $model->getForm();
+		$model     = $this->getModel();
+		$form      = $model->getForm();
 		$validData = $model->validate($form, $data, 'approve');
 
 		// Add the ID to be able to save the data
-        $validData['approve']['id'] = $data['id'];
+		$validData['approve']['id'] = $data['id'];
 
-        // Save the data
-        $model->saveApprove($validData['approve']);
+		// Save the data
+		$model->saveApprove($validData['approve']);
+
+		// Redirect back to the edit screen.
+		$this->setRedirect(
+			Route::_(
+				'index.php?option=com_jed&view=extension'
+				. $this->getRedirectToItemAppend($data['id']), false
+			)
+		);
+	}
+
+	/**
+	 * Set the publish state for the extension.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 *
+	 * @throws  Exception
+	 */
+	public function publish(): void
+	{
+		$data = $this->input->get('jform', [], 'array');
+		/** @var JedModelExtension $model */
+		$model     = $this->getModel();
+		$form      = $model->getForm();
+		$validData = $model->validate($form, $data, 'publish');
+
+		// Add the ID to be able to save the data
+		$validData['publish']['id'] = $data['id'];
+
+		// Save the data
+		$model->savePublish($validData['publish']);
 
 		// Redirect back to the edit screen.
 		$this->setRedirect(

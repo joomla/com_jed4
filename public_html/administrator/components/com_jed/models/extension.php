@@ -13,7 +13,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Table\Extension;
 
 /**
  * JED Extension Model
@@ -74,49 +73,18 @@ class JedModelExtension extends AdminModel
 		$extensionId = $this->getState($this->getName() . '.id');
 
 		// Store the related categories
-        $this->storeRelatedCategories($extensionId, $data['related'] ?? []);
+		$this->storeRelatedCategories($extensionId, $data['related'] ?? []);
 
 		// Store the PHP versions
 		$this->storeVersions($extensionId, $data['phpVersion'] ?? [], 'php');
 
 		// Store the Joomla versions
-        $this->storeVersions($extensionId, $data['joomlaVersion'] ?? [], 'joomla');
+		$this->storeVersions($extensionId, $data['joomlaVersion'] ?? [], 'joomla');
 
 		// Store the extension types
 		$this->storeExtensionTypes($extensionId, $data['extensionTypes'] ?? []);
 
 		return true;
-	}
-
-	/**
-	 * Method to save the form data.
-	 *
-	 * @param   array  $data  The form data.
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 *
-	 * @throws  Exception
-	 */
-	public function saveApprove($data): void
-	{
-	    if (!$data['id'])
-        {
-            throw new \InvalidArgumentException(Text::_('COM_JED_EXTENSION_ID_MISSING'));
-        }
-
-	    /** @var TableExtension $table */
-	    $table = $this->getTable('Extension');
-
-	    // Load the data
-	    $table->load($data['id']);
-
-	    // Store the data
-        if (!$table->save($data))
-        {
-            throw new \RuntimeException($table->getError());
-        }
 	}
 
 	/**
@@ -262,6 +230,102 @@ class JedModelExtension extends AdminModel
 	}
 
 	/**
+	 * Method to save the approved state.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 *
+	 * @throws  Exception
+	 */
+	public function saveApprove($data): void
+	{
+		if (!$data['id'])
+		{
+			throw new \InvalidArgumentException(Text::_('COM_JED_EXTENSION_ID_MISSING'));
+		}
+
+		/** @var TableExtension $table */
+		$table = $this->getTable('Extension');
+
+		// Load the data
+		$table->load($data['id']);
+
+		// Store the data
+		if (!$table->save($data))
+		{
+			throw new \RuntimeException($table->getError());
+		}
+	}
+
+	/**
+	 * Method to save the published state.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 *
+	 * @throws  Exception
+	 */
+	public function savePublish($data): void
+	{
+		if (!$data['id'])
+		{
+			throw new \InvalidArgumentException(Text::_('COM_JED_EXTENSION_ID_MISSING'));
+		}
+
+		$db          = $this->getDbo();
+		$extensionId = (int) $data['id'];
+
+		/** @var TableExtension $table */
+		$table = $this->getTable('Extension');
+
+		// Load the data
+		$table->load($extensionId);
+
+		// Store the data
+		if (!$table->save($data))
+		{
+			throw new \RuntimeException($table->getError());
+		}
+
+		// Delete any existing relations
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__jed_extensions_published_reasons'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query)
+			->execute();
+
+		if (empty($data['publishedReason']))
+		{
+			return;
+		}
+
+		$query->clear()
+			->insert($db->quoteName('#__jed_extensions_published_reasons'))
+			->columns(
+				$db->quoteName(
+					[
+						'extension_id',
+						'reason'
+					]
+				)
+			);
+
+		array_walk($data['publishedReason'],
+			static function ($reason) use (&$query, $db, $extensionId) {
+				$query->values($extensionId . ',' . $db->quote($reason));
+			});
+
+		$db->setQuery($query)
+			->execute();
+	}
+
+	/**
 	 * Get the filename of the given extension ID.
 	 *
 	 * @param   int  $extensionId  The extension ID to get the filename for
@@ -340,23 +404,50 @@ class JedModelExtension extends AdminModel
 
 		// If we have an empty object, we cannot fill it
 		if (!$item->id)
-        {
-            return $item;
-        }
+		{
+			return $item;
+		}
 
-		// Rework the approved
-        $approved = [];
+		// Rework the approved state
+		$approved                   = [];
 		$approved['approvedReason'] = $item->get('approvedReason');
-		$approved['approvedNotes'] = $item->get('approvedNotes');
+		$approved['approvedNotes']  = $item->get('approvedNotes');
 		$item->set('approve', $approved);
+
+		// Rework the published state
+		$published                   = [];
+		$published['publishedReason'] = $this->getPublishedReasons($item->id);
+		$published['publishedNotes']  = $item->get('publishedNotes');
+		$item->set('publish', $published);
 
 		$item->set('related', $this->getRelatedCategories($item->id));
 		$item->set('phpVersion', $this->getVersions($item->id, 'php'));
 		$item->set('joomlaVersion', $this->getVersions($item->id, 'joomla'));
 		$item->set('extensionTypes', $this->getExtensionTypes($item->id));
-		$item->set('body', nl2br($item->get( 'body')));
+		$item->set('body', nl2br($item->get('body')));
 
 		return $item;
+	}
+
+	/**
+	 * Get the published reasons.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the reasons for
+	 *
+	 * @return  array  List of published reasons.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getPublishedReasons(int $extensionId): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('reason'))
+			->from($db->quoteName('#__jed_extensions_published_reasons'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadColumn();
 	}
 
 	/**
@@ -370,7 +461,6 @@ class JedModelExtension extends AdminModel
 	 */
 	public function getRelatedCategories(int $extensionId): array
 	{
-		// Get the related categories
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('category_id'))

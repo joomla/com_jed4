@@ -395,4 +395,21 @@
         </fields>
     </fieldset>
 
+    <fieldset name="publish">
+        <fields name="publish">
+            <field
+                    name="publishedReason"
+                    type="jed.published"
+                    label="COM_JED_EXTENSIONS_PUBLISH_REASON"
+                    class="advancedSelect input-xxlarge"
+                    multiple="true"/>
+
+            <field
+                    name="publishedNotes"
+                    type="textarea"
+                    label="COM_JED_EXTENSIONS_PUBLISH_NOTES"
+                    class="input-xxlarge"
+                    rows="10"/>
+        </fields>
+    </fieldset>
 </form>
