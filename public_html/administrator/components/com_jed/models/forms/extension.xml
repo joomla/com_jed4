@@ -276,6 +276,7 @@
                 name="relatedExtensions"
                 type="jed.relatedextensions"
                 label="COM_JED_EXTENSIONS_RELATED_EXTENSIONS"
+                class="advancedSelect"
                 multiple="true"
         >
             <option value="">JOPTION_DO_NOT_USE</option>
@@ -284,11 +285,10 @@
         <field
                 name="downloadIntegrationType"
                 type="list"
-                label="JSTATUS"
-                description="JFIELD_PUBLISHED_DESC"
-                class="inputbox"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE"
+                class="advancedSelect"
                 size="1"
-                default="0"
+                default="1"
         >
             <option value="0">None</option>
             <option value="1">Free Direct Download Link</option>
@@ -299,9 +299,9 @@
         <field
                 name="downloadIntegrationUrl"
                 type="text"
-                showon="downloadType:0"
-                label="COM_JED_EXTENSIONS_VIDEO_LINK"
-                description="COM_JED_EXTENSIONS_VIDEO_LINK"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_URL"
+                class="input-xxlarge"
+                showon="downloadIntegrationType!:0"
         />
 
     </fieldset>
