@@ -289,11 +289,12 @@
                 class="advancedSelect"
                 size="1"
                 default="1"
+                multiple="false"
         >
-            <option value="0">None</option>
-            <option value="1">Free Direct Download Link</option>
-            <option value="2">Free but Registration Required</option>
-            <option value="3">Paid Purchase Required</option>
+            <option value="0">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_0</option>
+            <option value="1">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_1</option>
+            <option value="2">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_2</option>
+            <option value="3">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_3</option>
         </field>
 
         <field
@@ -379,19 +380,19 @@
 
     <fieldset name="approve">
         <fields name="approve">
-        <field
-                name="approvedReason"
-                type="jed.approved"
-                label="COM_JED_EXTENSIONS_APPROVE_REASON"
-                class="advancedSelect input-xxlarge"
-                multiple="false"/>
+            <field
+                    name="approvedReason"
+                    type="jed.approved"
+                    label="COM_JED_EXTENSIONS_APPROVE_REASON"
+                    class="advancedSelect input-xxlarge"
+                    multiple="false"/>
 
-        <field
-                name="approvedNotes"
-                type="textarea"
-                label="COM_JED_EXTENSIONS_APPROVE_NOTES"
-                class="input-xxlarge"
-                rows="10"/>
+            <field
+                    name="approvedNotes"
+                    type="textarea"
+                    label="COM_JED_EXTENSIONS_APPROVE_NOTES"
+                    class="input-xxlarge"
+                    rows="10"/>
         </fields>
     </fieldset>
 
