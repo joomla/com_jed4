@@ -37,7 +37,6 @@
         <field
                 name="approved"
                 type="jed.approved"
-                label="COM_JED_APPROVED_LABEL"
                 class="advancedSelect"
 				default=""
                 onchange="this.form.submit();"
@@ -47,7 +46,8 @@
 
         <field
             name="developer"
-            type="text" />
+            type="text"
+            hint="COM_JED_EXTENSIONS_DEVELOPER_LABEL"/>
 
         <field
             name="user_id"

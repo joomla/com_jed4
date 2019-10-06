@@ -84,6 +84,9 @@ class JedModelExtension extends AdminModel
 		// Store the extension types
 		$this->storeExtensionTypes($extensionId, $data['extensionTypes'] ?? []);
 
+		// Store the related extensions
+		$this->storeRelatedExtensions($extensionId, $data['relatedExtensions'] ?? []);
+
 		return true;
 	}
 
@@ -223,6 +226,53 @@ class JedModelExtension extends AdminModel
 		array_walk($types,
 			static function ($type) use (&$query, $db, $extensionId) {
 				$query->values($extensionId . ',' . $db->quote($type));
+			});
+
+		$db->setQuery($query)
+			->execute();
+	}
+
+	/**
+	 * Store related extensions for an extension.
+	 *
+	 * @param   int    $extensionId          The extension ID to save the relations for
+	 * @param   array  $relatedExtensionIds  The related extension IDs to store
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function storeRelatedExtensions(int $extensionId, array $relatedExtensionIds): void
+	{
+		$db = $this->getDbo();
+
+		// Delete any existing relations
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__jed_extensions_related'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query)
+			->execute();
+
+		// If there are no categories, return
+		if (empty($relatedExtensionIds))
+		{
+			return;
+		}
+
+		$query->clear()
+			->insert($db->quoteName('#__jed_extensions_related'))
+			->columns(
+				$db->quoteName(
+					[
+						'extension_id',
+						'related_id'
+					]
+				)
+			);
+
+		array_walk($relatedExtensionIds,
+			static function ($relatedExtensionId) use (&$query, $extensionId) {
+				$query->values($extensionId . ',' . $relatedExtensionId);
 			});
 
 		$db->setQuery($query)
