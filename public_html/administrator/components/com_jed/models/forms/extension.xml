@@ -273,16 +273,6 @@
     <fieldset name="pricing">
 
         <field
-                name="relatedExtensions"
-                type="jed.relatedextensions"
-                label="COM_JED_EXTENSIONS_RELATED_EXTENSIONS"
-                class="advancedSelect"
-                multiple="true"
-        >
-            <option value="">JOPTION_DO_NOT_USE</option>
-        </field>
-
-        <field
                 name="downloadIntegrationType"
                 type="list"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE"
