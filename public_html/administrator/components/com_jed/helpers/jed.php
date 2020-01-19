@@ -42,5 +42,8 @@ class JedHelper
 		JHtmlSidebar::addEntry(
 			Text::_('COM_JED_TITLE_TICKETS'), 'index.php?option=com_jed&view=tickets', $vName === 'tickets'
 		);
+		JHtmlSidebar::addEntry(
+			Text::_('COM_JED_TITLE_EMAILS'), 'index.php?option=com_jed&view=emails', $vName === 'emails'
+		);
 	}
 }
