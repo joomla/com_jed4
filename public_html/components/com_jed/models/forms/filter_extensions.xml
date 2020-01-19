@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="filter">
+        <fields name="filter">
+            <field
+                    name="search"
+                    type="text"
+                    label="JSEARCH_FILTER"
+                    description="JSEARCH_FILTER"
+                    hint="JSEARCH_FILTER"
+            />
+
+            <field
+                    name="category"
+                    type="category"
+                    label="COM_JED_FORM_FILTER_CATEGORY_LABEL"
+                    multiple="true"
+                    extension="com_jed"
+            />
+
+            <field
+                    name="includes"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_INCLUDES_LABEL"
+                    multiple="true"
+            >
+                <option value="">COM_JED_FORM_FILTER_INCLUDES_LABEL</option>
+                <option value="com">COM_JED_FORM_FILTER_INCLUDES_COMPONENT</option>
+                <option value="mod">COM_JED_FORM_FILTER_INCLUDES_MODULE</option>
+                <option value="plugin">COM_JED_FORM_FILTER_INCLUDES_PLUGIN</option>
+                <option value="ext">COM_JED_FORM_FILTER_INCLUDES_EXTENSION_SPECIFIC</option>
+            </field>
+
+            <field
+                    name="compatibility"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_COMPATIBILITY_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_COMPATIBILITY_LABEL</option>
+                <option value="30">COM_JED_FORM_FILTER_COMPATIBILITY_30</option>
+                <option value="40">COM_JED_FORM_FILTER_COMPATIBILITY_40</option>
+            </field>
+
+            <field
+                    name="type"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_TYPE_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_TYPE_LABEL</option>
+                <option value="free">COM_JED_FORM_FILTER_TYPE_FREE</option>
+                <option value="paid">COM_JED_FORM_FILTER_TYPE_PAID</option>
+                <option value="cloud">COM_JED_FORM_FILTER_TYPE_CLOUD</option>
+            </field>
+
+            <field
+                    name="hasDemo"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_HASDEMO_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_HASDEMO_LABEL</option>
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
+
+            <field
+                    name="order"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_ORDER_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_ORDER_LABEL</option>
+                <option value="core_created_time">COM_JED_FORM_FILTER_ORDER_CREATED_TIME</option>
+                <option value="core_modified_time">COM_JED_FORM_FILTER_ORDER_MODIFIED_TIME</option>
+                <option value="core_title">COM_JED_FORM_FILTER_ORDER_TITLE</option>
+                <option value="score">COM_JED_FORM_FILTER_ORDER_SCORE</option>
+                <option value="functionality">COM_JED_FORM_FILTER_ORDER_FUNCTIONALITY</option>
+                <option value="ease_of_use">COM_JED_FORM_FILTER_ORDER_EASE_OF_USE</option>
+                <option value="documentation">COM_JED_FORM_FILTER_ORDER_DOCUMENTATION</option>
+                <option value="support">COM_JED_FORM_FILTER_ORDER_SUPPORT</option>
+                <option value="num_reviews">COM_JED_FORM_FILTER_ORDER_NUM_REVIEWS</option>
+            </field>
+
+            <field
+                    name="newUpdated"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_NEWUPDATED_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_NEWUPDATED_LABEL</option>
+                <option value="new">COM_JED_FORM_FILTER_NEWUPDATED_NEW</option>
+                <option value="updated">COM_JED_FORM_FILTER_NEWUPDATED_UPDATED</option>
+            </field>
+
+            <field
+                    name="score"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_SCORE_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_SCORE_LABEL</option>
+                <option value="74">COM_JED_FORM_FILTER_SCORE_75</option>
+                <option value="49">COM_JED_FORM_FILTER_SCORE_50</option>
+                <option value="24">COM_JED_FORM_FILTER_SCORE_25</option>
+            </field>
+
+            <field
+                    name="favourites"
+                    type="list"
+                    label="COM_JED_FORM_FILTER_FAVOURITES_LABEL"
+                    multiple="false"
+                    size="1"
+            >
+                <option value="">COM_JED_FORM_FILTER_FAVOURITES_LABEL</option>
+                <option value="">COM_JED_FORM_FILTER_FAVOURITES_ALL</option>
+                <option value="1">COM_JED_FORM_FILTER_FAVOURITES_FAVOURITE</option>
+            </field>
+        </fields>
+    </fieldset>
+</form>

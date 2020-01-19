@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="extension">
+
+		<field
+			name="name"
+			type="text"
+			label="JFIELD_TITLE_DESC"
+			description="JFIELD_TITLE_DESC"
+			class="input-xxlarge"
+		/>
+
+		<field
+			name="category"
+			type="category"
+			label="JCATEGORY"
+			description="MOD_LATEST_FIELD_CATEGORY_DESC"
+			id="catid"
+			extension="com_jed"
+			default=""
+			filter="integer"
+			multiple="true"
+		>
+			<option value="">JOPTION_ANY_CATEGORY</option>
+		</field>
+
+		<filter
+			name="checked_out"
+			type="datetime"
+			label="COM_JED_FIELD_CHECKED_OUT_LABEL"
+		/>
+
+		<filter
+			name="created"
+			type="datetime"
+			label="COM_JED_FIELD_CREATED_TIME_LABEL"
+		/>
+
+		<field
+			name="published"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="chzn-color-state"
+			id="published"
+			size="1"
+			default="1"
+			filter="integer"
+		>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="-2">JTRASHED</option>
+		</field>
+
+		<field
+			name="approved"
+			type="list"
+			label="COM_JED_APPROVED_LABEL"
+			description="COM_JED_APPROVED_LABEL"
+			class="chzn-color-state"
+			id="published"
+			size="1"
+			default="1"
+			filter="integer"
+		>
+			<option value="1">COM_JED_EXTENSIONS_APPROVED</option>
+			<option value="0">COM_JED_EXTENSIONS_REJECTED</option>
+		</field>
+
+		<field
+			name="developer"
+			type="text"
+			label="COM_JED_EXTENSIONS_DEVELOPER"
+			description="COM_JED_EXTENSIONS_DEVELOPER"
+		/>
+
+		<field
+			name="type"
+			type="list"
+			label="COM_JED_EXTENSIONS_TYPE"
+			description="COM_JED_EXTENSIONS_TYPE"
+			class="chzn-color-state"
+			id="published"
+			size="1"
+			default="1"
+			filter="integer"
+		>
+			<option value="1">Free</option>
+			<option value="2">Paid</option>
+			<option value="3">Cloud</option>
+		</field>
+
+		<field
+			name="reviewCount"
+			type="text"
+			label="COM_JED_EXTENSIONS_REVIEWCOUNT"
+			description="COM_JED_EXTENSIONS_REVIEWCOUNT"
+		/>
+
+	</fieldset>
+
+	<fieldset name="publication">
+
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="COM_JED_EXTENSIONS_ID"
+			readonly="true"
+			description="JGLOBAL_FIELD_ID_DESC"
+			primary="true"
+		/>
+
+		<field name="created_by"
+			type="createdby"
+			default=""
+			class="chzn-color-state"
+			label="JGLOBAL_FIELD_CREATED_BY_LABEL"
+			description="JGLOBAL_FIELD_CREATED_BY_LABEL"
+		/>
+
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="inputbox chzn-color-state"
+			size="1"
+			default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+	</fieldset>
+</form>

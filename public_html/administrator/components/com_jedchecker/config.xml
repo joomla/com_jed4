@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset 
+		name="jed"
+		label="COM_JEDCHECKER_JED_INTEGRATION">
+		
+		<field name="jedchecker_jed_script"
+			type="text"
+			default=""
+			label="COM_JEDCHECKER_FIELD_JED_SCRIPT_LABEL"
+			description="COM_JEDCHECKER_FIELD_JED_SCRIPT_DESC"
+			size="100"
+			class="input-xxlarge"/>
+	</fieldset>
+	
+</config>

@@ -1,0 +1,34 @@
+{
+  "name": "JED",
+  "version": "4.0.0",
+  "license": "GPL-3.0",
+  "description": "Joomla Extenions Directory",
+  "author": "Joomla!",
+  "config": {
+    "src": "public_html/media/com_jed/assets",
+    "dist": "public_html/media/com_jed",
+    "port": "5337",
+    "proxy": "jed.test"
+  },
+  "browserslist": [
+    "> 1%",
+    "IE 8"
+  ],
+  "scripts": {
+    "reinstall": "rimraf ./node_modules && npm install",
+    "prestart": "node ./build/tasks/build.js",
+    "start": "node ./build/tasks/browser-sync.js"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.5.1",
+    "browser-sync": "^2.26.3",
+    "lsof": "^0.1.0",
+    "mkdirp": "^0.5.1",
+    "node-sass": "^4.11.0",
+    "postcss-clean": "^1.1.0",
+    "postcss-cli": "^6.1.2",
+    "ps-node": "^0.1.6",
+    "rimraf": "^2.6.3"
+  },
+  "dependencies": {}
+}

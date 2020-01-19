@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="jedchecker"
+		label="COM_JED_JEDCHECKER">
+
+		<field
+			name="jedchecker_livesite"
+			type="text"
+			default="http://localhost/jed/source"
+			label="COM_JED_FIELD_JEDCHECKER_LIVESITE_LABEL"
+			description="COM_JED_FIELD_JEDCHECKER_LIVESITE_DESC"
+			size="100"
+			class="input-xxlarge"
+		/>
+
+		<field
+			name="jedchecker_rules"
+			type="text"
+			default=""
+			label="COM_JED_FIELD_JEDCHECKER_RULES_LABEL"
+			description="COM_JED_FIELD_JEDCHECKER_RULES_DESC"
+			size="100"
+			class="input-xxlarge"
+		/>
+
+	</fieldset>
+
+	<fieldset
+		name="jed_joomla_versions"
+		label="COM_JED_JOOMLA_VERSIONS">
+
+		<field
+			name="joomla_versions"
+			type="subform"
+			label="COM_JED_JOOMLA_VERSIONS_LABEL"
+			description="COM_JED_JOOMLA_VERSIONS_DESC"
+			multiple="true"
+			layout="joomla.form.field.subform.repeatable-table"
+			formsource="administrator/components/com_jed/models/forms/config_codes.xml"
+		/>
+	</fieldset>
+
+	<fieldset
+		name="jed_error_codes"
+		label="COM_JED_ERROR_CODES">
+
+		<field
+			name="unpublished_codes"
+			type="subform"
+			label="COM_JED_UNPUBLISHED_CODES_LABEL"
+			description="COM_JED_UNPUBLISHED_CODES_DESC"
+			multiple="true"
+			layout="joomla.form.field.subform.repeatable-table"
+			formsource="administrator/components/com_jed/models/forms/config_codes.xml"
+		/>
+
+		<field
+			name="awaiting_response_codes"
+			type="subform"
+			label="COM_JED_AWAITING_RESPONSE_CODES_LABEL"
+			description="COM_JED_AWAITING_RESPONSE_CODES_DESC"
+			multiple="true"
+			layout="joomla.form.field.subform.repeatable-table"
+			formsource="administrator/components/com_jed/models/forms/config_codes.xml"
+		/>
+	</fieldset>
+</config>

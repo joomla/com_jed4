@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+
+		<field
+			name="search"
+			type="text"
+			hint=""
+			label=""
+			class="js-stools-search-string"
+		/>
+
+		<field
+			name="state"
+			type="status"
+			label="COM_EXAMPLE_FILTER_STATE"
+			description="COM_EXAMPLE_FILTER_STATE_DESC"
+			onchange="this.form.submit();"
+		>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
+
+		<field
+			name="category"
+			type="category"
+			label="JCATEGORY"
+			description="MOD_LATEST_FIELD_CATEGORY_DESC"
+			id="catid"
+			extension="com_jed"
+			default=""
+			filter="integer"
+			multiple="true"
+		>
+			<option value="">JOPTION_ANY_CATEGORY</option>
+		</field>
+
+		<field
+			name="approved"
+			type="list"
+			label="COM_JED_APPROVED_LABEL"
+			description="COM_JED_APPROVED_LABEL"
+			class=""
+			filter="integer"
+		>
+			<option value="1">COM_JED_EXTENSIONS_APPROVED</option>
+			<option value="0">COM_JED_EXTENSIONS_REJECTED</option>
+		</field>
+
+		<field
+			name="type"
+			type="list"
+			label="COM_JED_EXTENSIONS_TYPE"
+			description="COM_JED_EXTENSIONS_TYPE"
+			class=""
+			id="published"
+			size="1"
+			default="1"
+			filter="integer"
+		>
+			<option value="1">Free</option>
+			<option value="2">Paid</option>
+			<option value="3">Cloud</option>
+		</field>
+
+	</fields>
+
+	<fields name="list">
+
+		<field
+			name="fullordering"
+			type="list"
+			label="COM_CONTENT_LIST_FULL_ORDERING"
+			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default="t.id DESC"
+		>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="t.`id` ASC">ID Ascending</option>
+			<option value="t.`id` DESC">ID Descending</option>
+			<option value="t.`state` ASC">State Ascending</option>
+			<option value="t.`state` DESC">State Descending</option>
+			<option value="t.`name` ASC">Name Ascending</option>
+			<option value="t.`name` DESC">Name Descending</option>
+
+		</field>
+
+		<field name="limit"
+			type="limitbox"
+			class="input-mini"
+			default="25"
+			onchange="this.form.submit();"
+		/>
+
+	</fields>
+
+</form>

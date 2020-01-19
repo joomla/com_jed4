@@ -1,0 +1,75 @@
+# Joomla System Files (i.e. cache, etc.) #
+/public_html/administrator/cache/*
+/public_html/administrator/logs/*
+/public_html/cache/*
+#/public_html/images/*
+/public_html/tmp/*
+/public_html/configuration.php
+/public_html/.htaccess
+/public_html/LICENSE.txt
+/public_html/README.txt
+/public_html/htaccess.txt
+/public_html/robots.txt.dist
+/public_html/web.config.txt
+
+# Make sure folders are being created on git clone
+!/public_html/administrator/cache/index.html
+!/public_html/administrator/logs/index.html
+!/public_html/cache/index.html
+!/public_html/images/index.html
+!/public_html/tmp/index.html
+
+# Backup Files
+/public_html/administrator/components/com_akeeba/backup/
+
+# IDE & System Related Files #
+.buildpath
+.project
+.settings
+.DS_Store
+.idea
+.htaccess
+
+# OSX #
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows #
+Thumbs.db
+Desktop.ini
+
+# Watchful.li #
+/public_html/administrator/components/com_watchfulli/restauration.php
+/public_html/administrator/components/com_watchfulli/restoration.php
+
+# MyJoomla BFNetwork #
+/public_html/plugins/system/bfnetwork/bfnetwork/FIRSTRUN
+/public_html/plugins/system/bfnetwork/bfnetwork/MD5SUMS
+/public_html/plugins/system/bfnetwork/bfnetwork/VERSION
+/public_html/plugins/system/bfnetwork/bfnetwork/tmp/*
+!/public_html/plugins/system/bfnetwork/bfnetwork/tmp/index.html
+/public_html/.myjoomla.configuration.php.md5
+
+# Admintools security backend #
+/public_html/administrator/.htaccess
+/public_html/administrator/.htpasswd
+
+# Development security
+/public_html/.htpasswd
+
+# Regular Labs Cache Cleaner log
+/public_html/plugins/system/cachecleaner/*.log
+
+# Tools #
+/node_modules
+yarn-error.log
+/hooks/CodeSniffer.conf
+
+# CI/CD test results
+/Tests/Results
+/Tests/FileList.txt
+.phpunit.result.cache
+
+# Security headers
+/public_html/.user.ini
