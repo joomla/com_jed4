@@ -15,8 +15,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
+/** @var JedViewExtension $this */
+
 HTMLHelper::_('formbehavior.chosen');
 HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.tabstate');
 
 $extensionUrl = Uri::root() . 'extension/' . $this->item->alias;
 $downloadUrl  = 'index.php?option=com_jed&task=extension.download&id=' . $this->item->id;
@@ -50,9 +53,14 @@ JS
     <div class="form-horizontal">
 	    <?php echo $this->form->renderField('created_by'); ?>
 	    <?php echo $this->form->renderField('jedChecker'); ?>
-		<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+		<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'general']); ?>
 
-		<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'general', Text::_('COM_JED_EXTENSIONS_INFO_TAB', true)); ?>
+		<?php echo HTMLHelper::_(
+			'bootstrap.addTab',
+			'myTab',
+			'general',
+			Text::_('COM_JED_EXTENSIONS_INFO_TAB')
+		); ?>
         <div class="row-fluid form-horizontal-desktop">
             <div class="span9">
                 <div class="form-horizontal">
@@ -67,7 +75,12 @@ JS
         </div>
 		<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-	    <?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'info', Text::_('COM_JED_EXTENSIONS_CONTENT_TAB', true)); ?>
+	    <?php echo HTMLHelper::_(
+	    	'bootstrap.addTab',
+		    'myTab',
+		    'info',
+		    Text::_('COM_JED_EXTENSIONS_CONTENT_TAB')
+	    ); ?>
         <div class="row-fluid">
             <div class="span12">
                 <div class="form-horizontal">
@@ -77,7 +90,12 @@ JS
         </div>
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-	    <?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'pricing', Text::_('COM_JED_EXTENSIONS_PRICING_TAB', true)); ?>
+	    <?php echo HTMLHelper::_(
+	    	'bootstrap.addTab',
+		    'myTab',
+		    'pricing',
+		    Text::_('COM_JED_EXTENSIONS_PRICING_TAB')
+	    ); ?>
         <div class="row-fluid">
             <div class="span12">
                 <div class="form-horizontal">
@@ -87,17 +105,34 @@ JS
         </div>
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-	    <?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'reviews', Text::_('COM_JED_EXTENSIONS_REVIEWS_TAB', true)); ?>
+	    <?php echo HTMLHelper::_(
+	    	'bootstrap.addTab',
+		    'myTab',
+		    'reviews',
+		    Text::_('COM_JED_EXTENSIONS_REVIEWS_TAB')
+	    ); ?>
         <div class="row-fluid">
             <div class="span12">
                 <div class="form-horizontal">
 				    <?php echo $this->form->renderFieldset('reviews'); ?>
                 </div>
+                <?php echo HTMLHelper::_(
+                        'link',
+                        'index.php?option=com_jed&view=reviews&filter[extension]=' . $this->item->id,
+                        Text::_('COM_JED_EXTENSIONS_REVIEW_LINK') . ' <span class="icon-new-tab"></span>',
+                        'target="_blank"'
+                        );
+                ?>
             </div>
         </div>
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-	    <?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'communication', Text::_('COM_JED_EXTENSIONS_COMMUNICATION_TAB', true)); ?>
+	    <?php echo HTMLHelper::_(
+	    	'bootstrap.addTab',
+		    'myTab',
+		    'communication',
+		    Text::_('COM_JED_EXTENSIONS_COMMUNICATION_TAB')
+	    ); ?>
         <div class="row-fluid">
             <div class="span12">
                 <div class="form-horizontal">
@@ -107,7 +142,12 @@ JS
         </div>
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
-	    <?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'history', Text::_('COM_JED_EXTENSIONS_HISTORY_TAB', true)); ?>
+	    <?php echo HTMLHelper::_(
+	    	'bootstrap.addTab',
+		    'myTab',
+		    'history',
+		    Text::_('COM_JED_EXTENSIONS_HISTORY_TAB')
+	    ); ?>
         <div class="row-fluid">
             <div class="span12">
                 <div class="form-horizontal">
@@ -145,7 +185,6 @@ JS
 
     <input type="hidden" name="option" value="com_jed"/>
     <input type="hidden" name="task" value=""/>
-    <input name="jform[id]" id="jform_id" value="<?php echo !empty($this->item->id) ? $this->item->id : 0; ?>" class="readonly" readonly="" type="hidden">
     <input type="hidden" name="boxchecked" value="0"/>
 	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

@@ -103,15 +103,14 @@ class JedViewExtension extends HtmlView
 			ToolbarHelper::save2new('extension.save2new');
 		}
 
-		if (empty($this->item->id))
+		$title = 'JTOOLBAR_CANCEL';
+
+		if ($this->item->id)
 		{
-			ToolBarHelper::cancel('extension.cancel');
-		}
-		else
-		{
-			ToolBarHelper::cancel('extension.cancel', 'JTOOLBAR_CLOSE');
+			$title = 'JTOOLBAR_CLOSE';
 		}
 
+		ToolBarHelper::cancel('extension.cancel', $title);
 		ToolbarHelper::custom('extension.preview', 'new-tab', '', 'COM_JED_EXTENSIONS_VIEW_FRONTEND', false);
 		ToolbarHelper::custom('extension.download', 'arrow-down-4', '', 'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false);
 
