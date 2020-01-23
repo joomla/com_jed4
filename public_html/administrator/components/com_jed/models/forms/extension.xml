@@ -313,15 +313,25 @@
     <fieldset name="communication">
 
         <field
-                name="template"
+                name="messageType"
                 type="list"
-                label="COM_JED_EXTENSIONS_MESSAGE_TEMPLATE"
-                class="inputbox chzn-color-state"
-                size="1"
-                default="0"
+                label="COM_JED_EXTENSIONS_MESSAGE_TYPE"
+                class="advancedSelect"
+                default="email"
         >
-            <option value="0">option 1</option>
-            <option value="1">option 2</option>
+            <option value="email">Email</option>
+            <option value="note">Note</option>
+        </field>
+
+        <field
+                name="template"
+                type="jed.emails"
+                label="COM_JED_EXTENSIONS_MESSAGE_TEMPLATE"
+                class="advancedSelect"
+                size="1"
+                default=""
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_TEMPLATE</option>
         </field>
 
         <field
@@ -330,26 +340,6 @@
                 label="COM_JED_EXTENSIONS_MESSAGE"
                 buttons="true"
                 size="30"
-        />
-
-        <field
-                name="messageType"
-                type="radio"
-                label="COM_JED_EXTENSIONS_MESSAGE_TYPE"
-                class="btn-group btn-group-yesno"
-                default="0"
-                filter="integer"
-        >
-            <option value="email">Email</option>
-            <option value="note">Note</option>
-        </field>
-
-        <field
-                name="submitMessage"
-                type="button"
-                default="0"
-                class="btn btn-primary"
-                label="COM_JED_EXTENSIONS_SUBMIT_MESSAGE"
         />
 
     </fieldset>
