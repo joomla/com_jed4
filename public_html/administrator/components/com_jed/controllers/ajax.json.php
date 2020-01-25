@@ -35,4 +35,34 @@ class JedControllerAjax extends BaseController
 
 		echo json_encode(['suggestions' => $data]);
 	}
+
+    /**
+     * Load the message content.
+     *
+     * @return  void
+     *
+     * @since   4.0.0
+     */
+    public function getMessage(): void
+    {
+        $messageId = $this->input->getInt('messageId');
+        /** @var JedModelEmail $model */
+        $model = $this->getModel('Email', 'JedModel');
+        $message = $model->getItem($messageId);
+
+        echo (new JsonResponse($message->body));
+    }
+
+    /**
+     * Send the message via email.
+     *
+     * @return  void
+     *
+     * @since   4.0.0
+     */
+    public function sendMessage(): void
+    {
+        $body = $this->input->getHtml('body');
+        echo (new JsonResponse($body));
+    }
 }

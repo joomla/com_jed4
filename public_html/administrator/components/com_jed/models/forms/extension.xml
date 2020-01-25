@@ -330,6 +330,7 @@
                 class="advancedSelect"
                 size="1"
                 default=""
+                onchange="jed.insertMessage(this.value);"
         >
             <option value="">COM_JED_EXTENSIONS_SELECT_TEMPLATE</option>
         </field>
