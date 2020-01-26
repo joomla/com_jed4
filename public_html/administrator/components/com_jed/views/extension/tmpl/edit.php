@@ -22,7 +22,9 @@ HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.tabstate');
 HTMLHelper::_('script', 'com_jed/jed.js', ['version' => 'auto', 'relative' => true]);
 
-Text::script('COM_JED_ERROR_DURING_PROCESS', true);
+Text::script('COM_JED_EXTENSIONS_ERROR_DURING_SEND_EMAIL', true);
+Text::script('COM_JED_EXTENSIONS_MISSING_MESSAGE_ID', true);
+Text::script('COM_JED_EXTENSIONS_MISSING_DEVELOPER_ID', true);
 
 $extensionUrl = Uri::root() . 'extension/' . $this->item->alias;
 $downloadUrl  = 'index.php?option=com_jed&task=extension.download&id=' . $this->item->id;
@@ -140,7 +142,15 @@ JS
             <div class="span12">
                 <div class="form-horizontal">
 				    <?php echo $this->form->renderFieldset('communication'); ?>
-                    <button class="btn btn-success" onclick="jed.sendMessage(); return false;"><?php echo Text::_('COM_JED_SEND_EMAIL'); ?></button>
+                    <div class="control-group">
+                        <div class="control-label">
+                        </div>
+                        <div class="controls">
+                            <button class="btn btn-success" onclick="jed.sendMessage(); return false;">
+		                        <?php echo Text::_('COM_JED_SEND_EMAIL'); ?>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

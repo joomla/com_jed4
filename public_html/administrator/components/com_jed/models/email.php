@@ -10,7 +10,9 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\User\User;
 
 /**
  * Email model
@@ -19,6 +21,14 @@ use Joomla\CMS\MVC\Model\AdminModel;
  */
 class JedModelEmail extends AdminModel
 {
+	/**
+	 * The mail engine
+	 *
+	 * @var    Mail
+	 * @since  4.0.0
+	 */
+	private $mailer;
+
 	/**
 	 * Get the form.
 	 *
@@ -116,6 +126,48 @@ class JedModelEmail extends AdminModel
 	}
 
 	/**
+	 * Send an email to the extension developer.
+	 *
+	 * @param   string  $body         The message body
+	 * @param   int     $messageId    The message details to use for sending
+	 * @param   int     $developerId  The developer to send the message to
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 *
+	 * @throws  Exception
+	 */
+	public function sendEmail(string $body, int $messageId, int $developerId): void
+	{
+		// Get the developer details
+		$developer = User::getInstance($developerId);
+
+		// Get the mail details
+		$mail = $this->getItem($messageId);
+
+		// Prepare the email
+		$this->setupMailer();
+
+		// Send the email
+		$result = $this->mailer
+			->addRecipient($developer->email, $developer->name)
+			->setSubject($mail->get('subject'))
+			->setBody($body)
+			->Send();
+
+		if ($result === false)
+		{
+			throw new RuntimeException($this->mailer->ErrorInfo);
+		}
+
+		if ($result instanceof JException)
+		{
+			throw new RuntimeException($result->getMessage());
+		}
+	}
+
+	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return  array  The data for the form.
@@ -135,5 +187,23 @@ class JedModelEmail extends AdminModel
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Setup the mailer instance.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function setupMailer(): void
+	{
+		// Instantiate the mailer
+		$config       = Factory::getConfig();
+		$from         = $config->get('mailfrom');
+		$fromName     = $config->get('fromname');
+		$this->mailer = Factory::getMailer();
+		$this->mailer->isHtml()
+			->setFrom($from, $fromName);
 	}
 }
