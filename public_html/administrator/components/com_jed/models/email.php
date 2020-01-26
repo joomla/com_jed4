@@ -131,6 +131,7 @@ class JedModelEmail extends AdminModel
 	 * @param   string  $body         The message body
 	 * @param   int     $messageId    The message details to use for sending
 	 * @param   int     $developerId  The developer to send the message to
+	 * @param   int     $userId  The JED member sending the message
 	 *
 	 * @return  void
 	 *
@@ -138,10 +139,11 @@ class JedModelEmail extends AdminModel
 	 *
 	 * @throws  Exception
 	 */
-	public function sendEmail(string $body, int $messageId, int $developerId): void
+	public function sendEmail(string $body, int $messageId, int $developerId, int $userId): void
 	{
 		// Get the developer details
 		$developer = User::getInstance($developerId);
+		$sender    = User::getInstance($userId);
 
 		// Get the mail details
 		$mail = $this->getItem($messageId);
@@ -200,10 +202,11 @@ class JedModelEmail extends AdminModel
 	{
 		// Instantiate the mailer
 		$config       = Factory::getConfig();
-		$from         = $config->get('mailfrom');
 		$fromName     = $config->get('fromname');
 		$this->mailer = Factory::getMailer();
 		$this->mailer->isHtml()
-			->setFrom($from, $fromName);
+			->addReplyTo('noreply@extensions.joomla.org', $fromName)
+			->setFrom('noreply@extensions.joomla.org', $fromName);
+
 	}
 }

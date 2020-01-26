@@ -77,6 +77,7 @@ const jed = (function () {
         data.append('body', tinyMCE.activeEditor.getContent());
         data.append('messageId', messageId);
         data.append('developerId', developerId);
+        data.append('userId', Joomla.getOptions('joomla.userId'));
         data.append('format', 'json');
 
         jQuery.ajax({
@@ -88,6 +89,9 @@ const jed = (function () {
             data: data,
             processData: false,
             contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': Joomla.getOptions('csrf.token')
+            },
             success: function (data) {
                 if (data) {
                     if (data.success === true) {

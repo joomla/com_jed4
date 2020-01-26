@@ -331,6 +331,7 @@
                 size="1"
                 default=""
                 onchange="jed.insertMessage(this.value);"
+                showon="messageType:email"
         >
             <option value="">COM_JED_EXTENSIONS_SELECT_TEMPLATE</option>
         </field>
@@ -341,6 +342,7 @@
                 label="COM_JED_EXTENSIONS_MESSAGE"
                 buttons="true"
                 size="30"
+                showon="messageType:email"
         />
 
     </fieldset>

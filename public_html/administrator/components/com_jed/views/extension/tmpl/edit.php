@@ -29,7 +29,9 @@ Text::script('COM_JED_EXTENSIONS_MISSING_DEVELOPER_ID', true);
 $extensionUrl = Uri::root() . 'extension/' . $this->item->alias;
 $downloadUrl  = 'index.php?option=com_jed&task=extension.download&id=' . $this->item->id;
 
-Factory::getDocument()->addScriptDeclaration(<<<JS
+Factory::getDocument()
+    ->addScriptOptions('joomla.userId', Factory::getUser()->id, false)
+    ->addScriptDeclaration(<<<JS
 	Joomla.submitbutton = function(task)
 	{
 	    switch (task) {

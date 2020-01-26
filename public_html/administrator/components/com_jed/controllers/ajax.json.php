@@ -63,15 +63,19 @@ class JedControllerAjax extends BaseController
 	 */
 	public function sendMessage(): void
 	{
+		// Check for request forgeries
+		$this->checkToken() or jexit('Invalid Token');
+
 		try
 		{
 			$body        = $this->input->get('body', '', 'raw');
-			$messageId = $this->input->getInt('messageId');
+			$messageId   = $this->input->getInt('messageId');
 			$developerId = $this->input->getInt('developerId');
+			$userId      = $this->input->getInt('userId');
 
 			/** @var JedModelEmail $model */
 			$model = $this->getModel('Email', 'JedModel');
-			$model->sendEmail($body, $messageId, $developerId);
+			$model->sendEmail($body, $messageId, $developerId, $userId);
 			$message = Text::_('COM_JED_MESSAGE_SENT_TO_DEVELOPER');
 
 			$error = false;
