@@ -412,3 +412,8 @@ CREATE TABLE IF NOT EXISTS `#__jed_emails`
 )
     CHARSET = utf8
     COMMENT = 'E-mail templates';
+
+INSERT INTO `#__action_logs_extensions` (`extension`)
+VALUES ('com_jed');
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+VALUES ('extension', 'com_jed.extension', 'id', 'title', '#__jed_extensions', 'COM_JED_TRANSACTION');

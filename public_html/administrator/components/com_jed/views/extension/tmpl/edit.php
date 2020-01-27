@@ -166,9 +166,6 @@ JS
 	    ); ?>
         <div class="row-fluid">
             <div class="span12">
-                <div class="form-horizontal">
-				    <?php echo $this->form->renderFieldset('history'); ?>
-                </div>
             </div>
         </div>
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>

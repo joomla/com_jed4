@@ -341,22 +341,6 @@
                 type="editor"
                 label="COM_JED_EXTENSIONS_MESSAGE"
                 buttons="true"
-                size="30"
-                showon="messageType:email"
-        />
-
-    </fieldset>
-
-    <fieldset name="history">
-
-        <field name="history"
-               type="subform"
-               formsource="administrator/components/com_jed/models/forms/history_subform.xml"
-               multiple="true"
-               layout="joomla.form.field.subform.repeatable-table"
-               groupByFieldset="true"
-               label=""
-               icon="list"
         />
 
     </fieldset>
