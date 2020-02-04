@@ -410,10 +410,37 @@ CREATE TABLE IF NOT EXISTS `#__jed_emails`
     `checked_out_time` DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (`id`)
 )
-    CHARSET = utf8
-    COMMENT = 'E-mail templates';
+    CHARSET = utf8mb4
+    COMMENT = 'Email templates';
+
+CREATE TABLE IF NOT EXISTS `#__jed_email_logs`
+(
+    `id`               INT(10)          NOT NULL AUTO_INCREMENT
+        COMMENT 'Auto increment ID',
+    `subject`          VARCHAR(150)     NOT NULL
+        COMMENT 'The subject',
+    `body`             TEXT             NOT NULL
+        COMMENT 'The body text',
+    `developer_id`     INT(11)          NOT NULL,
+    `developer_name`   VARCHAR(400)     NOT NULL DEFAULT '',
+    `developer_email`  VARCHAR(100)     NOT NULL DEFAULT '',
+    `created`          DATETIME         NULL,
+    `created_by`       INT(11)          NOT NULL DEFAULT '0',
+    `modified`         DATETIME         NULL,
+    `modified_by`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `checked_out`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `checked_out_time` DATETIME         NULL,
+    PRIMARY KEY (`id`),
+    KEY `developer_user` (`developer_id`),
+    KEY `member_user` (`created_by`),
+    CONSTRAINT `developer_user` FOREIGN KEY (`developer_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `member_user` FOREIGN KEY (`created_by`) REFERENCES `#__users` (`id`) ON UPDATE CASCADE
+)
+    CHARSET = utf8mb4
+    COMMENT = 'Email logs';
 
 INSERT INTO `#__action_logs_extensions` (`extension`)
 VALUES ('com_jed');
-INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`,
+                                    `text_prefix`)
 VALUES ('extension', 'com_jed.extension', 'id', 'title', '#__jed_extensions', 'COM_JED_TRANSACTION');

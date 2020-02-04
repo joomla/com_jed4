@@ -8,10 +8,12 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\User\User;
 
 /**
@@ -131,7 +133,7 @@ class JedModelEmail extends AdminModel
 	 * @param   string  $body         The message body
 	 * @param   int     $messageId    The message details to use for sending
 	 * @param   int     $developerId  The developer to send the message to
-	 * @param   int     $userId  The JED member sending the message
+	 * @param   int     $userId       The JED member sending the message
 	 *
 	 * @return  void
 	 *
@@ -146,15 +148,16 @@ class JedModelEmail extends AdminModel
 		$sender    = User::getInstance($userId);
 
 		// Get the mail details
-		$mail = $this->getItem($messageId);
+		$mail    = $this->getItem($messageId);
+		$subject = $mail->get('subject');
 
 		// Prepare the email
-		$this->setupMailer();
+		$this->setupMailer($sender->name);
 
 		// Send the email
 		$result = $this->mailer
 			->addRecipient($developer->email, $developer->name)
-			->setSubject($mail->get('subject'))
+			->setSubject($subject)
 			->setBody($body)
 			->Send();
 
@@ -167,6 +170,54 @@ class JedModelEmail extends AdminModel
 		{
 			throw new RuntimeException($result->getMessage());
 		}
+
+		$this->storeEmail($subject, $body, $developer, $sender);
+	}
+
+	/**
+	 * Setup the mailer instance.
+	 *
+	 * @param   string  $fromName  The name of the person sending the email
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function setupMailer(string $fromName): void
+	{
+		// Instantiate the mailer
+		$this->mailer = Factory::getMailer();
+		$this->mailer->isHtml()
+			->addReplyTo('noreply@extensions.joomla.org', $fromName)
+			->setFrom('noreply@extensions.joomla.org', $fromName);
+	}
+
+	/**
+	 * Store the sent email.
+	 *
+	 * @param   string  $subject    The message subject
+	 * @param   string  $body       The message body
+	 * @param   User    $developer  The developer details
+	 * @param   User    $sender     The JED member details
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function storeEmail(string $subject, string $body, User $developer, User $sender): void
+	{
+		$emailTable = Table::getInstance('Emaillog', 'Table');
+		$emailTable->save(
+			[
+				'subject'         => $subject,
+				'body'            => $body,
+				'developer_id'    => $developer->get('id'),
+				'developer_name'  => $developer->get('name'),
+				'developer_email' => $developer->get('email'),
+				'created'         => (Date::getInstance())->toSql(),
+				'created_by'      => $sender->get('id')
+			]
+		);
 	}
 
 	/**
@@ -189,24 +240,5 @@ class JedModelEmail extends AdminModel
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Setup the mailer instance.
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 */
-	private function setupMailer(): void
-	{
-		// Instantiate the mailer
-		$config       = Factory::getConfig();
-		$fromName     = $config->get('fromname');
-		$this->mailer = Factory::getMailer();
-		$this->mailer->isHtml()
-			->addReplyTo('noreply@extensions.joomla.org', $fromName)
-			->setFrom('noreply@extensions.joomla.org', $fromName);
-
 	}
 }
