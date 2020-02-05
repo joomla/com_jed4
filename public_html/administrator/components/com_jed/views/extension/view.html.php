@@ -45,7 +45,7 @@ class JedViewExtension extends HtmlView
 	 * The model state
 	 *
 	 * @var    Registry
-	 * @since  1.0.0
+	 * @since  4.0.0
 	 */
 	protected $state;
 
@@ -65,10 +65,10 @@ class JedViewExtension extends HtmlView
 	public function display($tpl = null)
 	{
 		/** @var JedModelExtension $model */
-		$model        = $this->getModel();
-		$this->item   = $model->getItem();
-		$this->form   = $model->getForm();
-		$this->state  = $model->getState();
+		$model         = $this->getModel();
+		$this->item    = $model->getItem();
+		$this->form    = $model->getForm();
+		$this->state   = $model->getState();
 
 		// Set the toolbar
 		$this->addToolBar();

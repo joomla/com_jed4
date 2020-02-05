@@ -166,6 +166,43 @@ JS
 	    ); ?>
         <div class="row-fluid">
             <div class="span12">
+                <table class="table table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_DATE'); ?></td>
+                        <td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_TYPE'); ?></td>
+                        <td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_TEXT'); ?></td>
+                        <td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_MEMBER'); ?></td>
+                        <td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_USER'); ?></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                <?php
+                foreach ($this->item->history as $history):
+                    ?><tr><?php
+	                ?><td><?php echo $history->logDate; ?></td><?php
+	                ?><td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_LOG_' . $history->type); ?></td><?php
+
+                    if ($history->type === 'mail')
+                    {
+                        ?><td>
+                        <?php echo $history->subject; ?>
+                        <?php echo $history->body; ?>
+                        </td><?php
+                        ?><td><?php echo $history->memberName; ?></td><?php
+                        ?><td><?php echo $history->developerName; ?> &lt;<?php echo $history->developerEmail; ?>&gt;</td><?php
+                    }
+                    elseif ($history->type === 'actionLog')
+                    {
+                        ?><td><?php echo ActionlogsHelper::getHumanReadableLogMessage($history); ?></td><?php
+                        ?><td><?php echo $history->name; ?></td><?php
+                        ?><td></td><?php
+                    }
+                    ?></tr><?php
+                endforeach;
+                ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>

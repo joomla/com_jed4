@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
 
 CREATE TABLE IF NOT EXISTS `#__jed_emails`
 (
-    `id`               INT(10)          NOT NULL AUTO_INCREMENT
+    `id`               INT(10) unsigned NOT NULL AUTO_INCREMENT
         COMMENT 'Auto increment ID',
     `subject`          VARCHAR(150)     NOT NULL
         COMMENT 'The subject',
@@ -415,8 +415,9 @@ CREATE TABLE IF NOT EXISTS `#__jed_emails`
 
 CREATE TABLE IF NOT EXISTS `#__jed_email_logs`
 (
-    `id`               INT(10)          NOT NULL AUTO_INCREMENT
+    `id`               INT(11) UNSIGNED NOT NULL AUTO_INCREMENT
         COMMENT 'Auto increment ID',
+    `extension_id`     INT(11) UNSIGNED NOT NULL,
     `subject`          VARCHAR(150)     NOT NULL
         COMMENT 'The subject',
     `body`             TEXT             NOT NULL
@@ -434,6 +435,7 @@ CREATE TABLE IF NOT EXISTS `#__jed_email_logs`
     KEY `developer_user` (`developer_id`),
     KEY `member_user` (`created_by`),
     CONSTRAINT `developer_user` FOREIGN KEY (`developer_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `extension_email_logs` FOREIGN KEY (`extension_id`) REFERENCES `#__jed_extensions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `member_user` FOREIGN KEY (`created_by`) REFERENCES `#__users` (`id`) ON UPDATE CASCADE
 )
     CHARSET = utf8mb4

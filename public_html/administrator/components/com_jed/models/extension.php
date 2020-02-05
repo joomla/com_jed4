@@ -424,6 +424,7 @@ class JedModelExtension extends AdminModel
 		$item->set('joomlaVersion', $this->getVersions($item->id, 'joomla'));
 		$item->set('extensionTypes', $this->getExtensionTypes($item->id));
 		$item->set('body', nl2br($item->get('body')));
+		$item->set('history', $this->getHistory($item->id));
 
 		return $item;
 	}
@@ -513,5 +514,101 @@ class JedModelExtension extends AdminModel
 		$db->setQuery($query);
 
 		return $db->loadColumn();
+	}
+
+	/**
+	 * Get a list of historiacl actions for the extension.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the history for
+	 *
+	 * @return  array  List of actions ordered by date.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getHistory(int $extensionId): array
+	{
+		$db = $this->getDbo();
+
+		// Get the action log entries
+		$query = $db->getQuery(true)
+			->select(
+				$db->quoteName(
+					[
+						'actionLogs.message_language_key',
+						'actionLogs.message',
+						'actionLogs.log_date',
+						'users.name'
+					],
+					[
+						'message_language_key',
+						'message',
+						'logDate',
+						'name'
+					]
+				)
+			)
+			->select($db->quote('actionLog') . ' AS ' . $db->quoteName('type'))
+			->from($db->quoteName('#__action_logs', 'actionLogs'))
+			->leftJoin(
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('actionLogs.user_id')
+			)
+			->where($db->quoteName('actionLogs.extension') . ' = ' . $db->quote('com_jed.extension'))
+			->where($db->quoteName('actionLogs.item_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		$actionLogs = $db->loadObjectList();
+
+		// Get the mails
+		$query->clear()
+			->select(
+				$db->quoteName(
+					[
+						'emailLogs.extension_id',
+						'emailLogs.subject',
+						'emailLogs.body',
+						'emailLogs.developer_name',
+						'emailLogs.developer_email',
+						'emailLogs.created_by',
+						'emailLogs.created',
+						'users.name'
+					],
+					[
+						'extension_id',
+						'subject',
+						'body',
+						'developerName',
+						'developerEmail',
+						'created_by',
+						'logDate',
+						'memberName'
+					]
+				)
+			)
+			->select($db->quote('mail') . ' AS ' . $db->quoteName('type'))
+			->from($db->quoteName('#__jed_email_logs', 'emailLogs'))
+			->leftJoin(
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('emailLogs.created_by')
+			)
+			->where($db->quoteName('emailLogs.extension_id') . ' = ' . $extensionId);
+
+		$db->setQuery($query);
+
+		$emailLogs = $db->loadObjectList();
+
+		// Combine all the logs
+		$logs = array_merge($actionLogs, $emailLogs);
+
+		// Order de logs by date
+		usort(
+			$logs,
+			static function($a, $b)
+			{
+				return $a->logDate < $b->logDate;
+			}
+		);
+
+		return $logs;
 	}
 }
