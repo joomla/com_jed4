@@ -1,83 +1,51 @@
-
-## Sentry service
-php_value auto_prepend_file /home/devext/public_html/jed_crons/sentry.php
-
 ##
 # @package    Joomla
-# @copyright  Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.
+# @copyright  Copyright (C) 2005 - 2020 Open Source Matters. All rights reserved.
 # @license    GNU General Public License version 2 or later; see LICENSE.txt
 ##
-
-#AddOutputFilterByType DEFLATE text/html text/xml text/css text/javascript
 
 ##
 # READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
 #
-# The line just below this section: 'Options +FollowSymLinks' may cause problems
-# with some server configurations.  It is required for use of mod_rewrite, but may already
-# be set by your server administrator in a way that dissallows changing it in
-# your .htaccess file.  If using it causes your server to error out, comment it out (add # to
-# beginning of line), reload your site in your browser and test your sef url's.  If they work,
-# it has been set by your server administrator and you do not need it set here.
+# The line 'Options +FollowSymLinks' may cause problems with some server configurations.
+# It is required for the use of Apache mod_rewrite, but it may have already been set by
+# your server administrator in a way that disallows changing it in this .htaccess file.
+# If using it causes your site to produce an error, comment it out (add # to the
+# beginning of the line), reload your site in your browser and test your sef urls. If
+# they work, then it has been set by your server administrator and you do not need to
+# set it here.
 ##
 
-# CDN stuff, do not remove: Brad Baker
-<FilesMatch "\.(css|js|png|jpg|gif|pdf|php)$">
-    Header set Cache-Control "max-age=300, must-revalidate"
-</FilesMatch>
-# ----------------------------------------------------------------------
-# Webfont access
-# ----------------------------------------------------------------------
-# Allow access from all domains for webfonts.
-# Alternatively you could only whitelist your
-# subdomains like "subdomain.example.com".
-<IfModule mod_headers.c>
-  <FilesMatch "\.(ttf|ttc|otf|eot|woff|font.css|css)$">
-    Header set Access-Control-Allow-Origin "*"
-  </FilesMatch>
+## No directory listings
+<IfModule autoindex>
+IndexIgnore *
 </IfModule>
 
-
+## Suppress mime type detection in browsers for unknown types
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+</IfModule>
 
 ## Can be commented out if causes errors, see notes above.
-Options +FollowSymLinks -Indexes
+Options +FollowSymlinks
+Options -Indexes
 
 ## Mod_rewrite in use.
 
 RewriteEngine On
 
-# **** Offline ***
-## RewriteBase /
-## RewriteCond %{REMOTE_HOST}        !85\.152\.106\.249
-## RewriteCond %{REQUEST_URI}        !offline\.html
-## RewriteCond %{REQUEST_URI}        !(\.png|\.jpg|\.gif|\.jpeg|\.bmp|\.swf|\.css|\.js)$
-## RewriteRule (.*)                offline.html    [R=307,L]
-
-
-RewriteCond %{HTTP_HOST} ^www\.extensions.joomla\.org [NC]
-RewriteRule ^(.*)$ http://extensions.joomla.org/$1 [L,R=301]
-
-Redirect 301 /extensions/languages/translations-for-joomla/ https://community.joomla.org/translations
-
-# **** OLD JED Redirects ****
-
-RewriteRule ^extensions/.*\/([0-9]+)$ http://extensions.joomla.org/index.php?option=com_jed&controller=map&link_id=$1 [L,R=302]
-RewriteRule ^extensions/([0-9]+)(/details)?$ http://extensions.joomla.org/index.php?option=com_jed&controller=map&link_id=$1 [L,R=302]
-
-# **** End - Custom redirects
-
-
 ## Begin - Rewrite rules to block out some common exploits.
-# If you experience problems on your site block out the operations listed below
-# This attempts to block the most common type of exploit `attempts` to Joomla!
+# If you experience problems on your site then comment out the operations listed
+# below by adding a # to the beginning of the line.
+# This attempts to block the most common type of exploit `attempts` on Joomla!
 #
-# Block out any script trying to base64_encode data within the URL.
+# Block any script trying to base64_encode data within the URL.
 RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
-# Block out any script that includes a <script> tag in URL.
+# Block any script that includes a <script> tag in URL.
 RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
-# Block out any script trying to set a PHP GLOBALS variable via URL.
+# Block any script trying to set a PHP GLOBALS variable via URL.
 RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-# Block out any script trying to modify a _REQUEST variable via URL.
+# Block any script trying to modify a _REQUEST variable via URL.
 RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
 # Return 403 Forbidden header and show the content of the root homepage
 RewriteRule .* index.php [F]
@@ -85,39 +53,21 @@ RewriteRule .* index.php [F]
 ## End - Rewrite rules to block out some common exploits.
 
 ## Begin - Custom redirects
-# Custom Redirects Added by JED Team
-
-#RedirectMatch 301 ^/administrator/(.*)$ https://extensions.joomla.org/administrator/$1
-
-Redirect 301 /about-jed/about-the-team/item/troy-hall/ https://extensions.joomla.org/about-jed/about-the-team/
-Redirect 301 /tos /about-jed/terms-of-service
-Redirect 301 /index.php?option=com_maqmahelpdesk&Itemid=0&id_workgroup=1&task=workgroup_view&acm=1_30 http://extensions.joomla.org/component/users/?view=login
-Redirect 301 //index.php?option=com_maqmahelpdesk&Itemid=0&id_workgroup=1&task=workgroup_view http://extensions.joomla.org/component/users/?view=login
-Redirect 301 /component/content/article/30 http://extensions.joomla.org/about-jed/about-the-team
-Redirect 301 /category_home http://extensions.joomla.org
-Redirect 301 /category_home?id=35&start=0 http://extensions.joomla.org
-Redirect 301 /component/content/article?id=10 http://extensions.joomla.org/support/knowledgebase/item/the-update-xml-file
-
-# Force Trailing Slash
-### RewriteCond %{REQUEST_URI} !/edit$
-RewriteCond %{REQUEST_METHOD} GET
-RewriteCond %{REQUEST_URI} /+[^\.]+$
-RewriteRule ^(.+[^/])$ %{REQUEST_URI}/ [R=301,L]
-
-# Force HTTPS
-RewriteCond %{HTTPS} !on
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
-
-# End custom redirects
-
+#
+# If you need to redirect some pages, or set a canonical non-www to
+# www redirect (or vice versa), place that code here. Ensure those
+# redirects use the correct RewriteRule syntax and the [R=301,L] flags.
+#
+## End - Custom redirects
 
 ##
-# Uncomment following line if your webserver's URL
+# Uncomment the following line if your webserver's URL
 # is not directly related to physical file paths.
 # Update Your Joomla! Directory (just / for root).
 ##
 
 # RewriteBase /
+
 
 ## Begin - Joomla! core SEF Section.
 #
@@ -126,10 +76,6 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 # If the requested path and file is not /index.php and the request
 # has not already been internally rewritten to the index.php script
 RewriteCond %{REQUEST_URI} !^/index\.php
-# and the request is for something within the component folder,
-# or for the site root, or for an extensionless URL, or the
-# requested URL ends with one of the listed extensions
-RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
 # and the requested path and file doesn't directly match a physical file
 RewriteCond %{REQUEST_FILENAME} !-f
 # and the requested path and file doesn't directly match a physical folder
@@ -139,67 +85,20 @@ RewriteRule .* index.php [L]
 #
 ## End - Joomla! core SEF Section.
 
-# Custom Blocked IPs
-
-Order Deny,Allow
-Deny from 108.162.203.80
-Deny from 108.162.204.80
-# Scraping Extensions from JED
-Deny from 104.28.29.119
-Deny from 185.104.29.12
-Deny from 181.224.147.246
-
-# VAM DENGI www.sms.ru -- BEGIN Profile/edit abuse prevention
-Deny from 77.73.68.248
-
-RewriteCond %{HTTP_USER_AGENT} ^-?$
-RewriteCond %{REQUEST_URI} /register/profile/edit/
-RewriteRule ^ - [F,L]
-
-RewriteCond %{HTTP_USER_AGENT} ^-?$
-RewriteCond %{THE_REQUEST} /register/profile/edit/
-RewriteRule ^ - [F,L]
-# VAM DENGI www.sms.ru -- END Profile/edit abuse prevention
-
-# ***** JED STUFF ***************************
-
-# Allow REST methods (used in angular admin com_jed)
-<Limit GET POST PUT DELETE>
-  Allow from all
-</Limit>
-
-#  Temporary - stop search engine indexing
-
-# Header set X-Robots-Tag "noindex, nofollow"
-
-# Redirect Scrape
-RewriteCond %{HTTP_REFERER} explorejoomla.com  [NC]
-RewriteRule .* – [F]
-
-
-# AuthName "Joomla! Extensions Directory"
-# AuthUserFile "/home/devext/.htpasswds/public_html/passwd"
 
 ##################### Security Header #####################
 <IfModule mod_headers.c>
-	# X-XSS-Protection
-	Header always set X-XSS-Protection "1; mode=block"
-	# X-Frame-Options
-	Header always set X-Frame-Options SAMEORIGIN
-	# X-Content-Type nosniff
-	Header always set X-Content-Type-Options nosniff
-	# Referrer-Policy
-	Header always set Referrer-Policy "no-referrer-when-downgrade"
-	# Strict-Transport-Security
-	Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-  # Content-Security-Policy
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.twitter.com https://*.facebook.com https://*.facebook.net https://*.facebook.net https://*.google-analytics.com https://*.googletagmanager.com https://*.googleapis.com https://*.gstatic.com https://*.google.com https://*.joomla.org https://*.pingdom.net https://*.doubleclick.net https://*.googleapis.com https://cdn.jsdelivr.net https://*.buysellads.com https://*.algolia.net https://*.algolianet.com https://*.jwpcdn.com https://*.echosign.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.joomla.org https://fonts.googleapis.com https://netdna.bootstrapcdn.com; connect-src 'self' https://*.joomla.org https://*.pingdom.net https://*.google-analytics.com https://*.doubleclick.net https://*.algolia.net https://*.algolianet.com; frame-src 'self' https://*.twitter.com https://*.google.com https://www.googletagmanager.com https://www.youtube.com https://cdn.adfront.org https://*.facebook.com https://*.vimeo.com https://*.echosign.com; font-src 'self' data: https://fonts.gstatic.com https://*.joomla.org https://netdna.bootstrapcdn.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.joomla.org https://*.pingdom.net https://*.doubleclick.net https://*.gstatic.com https://*.google.com https://*.googleapis.com https://*.buysellads.com https://cdn.adfront.org https://*.twitter.com; frame-ancestors 'self'; report-uri https://community.joomla.org/scripts/csp-reporter.php?source=extensions.joomla.org"
+# X-XSS-Protection
+Header always set X-XSS-Protection "1; mode=block"
+# X-Frame-Options
+Header always set X-Frame-Options SAMEORIGIN
+# X-Content-Type nosniff
+Header always set X-Content-Type-Options nosniff
+# Referrer-Policy
+Header always set Referrer-Policy "no-referrer-when-downgrade"
+# Strict-Transport-Security
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+# Content-Security-Policy
+Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.twitter.com https://*.facebook.com https://*.facebook.net https://*.facebook.net https://*.google-analytics.com https://*.googletagmanager.com https://*.googleapis.com https://*.gstatic.com https://*.google.com https://*.joomla.org https://*.pingdom.net https://*.doubleclick.net https://*.googleapis.com https://cdn.jsdelivr.net https://*.buysellads.com https://*.algolia.net https://*.algolianet.com https://*.jwpcdn.com https://*.echosign.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.joomla.org https://fonts.googleapis.com https://netdna.bootstrapcdn.com; connect-src 'self' https://*.joomla.org https://*.pingdom.net https://*.google-analytics.com https://*.doubleclick.net https://*.algolia.net https://*.algolianet.com; frame-src 'self' https://*.twitter.com https://*.google.com https://www.googletagmanager.com https://www.youtube.com https://cdn.adfront.org https://*.facebook.com https://*.vimeo.com https://*.echosign.com; font-src 'self' data: https://fonts.gstatic.com https://*.joomla.org https://netdna.bootstrapcdn.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.joomla.org https://*.pingdom.net https://*.doubleclick.net https://*.gstatic.com https://*.google.com https://*.googleapis.com https://*.buysellads.com https://cdn.adfront.org https://*.twitter.com; frame-ancestors 'self'; report-uri https://community.joomla.org/scripts/csp-reporter.php?source=extensions.joomla.org"
 </IfModule>
 ##################### Security Header
-
-# php -- BEGIN cPanel-generated handler, do not edit
-# Set the “ea-php72” package as the default “PHP” programming language.
-<IfModule mime_module>
-  AddHandler application/x-httpd-ea-php72 .php .php7 .phtml
-</IfModule>
-# php -- END cPanel-generated handler, do not edit
