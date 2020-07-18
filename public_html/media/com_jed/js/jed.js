@@ -61,7 +61,6 @@ const jed = (function () {
             developerId = document.getElementById('jform_created_by_id').value,
             extensionId = document.getElementById('jform_id').value;
 
-        // Check if we have any values
         if (isNaN(parseInt(messageId)) === true) {
             renderMessage(Joomla.JText._('COM_JED_EXTENSIONS_MISSING_MESSAGE_ID'), 'error');
             return false;
@@ -126,6 +125,87 @@ const jed = (function () {
         jQuery('html,body').scrollTop(0);
 
         return false;
+    };
+
+    /**
+     * Store an internal note
+     */
+    jed.storeNote = () => {
+        const developerId = document.getElementById('jform_created_by_id').value,
+            extensionId = document.getElementById('jform_id').value;
+
+        if (isNaN(parseInt(developerId)) === true) {
+            renderMessage(Joomla.JText._('COM_JED_EXTENSIONS_MISSING_DEVELOPER_ID'), 'error');
+            return false;
+        }
+
+        if (isNaN(parseInt(extensionId)) === true) {
+            renderMessage(Joomla.JText._('COM_JED_EXTENSIONS_MISSING_EXTENSION_ID'), 'error');
+            return false;
+        }
+
+        let data = new FormData();
+        data.append('option', 'com_jed');
+        data.append('task', 'ajax.storeNote');
+        data.append('body', tinyMCE.activeEditor.getContent());
+        data.append('developerId', developerId);
+        data.append('extensionId', extensionId);
+        data.append('userId', Joomla.getOptions('joomla.userId'));
+        data.append('format', 'json');
+
+        jQuery.ajax({
+            async: true,
+            url: 'index.php',
+            dataType: 'json',
+            cache: false,
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': Joomla.getOptions('csrf.token')
+            },
+            success: function (data) {
+                if (data) {
+                    if (data.success === true) {
+                        renderMessage(data.message, 'info');
+                    } else {
+                        let message = Joomla.JText._('COM_JED_EXTENSIONS_ERROR_DURING_STORE_NOTE');
+
+                        if (data.message.length > 0) {
+                            message = data.message;
+                        }
+
+                        renderMessage(message, 'error');
+                    }
+                }
+                else {
+                    renderMessage(Joomla.JText._('COM_JED_EXTENSIONS_ERROR_DURING_STORE_NOTE'), 'error');
+                }
+            },
+            error: function (request, status, error) {
+                jQuery('<div>' + Joomla.JText._('COM_JED_EXTENSIONS_ERROR_DURING_STORE_NOTE') + "\n\n" + 'Status error: ' + request.status + "\n" + 'Status message: ' + request.statusText + "\n" + jQuery.trim(request.responseText) + '</div>');
+            }
+        });
+
+        // Scroll to top
+        jQuery('html,body').scrollTop(0);
+
+        return false;
+    };
+
+    jed.setMessageType = (type) => {
+        console.log(type);
+        jQuery('.js-messageType').hide();
+
+        switch (type) {
+            case 'email':
+                jQuery('.js-sendMessage').show();
+                break;
+            case 'note':
+                jQuery('.js-storeNote').show();
+                break;
+        }
     };
 
     /**

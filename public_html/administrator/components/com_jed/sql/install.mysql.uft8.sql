@@ -435,12 +435,38 @@ CREATE TABLE IF NOT EXISTS `#__jed_email_logs`
     PRIMARY KEY (`id`),
     KEY `developer_user` (`developer_id`),
     KEY `member_user` (`created_by`),
+    KEY `extension_email_logs` (`extension_id`),
     CONSTRAINT `developer_user` FOREIGN KEY (`developer_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `extension_email_logs` FOREIGN KEY (`extension_id`) REFERENCES `#__jed_extensions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `member_user` FOREIGN KEY (`created_by`) REFERENCES `#__users` (`id`) ON UPDATE CASCADE
 )
     CHARSET = utf8mb4
     COMMENT = 'Email logs';
+
+CREATE TABLE IF NOT EXISTS `#__jed_extensions_notes`
+(
+    `id`               INT(11) UNSIGNED NOT NULL AUTO_INCREMENT
+        COMMENT 'Auto increment ID',
+    `extension_id`     INT(11) UNSIGNED NOT NULL,
+    `body`             TEXT             NOT NULL
+        COMMENT 'The body text',
+    `developer_id`     INT(11)          NOT NULL,
+    `developer_name`   VARCHAR(400)     NOT NULL DEFAULT '',
+    `created`          DATETIME         NULL,
+    `created_by`       INT(11)          NOT NULL DEFAULT '0',
+    `modified`         DATETIME         NULL,
+    `modified_by`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `checked_out`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `checked_out_time` DATETIME         NULL,
+    PRIMARY KEY (`id`),
+    KEY `developer_user` (`developer_id`),
+    KEY `member_user` (`created_by`),
+    CONSTRAINT `developer_user_notes` FOREIGN KEY (`developer_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `extension_extensions_notes` FOREIGN KEY (`extension_id`) REFERENCES `#__jed_extensions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `member_user_notes` FOREIGN KEY (`created_by`) REFERENCES `#__users` (`id`) ON UPDATE CASCADE
+)
+    CHARSET = utf8mb4
+    COMMENT = 'Internal notes';
 
 INSERT INTO `#__action_logs_extensions` (`extension`)
 VALUES ('com_jed');

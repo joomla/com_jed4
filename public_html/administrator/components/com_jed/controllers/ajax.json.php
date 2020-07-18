@@ -89,4 +89,39 @@ class JedControllerAjax extends BaseController
 
 		echo(new JsonResponse(null, $message, $error));
 	}
+
+	/**
+	 * Store an internal note
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	public function storeNote(): void
+	{
+		// Check for request forgeries
+		$this->checkToken() or jexit('Invalid Token');
+
+		try
+		{
+			$body        = $this->input->get('body', '', 'raw');
+			$developerId = $this->input->getInt('developerId');
+			$extensionId = $this->input->getInt('extensionId');
+			$userId      = $this->input->getInt('userId');
+
+			/** @var JedModelExtension $model */
+			$model = $this->getModel('Extension', 'JedModel');
+			$model->storeNote($body, $developerId, $userId, $extensionId);
+			$message = Text::_('COM_JED_EXTENSION_NOTE_STORED');
+
+			$error = false;
+		}
+		catch (Exception $exception)
+		{
+			$message = $exception->getMessage();
+			$error   = true;
+		}
+
+		echo(new JsonResponse(null, $message, $error));
+	}
 }

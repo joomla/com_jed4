@@ -221,7 +221,7 @@ class JedModelEmail extends AdminModel
 		User $developer, User $sender
 	): void {
 		$emailTable = Table::getInstance('Emaillog', 'Table');
-		$emailTable->save(
+		$result = $emailTable->save(
 			[
 				'extension_id'    => $extensionId,
 				'subject'         => $subject,
@@ -233,6 +233,11 @@ class JedModelEmail extends AdminModel
 				'created_by'      => $sender->get('id')
 			]
 		);
+
+		if ($result === false)
+		{
+			throw new RuntimeException($emailTable->getError());
+		}
 	}
 
 	/**

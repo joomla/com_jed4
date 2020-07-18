@@ -149,8 +149,12 @@ JS
                         <div class="control-label">
                         </div>
                         <div class="controls">
-                            <button class="btn btn-success" onclick="jed.sendMessage(); return false;">
+                            <button class="btn btn-success js-messageType js-sendMessage" onclick="jed.sendMessage(); return false;">
 		                        <?php echo Text::_('COM_JED_SEND_EMAIL'); ?>
+                            </button>
+
+                            <button class="btn btn-success js-messageType js-storeNote" style="display: none;" onclick="jed.storeNote(); return false;">
+		                        <?php echo Text::_('COM_JED_STORE_NOTE'); ?>
                             </button>
                         </div>
                     </div>
@@ -193,6 +197,14 @@ JS
                         ?><td><?php echo $history->memberName; ?></td><?php
                         ?><td><?php echo HTMLHelper::_('link', 'index.php?option=com_users&task=user.edit&id=' . $history->developerId, $history->developerName); ?> &lt;<?php echo $history->developerEmail; ?>&gt;</td><?php
                     }
+	                if ($history->type === 'note')
+	                {
+		                ?><td>
+		                <?php echo $history->body; ?>
+                        </td><?php
+		                ?><td><?php echo $history->memberName; ?></td><?php
+		                ?><td><?php echo HTMLHelper::_('link', 'index.php?option=com_users&task=user.edit&id=' . $history->developerId, $history->developerName); ?></td><?php
+	                }
                     elseif ($history->type === 'actionLog')
                     {
                         ?><td><?php echo ActionlogsHelper::getHumanReadableLogMessage($history); ?></td><?php

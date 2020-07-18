@@ -325,6 +325,7 @@
                 label="COM_JED_EXTENSIONS_MESSAGE_TYPE"
                 class="advancedSelect"
                 default="email"
+                onchange="jed.setMessageType(this.value)"
         >
             <option value="email">Email</option>
             <option value="note">Note</option>

@@ -8,10 +8,13 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\User\User;
 
 /**
  * JED Extension Model
@@ -599,8 +602,44 @@ class JedModelExtension extends AdminModel
 
 		$emailLogs = $db->loadObjectList();
 
+		// Get the mails
+		$query->clear()
+			->select(
+				$db->quoteName(
+					[
+						'notes.extension_id',
+						'notes.body',
+						'notes.developer_name',
+						'notes.created_by',
+						'notes.created',
+						'notes.developer_id',
+						'users.name'
+					],
+					[
+						'extension_id',
+						'body',
+						'developerName',
+						'created_by',
+						'logDate',
+						'developerId',
+						'memberName'
+					]
+				)
+			)
+			->select($db->quote('note') . ' AS ' . $db->quoteName('type'))
+			->from($db->quoteName('#__jed_extensions_notes', 'notes'))
+			->leftJoin(
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('notes.created_by')
+			)
+			->where($db->quoteName('notes.extension_id') . ' = ' . $extensionId);
+
+		$db->setQuery($query);
+
+		$notes = $db->loadObjectList();
+
 		// Combine all the logs
-		$logs = array_merge($actionLogs, $emailLogs);
+		$logs = array_merge($actionLogs, $emailLogs, $notes);
 
 		// Order de logs by date
 		usort(
@@ -612,5 +651,48 @@ class JedModelExtension extends AdminModel
 		);
 
 		return $logs;
+	}
+
+	/**
+	 * Store an internal note.
+	 *
+	 * @param   string  $body         The note content
+	 * @param   int     $developerId  The developer to store the note for
+	 * @param   int     $userId       The JED member storing the note
+	 * @param   int     $extensionId  The extension ID the message is about
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	public function storeNote(string $body, int $developerId, int $userId, int $extensionId
+	): void {
+		// Get the developer details
+		$developer = User::getInstance($developerId);
+
+		if ($developer->get('id', null) === null)
+		{
+			throw new InvalidArgumentException(
+				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
+			);
+		}
+
+		$noteTable = Table::getInstance('Note', 'Table');
+		$result = $noteTable->save(
+			[
+				'extension_id'    => $extensionId,
+				'body'            => $body,
+				'developer_id'    => $developer->get('id'),
+				'developer_name'  => $developer->get('name'),
+				'developer_email' => $developer->get('email'),
+				'created'         => (Date::getInstance())->toSql(),
+				'created_by'      => $userId
+			]
+		);
+
+		if ($result === false)
+		{
+			throw new RuntimeException($noteTable->getError());
+		}
 	}
 }
