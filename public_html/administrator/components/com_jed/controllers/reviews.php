@@ -2,11 +2,11 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Controller\AdminController;
 
@@ -34,8 +34,8 @@ class JedControllerReviews extends AdminController
 	 *
 	 * @return  object    The Model
 	 *
-	 * @since   4.0.0
 	 * @throws  Exception
+	 * @since   4.0.0
 	 */
 	public function getModel($name = 'Review', $prefix = 'JedModel', $config = ['ignore_request' => true])
 	{

@@ -2,7 +2,7 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * View for JED Reviews
@@ -63,9 +64,9 @@ class JedViewReviews extends HtmlView
 	 *
 	 * @return string
 	 *
+	 * @throws Exception
 	 * @since  4.0.0
 	 *
-	 * @throws Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -76,9 +77,9 @@ class JedViewReviews extends HtmlView
 		$this->pagination    = $model->getPagination();
 		$this->filterForm    = $model->getFilterForm();
 		$this->activeFilters = $model->getActiveFilters();
+		$errors              = $model->getErrors();
 
-		// Check for errors.
-		if (count($errors = $model->getErrors()))
+		if ($errors && count($errors))
 		{
 			throw new RuntimeException(implode("\n", $errors), 500);
 		}
@@ -94,22 +95,22 @@ class JedViewReviews extends HtmlView
 	 *
 	 * @return void
 	 *
-	 * @since  4.0.0
 	 * @throws Exception
+	 * @since  4.0.0
 	 */
 	protected function addToolBar()
 	{
 		$canDo = ContentHelper::getActions('com_jed', 'review', $this->state->get('filter.published'));
 
-		JToolBarHelper::title(Text::_('COM_JED_TITLE_REVIEWS'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_TITLE_REVIEWS'), 'plugin.png');
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::publish('review.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('review.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::publish('review.publish', 'JTOOLBAR_PUBLISH', true);
+			ToolbarHelper::unpublish('review.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 
-		JToolBarHelper::spacer();
+		ToolBarHelper::spacer();
 	}
 
 	/**
@@ -128,7 +129,7 @@ class JedViewReviews extends HtmlView
 			'reviews.overall_score' => Text::_('COM_JED_REVIEWS_SCORE'),
 			'users.username'        => Text::_('COM_JED_REVIEWS_AUTHOR'),
 			'extensions.title'      => Text::_('COM_JED_EXTENSION'),
-			'reviews.ipAddress'    => Text::_('COM_JED_REVIEWS_IP_ADDRESS'),
+			'reviews.ipAddress'     => Text::_('COM_JED_REVIEWS_IP_ADDRESS'),
 			'reviews.flagged'       => Text::_('COM_JED_REVIEWS_FLAGGED'),
 			'reviews.id'            => Text::_('JGRID_HEADING_ID')
 		);

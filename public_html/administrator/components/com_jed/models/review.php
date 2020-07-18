@@ -2,14 +2,13 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 
 /**
@@ -106,12 +105,12 @@ class JedModelReview extends AdminModel
 				'created_on',
 				'ipAddress',
 				'flagged',
-				'extension_id',
+				'extensionId',
 				'created_by',
-				'user_id',
+				'userId',
 				'username',
 				'extensionname',
-				'developer_id',
+				'developerId',
 				'developer',
 			]
 		))
@@ -133,11 +132,11 @@ class JedModelReview extends AdminModel
 		$db->setQuery($query);
 		$data = $db->loadObject();
 
-		$item->developer_id = $data->developer_id;
-		$item->developer = $data->developer;
-		$item->user_id = $data->user_id;
-		$item->username = $data->username;
-		$item->extension_id = $data->extension_id;
+		$item->developerId   = $data->developeId;
+		$item->developer     = $data->developer;
+		$item->userId        = $data->userId;
+		$item->username      = $data->username;
+		$item->extensionId   = $data->extensionId;
 		$item->extensionname = $data->extensionname;
 
 		return $item;

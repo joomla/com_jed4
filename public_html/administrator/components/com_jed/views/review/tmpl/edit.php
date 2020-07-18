@@ -2,21 +2,22 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var JedViewReview $this */
 
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
 
-JFactory::getDocument()->addScriptDeclaration("
+Factory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'review.cancel' || document.formvalidator.isValid(document.getElementById('review-form')))
@@ -27,7 +28,7 @@ JFactory::getDocument()->addScriptDeclaration("
 ");
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_jed&view=review&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="review-form" class="form-validate form-horizontal">
+<form action="<?php echo 'index.php?option=com_jed&view=review&layout=edit&id=' . (int) $this->item->id; ?>" method="post" name="adminForm" id="review-form" class="form-validate form-horizontal">
     <fieldset>
 		<?php echo $this->form->renderField('published'); ?>
     </fieldset>
@@ -41,14 +42,14 @@ JFactory::getDocument()->addScriptDeclaration("
         <td><?php echo Text::_('COM_JED_REVIEWS_TITLE'); ?></td>
         <td><?php echo $this->item->title; ?></td>
     </tr>
-	<tr>
-		<td><?php echo Text::_('COM_JED_REVIEWS_SCORE'); ?></td>
-		<td>@TODO Overall Score Calculation</td>
-	</tr>
-	<tr>
-		<td><?php echo Text::_('COM_JED_REVIEWS_COMMENTS'); ?></td>
-		<td><?php echo $this->item->body; ?></td>
-	</tr>
+    <tr>
+        <td><?php echo Text::_('COM_JED_REVIEWS_SCORE'); ?></td>
+        <td>@TODO Overall Score Calculation</td>
+    </tr>
+    <tr>
+        <td><?php echo Text::_('COM_JED_REVIEWS_COMMENTS'); ?></td>
+        <td><?php echo $this->item->body; ?></td>
+    </tr>
     <tr>
         <td><?php echo Text::_('JGLOBAL_FIELD_CREATED_LABEL'); ?></td>
         <td><?php echo HTMLHelper::_('date', $this->item->created_on, Text::_('COM_JED_DATETIME_FORMAT')) ?></td>
@@ -56,21 +57,21 @@ JFactory::getDocument()->addScriptDeclaration("
     <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_AUTHOR'); ?></td>
         <td>
-	        <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->user_id; ?>" title="<?php echo $this->escape($this->item->username); ?>">
+            <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->userId; ?>" title="<?php echo $this->escape($this->item->username); ?>">
 				<?php echo $this->escape($this->item->username); ?>
             </a>
         </td>
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_EXTENSION'); ?></td>
-        <td><a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $this->item->extension_id; ?>" title="<?php echo $this->escape($this->item->extensionname); ?>">
-		        <?php echo $this->escape($this->item->extensionname); ?>
+        <td><a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $this->item->extensionId; ?>" title="<?php echo $this->escape($this->item->extensionname); ?>">
+				<?php echo $this->escape($this->item->extensionname); ?>
             </a></td>
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_EXTENSIONS_DEVELOPER'); ?></td>
-        <td><a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->developer_id; ?>" title="<?php echo $this->escape($this->item->developer); ?>">
-		        <?php echo $this->escape($this->item->developer); ?>
+        <td><a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->developerId; ?>" title="<?php echo $this->escape($this->item->developer); ?>">
+				<?php echo $this->escape($this->item->developer); ?>
             </a></td>
     </tr>
     <tr>
@@ -135,13 +136,13 @@ JFactory::getDocument()->addScriptDeclaration("
         <td><?php echo Text::_('COM_JED_REVIEWS_FLAGGED'); ?></td>
         <td>
 			<?php
-			echo (int) $this->item->flagged === 1 && !is_null($item->ipAddress)
+			echo (int) $this->item->flagged === 1 && !is_null($this->item->ipAddress)
 				? HTMLHelper::_(
 					'link',
 					'https://batchrev.extensions.joomla.org/ipaddress/' . $this->item->ipAddress . '.html',
 					Text::_('JYES'),
 					'target="_blank"'
-				)
+				) . ' <span class="icon-new-tab"></span>'
 				: Text::_('JNO');
 			?>
         </td>

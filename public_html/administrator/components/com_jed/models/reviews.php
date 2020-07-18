@@ -2,7 +2,7 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -32,17 +32,28 @@ class JedModelReviews extends ListModel
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
-				'published', 'reviews.published',
-				'created_by', 'reviews.created_by',
-				'created_on', 'reviews.created_on',
-				'title', 'reviews.title',
-				'score', 'reviews.score',
-				'developer', 'users.username',
-				'reviewer', 'users.id',
-				'extension', 'extensions.extension_id',
-				'title', 'extensions.title',
-				'ipaddress', 'reviews.ipAddress',
-				'id', 'reviews.id',
+				'published',
+				'reviews.published',
+				'created_by',
+				'reviews.created_by',
+				'created_on',
+				'reviews.created_on',
+				'title',
+				'reviews.title',
+				'score',
+				'reviews.score',
+				'developer',
+				'users.username',
+				'reviewer',
+				'users.id',
+				'extension',
+				'extensions.extension_id',
+				'title',
+				'extensions.title',
+				'ipaddress',
+				'reviews.ipAddress',
+				'id',
+				'reviews.id',
 			];
 		}
 
@@ -147,12 +158,12 @@ class JedModelReviews extends ListModel
 				'created_on',
 				'ipAddress',
 				'flagged',
-				'extension_id',
+				'extensionId',
 				'created_by',
-				'user_id',
+				'userId',
 				'username',
 				'extensionname',
-				'developer_id',
+				'developerId',
 				'developer',
 			]
 		))

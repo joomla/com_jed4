@@ -2,28 +2,40 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
 
 /**
  * View to edit a review.
  *
  * @since  4.0.0
  */
-class JedViewReview extends JViewLegacy
+class JedViewReview extends HtmlView
 {
+	/**
+	 * Form with settings
+	 *
+	 * @var    form
+	 *
+	 * @since  4.0.0
+	 */
 	protected $form;
 
 	/**
 	 * The item data.
 	 *
-	 * @var   object
+	 * @var   CMSObject
 	 *
 	 * @since 4.0.0
 	 */
@@ -32,7 +44,7 @@ class JedViewReview extends JViewLegacy
 	/**
 	 * The model state.
 	 *
-	 * @var   JObject
+	 * @var   Registry
 	 *
 	 * @since 4.0.0
 	 */
@@ -45,20 +57,22 @@ class JedViewReview extends JViewLegacy
 	 *
 	 * @return  void
 	 *
-	 * @throws Exception
+	 * @throws  Exception
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
 	 */
 	public function display($tpl = null)
 	{
-		$this->state = $this->get('State');
-		$this->item  = $this->get('Item');
-		$this->form  = $this->get('Form');
+		/** @var JedModelReview $model */
+		$model       = $this->getModel();
+		$this->state = $model->getState();
+		$this->item  = $model->getItem();
+		$this->form  = $model->getForm();
+		$errors      = $model->getErrors();
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
+		if ($errors && count($errors))
 		{
-			throw new Exception(implode("\n", $errors), 500);
+			throw new RuntimeException(implode("\n", $errors), 500);
 		}
 
 		$this->addToolbar();
@@ -72,27 +86,27 @@ class JedViewReview extends JViewLegacy
 	 *
 	 * @since   4.0.0
 	 */
-	protected function addToolbar()
+	protected function addToolbar(): void
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		JToolBarHelper::title(Text::_('COM_JED_REVIEW_VIEW_EDIT_TITLE'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_REVIEW_VIEW_EDIT_TITLE'), 'plugin.png');
 
 		$canDo = ContentHelper::getActions('com_jed', 'review', $this->state->get('filter.published'));
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::apply('review.apply');
-			JToolbarHelper::save('review.save');
+			ToolbarHelper::apply('review.apply');
+			ToolbarHelper::save('review.save');
 		}
 
 		if (empty($this->item->id))
 		{
-			JToolbarHelper::cancel('review.cancel');
+			ToolbarHelper::cancel('review.cancel');
 		}
 		else
 		{
-			JToolbarHelper::cancel('review.cancel', 'JTOOLBAR_CLOSE');
+			ToolbarHelper::cancel('review.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 }

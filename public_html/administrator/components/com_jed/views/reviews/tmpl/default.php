@@ -2,7 +2,7 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,21 +13,20 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 
 /** @var JedViewReviews $this */
 
-$user       = Factory::getUser();
-$userId     = $user->get('id');
-$listOrder  = $this->escape($this->state->get('list.ordering'));
-$listDirn   = $this->escape($this->state->get('list.direction'));
-$canOrder   = $user->authorise('core.edit.state', 'com_jed.reviews');
-$saveOrder  = $listOrder === 't.ordering';
+$user      = Factory::getUser();
+$userId    = $user->get('id');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$canOrder  = $user->authorise('core.edit.state', 'com_jed.reviews');
+$saveOrder = $listOrder === 't.ordering';
 
-HTMLHelper::_('formbehavior.chosen', 'select');
+HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
 ?>
 
-<form action="<?php echo Route::_('index.php?option=com_jed&view=reviews'); ?>" method="post" name="adminForm"
+<form action="<?php echo 'index.php?option=com_jed&view=reviews'; ?>" method="post" name="adminForm"
       id="adminForm">
 	<?php if (!empty($this->sidebar)) : ?>
     <div id="j-sidebar-container" class="span2">
@@ -38,8 +37,7 @@ HTMLHelper::_('formbehavior.chosen', 'select');
         <div id="j-main-container">
 			<?php endif; ?>
 			<?php
-			// Search tools bar
-			echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+			echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
 			?>
             <div class="clearfix"></div>
 			<?php if (empty($this->items)) : ?>
@@ -72,7 +70,7 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSION', 'extensions.title', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-		                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_DEVELOPER', 'extensions.created_by', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_DEVELOPER', 'extensions.created_by', $listDirn, $listOrder); ?>
                         </th>
                         <th>
 							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_REVIEWS_IP_ADDRESS', 'reviews.ipAddress', $listDirn, $listOrder); ?>
@@ -120,22 +118,23 @@ HTMLHelper::_('formbehavior.chosen', 'select');
                                 </a>
                             </td>
                             <td>
-	                            @TODO Overall score
-								<?php // echo $item->overall_score; ?>
+                                @TODO Overall score
+								<?php // echo $item->overall_score;
+								?>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->user_id; ?>" title="<?php echo $this->escape($item->username); ?>">
+                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->userId; ?>" title="<?php echo $this->escape($item->username); ?>">
 									<?php echo $this->escape($item->username); ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $item->extension_id; ?>" title="<?php echo $this->escape($item->extensionname); ?>">
-		                            <?php echo $this->escape($item->extensionname); ?>
+                                <a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $item->extensionId; ?>" title="<?php echo $this->escape($item->extensionname); ?>">
+									<?php echo $this->escape($item->extensionname); ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->developer_id; ?>" title="<?php echo $this->escape($item->developer); ?>">
-		                            <?php echo $this->escape($item->developer); ?>
+                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->developerId; ?>" title="<?php echo $this->escape($item->developer); ?>">
+									<?php echo $this->escape($item->developer); ?>
                                 </a>
                             </td>
                             <td>
@@ -143,15 +142,15 @@ HTMLHelper::_('formbehavior.chosen', 'select');
                             </td>
                             <td>
 								<?php
-                                echo (int) $item->flagged === 1 && !is_null($item->ipAddress)
-                                    ? HTMLHelper::_(
-                                            'link',
-                                            'https://batchrev.extensions.joomla.org/ipaddress/' . $item->ipAddress . '.html',
-                                            Text::_('JYES'),
-                                            'target="_blank"'
-                                    )
-                                    : Text::_('JNO');
-                                ?>
+								echo (int) $item->flagged === 1 && !is_null($item->ipAddress)
+									? HTMLHelper::_(
+										'link',
+										'https://batchrev.extensions.joomla.org/ipaddress/' . $item->ipAddress . '.html',
+										Text::_('JYES'),
+										'target="_blank"'
+									) . ' <span class="icon-new-tab"></span>'
+									: Text::_('JNO');
+								?>
                             </td>
                             <td>
 								<?php echo $item->id; ?>
