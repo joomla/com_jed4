@@ -2,7 +2,7 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -32,17 +32,23 @@ class JedModelReviews extends ListModel
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
-				'published', 'reviews.published',
-				'created_by', 'reviews.created_by',
-				'created_on', 'reviews.created_on',
-				'title', 'reviews.title',
-				'score', 'reviews.score',
-				'developer', 'users.username',
-				'reviewer', 'users.id',
-				'extension', 'extensions.extension_id',
-				'title', 'extensions.title',
-				'ipaddress', 'reviews.ipAddress',
-				'id', 'reviews.id',
+				'published',
+				'reviewer',
+				'extension',
+				'developer',
+				'ipaddress',
+				'flagged',
+
+				'reviews.published',
+				'reviews.created_on',
+				'reviews.title',
+				'reviews.overallScore',
+				'users.username',
+				'extensions.title',
+				'extensions.created_by',
+				'reviews.ipAddress',
+				'reviews.flagged',
+				'reviews.id'
 			];
 		}
 
@@ -129,6 +135,7 @@ class JedModelReviews extends ListModel
 				'reviews.published',
 				'reviews.id',
 				'reviews.title',
+				'reviews.overallScore',
 				'reviews.created_on',
 				'reviews.ipAddress',
 				'reviews.flagged',
@@ -144,10 +151,11 @@ class JedModelReviews extends ListModel
 				'published',
 				'id',
 				'title',
+				'overallScore',
 				'created_on',
 				'ipAddress',
 				'flagged',
-				'extension_id',
+				'extensionId',
 				'created_by',
 				'userId',
 				'username',
@@ -186,27 +194,38 @@ class JedModelReviews extends ListModel
 		}
 
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where($db->quoteName('reviews.published') . ' = ' . (int) $published);
 		}
 
 		$extension = $this->getState('filter.extension');
+
 		if (is_numeric($extension))
 		{
 			$query->where($db->quoteName('reviews.extension_id') . ' = ' . (int) $extension);
 		}
 
 		$developer = $this->getState('filter.developer');
+
 		if (is_numeric($developer))
 		{
 			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developer);
 		}
 
 		$reviewer = $this->getState('filter.reviewer');
+
 		if (is_numeric($reviewer))
 		{
 			$query->where($db->quoteName('reviews.created_by') . ' = ' . (int) $reviewer);
+		}
+
+		$flagged = $this->getState('filter.flagged');
+
+		if (is_numeric($flagged))
+		{
+			$query->where($db->quoteName('reviews.flagged') . ' = ' . (int) $flagged);
 		}
 
 		$ordering = $this->state->get('list.fullordering', 'reviews.id DESC');

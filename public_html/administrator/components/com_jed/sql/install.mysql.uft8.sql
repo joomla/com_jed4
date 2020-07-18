@@ -281,33 +281,28 @@ CREATE TABLE IF NOT EXISTS `#__jed_hit_log`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE `#__jed_reviews`
+CREATE TABLE IF NOT EXISTS `#__jed_reviews`
 (
-    `id`                   int(11) unsigned    NOT NULL AUTO_INCREMENT,
-    `extension_id`         int(11) unsigned             DEFAULT NULL,
-    `functionality`        int(3)                       DEFAULT NULL,
-    `easeOfUse`            int(3)                       DEFAULT NULL,
-    `support`              int(3)                       DEFAULT NULL,
-    `documentation`        int(3)                       DEFAULT NULL,
-    `valueForMoney`        int(3)                       DEFAULT NULL,
-    `usedFor`              varchar(280)                 DEFAULT NULL,
-    `version`              varchar(10)                  DEFAULT NULL,
-    `flagged`              tinyint(1)          NOT NULL,
-    `parent_id`            int(6)              NOT NULL,
-    `ipAddress`            varchar(20)                  DEFAULT NULL,
-    `imported`             int(1)                       DEFAULT '0',
-    `title`                varchar(400)        NOT NULL DEFAULT '',
-    `body`                 mediumtext          NOT NULL,
-    `published`            tinyint(1)          NOT NULL DEFAULT '0',
-    `created_on`           datetime                     DEFAULT NULL,
-    `created_by`           int(11)             NOT NULL,
-    `url`                  varchar(255)        NOT NULL DEFAULT '',
-    `authenticated`        tinyint(1) unsigned NOT NULL DEFAULT '0',
-    `functionalityComment` varchar(255)        NOT NULL DEFAULT '',
-    `easeOfUseComment`     varchar(255)        NOT NULL DEFAULT '',
-    `supportComment`       varchar(255)        NOT NULL DEFAULT '',
-    `documentationComment` varchar(255)        NOT NULL DEFAULT '',
-    `valueForMoneyComment` varchar(255)        NOT NULL DEFAULT '',
+    `id`              int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `extension_id`    int(11) unsigned          DEFAULT NULL,
+    `functionality`   int(3)                    DEFAULT NULL,
+    `ease_of_use`     int(3)                    DEFAULT NULL,
+    `support`         int(3)                    DEFAULT NULL,
+    `documentation`   int(3)                    DEFAULT NULL,
+    `valueForMoney`   int(3)                    DEFAULT NULL,
+    `overallScore`    int(3)                    DEFAULT NULL,
+    `usedFor`         varchar(280)              DEFAULT NULL,
+    `version`         varchar(10)               DEFAULT NULL,
+    `flagged`         tinyint(1)       NOT NULL,
+    `parent_id`       int(6)           NOT NULL,
+    `ipAddress`       varchar(20)               DEFAULT NULL,
+    `imported`        int(1)                    DEFAULT '0',
+    `title`           varchar(400)     NOT NULL DEFAULT '',
+    `alias`           varchar(400)     NOT NULL DEFAULT '',
+    `body`            mediumtext       NOT NULL,
+    `published`       tinyint(1)       NOT NULL DEFAULT '0',
+    `created_on`      datetime                  DEFAULT NULL,
+    `created_by`      int(11)          NOT NULL,
     PRIMARY KEY (`id`),
     KEY `Reviews` (`extension_id`),
     KEY `User Reviews` (`created_by`),
@@ -323,20 +318,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_suspect_ip_range`
     `created`    datetime         NOT NULL,
     `start`      char(45)         NOT NULL,
     `end`        char(45)         NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `#__jed_suspiciousips`
-(
-    `id`               int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `created_time`     datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `created_by`       int(11)          NOT NULL,
-    `checked_out`      int(11)          NOT NULL,
-    `checked_out_time` char(45)         NOT NULL,
-    `published`        tinyint(1)       NOT NULL DEFAULT '1',
-    `reason`           varchar(150)     NOT NULL,
-    `ipaddr`           varchar(23)      NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
@@ -471,3 +452,5 @@ VALUES ('com_jed');
 INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`,
                                     `text_prefix`)
 VALUES ('extension', 'com_jed.extension', 'id', 'title', '#__jed_extensions', 'COM_JED_TRANSACTION');
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+VALUES ('review', 'com_jed.review', 'id', 'title', '#__jed_reviews', 'COM_JED_TRANSACTION');

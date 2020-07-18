@@ -58,7 +58,8 @@ class JedFormFieldDevelopers extends JFormFieldList
 				$db->quoteName('#__users', 'users')
 				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('extensions.created_by')
 			)
-			->group($db->quoteName('extensions.created_by'));
+			->group($db->quoteName('extensions.created_by'))
+			->order($db->quoteName('username'));
 		$db->setQuery($query);
 
 		$options = $db->loadAssocList();

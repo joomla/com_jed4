@@ -54,7 +54,8 @@ class JedFormFieldExtensions extends JFormFieldList
 				)
 			)
 			->from($db->quoteName('#__jed_extensions'))
-			->group($db->quoteName('id'));
+			->group($db->quoteName('id'))
+			->order($db->quoteName('title'));
 		$db->setQuery($query);
 
 		$options = $db->loadAssocList();
