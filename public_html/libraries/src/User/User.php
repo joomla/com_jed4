@@ -639,15 +639,6 @@ class User extends \JObject
 
 			// Set the registration timestamp
 			$this->set('registerDate', \JFactory::getDate()->toSql());
-
-			// Check that username is not greater than 150 characters
-			$username = $this->get('username');
-
-			if (strlen($username) > 150)
-			{
-				$username = substr($username, 0, 150);
-				$this->set('username', $username);
-			}
 		}
 		else
 		{
@@ -680,6 +671,12 @@ class User extends \JObject
 			{
 				$array['password'] = $this->password;
 			}
+
+			// Prevent updating internal fields
+			unset($array['registerDate']);
+			unset($array['lastvisitDate']);
+			unset($array['lastResetTime']);
+			unset($array['resetCount']);
 		}
 
 		if (array_key_exists('params', $array))

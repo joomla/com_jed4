@@ -242,7 +242,7 @@ class PlgSystemPrivacyconsent extends JPlugin
 	 * Method is called after user data is deleted from the database
 	 *
 	 * @param   array    $user     Holds the user data
-	 * @param   boolean  $success  True if user was succesfully stored in the database
+	 * @param   boolean  $success  True if user was successfully stored in the database
 	 * @param   string   $msg      Message
 	 *
 	 * @return  boolean
@@ -425,7 +425,7 @@ class PlgSystemPrivacyconsent extends JPlugin
 
 	/**
 	 * Get privacy article ID. If the site is a multilingual website and there is associated article for the
-	 * current language, ID of the associlated article will be returned
+	 * current language, ID of the associated article will be returned
 	 *
 	 * @return  integer
 	 *
@@ -700,7 +700,7 @@ class PlgSystemPrivacyconsent extends JPlugin
 
 			$messageModel->notifySuperUsers(
 				JText::_('PLG_SYSTEM_PRIVACYCONSENT_NOTIFICATION_USER_PRIVACY_EXPIRED_SUBJECT'),
-				JText::sprintf('PLG_SYSTEM_PRIVACYCONSENT_NOTIFICATION_USER_PRIVACY_EXPIRED_MESSAGE', $user->user_id)
+				JText::sprintf('PLG_SYSTEM_PRIVACYCONSENT_NOTIFICATION_USER_PRIVACY_EXPIRED_MESSAGE', JFactory::getUser($user->user_id)->username)
 			);
 		}
 
