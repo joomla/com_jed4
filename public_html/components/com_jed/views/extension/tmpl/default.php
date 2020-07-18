@@ -69,7 +69,7 @@ defined('_JEXEC') or die;
 			<div class="jed-grid__item">
 				<p class="extension-tags font-size-s">
 					<span aria-hidden="true" class="icon-tag"></span>
-					<a href="#">Main category</a>,
+					<a href="#"><?php echo $this->item->category; ?></a>,
 					<a href="#">Sub category</a>,
 					<a href="#">Sub category</a>,
 					<a href="#">Sub category</a>,
@@ -121,7 +121,7 @@ defined('_JEXEC') or die;
 					</div>
 					<div>
 						<dt>Includes</dt>
-						<dd>Plugin, Module, Component</dd>
+						<dd><?php echo implode(', ', array_map('ucfirst', $this->item->extensionTypes)); ?></dd>
 					</div>
 					<div>
 						<dt>Compatibility</dt>

@@ -105,6 +105,12 @@ class JedModelExtension extends BaseDatabaseModel
 			$extension->body  = str_replace($extension->intro, '', $extension->body);
 		}
 
+		// Extend extension data
+		$extension->extensionTypes    = $this->getExtensionTypes($extension->id);
+		$extension->relatedCategories = $this->getRelatedCategories($extension->id);
+		$extension->phpVersion        = $this->getVersions($extension->id, 'php');
+		$extension->joomlaVersion     = $this->getVersions($extension->id, 'joomla');
+
 		return $extension;
 	}
 
@@ -127,4 +133,71 @@ class JedModelExtension extends BaseDatabaseModel
 
 		parent::populateState();
 	}
+
+	/**
+	 * Get the used extension types.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the types for
+	 *
+	 * @return  array  List of used extension types.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getExtensionTypes(int $extensionId): array
+	{
+		// Get the related categories
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('type'))
+			->from($db->quoteName('#__jed_extensions_types'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadColumn();
+	}
+
+	/**
+	 * Get the related categories.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the categories for
+	 *
+	 * @return  array  List of related categories.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getRelatedCategories(int $extensionId): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('category_id'))
+			->from($db->quoteName('#__jed_extensions_categories'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadColumn();
+	}
+
+	/**
+	 * Get the supported PHP versions.
+	 *
+	 * @param   int     $extensionId  The extension ID to get the PHP versions for
+	 * @param   string  $type         The type of version to get
+	 *
+	 * @return  array  List of supported PHP versions.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getVersions(int $extensionId, string $type): array
+	{
+		// Get the related categories
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('version'))
+			->from($db->quoteName('#__jed_extensions_' . $type . '_versions'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadColumn();
+	}
+
 }
