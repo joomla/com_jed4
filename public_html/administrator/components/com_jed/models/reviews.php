@@ -220,6 +220,12 @@ class JedModelReviews extends ListModel
 			$query->where($db->quoteName('reviews.created_by') . ' = ' . (int) $reviewer);
 		}
 
+		$flagged = $this->getState('filter.flagged');
+		if (is_numeric($flagged))
+		{
+			$query->where($db->quoteName('reviews.flagged') . ' = ' . (int) $flagged);
+		}
+
 		$ordering = $this->state->get('list.fullordering', 'reviews.id DESC');
 		$query->order($db->escape($ordering));
 

@@ -67,6 +67,19 @@
             <option value="">COM_JED_FILTER_IP_ADDRESS</option>
         </field>
 
+        <field
+                name="flagged"
+                type="list"
+                label="COM_JED_REVIEWS_FLAGGED"
+                default=""
+                size="1"
+                onchange="this.form.submit();"
+        >
+            <option value="">COM_JED_FILTER_FLAGGED</option>
+            <option value="1">COM_JED_REVIEWS_FLAGGED</option>
+            <option value="0">COM_JED_REVIEWS_NOT_FLAGGED</option>
+        </field>
+
     </fields>
 
     <fields name="list">
