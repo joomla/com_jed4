@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
@@ -26,8 +27,7 @@ class JedViewReview extends HtmlView
 	/**
 	 * Form with settings
 	 *
-	 * @var    form
-	 *
+	 * @var    Form
 	 * @since  4.0.0
 	 */
 	protected $form;
@@ -35,18 +35,16 @@ class JedViewReview extends HtmlView
 	/**
 	 * The item data.
 	 *
-	 * @var   CMSObject
-	 *
-	 * @since 4.0.0
+	 * @var    CMSObject
+	 * @since  4.0.0
 	 */
 	protected $item;
 
 	/**
 	 * The model state.
 	 *
-	 * @var   Registry
-	 *
-	 * @since 4.0.0
+	 * @var    Registry
+	 * @since  4.0.0
 	 */
 	protected $state;
 

@@ -8,10 +8,13 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Registry\Registry;
 
 /**
  * View for JED Reviews
@@ -24,36 +27,40 @@ class JedViewReviews extends HtmlView
 	/**
 	 * Form object for search filters
 	 *
-	 * @var     JForm
-	 * @since   4.0.0
+	 * @var    Form
+	 * @since  4.0.0
 	 */
 	public $filterForm;
+
 	/**
 	 * The active search filters
 	 *
-	 * @var     array
-	 * @since   4.0.0
+	 * @var    array
+	 * @since  4.0.0
 	 */
 	public $activeFilters;
+
 	/**
 	 * An array of items
 	 *
-	 * @var     array
-	 * @since   4.0.0
+	 * @var    array
+	 * @since  4.0.0
 	 */
 	protected $items;
+
 	/**
 	 * The pagination object
 	 *
-	 * @var     JPagination
-	 * @since   4.0.0
+	 * @var    Pagination
+	 * @since  4.0.0
 	 */
 	protected $pagination;
+
 	/**
 	 * The model state
 	 *
-	 * @var     object
-	 * @since   4.0.0
+	 * @var    Registry
+	 * @since  4.0.0
 	 */
 	protected $state;
 
@@ -62,10 +69,10 @@ class JedViewReviews extends HtmlView
 	 *
 	 * @param   string  $tpl  The template name
 	 *
-	 * @return string
+	 * @return  string
 	 *
-	 * @since  4.0.0
-	 * @throws Exception
+	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -102,14 +109,18 @@ class JedViewReviews extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		$canDo = ContentHelper::getActions('com_jed', 'review', $this->state->get('filter.published'));
+		$canDo = ContentHelper::getActions(
+			'com_jed', 'review', $this->state->get('filter.published')
+		);
 
 		ToolBarHelper::title(Text::_('COM_JED_TITLE_REVIEWS'), 'star');
 
 		if ($canDo->get('core.edit.state'))
 		{
 			ToolbarHelper::publish('reviews.publish', 'JTOOLBAR_PUBLISH', true);
-			ToolbarHelper::unpublish('reviews.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::unpublish(
+				'reviews.unpublish', 'JTOOLBAR_UNPUBLISH', true
+			);
 		}
 	}
 }
