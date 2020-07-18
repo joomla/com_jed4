@@ -55,6 +55,7 @@ class JedModelExtension extends BaseDatabaseModel
 						'extensions.supportLink',
 						'extensions.documentationLink',
 						'extensions.licenseLink',
+						'extensions.translationLink',
 						'users.name',
 						'categories.title'
 					],
@@ -77,6 +78,7 @@ class JedModelExtension extends BaseDatabaseModel
 						'supportLink',
 						'documentationLink',
 						'licenseLink',
+						'translationLink',
 						'developer',
 						'category',
 					]

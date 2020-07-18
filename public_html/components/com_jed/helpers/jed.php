@@ -83,20 +83,18 @@ class JedHelper
 		}
 
 		// Filename for small image
-		if ($size == 'small')
+		if ($size === 'small')
 		{
 			$imageSize = str_replace('.', '_resizeDown400px175px16.', $filename);
 		}
 
 		// Filename for large image
-		if ($size == 'large')
+		if ($size === 'large')
 		{
 			$imageSize = str_replace('.', '_resizeDown1200px525px16.', $filename);
 		}
 
 		// Use CDN url
-		$imageUrl = 'https://extensionscdn.joomla.org/cache/fab_image/' . $imageSize;
-
-		return $imageUrl;
+		return 'https://extensionscdn.joomla.org/cache/fab_image/' . $imageSize;
 	}
 }

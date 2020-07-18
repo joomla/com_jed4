@@ -94,6 +94,9 @@ defined('_JEXEC') or die;
 					<?php if ($this->item->licenseLink): ?>
 						<a href="<?php echo $this->item->licenseLink; ?>" class="button button--grey">License</a>
 					<?php endif; ?>
+					<?php if ($this->item->translationLink): ?>
+						<a href="<?php echo $this->item->translationLink; ?>" class="button button--grey">Translation</a>
+					<?php endif; ?>
 				</p>
 			</div>
 			<div class="jed-grid__item">
