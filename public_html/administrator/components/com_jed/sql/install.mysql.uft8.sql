@@ -332,3 +332,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_emails`
 )
     CHARSET = utf8
     COMMENT = 'E-mail templates';
+
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+VALUES ('review', 'com_jed.review', 'id', 'title', '#__jed_reviews', 'COM_JED_TRANSACTION');

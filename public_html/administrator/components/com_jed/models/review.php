@@ -73,7 +73,7 @@ class JedModelReview extends AdminModel
 	 *
 	 * @return  \JObject|boolean  Object on success, false on failure.
 	 *
-	 * @since   1.6
+	 * @since   4.0.0
 	 */
 	public function getItem($pk = null)
 	{

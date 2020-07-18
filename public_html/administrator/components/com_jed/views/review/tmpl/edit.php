@@ -27,7 +27,7 @@ JFactory::getDocument()->addScriptDeclaration("
 ");
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_jed&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="review-form" class="form-validate form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_jed&view=review&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="review-form" class="form-validate form-horizontal">
     <fieldset>
 		<?php echo $this->form->renderField('published'); ?>
     </fieldset>

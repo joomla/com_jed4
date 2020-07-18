@@ -21,7 +21,7 @@ $user       = Factory::getUser();
 $userId     = $user->get('id');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
-$canOrder   = $user->authorise('core.edit.state', 'com_jed.revews');
+$canOrder   = $user->authorise('core.edit.state', 'com_jed.reviews');
 $saveOrder  = $listOrder === 't.ordering';
 
 HTMLHelper::_('formbehavior.chosen', 'select');
