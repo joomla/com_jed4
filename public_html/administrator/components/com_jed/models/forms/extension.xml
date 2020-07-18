@@ -277,6 +277,41 @@
 
     </fieldset>
 
+    <fieldset name="image">
+
+        <field
+                name="logo"
+                type="media"
+                label="COM_JED_EXTENSIONS_LOGO"
+                class="input-xxlarge"
+                preview="true"
+                directory=""
+        />
+
+        <field
+                name="images"
+                type="subform"
+                label="COM_JED_EXTENSIONS_IMAGE"
+                multiple="true"
+                layout="joomla.form.field.subform.repeatable-table"
+                min="0"
+                max="10"
+        >
+            <form>
+                <field
+                        name="image"
+                        type="media"
+                        label="COM_JED_EXTENSIONS_IMAGE"
+                        class="input-xxlarge"
+                        preview="true"
+                        directory=""
+                />
+            </form>
+
+        </field>
+
+    </fieldset>
+
     <fieldset name="pricing">
 
         <field

@@ -182,8 +182,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_extensions_images`
     `extension_id` int(11) unsigned NOT NULL,
     `filename`     varchar(255)     NOT NULL,
     `order`        int(3)           NOT NULL,
-    `alt`          varchar(255)     NOT NULL DEFAULT '',
-    `created_by`   int(10)                   DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `Extension images` (`extension_id`),
     CONSTRAINT `Extension images` FOREIGN KEY (`extension_id`) REFERENCES `#__jed_extensions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

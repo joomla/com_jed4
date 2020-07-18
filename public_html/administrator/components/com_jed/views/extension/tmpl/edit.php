@@ -61,11 +61,11 @@ JS
     <div class="form-horizontal">
 	    <?php echo $this->form->renderField('created_by'); ?>
 	    <?php echo $this->form->renderField('jedChecker'); ?>
-		<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'general']); ?>
+		<?php echo HTMLHelper::_('bootstrap.startTabSet', 'extensionTab', ['active' => 'general']); ?>
 
 		<?php echo HTMLHelper::_(
 			'bootstrap.addTab',
-			'myTab',
+			'extensionTab',
 			'general',
 			Text::_('COM_JED_EXTENSIONS_INFO_TAB')
 		); ?>
@@ -85,7 +85,7 @@ JS
 
 	    <?php echo HTMLHelper::_(
 	    	'bootstrap.addTab',
-		    'myTab',
+		    'extensionTab',
 		    'info',
 		    Text::_('COM_JED_EXTENSIONS_CONTENT_TAB')
 	    ); ?>
@@ -99,8 +99,23 @@ JS
 	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
+		    'bootstrap.addTab',
+		    'extensionTab',
+		    'image',
+		    Text::_('COM_JED_EXTENSIONS_CONTENT_IMAGE')
+	    ); ?>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="form-horizontal">
+				    <?php echo $this->form->renderFieldset('image'); ?>
+                </div>
+            </div>
+        </div>
+	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+
+	    <?php echo HTMLHelper::_(
 	    	'bootstrap.addTab',
-		    'myTab',
+		    'extensionTab',
 		    'pricing',
 		    Text::_('COM_JED_EXTENSIONS_PRICING_TAB')
 	    ); ?>
@@ -115,7 +130,7 @@ JS
 
 	    <?php echo HTMLHelper::_(
 	    	'bootstrap.addTab',
-		    'myTab',
+		    'extensionTab',
 		    'reviews',
 		    Text::_('COM_JED_EXTENSIONS_REVIEWS_TAB')
 	    ); ?>
@@ -137,7 +152,7 @@ JS
 
 	    <?php echo HTMLHelper::_(
 	    	'bootstrap.addTab',
-		    'myTab',
+		    'extensionTab',
 		    'communication',
 		    Text::_('COM_JED_EXTENSIONS_COMMUNICATION_TAB')
 	    ); ?>
@@ -165,7 +180,7 @@ JS
 
 	    <?php echo HTMLHelper::_(
 	    	'bootstrap.addTab',
-		    'myTab',
+		    'extensionTab',
 		    'history',
 		    Text::_('COM_JED_EXTENSIONS_HISTORY_TAB')
 	    ); ?>

@@ -74,17 +74,11 @@ class JedModelExtension extends AdminModel
 		// Get the extension ID
 		$extensionId = $this->getState($this->getName() . '.id');
 
-		// Store the related categories
 		$this->storeRelatedCategories($extensionId, $data['related'] ?? []);
-
-		// Store the PHP versions
 		$this->storeVersions($extensionId, $data['phpVersion'] ?? [], 'php');
-
-		// Store the Joomla versions
 		$this->storeVersions($extensionId, $data['joomlaVersion'] ?? [], 'joomla');
-
-		// Store the extension types
 		$this->storeExtensionTypes($extensionId, $data['extensionTypes'] ?? []);
+		$this->storeImages($extensionId, $data['images'] ?? []);
 
 		return true;
 	}
@@ -225,6 +219,54 @@ class JedModelExtension extends AdminModel
 		array_walk($types,
 			static function ($type) use (&$query, $db, $extensionId) {
 				$query->values($extensionId . ',' . $db->quote($type));
+			});
+
+		$db->setQuery($query)
+			->execute();
+	}
+
+	/**
+	 * Store the images for an extension.
+	 *
+	 * @param   int    $extensionId  The extension ID to save the images for
+	 * @param   array  $images       The extension types to store
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function storeImages(int $extensionId, array $images): void
+	{
+		$db = $this->getDbo();
+
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__jed_extensions_images'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query)
+			->execute();
+
+		// Do not do anything else if no options are checked
+		if (empty($images))
+		{
+			return;
+		}
+
+		$query->clear()
+			->insert($db->quoteName('#__jed_extensions_images'))
+			->columns(
+				$db->quoteName(
+					[
+						'extension_id',
+						'filename',
+						'order'
+					]
+				)
+			);
+
+		array_walk($images,
+			static function ($image, $key) use (&$query, $db, $extensionId) {
+				$order = (int) str_replace('images', '', $key) + 1;
+				$query->values($extensionId . ',' . $db->quote($image['image']) . ',' . $order);
 			});
 
 		$db->setQuery($query)
@@ -428,6 +470,7 @@ class JedModelExtension extends AdminModel
 		$item->set('extensionTypes', $this->getExtensionTypes($item->id));
 		$item->set('body', nl2br($item->get('body')));
 		$item->set('history', $this->getHistory($item->id));
+		$item->set('images', $this->getImages($item->id));
 
 		return $item;
 	}
@@ -508,7 +551,6 @@ class JedModelExtension extends AdminModel
 	 */
 	public function getExtensionTypes(int $extensionId): array
 	{
-		// Get the related categories
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('type'))
@@ -517,6 +559,38 @@ class JedModelExtension extends AdminModel
 		$db->setQuery($query);
 
 		return $db->loadColumn();
+	}
+
+	/**
+	 * Get the images.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the images for
+	 *
+	 * @return  array  List of used images.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getImages(int $extensionId): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('filename'))
+			->from($db->quoteName('#__jed_extensions_images'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId)
+			->order($db->quoteName('order'));
+		$db->setQuery($query);
+
+		$items = $db->loadObjectList();
+		$images = [];
+
+		array_walk(
+			$items,
+			static function ($item, $key) use (&$images) {
+				$images['images' . $key]['image'] = $item->filename;
+			}
+		);
+
+		return $images;
 	}
 
 	/**
