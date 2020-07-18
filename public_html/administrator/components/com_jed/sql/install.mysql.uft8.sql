@@ -313,3 +313,22 @@ CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
     CONSTRAINT `User Bans` FOREIGN KEY (`user_id`) REFERENCES `jed4_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `#__jed_emails`
+(
+    `id`               INT(10)          NOT NULL AUTO_INCREMENT
+        COMMENT 'Auto increment ID',
+    `subject`          VARCHAR(150)     NOT NULL
+        COMMENT 'The subject',
+    `body`             TEXT             NOT NULL
+        COMMENT 'The body text',
+    `created`          DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `created_by`       INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `modified`         DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified_by`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `checked_out`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `checked_out_time` DATETIME         NOT NULL DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (`id`)
+)
+    CHARSET = utf8
+    COMMENT = 'E-mail templates';
