@@ -88,9 +88,9 @@ class JedViewExtensions extends HtmlView
 		$this->pagination    = $model->getPagination();
 		$this->filterForm    = $model->getFilterForm();
 		$this->activeFilters = $model->getActiveFilters();
+		$errors              = $model->getErrors();
 
-		// Check for errors.
-		if (count($errors = $model->getErrors()))
+		if ($errors && count($errors))
 		{
 			throw new RuntimeException(implode("\n", $errors), 500);
 		}
@@ -132,8 +132,12 @@ class JedViewExtensions extends HtmlView
 
 		if ($canDo->get('core.edit.state'))
 		{
-			ToolbarHelper::publish('extensions.publish', 'JTOOLBAR_PUBLISH', true);
-			ToolbarHelper::unpublish('extensions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::publish(
+				'extensions.publish', 'JTOOLBAR_PUBLISH', true
+			);
+			ToolbarHelper::unpublish(
+				'extensions.unpublish', 'JTOOLBAR_UNPUBLISH', true
+			);
 		}
 
 		if ($canDo->get('core.edit.state'))
