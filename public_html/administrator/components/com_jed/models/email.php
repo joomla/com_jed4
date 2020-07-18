@@ -52,7 +52,7 @@ class JedModelEmail extends AdminModel
 			['control' => 'jform', 'load_data' => $loadData]
 		);
 
-		if (!is_object($form))
+		if ( ! is_object($form))
 		{
 			return false;
 		}
@@ -83,11 +83,11 @@ class JedModelEmail extends AdminModel
 		$result['msg']   = '';
 		$result['state'] = 'error';
 
-		if (!$cids || !$email)
+		if ( ! $cids || ! $email)
 		{
 			$result['msg'] = Text::_('COM_JED_NO_EMAILS_FOUND');
 
-			if (!$email)
+			if ( ! $email)
 			{
 				$result['msg'] = Text::_('COM_JED_MISSING_EMAIL_ADDRESS');
 			}
@@ -116,7 +116,10 @@ class JedModelEmail extends AdminModel
 			{
 				$mail->clearAddresses();
 
-				if ($mail->sendMail($from, $fromName, $email, $details->subject, $details->body, true))
+				if ($mail->sendMail(
+					$from, $fromName, $email, $details->subject, $details->body,
+					true
+				))
 				{
 					$result['msg']   = Text::_('COM_JED_TESTEMAIL_SENT');
 					$result['state'] = '';
@@ -134,18 +137,27 @@ class JedModelEmail extends AdminModel
 	 * @param   int     $messageId    The message details to use for sending
 	 * @param   int     $developerId  The developer to send the message to
 	 * @param   int     $userId       The JED member sending the message
+	 * @param   int     $extensionId  The extension ID the message is about
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
 	 *
-	 * @throws  Exception
 	 */
-	public function sendEmail(string $body, int $messageId, int $developerId, int $userId): void
-	{
+	public function sendEmail(string $body, int $messageId, int $developerId,
+		int $userId, int $extensionId
+	): void {
 		// Get the developer details
 		$developer = User::getInstance($developerId);
-		$sender    = User::getInstance($userId);
+
+		if ($developer->get('id', null) === null)
+		{
+			throw new InvalidArgumentException(
+				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
+			);
+		}
+
+		$sender = User::getInstance($userId);
 
 		// Get the mail details
 		$mail    = $this->getItem($messageId);
@@ -171,7 +183,7 @@ class JedModelEmail extends AdminModel
 			throw new RuntimeException($result->getMessage());
 		}
 
-		$this->storeEmail($subject, $body, $developer, $sender);
+		$this->storeEmail($extensionId, $subject, $body, $developer, $sender);
 	}
 
 	/**
@@ -195,20 +207,23 @@ class JedModelEmail extends AdminModel
 	/**
 	 * Store the sent email.
 	 *
-	 * @param   string  $subject    The message subject
-	 * @param   string  $body       The message body
-	 * @param   User    $developer  The developer details
-	 * @param   User    $sender     The JED member details
+	 * @param   int     $extensionId  The extension ID the message is about
+	 * @param   string  $subject      The message subject
+	 * @param   string  $body         The message body
+	 * @param   User    $developer    The developer details
+	 * @param   User    $sender       The JED member details
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
 	 */
-	private function storeEmail(string $subject, string $body, User $developer, User $sender): void
-	{
+	private function storeEmail(int $extensionId, string $subject, string $body,
+		User $developer, User $sender
+	): void {
 		$emailTable = Table::getInstance('Emaillog', 'Table');
 		$emailTable->save(
 			[
+				'extension_id'    => $extensionId,
 				'subject'         => $subject,
 				'body'            => $body,
 				'developer_id'    => $developer->get('id'),
@@ -232,7 +247,9 @@ class JedModelEmail extends AdminModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_jed.edit.email.data', []);
+		$data = Factory::getApplication()->getUserState(
+			'com_jed.edit.email.data', []
+		);
 
 		if (0 === count($data))
 		{

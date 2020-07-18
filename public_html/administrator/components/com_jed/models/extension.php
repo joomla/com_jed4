@@ -537,13 +537,13 @@ class JedModelExtension extends AdminModel
 						'actionLogs.message_language_key',
 						'actionLogs.message',
 						'actionLogs.log_date',
-						'users.name'
+						'users.name',
 					],
 					[
 						'message_language_key',
 						'message',
 						'logDate',
-						'name'
+						'name',
 					]
 				)
 			)
@@ -571,6 +571,7 @@ class JedModelExtension extends AdminModel
 						'emailLogs.developer_email',
 						'emailLogs.created_by',
 						'emailLogs.created',
+						'emailLogs.developer_id',
 						'users.name'
 					],
 					[
@@ -581,6 +582,7 @@ class JedModelExtension extends AdminModel
 						'developerEmail',
 						'created_by',
 						'logDate',
+						'developerId',
 						'memberName'
 					]
 				)

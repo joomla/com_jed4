@@ -25,6 +25,7 @@ HTMLHelper::_('script', 'com_jed/jed.js', ['version' => 'auto', 'relative' => tr
 Text::script('COM_JED_EXTENSIONS_ERROR_DURING_SEND_EMAIL', true);
 Text::script('COM_JED_EXTENSIONS_MISSING_MESSAGE_ID', true);
 Text::script('COM_JED_EXTENSIONS_MISSING_DEVELOPER_ID', true);
+Text::script('COM_JED_EXTENSIONS_MISSING_EXTENSION_ID', true);
 
 $extensionUrl = Uri::root() . 'extension/' . $this->item->alias;
 $downloadUrl  = 'index.php?option=com_jed&task=extension.download&id=' . $this->item->id;
@@ -180,7 +181,7 @@ JS
                 <?php
                 foreach ($this->item->history as $history):
                     ?><tr><?php
-	                ?><td><?php echo $history->logDate; ?></td><?php
+	                ?><td><?php echo HTMLHelper::_('date', $history->logDate, Text::_('DATE_FORMAT_LC6')); ?></td><?php
 	                ?><td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_LOG_' . $history->type); ?></td><?php
 
                     if ($history->type === 'mail')
@@ -190,12 +191,12 @@ JS
                         <?php echo $history->body; ?>
                         </td><?php
                         ?><td><?php echo $history->memberName; ?></td><?php
-                        ?><td><?php echo $history->developerName; ?> &lt;<?php echo $history->developerEmail; ?>&gt;</td><?php
+                        ?><td><?php echo HTMLHelper::_('link', 'index.php?option=com_users&task=user.edit&id=' . $history->developerId, $history->developerName); ?> &lt;<?php echo $history->developerEmail; ?>&gt;</td><?php
                     }
                     elseif ($history->type === 'actionLog')
                     {
                         ?><td><?php echo ActionlogsHelper::getHumanReadableLogMessage($history); ?></td><?php
-                        ?><td><?php echo $history->name; ?></td><?php
+	                    ?><td><?php echo $history->name; ?></td><?php
                         ?><td></td><?php
                     }
                     ?></tr><?php

@@ -58,7 +58,8 @@ const jed = (function () {
      */
     jed.sendMessage = () => {
         const messageId = document.getElementById('jform_template').value,
-            developerId = document.getElementById('jform_created_by_id').value;
+            developerId = document.getElementById('jform_created_by_id').value,
+            extensionId = document.getElementById('jform_id').value;
 
         // Check if we have any values
         if (isNaN(parseInt(messageId)) === true) {
@@ -71,12 +72,18 @@ const jed = (function () {
             return false;
         }
 
+        if (isNaN(parseInt(extensionId)) === true) {
+            renderMessage(Joomla.JText._('COM_JED_EXTENSIONS_MISSING_EXTENSION_ID'), 'error');
+            return false;
+        }
+
         let data = new FormData();
         data.append('option', 'com_jed');
         data.append('task', 'ajax.sendMessage');
         data.append('body', tinyMCE.activeEditor.getContent());
         data.append('messageId', messageId);
         data.append('developerId', developerId);
+        data.append('extensionId', extensionId);
         data.append('userId', Joomla.getOptions('joomla.userId'));
         data.append('format', 'json');
 

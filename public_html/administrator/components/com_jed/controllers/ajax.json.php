@@ -71,11 +71,12 @@ class JedControllerAjax extends BaseController
 			$body        = $this->input->get('body', '', 'raw');
 			$messageId   = $this->input->getInt('messageId');
 			$developerId = $this->input->getInt('developerId');
+			$extensionId = $this->input->getInt('extensionId');
 			$userId      = $this->input->getInt('userId');
 
 			/** @var JedModelEmail $model */
 			$model = $this->getModel('Email', 'JedModel');
-			$model->sendEmail($body, $messageId, $developerId, $userId);
+			$model->sendEmail($body, $messageId, $developerId, $userId, $extensionId);
 			$message = Text::_('COM_JED_MESSAGE_SENT_TO_DEVELOPER');
 
 			$error = false;
