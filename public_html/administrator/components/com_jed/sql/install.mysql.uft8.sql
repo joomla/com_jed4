@@ -230,12 +230,13 @@ CREATE TABLE IF NOT EXISTS `#__jed_reviews`
     `ease_of_use`     int(3)                    DEFAULT NULL,
     `support`         int(3)                    DEFAULT NULL,
     `documentation`   int(3)                    DEFAULT NULL,
-    `value_for_money` int(3)                    DEFAULT NULL,
-    `used_for`        varchar(280)              DEFAULT NULL,
+    `valueForMoney`   int(3)                    DEFAULT NULL,
+    `overallScore`    int(3)                    DEFAULT NULL,
+    `usedFor`         varchar(280)              DEFAULT NULL,
     `version`         varchar(10)               DEFAULT NULL,
     `flagged`         tinyint(1)       NOT NULL,
     `parent_id`       int(6)           NOT NULL,
-    `ip_address`      varchar(20)               DEFAULT NULL,
+    `ipAddress`       varchar(20)               DEFAULT NULL,
     `imported`        int(1)                    DEFAULT '0',
     `title`           varchar(400)     NOT NULL DEFAULT '',
     `alias`           varchar(400)     NOT NULL DEFAULT '',
@@ -332,3 +333,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_emails`
 )
     CHARSET = utf8
     COMMENT = 'E-mail templates';
+
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+VALUES ('review', 'com_jed.review', 'id', 'title', '#__jed_reviews', 'COM_JED_TRANSACTION');
