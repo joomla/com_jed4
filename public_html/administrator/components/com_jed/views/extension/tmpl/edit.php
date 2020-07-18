@@ -197,6 +197,7 @@ JS
                     </thead>
                     <tbody>
                 <?php
+                if (isset($this->item->history)) :
                 foreach ($this->item->history as $history):
                     ?><tr><?php
 	                ?><td><?php echo HTMLHelper::_('date', $history->logDate, Text::_('DATE_FORMAT_LC6')); ?></td><?php
@@ -227,6 +228,7 @@ JS
                     }
                     ?></tr><?php
                 endforeach;
+                endif;
                 ?>
                     </tbody>
                 </table>
