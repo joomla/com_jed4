@@ -56,18 +56,22 @@ JFactory::getDocument()->addScriptDeclaration("
     <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_AUTHOR'); ?></td>
         <td>
-	        <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->userId; ?>" title="<?php echo $this->escape($this->item->username); ?>">
+	        <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->user_id; ?>" title="<?php echo $this->escape($this->item->username); ?>">
 				<?php echo $this->escape($this->item->username); ?>
             </a>
         </td>
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_EXTENSION'); ?></td>
-        <td><?php echo $this->item->extensionname; ?></td>
+        <td><a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $this->item->extension_id; ?>" title="<?php echo $this->escape($this->item->extensionname); ?>">
+		        <?php echo $this->escape($this->item->extensionname); ?>
+            </a></td>
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_EXTENSIONS_DEVELOPER'); ?></td>
-        <td><?php echo $this->item->developer; ?></td>
+        <td><a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->developer_id; ?>" title="<?php echo $this->escape($this->item->developer); ?>">
+		        <?php echo $this->escape($this->item->developer); ?>
+            </a></td>
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_VERSION'); ?></td>
@@ -115,6 +119,15 @@ JFactory::getDocument()->addScriptDeclaration("
     </tr>
 
     <tr>
+        <td><?php echo Text::_('COM_JED_REVIEWS_URL'); ?></td>
+        <td><?php echo $this->item->url; ?></td>
+    </tr>
+    <tr>
+        <td><?php echo Text::_('COM_JED_REVIEWS_USED_FOR'); ?></td>
+        <td><?php echo $this->item->usedFor; ?></td>
+    </tr>
+
+    <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_IP_ADDRESS'); ?></td>
         <td><?php echo $this->item->ipAddress; ?></td>
     </tr>
@@ -122,7 +135,7 @@ JFactory::getDocument()->addScriptDeclaration("
         <td><?php echo Text::_('COM_JED_REVIEWS_FLAGGED'); ?></td>
         <td>
 			<?php
-			echo (int) $this->item->flagged === 1
+			echo (int) $this->item->flagged === 1 && !is_null($item->ipAddress)
 				? HTMLHelper::_(
 					'link',
 					'https://batchrev.extensions.joomla.org/ipaddress/' . $this->item->ipAddress . '.html',
@@ -142,9 +155,5 @@ JFactory::getDocument()->addScriptDeclaration("
 				: Text::_('JNO');
 			?>
         </td>
-    </tr>
-    <tr>
-        <td><?php echo Text::_('COM_JED_REVIEWS_URL'); ?></td>
-        <td><?php echo $this->item->url; ?></td>
     </tr>
 </table>

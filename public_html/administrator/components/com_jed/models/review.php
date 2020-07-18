@@ -108,10 +108,10 @@ class JedModelReview extends AdminModel
 				'flagged',
 				'extension_id',
 				'created_by',
-				'userId',
+				'user_id',
 				'username',
 				'extensionname',
-				'developerId',
+				'developer_id',
 				'developer',
 			]
 		))
@@ -131,11 +131,15 @@ class JedModelReview extends AdminModel
 			->where($db->quoteName('reviews.id') . ' = ' . (int) $item->id);
 
 		$db->setQuery($query);
-		$data = $db->loadObject;
+		$data = $db->loadObject();
+
+		$item->developer_id = $data->developer_id;
 		$item->developer = $data->developer;
+		$item->user_id = $data->user_id;
+		$item->username = $data->username;
+		$item->extension_id = $data->extension_id;
+		$item->extensionname = $data->extensionname;
 
 		return $item;
 	}
-
-
 }

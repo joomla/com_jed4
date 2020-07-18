@@ -124,17 +124,17 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 								<?php // echo $item->overall_score; ?>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->userId; ?>" title="<?php echo $this->escape($item->username); ?>">
+                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->user_id; ?>" title="<?php echo $this->escape($item->username); ?>">
 									<?php echo $this->escape($item->username); ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $item->developerId; ?>" title="<?php echo $this->escape($item->extensionname); ?>">
+                                <a href="<?php echo 'index.php?option=com_jed&task=extension.edit&id=' . (int) $item->extension_id; ?>" title="<?php echo $this->escape($item->extensionname); ?>">
 		                            <?php echo $this->escape($item->extensionname); ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->developerId; ?>" title="<?php echo $this->escape($item->developer); ?>">
+                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->developer_id; ?>" title="<?php echo $this->escape($item->developer); ?>">
 		                            <?php echo $this->escape($item->developer); ?>
                                 </a>
                             </td>
@@ -143,7 +143,7 @@ HTMLHelper::_('formbehavior.chosen', 'select');
                             </td>
                             <td>
 								<?php
-                                echo (int) $item->flagged === 1
+                                echo (int) $item->flagged === 1 && !is_null($item->ipAddress)
                                     ? HTMLHelper::_(
                                             'link',
                                             'https://batchrev.extensions.joomla.org/ipaddress/' . $item->ipAddress . '.html',

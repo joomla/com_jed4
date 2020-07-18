@@ -149,10 +149,10 @@ class JedModelReviews extends ListModel
 				'flagged',
 				'extension_id',
 				'created_by',
-				'userId',
+				'user_id',
 				'username',
 				'extensionname',
-				'developerId',
+				'developer_id',
 				'developer',
 			]
 		))
