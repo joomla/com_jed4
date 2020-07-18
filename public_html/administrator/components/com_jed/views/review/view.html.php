@@ -90,7 +90,7 @@ class JedViewReview extends HtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		ToolBarHelper::title(Text::_('COM_JED_REVIEW_VIEW_EDIT_TITLE'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_REVIEW_VIEW_EDIT_TITLE'), 'star');
 
 		$canDo = ContentHelper::getActions('com_jed', 'review', $this->state->get('filter.published'));
 

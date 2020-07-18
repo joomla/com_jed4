@@ -33,9 +33,9 @@ class JedFormFieldIpaddresses extends JFormFieldList
 	 *
 	 * @return  array  List of IP addresses.
 	 *
+	 * @throws  RuntimeException
 	 * @since   4.0.0
 	 *
-	 * @throws  RuntimeException
 	 */
 	public function getOptions(): array
 	{
@@ -54,7 +54,8 @@ class JedFormFieldIpaddresses extends JFormFieldList
 				)
 			)
 			->from($db->quoteName('#__jed_reviews'))
-			->group($db->quoteName('ipAddress'));
+			->group($db->quoteName('ipAddress'))
+			->order($db->quoteName('ipAddress'));
 		$db->setQuery($query);
 
 		$options = $db->loadAssocList();

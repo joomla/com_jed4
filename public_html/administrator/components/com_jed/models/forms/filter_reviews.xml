@@ -14,6 +14,7 @@
                 name="published"
                 type="list"
                 label="JPUBLISHED"
+                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -27,6 +28,7 @@
                 name="reviewer"
                 type="jed.reviewers"
                 label="JAUTHOR"
+                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -38,6 +40,7 @@
                 name="extension"
                 type="jed.extensions"
                 label="COM_JED_EXTENSION"
+                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -49,6 +52,7 @@
                 name="developer"
                 type="jed.developers"
                 label="COM_JED_EXTENSIONS_DEVELOPER"
+                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -60,6 +64,7 @@
                 name="ipaddress"
                 type="jed.ipaddresses"
                 label="COM_JED_REVIEWS_IP_ADDRESS"
+                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -71,6 +76,7 @@
                 name="flagged"
                 type="list"
                 label="COM_JED_REVIEWS_FLAGGED"
+                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -84,27 +90,9 @@
 
     <fields name="list">
 
-        <field
-                name="fullordering"
-                type="list"
-                label="COM_CONTENT_LIST_FULL_ORDERING"
-                description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
-                onchange="this.form.submit();"
-                default="reviews.id DESC"
-        >
-            <option value="">JGLOBAL_SORT_BY</option>
-            <option value="reviews.`id` ASC">ID Ascending</option>
-            <option value="reviews.`id` DESC">ID Descending</option>
-            <option value="reviews.`published` ASC">State Ascending</option>
-            <option value="reviews.`published` DESC">State Descending</option>
-            <option value="reviews.`title` ASC">Title Ascending</option>
-            <option value="reviews.`title` DESC">Title Descending</option>
-
-        </field>
-
         <field name="limit"
                type="limitbox"
-               class="input-mini"
+               class="input-mini advancedSelect"
                default="25"
                onchange="this.form.submit();"
         />

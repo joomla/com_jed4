@@ -44,7 +44,7 @@ Factory::getDocument()->addScriptDeclaration("
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_SCORE'); ?></td>
-        <td>@TODO Overall Score Calculation</td>
+        <td><?php echo $this->item->overallScore; ?>@TODO Overall Score Calculation</td>
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_COMMENTS'); ?></td>

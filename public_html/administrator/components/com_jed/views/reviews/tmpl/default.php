@@ -23,7 +23,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 $canOrder  = $user->authorise('core.edit.state', 'com_jed.reviews');
 $saveOrder = $listOrder === 't.ordering';
 
-HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
+HTMLHelper::_('formbehavior.chosen');
 ?>
 
 <form action="<?php echo 'index.php?option=com_jed&view=reviews'; ?>" method="post" name="adminForm"
@@ -55,13 +55,13 @@ HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
 							<?php echo HTMLHelper::_('searchtools.sort', 'JPUBLISHED', 'reviews.published', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-							<?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_FIELD_CREATED_LABEL', 'reviews.created_date', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_FIELD_CREATED_LABEL', 'reviews.created_on', $listDirn, $listOrder); ?>
                         </th>
                         <th>
 							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_REVIEWS_TITLE', 'reviews.title', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_REVIEWS_SCORE', 'reviews.overall_score', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_REVIEWS_SCORE', 'reviews.overallScore', $listDirn, $listOrder); ?>
                         </th>
                         <th>
 							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_REVIEWS_AUTHOR', 'users.username', $listDirn, $listOrder); ?>
@@ -85,7 +85,7 @@ HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
                     </thead>
                     <tfoot>
                     <tr>
-                        <td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
+                        <td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
                     </tr>
                     </tfoot>
                     <tbody>
@@ -118,9 +118,8 @@ HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
                                 </a>
                             </td>
                             <td>
+	                            <?php echo $item->overallScore; ?>
                                 @TODO Overall score
-								<?php // echo $item->overall_score;
-								?>
                             </td>
                             <td>
                                 <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->userId; ?>" title="<?php echo $this->escape($item->username); ?>">

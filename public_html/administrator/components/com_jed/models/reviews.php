@@ -33,27 +33,22 @@ class JedModelReviews extends ListModel
 		{
 			$config['filter_fields'] = [
 				'published',
-				'reviews.published',
-				'created_by',
-				'reviews.created_by',
-				'created_on',
-				'reviews.created_on',
-				'title',
-				'reviews.title',
-				'score',
-				'reviews.score',
-				'developer',
-				'users.username',
 				'reviewer',
-				'users.id',
 				'extension',
-				'extensions.extension_id',
-				'title',
-				'extensions.title',
+				'developer',
 				'ipaddress',
-				'reviews.ipAddress',
-				'id',
-				'reviews.id',
+				'flagged',
+
+				'reviews.published',
+			    'reviews.created_on',
+			    'reviews.title',
+				'reviews.overallScore',
+			    'users.username',
+			    'extensions.title',
+			    'extensions.created_by',
+			    'reviews.ipAddress',
+			    'reviews.flagged',
+			    'reviews.id'
 			];
 		}
 

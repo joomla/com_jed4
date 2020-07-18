@@ -86,6 +86,9 @@ class JedViewReviews extends HtmlView
 
 		// Add the toolbar
 		$this->addToolBar();
+		$helper = new JedHelper;
+		$helper->addSubmenu('reviews');
+		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 	}
@@ -102,36 +105,12 @@ class JedViewReviews extends HtmlView
 	{
 		$canDo = ContentHelper::getActions('com_jed', 'review', $this->state->get('filter.published'));
 
-		ToolBarHelper::title(Text::_('COM_JED_TITLE_REVIEWS'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_TITLE_REVIEWS'), 'star');
 
 		if ($canDo->get('core.edit.state'))
 		{
 			ToolbarHelper::publish('review.publish', 'JTOOLBAR_PUBLISH', true);
 			ToolbarHelper::unpublish('review.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
-
-		ToolBarHelper::spacer();
-	}
-
-	/**
-	 * Returns an array of fields the table can be sorted by
-	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
-	 *
-	 * @since   3.0
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'reviews.published'     => Text::_('JPUBLISHED'),
-			'reviews.created_on'    => Text::_('JGLOBAL_FIELD_CREATED_DESC'),
-			'reviews.title'         => Text::_('COM_JED_REVIEWS_TITLE'),
-			'reviews.overall_score' => Text::_('COM_JED_REVIEWS_SCORE'),
-			'users.username'        => Text::_('COM_JED_REVIEWS_AUTHOR'),
-			'extensions.title'      => Text::_('COM_JED_EXTENSION'),
-			'reviews.ipAddress'     => Text::_('COM_JED_REVIEWS_IP_ADDRESS'),
-			'reviews.flagged'       => Text::_('COM_JED_REVIEWS_FLAGGED'),
-			'reviews.id'            => Text::_('JGRID_HEADING_ID')
-		);
 	}
 }
