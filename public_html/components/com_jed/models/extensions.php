@@ -10,6 +10,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Extensions model.
@@ -123,11 +124,20 @@ class JedModelExtensions extends ListModel
 
 		}
 
-		$includes = $this->getState('filter.includes');
+		// Filter by a single or group of articles.
+		$extensionId = $this->getState('filter.extensionId');
 
-		if ($includes)
+		if (is_numeric($extensionId))
 		{
-
+			$type = $this->getState('filter.extensionId.include', true) ? '= ' : '<> ';
+			$query->where('extensions.id ' . $type . (int) $extensionId);
+		}
+		elseif (is_array($extensionId))
+		{
+			$extensionId = ArrayHelper::toInteger($extensionId);
+			$extensionId = implode(',', $extensionId);
+			$type        = $this->getState('filter.extensionId.include', true) ? 'IN' : 'NOT IN';
+			$query->where('extensions.id ' . $type . ' (' . $extensionId . ')');
 		}
 
 		$compatibility = $this->getState('filter.compatibility');
@@ -170,6 +180,13 @@ class JedModelExtensions extends ListModel
 		if ($favourites)
 		{
 
+		}
+
+		$developer = $this->getState('filter.developer');
+
+		if ($developer)
+		{
+			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developer);
 		}
 
 		return $query;
@@ -256,13 +273,15 @@ class JedModelExtensions extends ListModel
 	{
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . json_encode($this->getState('filter.category'));
-		$id .= ':' . json_encode($this->getState('filter.includes'));
+		$id .= ':' . serialize($this->getState('filter.extensionId'));
+		$id .= ':' . $this->getState('filter.extensionId.include');
 		$id .= ':' . $this->getState('filter.compatibility');
 		$id .= ':' . $this->getState('filter.type');
 		$id .= ':' . $this->getState('filter.hasDemo');
 		$id .= ':' . $this->getState('filter.newUpdated');
 		$id .= ':' . $this->getState('filter.score');
 		$id .= ':' . $this->getState('filter.favourites');
+		$id .= ':' . $this->getState('filter.developer');
 
 		return parent::getStoreId($id);
 	}

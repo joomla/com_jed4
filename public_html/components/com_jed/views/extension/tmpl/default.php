@@ -185,27 +185,29 @@ defined('_JEXEC') or die;
 	</div>
 </div>
 
-<div class="jed-cards-wrapper margin-bottom-half">
-	<h2 class="heading heading--m">Other extensions by PWT Extensions (3)</h2>
-	<div class="jed-container">
-		<ul class="jed-grid jed-grid--1-1-1">
-			<?php for ($i = 0; $i < 3; $i++): ?>
-				<?php echo LayoutHelper::render('cards.extension', [
-					'image'         => 'https://extensionscdn.joomla.org/cache/fab_image/596c962509d22_resizeDown400px175px16.jpg',
-					'title'         => 'Akeeba Backup',
-					'developer'     => 'Akeeba Ltd',
-					'score'         => 99,
-					'reviews'       => 1061,
-					'compatibility' => ['3', '4 alpha'],
-					'description'   => 'Akeeba Backup Core is the most widely used open-source backup component for the Joomla! CMS. Its mission is simple: create a site backup that can be restored on any Joomla!-capable server.',
-					'type'          => 'Free',
-					'category'      => 'Site Security',
-					'link'          => '#'
-				]); ?>
-			<?php endfor; ?>
-		</ul>
+<?php if ($this->item->otherExtensions): ?>
+	<div class="jed-cards-wrapper margin-bottom-half">
+		<h2 class="heading heading--m">Other extensions by <?php echo $this->item->developer; ?> (<?php echo count($this->item->otherExtensions); ?>)</h2>
+		<div class="jed-container">
+			<ul class="jed-grid jed-grid--1-1-1">
+				<?php foreach ($this->item->otherExtensions as $item): ?>
+					<?php echo LayoutHelper::render('cards.extension', [
+						'image'         => $item->image,
+						'title'         => $item->title,
+						'developer'     => $item->developer,
+						'score'         => $item->score,
+						'reviews'       => $item->reviews,
+						'compatibility' => $item->compatibility,
+						'description'   => $item->intro,
+						'type'          => $item->type,
+						'category'      => $item->category,
+						'link'          => Route::_('index.php?option=com_jed&view=extension&id=' . $item->id)
+					]); ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 	</div>
-</div>
+<?php endif; ?>
 
 <div class="jed-cards-wrapper margin-bottom-half">
 	<div class="jed-container">

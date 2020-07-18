@@ -56,6 +56,7 @@ class JedModelExtension extends BaseDatabaseModel
 						'extensions.documentationLink',
 						'extensions.licenseLink',
 						'extensions.translationLink',
+						'extensions.created_by',
 						'users.name',
 						'categories.id',
 						'categories.title'
@@ -80,6 +81,7 @@ class JedModelExtension extends BaseDatabaseModel
 						'documentationLink',
 						'licenseLink',
 						'translationLink',
+						'developerId',
 						'developer',
 						'categoryId',
 						'category',
@@ -112,6 +114,14 @@ class JedModelExtension extends BaseDatabaseModel
 		$extension->relatedCategories = $this->getRelatedCategories($extension->id);
 		$extension->phpVersion        = $this->getPhpVersions($extension->id);
 		$extension->joomlaVersion     = $this->getJoomlaVersions($extension->id);
+
+		// Get other extensions from this developer
+		/** @var JedModelExtensions $extensionsModel */
+		$extensionsModel = BaseDatabaseModel::getInstance('Extensions', 'JedModel', array('ignore_request' => true));
+		$extensionsModel->setState('filter.developer', $extension->developerId);
+		$extensionsModel->setState('filter.extensionId', $extension->id);
+		$extensionsModel->setState('filter.extensionId.include', false);
+		$extension->otherExtensions = $extensionsModel->getItems();
 
 		return $extension;
 	}
