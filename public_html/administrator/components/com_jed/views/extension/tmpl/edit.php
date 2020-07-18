@@ -9,9 +9,8 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -53,7 +52,7 @@ Factory::getDocument()
 JS
 );
 ?>
-<form action="<?php echo Route::_('index.php?option=com_jed&view=extension&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="index.php?option=com_jed&view=extension&layout=edit&id=<?php echo (int) $this->item->id; ?>"
       method="post" name="adminForm" id="extension-form" class="form-validate">
 
 	<?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
