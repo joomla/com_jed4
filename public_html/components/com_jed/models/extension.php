@@ -23,7 +23,7 @@ class JedModelExtension extends BaseDatabaseModel
 	/**
 	 * Function to get a specific extension.
 	 *
-	 * @param   int  $pk  The ID of the item
+	 * @param   integer  $pk  The ID of the item
 	 *
 	 * @return stdClass|mixed The data
 	 * @since 4.0.0
@@ -57,6 +57,7 @@ class JedModelExtension extends BaseDatabaseModel
 						'extensions.licenseLink',
 						'extensions.translationLink',
 						'users.name',
+						'categories.id',
 						'categories.title'
 					],
 					[
@@ -80,6 +81,7 @@ class JedModelExtension extends BaseDatabaseModel
 						'licenseLink',
 						'translationLink',
 						'developer',
+						'categoryId',
 						'category',
 					]
 				)
@@ -108,8 +110,8 @@ class JedModelExtension extends BaseDatabaseModel
 		// Extend extension data
 		$extension->extensionTypes    = $this->getExtensionTypes($extension->id);
 		$extension->relatedCategories = $this->getRelatedCategories($extension->id);
-		$extension->phpVersion        = $this->getVersions($extension->id, 'php');
-		$extension->joomlaVersion     = $this->getVersions($extension->id, 'joomla');
+		$extension->phpVersion        = $this->getPhpVersions($extension->id);
+		$extension->joomlaVersion     = $this->getJoomlaVersions($extension->id);
 
 		return $extension;
 	}
@@ -169,8 +171,44 @@ class JedModelExtension extends BaseDatabaseModel
 	{
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
-			->select($db->quoteName('category_id'))
-			->from($db->quoteName('#__jed_extensions_categories'))
+			->select(
+				$db->quoteName(
+					[
+						'categories.id',
+						'categories.title',
+					],
+					[
+						'id',
+						'title',
+					]
+				)
+			)
+			->from($db->quoteName('#__jed_extensions_categories', 'extensionsCategories'))
+			->leftJoin(
+				$db->quoteName('#__categories', 'categories')
+				. ' ON ' . $db->quoteName('categories.id') . ' = ' . $db->quoteName('extensionsCategories.category_id')
+			)
+			->where($db->quoteName('extensionsCategories.extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
+	}
+
+	/**
+	 * Get the supported Joomla versions.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the Joomla versions for
+	 *
+	 * @return  array  List of supported PHP versions.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getJoomlaVersions(int $extensionId): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('REPLACE(' . $db->quoteName('version') . ', "0.0", "x")')
+			->from($db->quoteName('#__jed_extensions_joomla_versions'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query);
 
@@ -180,20 +218,18 @@ class JedModelExtension extends BaseDatabaseModel
 	/**
 	 * Get the supported PHP versions.
 	 *
-	 * @param   int     $extensionId  The extension ID to get the PHP versions for
-	 * @param   string  $type         The type of version to get
+	 * @param   int  $extensionId  The extension ID to get the PHP versions for
 	 *
 	 * @return  array  List of supported PHP versions.
 	 *
 	 * @since   4.0.0
 	 */
-	public function getVersions(int $extensionId, string $type): array
+	public function getPhpVersions(int $extensionId): array
 	{
-		// Get the related categories
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
-			->select($db->quoteName('version'))
-			->from($db->quoteName('#__jed_extensions_' . $type . '_versions'))
+			->select('REPLACE(' . $db->quoteName('version') . ', "0", "x")')
+			->from($db->quoteName('#__jed_extensions_php_versions'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query);
 

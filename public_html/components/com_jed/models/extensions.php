@@ -199,8 +199,8 @@ class JedModelExtensions extends ListModel
 			// Format the image
 			$item->image = JedHelper::formatImage($item->image, 'small');
 
-			// Make array of compatibility
-			$item->compatibility = JedHelper::formatCompatibility($item->compatibility);
+			// Make array of compatibility @TODO: get data from joined table
+			$item->compatibility = '';
 
 			// First character of type uppercase
 			$item->type = ucfirst($item->type);

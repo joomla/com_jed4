@@ -9,6 +9,7 @@
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die;
 
@@ -69,11 +70,10 @@ defined('_JEXEC') or die;
 			<div class="jed-grid__item">
 				<p class="extension-tags font-size-s">
 					<span aria-hidden="true" class="icon-tag"></span>
-					<a href="#"><?php echo $this->item->category; ?></a>,
-					<a href="#">Sub category</a>,
-					<a href="#">Sub category</a>,
-					<a href="#">Sub category</a>,
-					<a href="#">Sub category</a>
+					<a href="<?php echo Route::_('index.php?option=com_jed&view=extensions&category=' . $this->item->categoryId); ?>"><?php echo $this->item->category; ?></a>,
+					<?php foreach ($this->item->relatedCategories as $category): ?>
+						<a href="<?php echo Route::_('index.php?option=com_jed&view=extensions&category=' . $category->id); ?>"><?php echo $category->title; ?></a>,
+					<?php endforeach; ?>
 				</p>
 				<p class="font-size-xl">
 					<?php echo $this->item->intro; ?>
@@ -124,8 +124,12 @@ defined('_JEXEC') or die;
 						<dd><?php echo implode(', ', array_map('ucfirst', $this->item->extensionTypes)); ?></dd>
 					</div>
 					<div>
-						<dt>Compatibility</dt>
-						<dd><?php echo JedHelper::formatCompatibility($this->item->compatibility, true, true); ?></dd>
+						<dt>Joomla! version(s)</dt>
+						<dd><?php echo implode(', ', $this->item->joomlaVersion); ?></dd>
+					</div>
+					<div>
+						<dt>PHP version(s)</dt>
+						<dd><?php echo implode(', ', $this->item->phpVersion); ?></dd>
 					</div>
 				</dl>
 			</div>
