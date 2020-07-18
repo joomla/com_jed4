@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `#__jed_extensions`
     `supportLink`             varchar(255)              DEFAULT NULL,
     `documentationLink`       varchar(255)              DEFAULT NULL,
     `licenseLink`             varchar(255)              DEFAULT NULL,
+    `translationLink`         varchar(255)              DEFAULT NULL,
     `versions`                varchar(255)              DEFAULT NULL,
     `popular`                 tinyint(1)                DEFAULT NULL,
     `requiresRegistration`    tinyint(1)                DEFAULT NULL,
