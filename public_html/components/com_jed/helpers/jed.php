@@ -31,14 +31,14 @@ class JedHelper
 	 */
 	static public function formatCompatibility($compatibilityJson, $joomla = false, $string = false)
 	{
+		if (!$compatibilityJson)
+		{
+			return '';
+		}
+
 		$jedConfig           = ComponentHelper::getComponent('com_jed')->getParams();
 		$compatibility       = json_decode($compatibilityJson);
 		$formatCompatibility = [];
-
-		if (!$compatibility)
-		{
-			return $formatCompatibility;
-		}
 
 		// Get Joomla versions from config
 		$joomlaVersions       = $jedConfig->get('joomla_versions');
