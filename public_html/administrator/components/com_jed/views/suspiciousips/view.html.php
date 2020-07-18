@@ -2,15 +2,19 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * View for JED Suspicions IPs.
@@ -26,12 +30,12 @@ class JedViewSuspiciousips extends HtmlView
 	 * @var     array
 	 * @since   4.0.0
 	 */
-	protected $items;
+	protected $items = [];
 
 	/**
 	 * The pagination object
 	 *
-	 * @var     JPagination
+	 * @var     Pagination
 	 * @since   4.0.0
 	 */
 	protected $pagination;
@@ -39,7 +43,7 @@ class JedViewSuspiciousips extends HtmlView
 	/**
 	 * The model state
 	 *
-	 * @var     object
+	 * @var     CMSObject
 	 * @since   4.0.0
 	 */
 	protected $state;
@@ -47,7 +51,7 @@ class JedViewSuspiciousips extends HtmlView
 	/**
 	 * Form object for search filters
 	 *
-	 * @var     JForm
+	 * @var     Form
 	 * @since   4.0.0
 	 */
 	public $filterForm;
@@ -58,34 +62,47 @@ class JedViewSuspiciousips extends HtmlView
 	 * @var     array
 	 * @since   4.0.0
 	 */
-	public $activeFilters;
+	public $activeFilters = [];
+
+	/**
+	 * The sidebar
+	 *
+	 * @var    string
+	 * @since  4.0.0
+	 */
+	protected $sidebar = '';
 
 	/**
 	 * Display method of suspicious IPs view
 	 *
 	 * @param   string  $tpl  The template name
 	 *
-	 * @return string
+	 * @return  string
 	 *
-	 * @since  4.0.0
-	 * @throws Exception
+	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	public function display($tpl = null)
 	{
-		$this->state         = $this->get('State');
-		$this->items         = $this->get('Items');
-		$this->pagination    = $this->get('Pagination');
-		$this->filterForm    = $this->get('FilterForm');
-		$this->activeFilters = $this->get('ActiveFilters');
+		/** @var JedModelSuspiciousips $model */
+		$model = $this->getModel();
+		$this->state         = $model->getState();
+		$this->items         = $model->getItems();
+		$this->pagination    = $model->getPagination();
+		$this->filterForm    = $model->getFilterForm();
+		$this->activeFilters = $model->getActiveFilters();
+		$errors              = $model->getErrors();
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
+		if ($errors && count($errors))
 		{
-			throw new Exception(implode("\n", $errors), 500);
+			throw new RuntimeException(implode("\n", $errors), 500);
 		}
 
-		// Add the toolbar
 		$this->addToolBar();
+
+		$helper = new JedHelper;
+		$helper->addSubmenu('suspiciousips');
+		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 	}
@@ -102,27 +119,22 @@ class JedViewSuspiciousips extends HtmlView
 	{
 		$canDo = ContentHelper::getActions('com_jed', 'suspiciousip', $this->state->get('filter.published'));
 
-		JToolBarHelper::title(Text::_('COM_JED_TITLE_SUSPICIOUSIPS'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_TITLE_SUSPICIOUSIPS'), 'plugin.png');
 
 		if ($canDo->get('core.create'))
 		{
-			JToolbarHelper::addNew('suspiciousip.add');
+			ToolbarHelper::addNew('suspiciousip.add');
 		}
 
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
 		{
-			JToolbarHelper::editList('suspiciousip.edit');
+			ToolbarHelper::editList('suspiciousip.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::publish('suspiciousips.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('suspiciousips.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::publish('suspiciousips.publish', 'JTOOLBAR_PUBLISH', true);
+			ToolbarHelper::unpublish('suspiciousips.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
-
-		JToolBarHelper::cancel('suspiciousips.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::spacer();
 	}
-
-
 }

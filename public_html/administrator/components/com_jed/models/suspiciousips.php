@@ -2,22 +2,20 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
-use Joomla\Utilities\ArrayHelper;
 
 /**
  * Jed Suspiciousips Model
  *
- * @package  Jed
+ * @package  JED
  * @since    4.0.0
  */
 class JedModelSuspiciousips extends ListModel
@@ -30,39 +28,16 @@ class JedModelSuspiciousips extends ListModel
 	 * @see     ListModel
 	 * @since   4.0.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
-				'id', 'suspiciousips.id',
-				'created_date', 'suspiciousips.created_date',
-				'created_by', 'suspiciousips.created_by',
-				'checked_out', 'suspiciousips.checked_out',
-				'checked_out_time', 'suspiciousips.checked_out_time',
-				'published', 'suspiciousips.published',
-				'reason', 'suspiciousips.reason',
-				'ipaddr', 'suspiciousips.ipaddr',
-
-			);
+			$config['filter_fields'] = [
+				'published'
+			];
 		}
 
 		parent::__construct($config);
-	}
-
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param   string  $type    The table type to instantiate
-	 * @param   string  $prefix  A prefix for the table class name. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  Table  A database object
-	 * @since   4.0.0
-	 */
-	public function getTable($type = 'Suspiciousip', $prefix = 'Table', $config = array())
-	{
-		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -109,7 +84,6 @@ class JedModelSuspiciousips extends ListModel
 	 */
 	protected function getStoreId($id = '')
 	{
-		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.state');
@@ -160,6 +134,4 @@ class JedModelSuspiciousips extends ListModel
 
 		return $query;
 	}
-
-
 }

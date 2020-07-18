@@ -2,7 +2,7 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,7 +13,7 @@ use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Session\Session;
 
 /**
- * Suspiciousips list controller class.
+ * Suspicious IPs list controller class.
  *
  * @since 4.0.0
  */
@@ -33,9 +33,7 @@ class JedControllerSuspiciousips extends AdminController
 	 */
 	public function getModel($name = 'Suspiciousip', $prefix = 'JedModel', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
+		return parent::getModel($name, $prefix, $config);
 	}
 
 	/**

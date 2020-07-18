@@ -12,44 +12,28 @@
 
         <field
                 name="published"
-                type="status"
-                label="COM_EXAMPLE_FILTER_STATE"
-                description="COM_EXAMPLE_FILTER_STATE_DESC"
+                type="list"
+                label="JPUBLISHED"
+                class="advancedSelect"
+                default=""
+                size="1"
                 onchange="this.form.submit();"
         >
             <option value="">JOPTION_SELECT_PUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
         </field>
-
 
     </fields>
 
     <fields name="list">
 
-        <field
-                name="fullordering"
-                type="list"
-                label="COM_CONTENT_LIST_FULL_ORDERING"
-                description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
-                onchange="this.form.submit();"
-                default="t.id DESC"
-        >
-            <option value="">JGLOBAL_SORT_BY</option>
-            <option value="suspiciousips.`id` ASC">COM_JED_EXTENSIONS_ID_ASCENDING</option>
-            <option value="suspiciousips.`id` DESC">COM_JED_EXTENSIONS_ID_DESCENDING</option>
-            <option value="suspiciousips.`published` ASC">COM_JED_SUSPICIOUSIPS_PUBLISHED_ASCENDING</option>
-            <option value="suspiciousips.`published` DESC">COM_JED_SUSPICIOUSIPS_PUBLISHED_DESCENDING</option>
-            <option value="suspiciousips.`ipaddr` ASC">COM_JED_SUSPICIOUSIPS_IPADDR_ASCENDING</option>
-            <option value="suspiciousips.`ipaddr` DESC">COM_JED_SUSPICIOUSIPS_IPADDR_DESCENDING</option>
-
-        </field>
-
         <field name="limit"
                type="limitbox"
-               class="input-mini"
+               class="input-mini advancedSelect"
                default="25"
                onchange="this.form.submit();"
         />
 
     </fields>
-
 </form>

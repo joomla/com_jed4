@@ -8,14 +8,13 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\Controller\FormController;
+
 /**
- * Suspiciousips list controller class.
+ * Suspicious IP controller class.
  *
  * @since 4.0.0
  */
-
-use Joomla\CMS\MVC\Controller\FormController;
-
 class JedControllerSuspiciousip extends FormController
 {
 }
