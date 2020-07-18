@@ -200,7 +200,7 @@ JS
                 if (isset($this->item->history)) :
                 foreach ($this->item->history as $history):
                     ?><tr><?php
-	                ?><td><?php echo HTMLHelper::_('date', $history->logDate, Text::_('DATE_FORMAT_LC6')); ?></td><?php
+	                ?><td><?php echo HTMLHelper::_('date', $history->logDate, Text::_('COM_JED_DATETIME_FORMAT')); ?></td><?php
 	                ?><td><?php echo Text::_('COM_JED_EXTENSION_HISTORY_LOG_' . $history->type); ?></td><?php
 
                     if ($history->type === 'mail')
