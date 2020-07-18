@@ -12,7 +12,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\Router\Route;
 
 /** @var @this JedViewSuspiciousips $this */
 
@@ -43,22 +42,19 @@ HTMLHelper::_('formbehavior.chosen');
 				<table class="table table-striped">
                     <thead>
 					<tr>
-						<th width="20">
-							<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);"/>
-						</th>
+                        <th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+                        <th>
+							<?php echo Text::_('COM_JED_SUSPICIOUSIPS_IPADDR'); ?>
+                        </th>
+                        <th>
+							<?php echo Text::_('COM_JED_SUSPICIOUSIPS_REASON'); ?>
+                        </th>
 						<th>
 							<?php echo Text::_('COM_JED_SUSPICIOUSIPS_CREATED_DATE'); ?>
 						</th>
 						<th>
 							<?php echo Text::_('COM_JED_SUSPICIOUSIPS_CREATED_BY'); ?>
 						</th>
-						<th>
-							<?php echo Text::_('COM_JED_SUSPICIOUSIPS_IPADDR'); ?>
-						</th>
-						<th>
-							<?php echo Text::_('COM_JED_SUSPICIOUSIPS_REASON'); ?>
-						</th>
-
 						<th width="5">
 							<?php echo Text::_('JGRID_HEADING_ID'); ?>
 						</th>
@@ -73,26 +69,35 @@ HTMLHelper::_('formbehavior.chosen');
 					<?php
 
 					foreach ($this->items as $i => $item):
-						$canEdit = $user->authorise('core.edit', 'com_jed.suspiciousip.' . $item->id);
-						$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-						$canEditOwn = $user->authorise('core.edit.own', 'com_jed.suspiciousip.' . $item->id) && $item->created_by == $userId;
-						$canChange = $user->authorise('core.edit.state', 'com_jed.suspiciousip.' . $item->id) && $canCheckin;
+						$canEdit    = $user->authorise('core.edit', 'com_jed.suspiciousip.' . $item->id);
+						$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out === $userId || $item->checked_out === 0;
+						$canEditOwn = $user->authorise('core.edit.own', 'com_jed.suspiciousip.' . $item->id) && $item->created_by === $userId;
+						$canChange  = $user->authorise('core.edit.state', 'com_jed.suspiciousip.' . $item->id) && $canCheckin;
 						?>
 						<tr>
 							<td>
 								<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 							</td>
-							<td>
-								<?php echo $item->created_time; ?>
-							</td>
-							<td>
-								<?php echo $item->created_by; ?>
-							</td>
-							<td>
-								<?php echo $item->ipaddr; ?>
-							</td>
-							<td>
+                            <td>
+                                <div class="pull-left break-word">
+		                            <?php if ($item->checked_out) : ?>
+			                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'suspiciousips.', $canCheckin); ?>
+		                            <?php endif; ?>
+		                            <?php if ($canEdit) : ?>
+			                            <?php echo HTMLHelper::_('link', 'index.php?option=com_jed&task=suspiciousip.edit&id=' . $item->id, $item->ipaddr); ?>
+		                            <?php else : ?>
+			                            <?php echo $this->escape($item->ipaddr); ?>
+		                            <?php endif; ?>
+                                </div>
+                            </td>
+                            <td>
 								<?php echo $item->reason; ?>
+                            </td>
+							<td>
+								<?php echo HTMLHelper::_('date', $item->created_time, Text::_('COM_JED_DATETIME_FORMAT')); ?>
+							</td>
+							<td>
+								<?php echo $item->creator; ?>
 							</td>
 							<td>
 								<?php echo $item->id; ?>

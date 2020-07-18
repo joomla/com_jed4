@@ -14,7 +14,7 @@
                 name="published"
                 type="list"
                 label="JPUBLISHED"
-                class="advancedSelect"
+                class="chzn-color-state"
                 default=""
                 size="1"
                 onchange="this.form.submit();"

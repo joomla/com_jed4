@@ -19,8 +19,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * View for JED Suspicions IPs.
  *
- * @package   Joomla.JED
- * @since     4.0.0
+ * @since  4.0.0
  */
 class JedViewSuspiciousips extends HtmlView
 {
@@ -115,11 +114,11 @@ class JedViewSuspiciousips extends HtmlView
 	 * @since  4.0.0
 	 * @throws Exception
 	 */
-	protected function addToolBar()
+	protected function addToolBar(): void
 	{
 		$canDo = ContentHelper::getActions('com_jed', 'suspiciousip', $this->state->get('filter.published'));
 
-		ToolBarHelper::title(Text::_('COM_JED_TITLE_SUSPICIOUSIPS'), 'plugin.png');
+		ToolBarHelper::title(Text::_('COM_JED_TITLE_SUSPICIOUSIPS'), 'tree');
 
 		if ($canDo->get('core.create'))
 		{
@@ -135,6 +134,7 @@ class JedViewSuspiciousips extends HtmlView
 		{
 			ToolbarHelper::publish('suspiciousips.publish', 'JTOOLBAR_PUBLISH', true);
 			ToolbarHelper::unpublish('suspiciousips.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::checkin('suspiciousips.checkin');
 		}
 	}
 }

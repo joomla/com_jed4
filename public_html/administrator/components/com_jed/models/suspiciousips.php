@@ -53,13 +53,19 @@ class JedModelSuspiciousips extends ListModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$search = $this->getUserStateFromRequest(
+			$this->context . '.filter.search', 'filter_search'
+		);
 		$this->setState('filter.search', $search);
 
-		$accessId = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', null, 'int');
+		$accessId = $this->getUserStateFromRequest(
+			$this->context . '.filter.access', 'filter_access', null, 'int'
+		);
 		$this->setState('filter.access', $accessId);
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$published = $this->getUserStateFromRequest(
+			$this->context . '.filter.state', 'filter_state', '', 'string'
+		);
 		$this->setState('filter.state', $published);
 
 		// Load the parameters.
@@ -90,6 +96,7 @@ class JedModelSuspiciousips extends ListModel
 
 		return parent::getStoreId($id);
 	}
+
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -105,17 +112,46 @@ class JedModelSuspiciousips extends ListModel
 
 		// Select some fields
 		$query->select(
-			$db->quoteName([
-				'id', 'created_time', 'created_by', 'checked_out', 'checked_out_time', 'published', 'reason', 'ipaddr'
-			]));
+			$db->quoteName(
+				[
+					'suspiciousips.id',
+					'suspiciousips.created',
+					'suspiciousips.created_by',
+					'suspiciousips.checked_out',
+					'suspiciousips.checked_out_time',
+					'suspiciousips.published',
+					'suspiciousips.reason',
+					'suspiciousips.ipaddr',
+					'editors.name',
+					'users.name'
+				],
+				[
+					'id',
+					'created_time',
+					'created_by',
+					'checked_out',
+					'checked_out_time',
+					'published',
+					'reason',
+					'ipaddr',
+					'editor',
+					'creator'
+				]
+			)
+		);
 
-		// From the #__jed_suspiciousips table
-		$query->from($db->quoteName('#__jed_suspiciousips') . ' AS suspiciousips');
+		$query->from($db->quoteName('#__jed_suspiciousips', 'suspiciousips'))
+			->leftJoin($db->quoteName('#__users', 'editors')
+				. ' ON ' . $db->quoteName('editors.id') . ' = ' . $db->quoteName('suspiciousips.checked_out')
+			)
+			->leftJoin($db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('suspiciousips.created_by')
+			);
 
 		// Filter by search in id
 		$search = $this->getState('filter.search');
 
-		if (!empty($search))
+		if ( ! empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
 			{
