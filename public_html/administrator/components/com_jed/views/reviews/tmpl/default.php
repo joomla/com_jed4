@@ -119,7 +119,6 @@ HTMLHelper::_('formbehavior.chosen');
                             </td>
                             <td>
 	                            <?php echo $item->overallScore; ?>
-                                @TODO Overall score
                             </td>
                             <td>
                                 <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->userId; ?>" title="<?php echo $this->escape($item->username); ?>">
