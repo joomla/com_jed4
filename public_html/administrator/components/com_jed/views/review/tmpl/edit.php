@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 /** @var JedViewReview $this */
 
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('formbehavior.chosen', 'advancedSelect');
+HTMLHelper::_('formbehavior.chosen');
 
 Factory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)

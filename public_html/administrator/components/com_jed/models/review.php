@@ -48,9 +48,9 @@ class JedModelReview extends AdminModel
 	 *
 	 * @return      mixed   The data for the form.
 	 *
+	 * @since       4.0.0
 	 * @throws      Exception
 	 *
-	 * @since       4.0.0
 	 */
 	protected function loadFormData()
 	{

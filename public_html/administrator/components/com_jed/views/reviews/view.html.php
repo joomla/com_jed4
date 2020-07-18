@@ -64,9 +64,8 @@ class JedViewReviews extends HtmlView
 	 *
 	 * @return string
 	 *
-	 * @throws Exception
 	 * @since  4.0.0
-	 *
+	 * @throws Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -98,8 +97,8 @@ class JedViewReviews extends HtmlView
 	 *
 	 * @return void
 	 *
-	 * @throws Exception
 	 * @since  4.0.0
+	 * @throws Exception
 	 */
 	protected function addToolBar()
 	{
@@ -109,8 +108,8 @@ class JedViewReviews extends HtmlView
 
 		if ($canDo->get('core.edit.state'))
 		{
-			ToolbarHelper::publish('review.publish', 'JTOOLBAR_PUBLISH', true);
-			ToolbarHelper::unpublish('review.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::publish('reviews.publish', 'JTOOLBAR_PUBLISH', true);
+			ToolbarHelper::unpublish('reviews.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 	}
 }

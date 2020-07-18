@@ -40,15 +40,15 @@ class JedModelReviews extends ListModel
 				'flagged',
 
 				'reviews.published',
-			    'reviews.created_on',
-			    'reviews.title',
+				'reviews.created_on',
+				'reviews.title',
 				'reviews.overallScore',
-			    'users.username',
-			    'extensions.title',
-			    'extensions.created_by',
-			    'reviews.ipAddress',
-			    'reviews.flagged',
-			    'reviews.id'
+				'users.username',
+				'extensions.title',
+				'extensions.created_by',
+				'reviews.ipAddress',
+				'reviews.flagged',
+				'reviews.id'
 			];
 		}
 
@@ -194,30 +194,35 @@ class JedModelReviews extends ListModel
 		}
 
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where($db->quoteName('reviews.published') . ' = ' . (int) $published);
 		}
 
 		$extension = $this->getState('filter.extension');
+
 		if (is_numeric($extension))
 		{
 			$query->where($db->quoteName('reviews.extension_id') . ' = ' . (int) $extension);
 		}
 
 		$developer = $this->getState('filter.developer');
+
 		if (is_numeric($developer))
 		{
 			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developer);
 		}
 
 		$reviewer = $this->getState('filter.reviewer');
+
 		if (is_numeric($reviewer))
 		{
 			$query->where($db->quoteName('reviews.created_by') . ' = ' . (int) $reviewer);
 		}
 
 		$flagged = $this->getState('filter.flagged');
+
 		if (is_numeric($flagged))
 		{
 			$query->where($db->quoteName('reviews.flagged') . ' = ' . (int) $flagged);

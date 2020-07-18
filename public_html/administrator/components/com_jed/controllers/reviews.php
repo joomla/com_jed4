@@ -34,8 +34,8 @@ class JedControllerReviews extends AdminController
 	 *
 	 * @return  object    The Model
 	 *
-	 * @throws  Exception
 	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	public function getModel($name = 'Review', $prefix = 'JedModel', $config = ['ignore_request' => true])
 	{

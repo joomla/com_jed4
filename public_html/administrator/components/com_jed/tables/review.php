@@ -21,6 +21,7 @@ class TableReview extends Table
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  $db  A database connector object
+	 *
 	 * @since   4.0.0
 	 */
 	public function __construct($db)

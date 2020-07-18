@@ -57,9 +57,8 @@ class JedViewReview extends HtmlView
 	 *
 	 * @return  void
 	 *
-	 * @throws  Exception
-	 *
 	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -76,7 +75,8 @@ class JedViewReview extends HtmlView
 		}
 
 		$this->addToolbar();
-		parent::display($tpl);
+
+		return parent::display($tpl);
 	}
 
 	/**
@@ -85,6 +85,7 @@ class JedViewReview extends HtmlView
 	 * @return  void
 	 *
 	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	protected function addToolbar(): void
 	{
