@@ -11,7 +11,7 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die;
 
 /**
- * Jed Helper
+ * JED Helper
  *
  * @since  4.0.0
  */
@@ -25,25 +25,25 @@ class JedHelper
 	 * @return  void
 	 *
 	 * @since   4.0.0
-	 *
 	 * @throws  Exception
 	 */
 	public function addSubmenu($vName): void
 	{
 		JHtmlSidebar::addEntry(
-			Text::_('COM_JED_TITLE_HOME'), 'index.php?option=com_jed&view=home', $vName === 'home'
+			Text::_('COM_JED_TITLE_HOME'), 'index.php?option=com_jed&view=home',
+			$vName === 'home'
 		);
 		JHtmlSidebar::addEntry(
-			Text::_('COM_JED_TITLE_EXTENSIONS'), 'index.php?option=com_jed&view=extensions', $vName === 'extensions'
+			Text::_('COM_JED_TITLE_EXTENSIONS'),
+			'index.php?option=com_jed&view=extensions', $vName === 'extensions'
 		);
 		JHtmlSidebar::addEntry(
-			Text::_('COM_JED_TITLE_REVIEWS'), 'index.php?option=com_jed&view=reviews', $vName === 'reviews'
+			Text::_('COM_JED_TITLE_REVIEWS'),
+			'index.php?option=com_jed&view=reviews', $vName === 'reviews'
 		);
 		JHtmlSidebar::addEntry(
-			Text::_('COM_JED_TITLE_TICKETS'), 'index.php?option=com_jed&view=tickets', $vName === 'tickets'
-		);
-		JHtmlSidebar::addEntry(
-			Text::_('COM_JED_TITLE_SUSPICIOUSIPS'), 'index.php?option=com_jed&view=suspiciousips', $vName === 'suspiciousips'
+			Text::_('COM_JED_TITLE_TICKETS'),
+			'index.php?option=com_jed&view=tickets', $vName === 'tickets'
 		);
 	}
 }

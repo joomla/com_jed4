@@ -313,17 +313,3 @@ CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
     CONSTRAINT `User Bans` FOREIGN KEY (`user_id`) REFERENCES `jed4_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE IF NOT EXISTS `#__jed_suspiciousips`
-(
-    `id`                int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `created_time`      datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `created_by`        int(11)          NOT NULL,
-    `checked_out`       int(11)          NOT NULL,
-    `checked_out_time`  char(45)         NOT NULL,
-    `published`         tinyint(1)       NOT NULL DEFAULT '1',
-    `reason`            varchar(150)     NOT NULL,
-    `ipaddr`            varchar(23)      NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
