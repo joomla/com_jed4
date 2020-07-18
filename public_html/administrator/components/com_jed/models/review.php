@@ -132,7 +132,7 @@ class JedModelReview extends AdminModel
 		$db->setQuery($query);
 		$data = $db->loadObject();
 
-		$item->developerId   = $data->developeId;
+		$item->developerId   = $data->developerId;
 		$item->developer     = $data->developer;
 		$item->userId        = $data->userId;
 		$item->username      = $data->username;
