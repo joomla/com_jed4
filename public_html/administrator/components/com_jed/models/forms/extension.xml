@@ -196,6 +196,13 @@
         />
 
         <field
+                name="translationLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_TRANSLATION_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
                 name="video"
                 type="text"
                 label="COM_JED_EXTENSIONS_VIDEO_LINK"
