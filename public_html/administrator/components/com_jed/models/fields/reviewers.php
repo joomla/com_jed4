@@ -58,7 +58,8 @@ class JedFormFieldReviewers extends JFormFieldList
 				$db->quoteName('#__users', 'users')
 				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('reviews.created_by')
 			)
-			->group($db->quoteName('reviews.created_by'));
+			->group($db->quoteName('reviews.created_by'))
+			->order($db->quoteName('username'));
 		$db->setQuery($query);
 
 		$options = $db->loadAssocList();
