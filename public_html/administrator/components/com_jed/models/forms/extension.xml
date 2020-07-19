@@ -319,6 +319,50 @@
                 showon="downloadIntegrationType!:0"
         />
 
+        <field
+                name="downloadIntegrationType1"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE1"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:2[OR]downloadIntegrationType:3[OR]downloadIntegrationType:4"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
+        <field
+                name="downloadIntegrationType2"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE2"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:3[OR]downloadIntegrationType:4"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
+        <field
+                name="downloadIntegrationType3"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE3"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:2[OR]downloadIntegrationType:4"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
+        <field
+                name="downloadIntegrationType4"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE4"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:2[OR]downloadIntegrationType:3"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
     </fieldset>
 
     <fieldset name="reviews" addfieldpath="/administrator/components/com_jed/models/fields">
