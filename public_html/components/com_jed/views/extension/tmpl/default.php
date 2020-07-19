@@ -32,8 +32,8 @@ defined('_JEXEC') or die;
 				</div>
 				<div class="jed-extension-header__item">
 					<div class="jed-extension-header__buttons button-group">
-						<?php if ($this->item->homepageLink): ?>
-							<a href="<?php echo $this->item->homepageLink; ?>" class="button button--blue button--big">Get extension</a>
+						<?php if ($this->item->downloadLink): ?>
+							<a href="<?php echo $this->item->downloadLink; ?>" class="button button--blue button--big">Get extension</a>
 						<?php endif; ?>
 
 						<a href="#" class="button button--blue button--big button--icon-only">
@@ -79,8 +79,8 @@ defined('_JEXEC') or die;
 						<?php echo $this->item->intro; ?>
 					</p>
 					<p class="button-group">
-						<?php if ($this->item->downloadLink): ?>
-							<a href="<?php echo $this->item->downloadLink; ?>" class="button button--grey">Download</a>
+						<?php if ($this->item->homepageLink): ?>
+							<a href="<?php echo $this->item->homepageLink; ?>" class="button button--grey">Homepage</a>
 						<?php endif; ?>
 						<?php if ($this->item->demoLink): ?>
 							<a href="<?php echo $this->item->demoLink; ?>" class="button button--grey">Demo</a>
