@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="review_details">
+        <field
+                name="id"
+                type="hidden"
+                default="0"
+                required="true"
+                readonly="true"
+        />
+
+        <field
+                name="published"
+                type="list"
+                label="JPUBLISHED"
+                class="chzn-color-state advancedSelect"
+                default="1"
+                size="1"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+    </fieldset>
+</form>

@@ -301,6 +301,16 @@ CREATE TABLE IF NOT EXISTS `#__jed_tickets`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE IF NOT EXISTS  `#__jed_users` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `developerName`     VARCHAR(100)    NULL,
+    `user_id`           int(11)         NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `User ID` (`user_id`),
+    CONSTRAINT `User Link` FOREIGN KEY (`user_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
 CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
 (
     `id`               int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -310,8 +320,8 @@ CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
     `apply_start_time` datetime    DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `User Bans` (`user_id`),
-    CONSTRAINT `User Access` FOREIGN KEY (`user_id`) REFERENCES `jed4_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `User Bans` FOREIGN KEY (`user_id`) REFERENCES `jed4_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT `User Access` FOREIGN KEY (`user_id`) REFERENCES `#__jed4_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `User Bans` FOREIGN KEY (`user_id`) REFERENCES `#__jed4_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
