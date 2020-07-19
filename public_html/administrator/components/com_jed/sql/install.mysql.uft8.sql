@@ -125,7 +125,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_extensions`
     `intro`                   varchar(255)     NOT NULL DEFAULT '',
     `category_id`             int(11)          NOT NULL DEFAULT '0',
     `logo`                    varchar(255)     NOT NULL DEFAULT '' COMMENT 'The extension logo',
-    `communityChoice`         tinyint(1)       NOT NULL DEFAULT '0',
     `approvedNotes`           varchar(255)     NOT NULL DEFAULT '',
     `approvedReason`          varchar(4)       NOT NULL DEFAULT '',
     `publishedNotes`          varchar(255)     NOT NULL DEFAULT '',

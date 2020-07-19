@@ -93,7 +93,30 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 		                <?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
                     </td>
                     <td class="center" width="50">
-		                <?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'extensions.', $canChange); ?>
+	                    <?php
+	                    switch ($item->published)
+	                    {
+		                    // Rejected
+		                    case '-1':
+			                    $icon = 'unpublish';
+			                    break;
+		                    // Approved
+		                    case '1':
+			                    $icon = 'publish';
+			                    break;
+		                    // Awaiting response
+		                    case '2':
+			                    $icon = 'expired';
+			                    break;
+		                    // Pending
+		                    case '0':
+		                    default:
+			                    $icon = 'pending';
+			                    break;
+
+	                    }
+	                    echo '<span class="icon-' . $icon . '" aria-hidden="true"></span>';
+	                    ?>
                     </td>
                     <td>
 		                <?php

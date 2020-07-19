@@ -120,11 +120,6 @@ class JedViewExtensions extends HtmlView
 
 		ToolBarHelper::title(Text::_('COM_JED_TITLE_EXTENSIONS'), 'play');
 
-		if ($canDo->get('core.create'))
-		{
-			ToolbarHelper::addNew('extension.add');
-		}
-
 		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
 		{
 			ToolbarHelper::editList('extension.edit');
@@ -132,19 +127,7 @@ class JedViewExtensions extends HtmlView
 
 		if ($canDo->get('core.edit.state'))
 		{
-			ToolbarHelper::publish(
-				'extensions.publish', 'JTOOLBAR_PUBLISH', true
-			);
-			ToolbarHelper::unpublish(
-				'extensions.unpublish', 'JTOOLBAR_UNPUBLISH', true
-			);
-		}
-
-		if ($canDo->get('core.edit.state'))
-		{
 			ToolbarHelper::checkin('extensions.checkin');
 		}
-
-		ToolBarHelper::cancel('extensions.cancel', 'JTOOLBAR_CLOSE');
 	}
 }

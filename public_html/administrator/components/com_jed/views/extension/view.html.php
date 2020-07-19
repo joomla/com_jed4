@@ -93,14 +93,13 @@ class JedViewExtension extends HtmlView
 		$canDo = ContentHelper::getActions('com_jed', 'extension');
 
 		$title = !empty($this->item->title) ? $this->item->title : Text::_('JTOOLBAR_NEW');
-		ToolBarHelper::title($title, 'stack article');
+		ToolBarHelper::title($title, 'play');
 
 		// If not checked out, can save the item.
 		if ($canDo->get('core.edit') || $canDo->get('core.create'))
 		{
 			ToolBarHelper::apply('extension.apply');
 			ToolBarHelper::save('extension.save');
-			ToolbarHelper::save2new('extension.save2new');
 		}
 
 		$title = 'JTOOLBAR_CANCEL';

@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -141,5 +142,12 @@ class JedViewHome extends HtmlView
 	private function addToolbar(): void
 	{
 		ToolBarHelper::title(Text::_('COM_JED'));
+
+		$user  = Factory::getUser();
+
+		if ($user->authorise('core.admin', 'com_jed') || $user->authorise('core.options', 'com_jed'))
+		{
+			ToolbarHelper::preferences('com_jed');
+		}
 	}
 }
