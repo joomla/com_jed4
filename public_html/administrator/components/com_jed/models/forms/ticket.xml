@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<form>
+	<field
+			name="id"
+			type="text"
+			class="readonly"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC"
+			size="10"
+			default="0"
+			readonly="true"/>
+
+	<field
+			name="subject"
+			type="text"
+			label="COM_JED_EMAIL_SUBJECT_LABEL"
+			class="input-xxlarge"
+			size="60"
+			required="true"/>
+
+	<field
+			name="body"
+			type="editor"
+			label="COM_JED_EMAIL_BODY_LABEL"
+			filter="JComponentHelper::filterText"
+			buttons="true"
+			required="true"/>
+</form>
