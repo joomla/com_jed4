@@ -149,18 +149,18 @@ class JedModelExtension extends AdminModel
 	): void {
 		$db = $this->getDbo();
 
-		// Delete any existing relations
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__jed_extensions_categories'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query)
 			->execute();
 
-		// If there are no categories, return
 		if (empty($relatedCategoryIds))
 		{
 			return;
 		}
+
+		$relatedCategoryIds = array_slice($relatedCategoryIds, 0,5);
 
 		$query->clear()
 			->insert($db->quoteName('#__jed_extensions_categories'))
