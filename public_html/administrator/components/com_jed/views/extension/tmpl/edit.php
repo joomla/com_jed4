@@ -126,6 +126,7 @@ JS
             <div class="span12">
                 <div class="form-horizontal">
 				    <?php echo $this->form->renderField('downloadIntegrationType'); ?>
+				    <?php echo $this->form->renderField('requiresRegistration'); ?>
 				    <?php echo $this->form->renderField('downloadIntegrationUrl'); ?>
                     <h3><?php echo Text::_('COM_JED_EXTENSIONS_DOWNLOAD_ALTERNATIVE_DOWNLOAD'); ?></h3>
 				    <?php echo $this->form->renderField('downloadIntegrationType1'); ?>
