@@ -57,7 +57,7 @@ Factory::getDocument()->addScriptDeclaration("
     <tr>
         <td><?php echo Text::_('COM_JED_REVIEWS_AUTHOR'); ?></td>
         <td>
-            <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->userId; ?>" title="<?php echo $this->escape($this->item->username); ?>">
+            <a href="<?php echo 'index.php?option=com_jed&task=user.edit&id=' . (int) $this->item->userId; ?>" title="<?php echo $this->escape($this->item->username); ?>">
 				<?php echo $this->escape($this->item->username); ?>
             </a>
         </td>
@@ -70,7 +70,7 @@ Factory::getDocument()->addScriptDeclaration("
     </tr>
     <tr>
         <td><?php echo Text::_('COM_JED_EXTENSIONS_DEVELOPER'); ?></td>
-        <td><a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $this->item->developerId; ?>" title="<?php echo $this->escape($this->item->developer); ?>">
+        <td><a href="<?php echo 'index.php?option=com_jed&task=user.edit&id=' . (int) $this->item->developerId; ?>" title="<?php echo $this->escape($this->item->developer); ?>">
 				<?php echo $this->escape($this->item->developer); ?>
             </a></td>
     </tr>

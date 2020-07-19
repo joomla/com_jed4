@@ -49,21 +49,24 @@ HTMLHelper::_('formbehavior.chosen');
                     <thead>
                     <tr>
                         <th>
-							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_NAME', 'users.name', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_NAME', 'users.name', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_USERNAME', 'users.username', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_USERNAME', 'users.username', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_DEVELOPER_NAME', 'jed_users.developerName', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_DEVELOPER_NAME', 'jed_users.developerName', $listDirn, $listOrder); ?>
                         </th>
                         <th>
 							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_PUBLISHED_EXTENSIONS', 'publishedExtensions', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_PUBLISHED_Reviews', 'publishedReviews', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_PUBLISHED_REVIEWS', 'publishedReviews', $listDirn, $listOrder); ?>
                         </th>
-                        <th width="5">
+                        <th>
+		                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_REGISTER_DATE', 'users.registerDate', $listDirn, $listOrder); ?>
+                        </th>
+                        <th width="6">
 							<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'users.id', $listDirn, $listOrder); ?>
                         </th>
                     </tr>
@@ -90,7 +93,7 @@ HTMLHelper::_('formbehavior.chosen');
 								<?php echo $item->name; ?>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->id; ?>" title="<?php echo $this->escape($item->username); ?>">
+                                <a href="<?php echo 'index.php?option=com_jed&task=user.edit&id=' . (int) $item->id; ?>" title="<?php echo $this->escape($item->username); ?>">
 									<?php echo $this->escape($item->username); ?>
                                 </a>
                             </td>
@@ -98,14 +101,17 @@ HTMLHelper::_('formbehavior.chosen');
 								<?php echo $item->developerName; ?>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_jed&view=extensions&filter[developer]=' . (int) $item->id; ?>" title="Published Reviews by <?php echo $this->escape($item->username); ?>">
+                                <a href="<?php echo 'index.php?option=com_jed&view=extensions&filter[developer]=' . (int) $item->id; ?>" title="<?php echo Text::_('COM_JED_USERS_EXTENSIONS_BY') . ' ' . $this->escape($item->username); ?>">
 									<?php echo $item->publishedExtensions; ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_jed&view=reviews&filter[reviewer]=' . (int) $item->id; ?>" title="Published Reviews by <?php echo $this->escape($item->username); ?>">
+                                <a href="<?php echo 'index.php?option=com_jed&view=reviews&filter[reviewer]=' . (int) $item->id; ?>" title="<?php echo Text::_('COM_JED_USERS_REVIEWS_BY') . ' ' . $this->escape($item->username); ?>">
 									<?php echo $item->publishedReviews; ?>
                                 </a>
+                            </td>
+                            <td>
+		                        <?php echo HTMLHelper::_('date', $item->registerDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
                             </td>
                             <td>
 								<?php echo $item->id; ?>

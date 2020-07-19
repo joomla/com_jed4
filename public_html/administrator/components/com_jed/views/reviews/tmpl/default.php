@@ -121,7 +121,7 @@ HTMLHelper::_('formbehavior.chosen');
 								<?php echo $item->overallScore; ?>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->userId; ?>" title="<?php echo $this->escape($item->username); ?>">
+                                <a href="<?php echo 'index.php?option=com_jed&task=user.edit&id=' . (int) $item->userId; ?>" title="<?php echo $this->escape($item->username); ?>">
 									<?php echo $this->escape($item->username); ?>
                                 </a>
                             </td>
@@ -131,7 +131,7 @@ HTMLHelper::_('formbehavior.chosen');
                                 </a>
                             </td>
                             <td>
-                                <a href="<?php echo 'index.php?option=com_users&task=user.edit&id=' . (int) $item->developerId; ?>" title="<?php echo $this->escape($item->developer); ?>">
+                                <a href="<?php echo 'index.php?option=com_jed&task=user.edit&id=' . (int) $item->developerId; ?>" title="<?php echo $this->escape($item->developer); ?>">
 									<?php echo $this->escape($item->developer); ?>
                                 </a>
                             </td>

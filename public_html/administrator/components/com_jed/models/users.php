@@ -39,6 +39,7 @@ class JedModelUsers extends ListModel
 				'users.id',
 				'users.name',
 				'users.username',
+				'users.registerDate',
 				'jed_users.developerName',
 				'publishedExtensions',
 				'publishedReviews',
@@ -127,12 +128,14 @@ class JedModelUsers extends ListModel
 				'users.id',
 				'users.name',
 				'users.username',
+				'users.registerDate',
 				'jed_users.developerName',
 			],
 			[
 				'id',
 				'name',
 				'username',
+				'registerDate',
 				'developerName',
 			]
 		))
