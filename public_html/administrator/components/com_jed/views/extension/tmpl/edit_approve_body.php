@@ -10,5 +10,6 @@ defined('_JEXEC') or die;
 
 ?>
 <div class="container-fluid">
+    <div class="text-error" id="js-approve-error"></div>
 	<?php echo $this->form->renderFieldset('approve'); ?>
 </div>

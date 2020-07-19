@@ -115,18 +115,6 @@ class JedModelExtension extends AdminModel
 			->execute();
 	}
 
-	public function validate($form, $data, $group = null)
-	{
-		if (isset($data['approve']['approved']) && (int) $data['approved']['approve'] === 3)
-		{
-			$form->setFieldAttribute('required', 'true', $group);
-		}
-
-		return parent::validate(
-			$form, $data, $group
-		);
-	}
-
 	/**
 	 * Remove published reasons.
 	 *

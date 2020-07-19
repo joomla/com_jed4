@@ -13,6 +13,6 @@ use Joomla\CMS\Language\Text;
 <button type="button" class="btn" data-dismiss="modal">
 	<?php echo Text::_('JCANCEL'); ?>
 </button>
-<button type="submit" class="btn btn-success" onclick="Joomla.submitbutton('extension.publish');">
+<button type="button" class="btn btn-success" onclick="jed.submitPublishedState(<?php echo $this->item->id; ?>);">
 	<?php echo Text::_('JAPPLY'); ?>
 </button>

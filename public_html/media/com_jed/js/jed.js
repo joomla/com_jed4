@@ -194,8 +194,139 @@ const jed = (function () {
         return false;
     };
 
+    /**
+     * Store the approved state
+     *
+     * @param extensionId
+     * @returns {boolean}
+     */
+    jed.submitApprovedState = function (extensionId) {
+        document.getElementById('js-approve-error').innerHTML = '';
+        const approve = Array.from(document.querySelectorAll("[name^=\"jform[approve]\"]"));
+
+        if (parseInt(approve[0].value) === 3 && approve[1].value.length === 0) {
+            document.getElementById('js-approve-error').innerHTML = Joomla.JText._('COM_JED_EXTENSIONS_EXTENSION_APPROVED_REASON_REQUIRED', 'At least one reason must be given');
+
+            return false;
+        }
+
+        let data = new FormData();
+        data.append('option', 'com_jed');
+        data.append('task', 'ajax.approveExtension');
+        data.append('format', 'json');
+        data.append('jform[id]', extensionId);
+
+        approve.forEach(el => {
+            data.append(el.name, el.value);
+        });
+
+        jQuery.ajax({
+            async: true,
+            url: 'index.php',
+            dataType: 'json',
+            cache: false,
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': Joomla.getOptions('csrf.token')
+            },
+            success: function (data) {
+                if (data) {
+                    if (data.success) {
+                        const msg = {};
+
+                        msg.info = [];
+                        msg.info[0] = data.message;
+                        Joomla.renderMessages(msg);
+                        jQuery('#approveModal').modal('hide');
+                    } else {
+                        const msg = {};
+
+                        msg.notice = [];
+                        msg.notice[0] = data.message
+                        Joomla.renderMessages(msg);
+                        jQuery('#system-message').fadeOut(5000);
+                    }
+
+                }
+            },
+            error: function (request, status, error) {
+                jQuery('<div>' + Joomla.JText._('COM_JED_EXTENSIONS_ERROR_SAVING_APPROVE') + "\n\n" + 'Status error: ' + request.status + "\n" + 'Status message: ' + request.statusText + "\n" + jQuery.trim(request.responseText) + '</div>');
+            }
+        });
+
+        return false;
+    };
+
+    /**
+     * Store the approved state
+     *
+     * @param extensionId
+     * @returns {boolean}
+     */
+    jed.submitPublishedState = function (extensionId) {
+        document.getElementById('js-published-error').innerHTML = '';
+        const publish = Array.from(document.querySelectorAll("[name^=\"jform[publish]\"]"));
+
+        if (parseInt(publish[0].value) === 0 && publish[1].value.length === 0) {
+            document.getElementById('js-published-error').innerHTML = Joomla.JText._('COM_JED_EXTENSIONS_EXTENSION_PUBLISHED_REASON_REQUIRED', 'At least one reason must be given');
+
+            return false;
+        }
+
+        let data = new FormData();
+        data.append('option', 'com_jed');
+        data.append('task', 'ajax.publishExtension');
+        data.append('format', 'json');
+        data.append('jform[id]', extensionId);
+
+        publish.forEach(el => {
+            data.append(el.name, el.value);
+        });
+
+        jQuery.ajax({
+            async: true,
+            url: 'index.php',
+            dataType: 'json',
+            cache: false,
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': Joomla.getOptions('csrf.token')
+            },
+            success: function (data) {
+                if (data) {
+                    if (data.success) {
+                        const msg = {};
+
+                        msg.info = [];
+                        msg.info[0] = data.message;
+                        Joomla.renderMessages(msg);
+                        jQuery('#publishModal').modal('hide');
+                    } else {
+                        const msg = {};
+
+                        msg.notice = [];
+                        msg.notice[0] = data.message
+                        Joomla.renderMessages(msg);
+                        jQuery('#system-message').fadeOut(5000);
+                    }
+
+                }
+            },
+            error: function (request, status, error) {
+                jQuery('<div>' + Joomla.JText._('COM_JED_EXTENSIONS_ERROR_SAVING_PUBLISH') + "\n\n" + 'Status error: ' + request.status + "\n" + 'Status message: ' + request.statusText + "\n" + jQuery.trim(request.responseText) + '</div>');
+            }
+        });
+
+        return false;
+    };
+
     jed.setMessageType = (type) => {
-        console.log(type);
         jQuery('.js-messageType').hide();
 
         switch (type) {

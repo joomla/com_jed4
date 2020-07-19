@@ -63,7 +63,6 @@ class JedControllerAjax extends BaseController
 	 */
 	public function sendMessage(): void
 	{
-		// Check for request forgeries
 		$this->checkToken() or jexit('Invalid Token');
 
 		try
@@ -99,7 +98,6 @@ class JedControllerAjax extends BaseController
 	 */
 	public function storeNote(): void
 	{
-		// Check for request forgeries
 		$this->checkToken() or jexit('Invalid Token');
 
 		try
@@ -113,6 +111,82 @@ class JedControllerAjax extends BaseController
 			$model = $this->getModel('Extension', 'JedModel');
 			$model->storeNote($body, $developerId, $userId, $extensionId);
 			$message = Text::_('COM_JED_EXTENSION_NOTE_STORED');
+
+			$error = false;
+		}
+		catch (Exception $exception)
+		{
+			$message = $exception->getMessage();
+			$error   = true;
+		}
+
+		echo(new JsonResponse(null, $message, $error));
+	}
+
+	/**
+	 * Set the approval state for the extension.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 * @throws  Exception
+	 */
+	public function approveExtension(): void
+	{
+		$this->checkToken() or jexit('Invalid Token');
+
+		try
+		{
+			$data = $this->input->get('jform', [], 'array');
+			/** @var JedModelExtension $model */
+			$model     = $this->getModel('Extension', 'JedModel');
+			$form      = $model->getForm();
+			$validData = $model->validate($form, $data, 'approve');
+
+			// Add the ID to be able to save the data
+			$validData['approve']['id'] = $data['id'];
+
+			// Save the data
+			$model->saveApprove($validData['approve']);
+			$message = Text::_('COM_JED_EXTENSION_APPROVE_STORED');
+
+			$error = false;
+		}
+		catch (Exception $exception)
+		{
+			$message = $exception->getMessage();
+			$error   = true;
+		}
+
+		echo(new JsonResponse(null, $message, $error));
+	}
+
+	/**
+	 * Set the publish state for the extension.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 * @throws  Exception
+	 */
+	public function publishExtension(): void
+	{
+		$this->checkToken() or jexit('Invalid Token');
+
+		try
+		{
+			$data = $this->input->get('jform', [], 'array');
+			/** @var JedModelExtension $model */
+			$model     = $this->getModel('Extension', 'JedModel');
+			$form      = $model->getForm();
+			$validData = $model->validate($form, $data, 'publish');
+
+			// Add the ID to be able to save the data
+			$validData['publish']['id'] = $data['id'];
+
+			// Save the data
+			$model->savePublish($validData['publish']);
+			$message = Text::_('COM_JED_EXTENSION_PUBLISH_STORED');
 
 			$error = false;
 		}

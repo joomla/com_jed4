@@ -25,6 +25,10 @@ Text::script('COM_JED_EXTENSIONS_ERROR_DURING_SEND_EMAIL', true);
 Text::script('COM_JED_EXTENSIONS_MISSING_MESSAGE_ID', true);
 Text::script('COM_JED_EXTENSIONS_MISSING_DEVELOPER_ID', true);
 Text::script('COM_JED_EXTENSIONS_MISSING_EXTENSION_ID', true);
+Text::script('COM_JED_EXTENSIONS_ERROR_SAVING_APPROVE', true);
+Text::script('COM_JED_EXTENSIONS_EXTENSION_APPROVED_REASON_REQUIRED', true);
+Text::script('COM_JED_EXTENSIONS_ERROR_SAVING_PUBLISH', true);
+Text::script('COM_JED_EXTENSIONS_EXTENSION_PUBLISHED_REASON_REQUIRED', true);
 
 $extensionUrl = Uri::root() . 'extension/' . $this->item->alias;
 $downloadUrl  = 'index.php?option=com_jed&task=extension.download&id=' . $this->item->id;
