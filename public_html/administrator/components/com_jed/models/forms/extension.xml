@@ -234,7 +234,7 @@
                 name="created_on"
                 type="calendar"
                 label="COM_JED_FIELD_CREATED_TIME_LABEL"
-                format="%d-%m-%Y %H:%M:%S"
+                format="%d/%m/%Y %H:%M"
                 readonly="true"
         />
 
