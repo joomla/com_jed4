@@ -94,7 +94,7 @@ class JedViewTicket extends HtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		ToolbarHelper::title(Text::_('COM_JED_EDIT_EMAIL'), 'mail');
+		ToolbarHelper::title(Text::_('COM_JED_EDIT_TICKET'), 'file-2');
 
 		if ($this->canDo->get('core.edit') || $this->canDo->get('core.create'))
 		{
