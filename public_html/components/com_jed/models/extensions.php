@@ -121,10 +121,9 @@ class JedModelExtensions extends ListModel
 
 		if ($category)
 		{
-
+			$query->where('extensions.category_id = ' . (int) $category);
 		}
 
-		// Filter by a single or group of articles.
 		$extensionId = $this->getState('filter.extensionId');
 
 		if (is_numeric($extensionId))
@@ -189,6 +188,8 @@ class JedModelExtensions extends ListModel
 			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developer);
 		}
 
+		$query->order($this->getState('list.ordering', 'extensions.ordering') . ' ' . $this->getState('list.direction', 'ASC'));
+
 		return $query;
 	}
 
@@ -211,6 +212,7 @@ class JedModelExtensions extends ListModel
 			{
 				$item->intro = HTMLHelper::_('string.truncate', $item->body, 150, true, false);
 			}
+
 			unset($item->body);
 
 			// Format the image

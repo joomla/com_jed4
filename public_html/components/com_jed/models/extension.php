@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Object\CMSObject;
 
 /**
  * Extension model.
@@ -21,15 +22,15 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class JedModelExtension extends BaseDatabaseModel
 {
 	/**
-	 * Function to get a specific extension.
+	 * Method to get a specific extension.
 	 *
-	 * @param   integer  $pk  The ID of the item
+	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return stdClass|mixed The data
-	 * @since 4.0.0
-	 * @throws Exception If the ID is not found
+	 * @return  CMSObject  Object with item details.
+	 *
+	 * @since   4.0.0
 	 */
-	public function getItem($pk = null)
+	public function getItem($pk = null): CMSObject
 	{
 		$pk    = $pk ?: $this->getState('extension.id');
 		$db    = $this->getDbo();
@@ -115,13 +116,33 @@ class JedModelExtension extends BaseDatabaseModel
 		$extension->phpVersion        = $this->getPhpVersions($extension->id);
 		$extension->joomlaVersion     = $this->getJoomlaVersions($extension->id);
 
-		// Get other extensions from this developer
-		/** @var JedModelExtensions $extensionsModel */
-		$extensionsModel = BaseDatabaseModel::getInstance('Extensions', 'JedModel', array('ignore_request' => true));
-		$extensionsModel->setState('filter.developer', $extension->developerId);
-		$extensionsModel->setState('filter.extensionId', $extension->id);
-		$extensionsModel->setState('filter.extensionId.include', false);
-		$extension->otherExtensions = $extensionsModel->getItems();
+		// Collect extensions retrieved to exclude
+		$excludeIds = [$extension->id];
+
+		// Get other extensions by same developer
+		$extension->otherExtensions = $this->getExtensions($excludeIds, 100, 'developer', $extension->developerId);
+
+		foreach ($extension->otherExtensions as $otherExtension)
+		{
+			$excludeIds[] = $otherExtension->id;
+		}
+
+		// Get related extensions from same category
+		$extension->relatedExtensions = $this->getExtensions($excludeIds, 3, 'category', $extension->categoryId);
+
+		foreach ($extension->relatedExtensions as $relatedExtension)
+		{
+			$excludeIds[] = $relatedExtension->id;
+		}
+
+		// Get other related if we don't have 3 items yet
+		if (count($extension->relatedExtensions) < 3)
+		{
+			$extension->relatedExtensions = array_merge(
+				$extension->relatedExtensions,
+				$this->getExtensions($excludeIds, 3 - count($extension->relatedExtensions))
+			);
+		}
 
 		return $extension;
 	}
@@ -246,4 +267,33 @@ class JedModelExtension extends BaseDatabaseModel
 		return $db->loadColumn();
 	}
 
+	/**
+	 * Get extensions based on quick filters
+	 *
+	 * @param   array   $excludeIds  Array of IDs to exclude
+	 * @param   int     $limit       Limit items retrieved
+	 * @param   string  $filterType  Filter type (developer|category)
+	 * @param   int     $filterId    ID to filter for
+	 *
+	 * @return array
+	 *
+	 * @since 4.0.0
+	 */
+	public function getExtensions(array $excludeIds, int $limit = 100, string $filterType = '', int $filterId = 0): array
+	{
+		/** @var JedModelExtensions $extensionsModel */
+		$extensionsModel = BaseDatabaseModel::getInstance('Extensions', 'JedModel', array('ignore_request' => true));
+
+		if ($filterType && $filterId)
+		{
+			$extensionsModel->setState('filter.' . $filterType, $filterId);
+		}
+
+		$extensionsModel->setState('filter.extensionId', $excludeIds);
+		$extensionsModel->setState('filter.extensionId.include', false);
+		$extensionsModel->setState('list.limit', $limit);
+		$extensionsModel->setState('list.ordering', Factory::getDbo()->getQuery(true)->Rand());
+
+		return $extensionsModel->getItems();
+	}
 }
