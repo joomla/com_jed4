@@ -293,7 +293,7 @@
 
     </fieldset>
 
-    <fieldset name="pricing">
+    <fieldset name="downloads">
 
         <field
                 name="downloadIntegrationType"
@@ -308,7 +308,6 @@
             <option value="1">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_1</option>
             <option value="2">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_2</option>
             <option value="3">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_3</option>
-            <option value="4">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_4</option>
         </field>
 
         <field
@@ -325,7 +324,7 @@
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE1"
                 class="input-xxlarge advancedSelect"
                 default=""
-                showon="downloadIntegrationType:2[OR]downloadIntegrationType:3[OR]downloadIntegrationType:4"
+                showon="downloadIntegrationType:2[OR]downloadIntegrationType:3"
         >
             <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
         </field>
@@ -336,7 +335,7 @@
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE2"
                 class="input-xxlarge advancedSelect"
                 default=""
-                showon="downloadIntegrationType:1[OR]downloadIntegrationType:3[OR]downloadIntegrationType:4"
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:3"
         >
             <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
         </field>
@@ -347,18 +346,7 @@
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE3"
                 class="input-xxlarge advancedSelect"
                 default=""
-                showon="downloadIntegrationType:1[OR]downloadIntegrationType:2[OR]downloadIntegrationType:4"
-        >
-            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
-        </field>
-
-        <field
-                name="downloadIntegrationType4"
-                type="jed.extensions"
-                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE4"
-                class="input-xxlarge advancedSelect"
-                default=""
-                showon="downloadIntegrationType:1[OR]downloadIntegrationType:2[OR]downloadIntegrationType:3"
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:2"
         >
             <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
         </field>

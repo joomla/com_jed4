@@ -106,7 +106,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_extensions`
     `downloadIntegrationType1` int(10) unsigned          DEFAULT NULL,
     `downloadIntegrationType2` int(10) unsigned          DEFAULT NULL,
     `downloadIntegrationType3` int(10) unsigned          DEFAULT NULL,
-    `downloadIntegrationType4` int(10) unsigned          DEFAULT NULL,
     `downloadIntegrationUrl`   varchar(255)              DEFAULT NULL,
     `secondContactEmail`       varchar(100)              DEFAULT NULL,
     `currency`                 varchar(50)               DEFAULT NULL,

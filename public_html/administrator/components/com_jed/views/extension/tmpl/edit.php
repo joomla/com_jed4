@@ -119,13 +119,19 @@ JS
 	    <?php echo HTMLHelper::_(
 	    	'bootstrap.addTab',
 		    'extensionTab',
-		    'pricing',
-		    Text::_('COM_JED_EXTENSIONS_PRICING_TAB')
+		    'downloads',
+		    Text::_('COM_JED_EXTENSIONS_DOWNLOADS_TAB')
 	    ); ?>
         <div class="row-fluid">
             <div class="span12">
                 <div class="form-horizontal">
-				    <?php echo $this->form->renderFieldset('pricing'); ?>
+				    <?php echo $this->form->renderField('downloadIntegrationType'); ?>
+				    <?php echo $this->form->renderField('downloadIntegrationUrl'); ?>
+                    <h3><?php echo Text::_('COM_JED_EXTENSIONS_DOWNLOAD_ALTERNATIVE_DOWNLOAD'); ?></h3>
+				    <?php echo $this->form->renderField('downloadIntegrationType1'); ?>
+				    <?php echo $this->form->renderField('downloadIntegrationType2'); ?>
+				    <?php echo $this->form->renderField('downloadIntegrationType3'); ?>
+				    <?php echo $this->form->renderField('downloadIntegrationType4'); ?>
                 </div>
             </div>
         </div>
