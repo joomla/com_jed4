@@ -64,19 +64,22 @@ HTMLHelper::_('formbehavior.chosen');
 							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_PUBLISHED_REVIEWS', 'publishedReviews', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-		                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_REGISTER_DATE', 'users.registerDate', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USERS_ACTIVE_TICKETS', 'activeTickets', $listDirn, $listOrder); ?>
                         </th>
                         <th>
-		                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_LASTVISIT_DATE', 'users.lastvisitDate', $listDirn, $listOrder); ?>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_REGISTER_DATE', 'users.registerDate', $listDirn, $listOrder); ?>
                         </th>
-                        <th width="7">
+                        <th>
+							<?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_LASTVISIT_DATE', 'users.lastvisitDate', $listDirn, $listOrder); ?>
+                        </th>
+                        <th width="5">
 							<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'users.id', $listDirn, $listOrder); ?>
                         </th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <td colspan="6"><?php echo $this->pagination->getListFooter(); ?></td>
+                        <td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
                     </tr>
                     </tfoot>
                     <tbody>
@@ -114,10 +117,13 @@ HTMLHelper::_('formbehavior.chosen');
                                 </a>
                             </td>
                             <td>
-		                        <?php echo HTMLHelper::_('date', $item->registerDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
+                                @TODO Active ticket count & link
                             </td>
                             <td>
-		                        <?php echo HTMLHelper::_('date', $item->lastvisitDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
+								<?php echo HTMLHelper::_('date', $item->registerDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
+                            </td>
+                            <td>
+								<?php echo HTMLHelper::_('date', $item->lastvisitDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
                             </td>
                             <td>
 								<?php echo $item->id; ?>

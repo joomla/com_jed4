@@ -125,7 +125,7 @@ class JedModelUser extends AdminModel
 		$item->name                = $data->name;
 		$item->username            = $data->username;
 		$item->registerDate        = $data->registerDate;
-		$item->lastvisitDate        = $data->lastvisitDate;
+		$item->lastvisitDate       = $data->lastvisitDate;
 		$item->publishedExtensions = $data->publishedExtensions;
 		$item->publishedReviews    = $data->publishedReviews;
 

@@ -181,7 +181,7 @@ class JedModelUsers extends ListModel
 
 		$query->group($db->quoteName('jed_users.id'));
 
-		$ordering = $this->state->get('list.fullordering', 'users.username ASC');
+		$ordering = $this->state->get('list.fullordering', 'jed_users.id DESC');
 		$query->order($db->escape($ordering));
 
 		return $query;

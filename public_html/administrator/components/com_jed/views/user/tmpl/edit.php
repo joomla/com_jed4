@@ -71,6 +71,12 @@ Factory::getDocument()->addScriptDeclaration("
                         </td>
                     </tr>
                     <tr>
+                        <td><?php echo Text::_('COM_JED_USERS_ACTIVE_TICKETS'); ?></td>
+                        <td>
+                            @TODO Active ticket count & link
+                        </td>
+                    </tr>
+                    <tr>
                         <td><?php echo Text::_('COM_JED_USER_REGISTER_DATE'); ?></td>
                         <td><?php echo HTMLHelper::_('date', $this->item->registerDate, Text::_('COM_JED_DATETIME_FORMAT')); ?></td>
                     </tr>
@@ -116,7 +122,7 @@ Factory::getDocument()->addScriptDeclaration("
         </div>
     </div>
 
-    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
 
     <input type="hidden" name="task" value=""/>
 	<?php echo HTMLHelper::_('form.token'); ?>
