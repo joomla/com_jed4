@@ -36,7 +36,6 @@ class JedViewExtension extends HtmlView
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 *
 	 * @since   4.0.0
-	 *
 	 * @throws  Exception
 	 */
 	public function display($tpl = null)
