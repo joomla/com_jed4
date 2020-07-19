@@ -87,6 +87,7 @@ class JedModelUser extends AdminModel
 				'users.name',
 				'users.username',
 				'users.registerDate',
+				'users.lastvisitDate',
 				'jed_users.developerName',
 			],
 			[
@@ -94,33 +95,40 @@ class JedModelUser extends AdminModel
 				'name',
 				'username',
 				'registerDate',
+				'lastvisitDate',
 				'developerName',
 			]
 		))
 			->select('COUNT(extensions.id) AS publishedExtensions')
 			->select('COUNT(reviews.id) AS publishedReviews')
-			->from($db->quoteName('#__users', 'users'))
+			->from($db->quoteName('#__jed_users', 'jed_users'))
 			->leftJoin(
-				$db->quoteName('#__jed_users', 'jed_users')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('jed_users.user_id')
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('jed_users.id') . ' = ' . $db->quoteName('users.id')
 			)
 			->leftJoin(
 				$db->quoteName('#__jed_extensions', 'extensions')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('extensions.created_by')
+				. ' ON ' . $db->quoteName('jed_users.id') . ' = ' . $db->quoteName('extensions.created_by')
 				. ' AND ' . $db->quoteName('extensions.published') . ' = 1'
 				. ' AND ' . $db->quoteName('extensions.approved') . ' = 1'
 			)
 			->leftJoin(
 				$db->quoteName('#__jed_reviews', 'reviews')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('reviews.created_by')
+				. ' ON ' . $db->quoteName('jed_users.id') . ' = ' . $db->quoteName('reviews.created_by')
 				. ' AND ' . $db->quoteName('reviews.published') . ' = 1'
 			)
-			->where($db->quoteName('users.id') . ' = ' . (int) $item->id);
+			->where($db->quoteName('jed_users.id') . ' = ' . (int) $item->id);
 
 		$db->setQuery($query);
 		$data = $db->loadObject();
 
-		$item->developerName   = $data->developerName;
+
+		$item->name                = $data->name;
+		$item->username            = $data->username;
+		$item->registerDate        = $data->registerDate;
+		$item->lastvisitDate        = $data->lastvisitDate;
+		$item->publishedExtensions = $data->publishedExtensions;
+		$item->publishedReviews    = $data->publishedReviews;
 
 		return $item;
 	}

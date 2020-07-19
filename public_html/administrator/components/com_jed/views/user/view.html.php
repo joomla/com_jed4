@@ -91,6 +91,14 @@ class JedViewUser extends HtmlView
 
 		ToolBarHelper::title(Text::_('COM_JED_USER_VIEW_EDIT_TITLE'), 'user');
 
+		$canDo = ContentHelper::getActions('com_jed', 'user', $this->state->get('filter.published'));
+
+		if ($canDo->get('core.edit.state'))
+		{
+			ToolbarHelper::apply('user.apply');
+			ToolbarHelper::save('user.save');
+		}
+
 		if (empty($this->item->id))
 		{
 			ToolbarHelper::cancel('user.cancel');

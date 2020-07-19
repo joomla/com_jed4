@@ -66,7 +66,10 @@ HTMLHelper::_('formbehavior.chosen');
                         <th>
 		                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_REGISTER_DATE', 'users.registerDate', $listDirn, $listOrder); ?>
                         </th>
-                        <th width="6">
+                        <th>
+		                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_USER_LASTVISIT_DATE', 'users.lastvisitDate', $listDirn, $listOrder); ?>
+                        </th>
+                        <th width="7">
 							<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'users.id', $listDirn, $listOrder); ?>
                         </th>
                     </tr>
@@ -112,6 +115,9 @@ HTMLHelper::_('formbehavior.chosen');
                             </td>
                             <td>
 		                        <?php echo HTMLHelper::_('date', $item->registerDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
+                            </td>
+                            <td>
+		                        <?php echo HTMLHelper::_('date', $item->lastvisitDate, Text::_('COM_JED_DATETIME_FORMAT')); ?>
                             </td>
                             <td>
 								<?php echo $item->id; ?>

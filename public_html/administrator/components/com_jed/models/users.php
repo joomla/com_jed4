@@ -40,6 +40,7 @@ class JedModelUsers extends ListModel
 				'users.name',
 				'users.username',
 				'users.registerDate',
+				'users.lastvisitDate',
 				'jed_users.developerName',
 				'publishedExtensions',
 				'publishedReviews',
@@ -129,6 +130,7 @@ class JedModelUsers extends ListModel
 				'users.name',
 				'users.username',
 				'users.registerDate',
+				'users.lastvisitDate',
 				'jed_users.developerName',
 			],
 			[
@@ -136,25 +138,26 @@ class JedModelUsers extends ListModel
 				'name',
 				'username',
 				'registerDate',
+				'lastvisitDate',
 				'developerName',
 			]
 		))
 			->select('COUNT(extensions.id) AS publishedExtensions')
 			->select('COUNT(reviews.id) AS publishedReviews')
-			->from($db->quoteName('#__users', 'users'))
+			->from($db->quoteName('#__jed_users', 'jed_users'))
 			->leftJoin(
-				$db->quoteName('#__jed_users', 'jed_users')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('jed_users.user_id')
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('jed_users.id') . ' = ' . $db->quoteName('users.id')
 			)
 			->leftJoin(
 				$db->quoteName('#__jed_extensions', 'extensions')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('extensions.created_by')
+				. ' ON ' . $db->quoteName('jed_users.id') . ' = ' . $db->quoteName('extensions.created_by')
 				. ' AND ' . $db->quoteName('extensions.published') . ' = 1'
 				. ' AND ' . $db->quoteName('extensions.approved') . ' = 1'
 			)
 			->leftJoin(
 				$db->quoteName('#__jed_reviews', 'reviews')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('reviews.created_by')
+				. ' ON ' . $db->quoteName('jed_users.id') . ' = ' . $db->quoteName('reviews.created_by')
 				. ' AND ' . $db->quoteName('reviews.published') . ' = 1'
 			);
 
@@ -165,7 +168,7 @@ class JedModelUsers extends ListModel
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->where($db->quoteName('users.id') . ' = ' . (int) substr($search, 3));
+				$query->where($db->quoteName('jed_users.id') . ' = ' . (int) substr($search, 3));
 			}
 			else
 			{
@@ -176,7 +179,7 @@ class JedModelUsers extends ListModel
 			}
 		}
 
-		$query->group($db->quoteName('users.id'));
+		$query->group($db->quoteName('jed_users.id'));
 
 		$ordering = $this->state->get('list.fullordering', 'users.username ASC');
 		$query->order($db->escape($ordering));

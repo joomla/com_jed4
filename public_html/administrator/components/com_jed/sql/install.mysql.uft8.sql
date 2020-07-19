@@ -309,7 +309,8 @@ CREATE TABLE IF NOT EXISTS  `#__jed_users` (
     KEY `User ID` (`user_id`),
     CONSTRAINT `User Link` FOREIGN KEY (`user_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
+  DEFAULT CHARSET = utf8mb4
+  COMMENT = 'id must match user_id';
 
 CREATE TABLE IF NOT EXISTS `#__jed_user_bans`
 (
@@ -346,3 +347,6 @@ CREATE TABLE IF NOT EXISTS `#__jed_emails`
 
 INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
 VALUES ('review', 'com_jed.review', 'id', 'title', '#__jed_reviews', 'COM_JED_TRANSACTION');
+
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+VALUES ('user', 'com_jed.user', 'id', 'title', '#__jed_user', 'COM_JED_TRANSACTION');

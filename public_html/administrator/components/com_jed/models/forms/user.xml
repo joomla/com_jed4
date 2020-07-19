@@ -8,5 +8,11 @@
                 required="true"
                 readonly="true"
         />
+
+        <field
+                name="developerName"
+                type="text"
+                label="COM_JED_USER_DEVELOPER_NAME"
+        />
     </fieldset>
 </form>
