@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="user" method="upgrade">
+    <name>User - JED</name>
+    <author>Joomla! Project</author>
+    <creationDate>July 2020</creationDate>
+    <copyright>(C) 2005 - 2020 Open Source Matters. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>admin@joomla.org</authorEmail>
+    <authorUrl>www.joomla.org</authorUrl>
+    <version>4.0.0</version>
+    <description>Adds a row in the #__jed_users table on user registration</description>
+    <files>
+        <filename plugin="jed">jed.php</filename>
+    </files>
+</extension>
