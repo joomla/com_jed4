@@ -33,7 +33,7 @@ class JedModelUser extends AdminModel
 	{
 		// Get the form.
 		$form = $this->loadForm('com_jed.user', 'user',
-			array('control' => 'jform', 'load_data' => $loadData));
+			['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -50,7 +50,6 @@ class JedModelUser extends AdminModel
 	 *
 	 * @since       4.0.0
 	 * @throws      Exception
-	 *
 	 */
 	protected function loadFormData()
 	{

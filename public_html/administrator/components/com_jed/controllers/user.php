@@ -18,10 +18,8 @@ use Joomla\CMS\MVC\Controller\FormController;
 class JedControllerUser extends FormController
 {
 	/**
-	 * @var        string  The prefix to use with controller messages.
-	 *
-	 * @since   4.0.0
+	 * @var    string  The prefix to use with controller messages.
+	 * @since  4.0.0
 	 */
 	protected $text_prefix = 'COM_JED_USER';
-
 }
