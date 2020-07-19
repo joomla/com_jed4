@@ -101,7 +101,7 @@ const jed = (function () {
             success: function (data) {
                 if (data) {
                     if (data.success === true) {
-                        renderMessage(data.message, 'info');
+                        renderMessage(data.message, 'message');
                     } else {
                         let message = Joomla.JText._('COM_JED_EXTENSIONS_ERROR_DURING_SEND_EMAIL');
 
@@ -168,7 +168,7 @@ const jed = (function () {
             success: function (data) {
                 if (data) {
                     if (data.success === true) {
-                        renderMessage(data.message, 'info');
+                        renderMessage(data.message, 'message');
                     } else {
                         let message = Joomla.JText._('COM_JED_EXTENSIONS_ERROR_DURING_STORE_NOTE');
 
@@ -235,18 +235,10 @@ const jed = (function () {
             success: function (data) {
                 if (data) {
                     if (data.success) {
-                        const msg = {};
-
-                        msg.info = [];
-                        msg.info[0] = data.message;
-                        Joomla.renderMessages(msg);
+                        renderMessage(data.message, 'message');
                         jQuery('#approveModal').modal('hide');
                     } else {
-                        const msg = {};
-
-                        msg.notice = [];
-                        msg.notice[0] = data.message
-                        Joomla.renderMessages(msg);
+                        renderMessage(data.message, 'error');
                         jQuery('#system-message').fadeOut(5000);
                     }
 
@@ -301,18 +293,10 @@ const jed = (function () {
             success: function (data) {
                 if (data) {
                     if (data.success) {
-                        const msg = {};
-
-                        msg.info = [];
-                        msg.info[0] = data.message;
-                        Joomla.renderMessages(msg);
+                        renderMessage(data.message, 'message');
                         jQuery('#publishModal').modal('hide');
                     } else {
-                        const msg = {};
-
-                        msg.notice = [];
-                        msg.notice[0] = data.message
-                        Joomla.renderMessages(msg);
+                        renderMessage(data.message, 'error');
                         jQuery('#system-message').fadeOut(5000);
                     }
 
@@ -351,10 +335,6 @@ const jed = (function () {
         const msg = {};
 
         switch (type) {
-            case 'info':
-                msg.info = [];
-                msg.info[0] = message;
-                break;
             case 'error':
                 msg.error = [];
                 msg.error[0] = message;
@@ -362,6 +342,10 @@ const jed = (function () {
             case 'notice':
                 msg.notice = [];
                 msg.notice[0] = message;
+                break;
+            case 'message':
+                msg.message = [];
+                msg.message[0] = message;
                 break;
         }
 
