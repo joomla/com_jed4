@@ -21,7 +21,7 @@ use Joomla\CMS\MVC\View\HtmlView;
 class JedViewExtension extends HtmlView
 {
 	/**
-	 * The course item.
+	 * The extension item.
 	 *
 	 * @var    object
 	 * @since  4.0.0

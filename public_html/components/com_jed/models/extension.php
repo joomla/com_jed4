@@ -11,7 +11,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Object\CMSObject;
 
 /**
  * Extension model.
@@ -26,11 +25,11 @@ class JedModelExtension extends BaseDatabaseModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  CMSObject  Object with item details.
+	 * @return  object|boolean|JException  Extension data object on success, boolean false or JException instance on error
 	 *
 	 * @since   4.0.0
 	 */
-	public function getItem($pk = null): CMSObject
+	public function getItem($pk = null): object
 	{
 		$pk    = $pk ?: $this->getState('extension.id');
 		$db    = $this->getDbo();
