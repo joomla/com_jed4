@@ -70,10 +70,8 @@ class JedViewExtension extends HtmlView
 		$this->form    = $model->getForm();
 		$this->state   = $model->getState();
 
-		// Set the toolbar
 		$this->addToolBar();
 
-		// Display the template
 		return parent::display($tpl);
 	}
 
@@ -119,13 +117,13 @@ class JedViewExtension extends HtmlView
 		// Instantiate a new FileLayout instance and render the batch button
 		$layout = new FileLayout('joomla.toolbar.approve');
 
-		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE')]);
+		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'), 'approved' => $this->item->approved]);
 		$bar->appendButton('Custom', $dhtml, 'approve');
 
 		// Instantiate a new FileLayout instance and render the batch button
 		$layout = new FileLayout('joomla.toolbar.publish');
 
-		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE')]);
+		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'), 'published' => $this->item->published]);
 		$bar->appendButton('Custom', $dhtml, 'publish');
 	}
 

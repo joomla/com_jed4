@@ -42,7 +42,7 @@ Factory::getDocument()
                 window.open('{$downloadUrl}');
                 break;
             default:
-                if (task === "extension.cancel" || document.formvalidator.isValid(document.getElementById("extension-form")))
+                if (task === 'extension.cancel' || document.formvalidator.isValid(document.getElementById('extension-form')))
                 {
                     Joomla.submitform(task, document.getElementById("extension-form"));
                 }
@@ -59,17 +59,7 @@ JS
 
     <div class="form-horizontal">
 	    <?php echo $this->form->renderField('created_by'); ?>
-        <div class="span12">
-            <div class="span3">
 	    <?php echo $this->form->renderField('jedChecker'); ?>
-            </div>
-            <div class="span3">
-	    <?php echo $this->form->renderField('published'); ?>
-            </div>
-            <div class="span3">
-	    <?php echo $this->form->renderField('approved'); ?>
-            </div>
-        </div>
 		<?php echo HTMLHelper::_('bootstrap.startTabSet', 'extensionTab', ['active' => 'general']); ?>
 
 		<?php echo HTMLHelper::_(

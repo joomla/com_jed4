@@ -37,8 +37,10 @@ class JedModelExtension extends AdminModel
 	public function getForm($data = [], $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_jed.extension', 'extension',
-			['control' => 'jform', 'load_data' => $loadData]);
+		$form = $this->loadForm(
+			'com_jed.extension', 'extension',
+			['control' => 'jform', 'load_data' => $loadData]
+		);
 
 		if (empty($form))
 		{
@@ -61,26 +63,87 @@ class JedModelExtension extends AdminModel
 	 */
 	public function save($data): bool
 	{
-		if (!$data['id'])
+		if ( ! $data['id'])
 		{
 			$data['created_by'] = Factory::getUser()->get('id');
 		}
 
-		if (!parent::save($data))
+		if ( ! parent::save($data))
 		{
 			return false;
 		}
 
-		// Get the extension ID
 		$extensionId = $this->getState($this->getName() . '.id');
+
+		if ((int) $data['approve']['approved'] !== 3)
+		{
+			$this->removeApprovedReason((int) $data['id']);
+		}
+
+		if ((int) $data['publish']['published'] === 1)
+		{
+			$this->removePublishedReason((int) $data['id']);
+		}
 
 		$this->storeRelatedCategories($extensionId, $data['related'] ?? []);
 		$this->storeVersions($extensionId, $data['phpVersion'] ?? [], 'php');
-		$this->storeVersions($extensionId, $data['joomlaVersion'] ?? [], 'joomla');
+		$this->storeVersions(
+			$extensionId, $data['joomlaVersion'] ?? [], 'joomla'
+		);
 		$this->storeExtensionTypes($extensionId, $data['extensionTypes'] ?? []);
 		$this->storeImages($extensionId, $data['images'] ?? []);
 
 		return true;
+	}
+
+	/**
+	 * Remove approved reasons.
+	 *
+	 * @param   int  $extensionId  The extension ID to remove the approved reasons for
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeApprovedReason(int $extensionId): void
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__jed_extensions_approved_reasons'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query)
+			->execute();
+	}
+
+	public function validate($form, $data, $group = null)
+	{
+		if (isset($data['approve']['approved']) && (int) $data['approved']['approve'] === 3)
+		{
+			$form->setFieldAttribute('required', 'true', $group);
+		}
+
+		return parent::validate(
+			$form, $data, $group
+		);
+	}
+
+	/**
+	 * Remove published reasons.
+	 *
+	 * @param   int  $extensionId  The extension ID to remove the published reasons for
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function removePublishedReason(int $extensionId): void
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__jed_extensions_published_reasons'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query)
+			->execute();
 	}
 
 	/**
@@ -93,8 +156,9 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @since   4.0.0
 	 */
-	private function storeRelatedCategories(int $extensionId, array $relatedCategoryIds): void
-	{
+	private function storeRelatedCategories(int $extensionId,
+		array $relatedCategoryIds
+	): void {
 		$db = $this->getDbo();
 
 		// Delete any existing relations
@@ -121,10 +185,12 @@ class JedModelExtension extends AdminModel
 				)
 			);
 
-		array_walk($relatedCategoryIds,
+		array_walk(
+			$relatedCategoryIds,
 			static function ($relatedCategoryId) use (&$query, $extensionId) {
 				$query->values($extensionId . ',' . $relatedCategoryId);
-			});
+			}
+		);
 
 		$db->setQuery($query)
 			->execute();
@@ -141,8 +207,9 @@ class JedModelExtension extends AdminModel
 	 *
 	 * @since   4.0.0
 	 */
-	private function storeVersions(int $extensionId, array $versions, string $type): void
-	{
+	private function storeVersions(int $extensionId, array $versions,
+		string $type
+	): void {
 		$db = $this->getDbo();
 
 		// Delete any existing relations
@@ -169,10 +236,12 @@ class JedModelExtension extends AdminModel
 				)
 			);
 
-		array_walk($versions,
+		array_walk(
+			$versions,
 			static function ($version) use (&$query, $db, $extensionId) {
 				$query->values($extensionId . ',' . $db->quote($version));
-			});
+			}
+		);
 
 		$db->setQuery($query)
 			->execute();
@@ -216,10 +285,12 @@ class JedModelExtension extends AdminModel
 				)
 			);
 
-		array_walk($types,
+		array_walk(
+			$types,
 			static function ($type) use (&$query, $db, $extensionId) {
 				$query->values($extensionId . ',' . $db->quote($type));
-			});
+			}
+		);
 
 		$db->setQuery($query)
 			->execute();
@@ -263,11 +334,16 @@ class JedModelExtension extends AdminModel
 				)
 			);
 
-		array_walk($images,
+		array_walk(
+			$images,
 			static function ($image, $key) use (&$query, $db, $extensionId) {
 				$order = (int) str_replace('images', '', $key) + 1;
-				$query->values($extensionId . ',' . $db->quote($image['image']) . ',' . $order);
-			});
+				$query->values(
+					$extensionId . ',' . $db->quote($image['image']) . ','
+					. $order
+				);
+			}
+		);
 
 		$db->setQuery($query)
 			->execute();
@@ -286,22 +362,53 @@ class JedModelExtension extends AdminModel
 	 */
 	public function saveApprove($data): void
 	{
-		if (!$data['id'])
+		if ( ! $data['id'])
 		{
-			throw new \InvalidArgumentException(Text::_('COM_JED_EXTENSION_ID_MISSING'));
+			throw new \InvalidArgumentException(
+				Text::_('COM_JED_EXTENSION_ID_MISSING')
+			);
 		}
+
+		$db          = $this->getDbo();
+		$extensionId = (int) $data['id'];
 
 		/** @var TableExtension $table */
 		$table = $this->getTable('Extension');
 
-		// Load the data
-		$table->load($data['id']);
+		$table->load($extensionId);
 
-		// Store the data
-		if (!$table->save($data))
+		if ( ! $table->save($data))
 		{
 			throw new \RuntimeException($table->getError());
 		}
+
+		$this->removeApprovedReason($extensionId);
+
+		if (empty($data['approvedReason']) || (int) $data['approved'] !== 3)
+		{
+			return;
+		}
+
+		$query = $db->getQuery(true)
+			->insert($db->quoteName('#__jed_extensions_approved_reasons'))
+			->columns(
+				$db->quoteName(
+					[
+						'extension_id',
+						'reason'
+					]
+				)
+			);
+
+		array_walk(
+			$data['approvedReason'],
+			static function ($reason) use (&$query, $db, $extensionId) {
+				$query->values($extensionId . ',' . $db->quote($reason));
+			}
+		);
+
+		$db->setQuery($query)
+			->execute();
 	}
 
 	/**
@@ -317,9 +424,11 @@ class JedModelExtension extends AdminModel
 	 */
 	public function savePublish($data): void
 	{
-		if (!$data['id'])
+		if ( ! $data['id'])
 		{
-			throw new \InvalidArgumentException(Text::_('COM_JED_EXTENSION_ID_MISSING'));
+			throw new \InvalidArgumentException(
+				Text::_('COM_JED_EXTENSION_ID_MISSING')
+			);
 		}
 
 		$db          = $this->getDbo();
@@ -328,28 +437,21 @@ class JedModelExtension extends AdminModel
 		/** @var TableExtension $table */
 		$table = $this->getTable('Extension');
 
-		// Load the data
 		$table->load($extensionId);
 
-		// Store the data
-		if (!$table->save($data))
+		if ( ! $table->save($data))
 		{
 			throw new \RuntimeException($table->getError());
 		}
 
-		// Delete any existing relations
-		$query = $db->getQuery(true)
-			->delete($db->quoteName('#__jed_extensions_published_reasons'))
-			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
-		$db->setQuery($query)
-			->execute();
+		$this->removePublishedReason($extensionId);
 
-		if (empty($data['publishedReason']))
+		if (empty($data['publishedReason']) || (int) $data['published'] === 1)
 		{
 			return;
 		}
 
-		$query->clear()
+		$query = $db->getQuery(true)
 			->insert($db->quoteName('#__jed_extensions_published_reasons'))
 			->columns(
 				$db->quoteName(
@@ -360,10 +462,12 @@ class JedModelExtension extends AdminModel
 				)
 			);
 
-		array_walk($data['publishedReason'],
+		array_walk(
+			$data['publishedReason'],
 			static function ($reason) use (&$query, $db, $extensionId) {
 				$query->values($extensionId . ',' . $db->quote($reason));
-			});
+			}
+		);
 
 		$db->setQuery($query)
 			->execute();
@@ -406,6 +510,50 @@ class JedModelExtension extends AdminModel
 	}
 
 	/**
+	 * Store an internal note.
+	 *
+	 * @param   string  $body         The note content
+	 * @param   int     $developerId  The developer to store the note for
+	 * @param   int     $userId       The JED member storing the note
+	 * @param   int     $extensionId  The extension ID the message is about
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	public function storeNote(string $body, int $developerId, int $userId,
+		int $extensionId
+	): void {
+		// Get the developer details
+		$developer = User::getInstance($developerId);
+
+		if ($developer->get('id', null) === null)
+		{
+			throw new InvalidArgumentException(
+				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
+			);
+		}
+
+		$noteTable = Table::getInstance('Note', 'Table');
+		$result    = $noteTable->save(
+			[
+				'extension_id'    => $extensionId,
+				'body'            => $body,
+				'developer_id'    => $developer->get('id'),
+				'developer_name'  => $developer->get('name'),
+				'developer_email' => $developer->get('email'),
+				'created'         => (Date::getInstance())->toSql(),
+				'created_by'      => $userId
+			]
+		);
+
+		if ($result === false)
+		{
+			throw new RuntimeException($noteTable->getError());
+		}
+	}
+
+	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return      mixed   The data for the form.
@@ -417,7 +565,9 @@ class JedModelExtension extends AdminModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_jed.edit.extension.data', array());
+		$data = Factory::getApplication()->getUserState(
+			'com_jed.edit.extension.data', array()
+		);
 
 		if (empty($data))
 		{
@@ -441,25 +591,27 @@ class JedModelExtension extends AdminModel
 		// Get the base details
 		$item = parent::getItem($pk);
 
-		if (!$item instanceof CMSObject)
+		if ( ! $item instanceof CMSObject)
 		{
 			return new CMSObject;
 		}
 
 		// If we have an empty object, we cannot fill it
-		if (!$item->id)
+		if ( ! $item->id)
 		{
 			return $item;
 		}
 
 		// Rework the approved state
 		$approved                   = [];
-		$approved['approvedReason'] = $item->get('approvedReason');
+		$approved['approved']       = $item->get('approved');
+		$approved['approvedReason'] = $this->getApprovedReasons($item->id);
 		$approved['approvedNotes']  = $item->get('approvedNotes');
 		$item->set('approve', $approved);
 
 		// Rework the published state
-		$published                   = [];
+		$published                    = [];
+		$published['published']       = $item->get('published');
 		$published['publishedReason'] = $this->getPublishedReasons($item->id);
 		$published['publishedNotes']  = $item->get('publishedNotes');
 		$item->set('publish', $published);
@@ -473,6 +625,27 @@ class JedModelExtension extends AdminModel
 		$item->set('images', $this->getImages($item->id));
 
 		return $item;
+	}
+
+	/**
+	 * Get the approved reasons.
+	 *
+	 * @param   int  $extensionId  The extension ID to get the reasons for
+	 *
+	 * @return  array  List of approved reasons.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getApprovedReasons(int $extensionId): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('reason'))
+			->from($db->quoteName('#__jed_extensions_approved_reasons'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
+		$db->setQuery($query);
+
+		return $db->loadColumn();
 	}
 
 	/**
@@ -562,38 +735,6 @@ class JedModelExtension extends AdminModel
 	}
 
 	/**
-	 * Get the images.
-	 *
-	 * @param   int  $extensionId  The extension ID to get the images for
-	 *
-	 * @return  array  List of used images.
-	 *
-	 * @since   4.0.0
-	 */
-	public function getImages(int $extensionId): array
-	{
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('filename'))
-			->from($db->quoteName('#__jed_extensions_images'))
-			->where($db->quoteName('extension_id') . ' = ' . $extensionId)
-			->order($db->quoteName('order'));
-		$db->setQuery($query);
-
-		$items = $db->loadObjectList();
-		$images = [];
-
-		array_walk(
-			$items,
-			static function ($item, $key) use (&$images) {
-				$images['images' . $key]['image'] = $item->filename;
-			}
-		);
-
-		return $images;
-	}
-
-	/**
 	 * Get a list of historiacl actions for the extension.
 	 *
 	 * @param   int  $extensionId  The extension ID to get the history for
@@ -628,10 +769,18 @@ class JedModelExtension extends AdminModel
 			->from($db->quoteName('#__action_logs', 'actionLogs'))
 			->leftJoin(
 				$db->quoteName('#__users', 'users')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('actionLogs.user_id')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName(
+					'actionLogs.user_id'
+				)
 			)
-			->where($db->quoteName('actionLogs.extension') . ' = ' . $db->quote('com_jed.extension'))
-			->where($db->quoteName('actionLogs.item_id') . ' = ' . $extensionId);
+			->where(
+				$db->quoteName('actionLogs.extension') . ' = ' . $db->quote(
+					'com_jed.extension'
+				)
+			)
+			->where(
+				$db->quoteName('actionLogs.item_id') . ' = ' . $extensionId
+			);
 		$db->setQuery($query);
 
 		$actionLogs = $db->loadObjectList();
@@ -668,9 +817,13 @@ class JedModelExtension extends AdminModel
 			->from($db->quoteName('#__jed_email_logs', 'emailLogs'))
 			->leftJoin(
 				$db->quoteName('#__users', 'users')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('emailLogs.created_by')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName(
+					'emailLogs.created_by'
+				)
 			)
-			->where($db->quoteName('emailLogs.extension_id') . ' = ' . $extensionId);
+			->where(
+				$db->quoteName('emailLogs.extension_id') . ' = ' . $extensionId
+			);
 
 		$db->setQuery($query);
 
@@ -704,9 +857,13 @@ class JedModelExtension extends AdminModel
 			->from($db->quoteName('#__jed_extensions_notes', 'notes'))
 			->leftJoin(
 				$db->quoteName('#__users', 'users')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('notes.created_by')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName(
+					'notes.created_by'
+				)
 			)
-			->where($db->quoteName('notes.extension_id') . ' = ' . $extensionId);
+			->where(
+				$db->quoteName('notes.extension_id') . ' = ' . $extensionId
+			);
 
 		$db->setQuery($query);
 
@@ -718,8 +875,7 @@ class JedModelExtension extends AdminModel
 		// Order de logs by date
 		usort(
 			$logs,
-			static function($a, $b)
-			{
+			static function ($a, $b) {
 				return $a->logDate < $b->logDate;
 			}
 		);
@@ -728,45 +884,34 @@ class JedModelExtension extends AdminModel
 	}
 
 	/**
-	 * Store an internal note.
+	 * Get the images.
 	 *
-	 * @param   string  $body         The note content
-	 * @param   int     $developerId  The developer to store the note for
-	 * @param   int     $userId       The JED member storing the note
-	 * @param   int     $extensionId  The extension ID the message is about
+	 * @param   int  $extensionId  The extension ID to get the images for
 	 *
-	 * @return  void
+	 * @return  array  List of used images.
 	 *
 	 * @since   4.0.0
 	 */
-	public function storeNote(string $body, int $developerId, int $userId, int $extensionId
-	): void {
-		// Get the developer details
-		$developer = User::getInstance($developerId);
+	public function getImages(int $extensionId): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('filename'))
+			->from($db->quoteName('#__jed_extensions_images'))
+			->where($db->quoteName('extension_id') . ' = ' . $extensionId)
+			->order($db->quoteName('order'));
+		$db->setQuery($query);
 
-		if ($developer->get('id', null) === null)
-		{
-			throw new InvalidArgumentException(
-				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
-			);
-		}
+		$items  = $db->loadObjectList();
+		$images = [];
 
-		$noteTable = Table::getInstance('Note', 'Table');
-		$result = $noteTable->save(
-			[
-				'extension_id'    => $extensionId,
-				'body'            => $body,
-				'developer_id'    => $developer->get('id'),
-				'developer_name'  => $developer->get('name'),
-				'developer_email' => $developer->get('email'),
-				'created'         => (Date::getInstance())->toSql(),
-				'created_by'      => $userId
-			]
+		array_walk(
+			$items,
+			static function ($item, $key) use (&$images) {
+				$images['images' . $key]['image'] = $item->filename;
+			}
 		);
 
-		if ($result === false)
-		{
-			throw new RuntimeException($noteTable->getError());
-		}
+		return $images;
 	}
 }

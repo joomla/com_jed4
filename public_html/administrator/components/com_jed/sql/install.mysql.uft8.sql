@@ -282,26 +282,26 @@ CREATE TABLE IF NOT EXISTS `#__jed_hit_log`
 
 CREATE TABLE IF NOT EXISTS `#__jed_reviews`
 (
-    `id`              int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `extension_id`    int(11) unsigned          DEFAULT NULL,
-    `functionality`   int(3)                    DEFAULT NULL,
-    `ease_of_use`     int(3)                    DEFAULT NULL,
-    `support`         int(3)                    DEFAULT NULL,
-    `documentation`   int(3)                    DEFAULT NULL,
-    `valueForMoney`   int(3)                    DEFAULT NULL,
-    `overallScore`    int(3)                    DEFAULT NULL,
-    `usedFor`         varchar(280)              DEFAULT NULL,
-    `version`         varchar(10)               DEFAULT NULL,
-    `flagged`         tinyint(1)       NOT NULL,
-    `parent_id`       int(6)           NOT NULL,
-    `ipAddress`       varchar(20)               DEFAULT NULL,
-    `imported`        int(1)                    DEFAULT '0',
-    `title`           varchar(400)     NOT NULL DEFAULT '',
-    `alias`           varchar(400)     NOT NULL DEFAULT '',
-    `body`            mediumtext       NOT NULL,
-    `published`       tinyint(1)       NOT NULL DEFAULT '0',
-    `created_on`      datetime                  DEFAULT NULL,
-    `created_by`      int(11)          NOT NULL,
+    `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `extension_id`  int(11) unsigned          DEFAULT NULL,
+    `functionality` int(3)                    DEFAULT NULL,
+    `ease_of_use`   int(3)                    DEFAULT NULL,
+    `support`       int(3)                    DEFAULT NULL,
+    `documentation` int(3)                    DEFAULT NULL,
+    `valueForMoney` int(3)                    DEFAULT NULL,
+    `overallScore`  int(3)                    DEFAULT NULL,
+    `usedFor`       varchar(280)              DEFAULT NULL,
+    `version`       varchar(10)               DEFAULT NULL,
+    `flagged`       tinyint(1)       NOT NULL,
+    `parent_id`     int(6)           NOT NULL,
+    `ipAddress`     varchar(20)               DEFAULT NULL,
+    `imported`      int(1)                    DEFAULT '0',
+    `title`         varchar(400)     NOT NULL DEFAULT '',
+    `alias`         varchar(400)     NOT NULL DEFAULT '',
+    `body`          mediumtext       NOT NULL,
+    `published`     tinyint(1)       NOT NULL DEFAULT '0',
+    `created_on`    datetime                  DEFAULT NULL,
+    `created_by`    int(11)          NOT NULL,
     PRIMARY KEY (`id`),
     KEY `Reviews` (`extension_id`),
     KEY `User Reviews` (`created_by`),
@@ -446,10 +446,22 @@ CREATE TABLE IF NOT EXISTS `#__jed_extensions_notes`
     CHARSET = utf8mb4
     COMMENT = 'Internal notes';
 
+CREATE TABLE IF NOT EXISTS `#__jed_extensions_approved_reasons`
+(
+    `id`           int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `extension_id` int(11) unsigned NOT NULL,
+    `reason`       varchar(4)       NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`),
+    KEY `Extensions Approved Reason` (`extension_id`),
+    CONSTRAINT `Extensions Approved Reason` FOREIGN KEY (`extension_id`) REFERENCES `#__jed_extensions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='Cross-reference table between extensions and approved reasons';
+
 INSERT INTO `#__action_logs_extensions` (`extension`)
 VALUES ('com_jed');
 INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`,
                                     `text_prefix`)
 VALUES ('extension', 'com_jed.extension', 'id', 'title', '#__jed_extensions', 'COM_JED_TRANSACTION');
-INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`, `text_prefix`)
+INSERT INTO `#__action_log_config` (`type_title`, `type_alias`, `id_holder`, `title_holder`, `table_name`,
+                                    `text_prefix`)
 VALUES ('review', 'com_jed.review', 'id', 'title', '#__jed_reviews', 'COM_JED_TRANSACTION');

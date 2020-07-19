@@ -13,13 +13,18 @@ use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.core');
 
 /**
- * @var array $displayData The array with values
+ * @var array   $displayData The array with values
  *
- * @var string $title The button title
+ * @var string  $title       The button title
+ * @var integer $published   The published state
  */
 $title = $displayData['title'];
 ?>
-<button type="button" data-toggle="modal" onclick="jQuery('#publishModal').modal('show'); return true;" class="btn btn-small">
-	<span class="icon-eye-open" aria-hidden="true"></span>
-	<?php echo $title; ?>
+<button type="button" data-toggle="modal"
+        onclick="jQuery('#publishModal').modal('show'); return true;"
+        class="btn btn-small <?php
+        echo (int) $displayData['published'] === 1 ? 'btn-success' : 'btn-danger'; ?>">
+    <span class="icon-eye-open" aria-hidden="true"></span>
+	<?php
+	echo $title; ?>
 </button>
