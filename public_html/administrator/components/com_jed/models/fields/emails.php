@@ -13,12 +13,12 @@ use Joomla\CMS\Factory;
 JFormHelper::loadFieldClass('list');
 
 /**
- * List of Extensions.
+ * List of Emails.
  *
  * @package  JED
  * @since    4.0.0
  */
-class JedFormFieldExtensions extends JFormFieldList
+class JedFormFieldEmails extends JFormFieldList
 {
 	/**
 	 * Type of field
@@ -26,12 +26,12 @@ class JedFormFieldExtensions extends JFormFieldList
 	 * @var    string
 	 * @since  4.0.0
 	 */
-	protected $type = 'extensions';
+	protected $type = 'emails';
 
 	/**
-	 * Build a list of Extensions.
+	 * Build a list of Email templates.
 	 *
-	 * @return  array  List of Extensions.
+	 * @return  array  List of Email templates.
 	 *
 	 * @since   4.0.0
 	 *
@@ -45,7 +45,7 @@ class JedFormFieldExtensions extends JFormFieldList
 				$db->quoteName(
 					[
 						'id',
-						'title',
+						'subject',
 					],
 					[
 						'value',
@@ -53,9 +53,7 @@ class JedFormFieldExtensions extends JFormFieldList
 					]
 				)
 			)
-			->from($db->quoteName('#__jed_extensions'))
-			->group($db->quoteName('id'))
-			->order($db->quoteName('title'));
+			->from($db->quoteName('#__jed_emails'));
 		$db->setQuery($query);
 
 		$options = $db->loadAssocList();

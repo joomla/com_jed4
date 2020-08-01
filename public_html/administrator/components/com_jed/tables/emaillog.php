@@ -11,11 +11,11 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Table\Table;
 
 /**
- * Email table class
+ * Email logs table class
  *
  * @since  4.0.0
  */
-class TableEmail extends Table
+class TableEmaillog extends Table
 {
 	/**
 	 * Constructor
@@ -25,6 +25,6 @@ class TableEmail extends Table
 	 */
 	public function __construct($db)
 	{
-		parent::__construct('#__jed_emails', 'id', $db);
+		parent::__construct('#__jed_email_logs', 'id', $db);
 	}
 }

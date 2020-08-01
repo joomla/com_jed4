@@ -2,15 +2,19 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\User\User;
 
 /**
  * Email model
@@ -19,6 +23,14 @@ use Joomla\CMS\MVC\Model\AdminModel;
  */
 class JedModelEmail extends AdminModel
 {
+	/**
+	 * The mail engine
+	 *
+	 * @var    Mail
+	 * @since  4.0.0
+	 */
+	private $mailer;
+
 	/**
 	 * Get the form.
 	 *
@@ -40,7 +52,7 @@ class JedModelEmail extends AdminModel
 			['control' => 'jform', 'load_data' => $loadData]
 		);
 
-		if (!is_object($form))
+		if ( ! is_object($form))
 		{
 			return false;
 		}
@@ -71,11 +83,11 @@ class JedModelEmail extends AdminModel
 		$result['msg']   = '';
 		$result['state'] = 'error';
 
-		if (!$cids || !$email)
+		if ( ! $cids || ! $email)
 		{
 			$result['msg'] = Text::_('COM_JED_NO_EMAILS_FOUND');
 
-			if (!$email)
+			if ( ! $email)
 			{
 				$result['msg'] = Text::_('COM_JED_MISSING_EMAIL_ADDRESS');
 			}
@@ -104,7 +116,10 @@ class JedModelEmail extends AdminModel
 			{
 				$mail->clearAddresses();
 
-				if ($mail->sendMail($from, $fromName, $email, $details->subject, $details->body, true))
+				if ($mail->sendMail(
+					$from, $fromName, $email, $details->subject, $details->body,
+					true
+				))
 				{
 					$result['msg']   = Text::_('COM_JED_TESTEMAIL_SENT');
 					$result['state'] = '';
@@ -113,6 +128,116 @@ class JedModelEmail extends AdminModel
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Send an email to the extension developer.
+	 *
+	 * @param   string  $body         The message body
+	 * @param   int     $messageId    The message details to use for sending
+	 * @param   int     $developerId  The developer to send the message to
+	 * @param   int     $userId       The JED member sending the message
+	 * @param   int     $extensionId  The extension ID the message is about
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 *
+	 */
+	public function sendEmail(string $body, int $messageId, int $developerId,
+		int $userId, int $extensionId
+	): void {
+		// Get the developer details
+		$developer = User::getInstance($developerId);
+
+		if ($developer->get('id', null) === null)
+		{
+			throw new InvalidArgumentException(
+				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
+			);
+		}
+
+		$sender = User::getInstance($userId);
+
+		// Get the mail details
+		$mail    = $this->getItem($messageId);
+		$subject = $mail->get('subject');
+
+		// Prepare the email
+		$this->setupMailer($sender->name);
+
+		// Send the email
+		$result = $this->mailer
+			->addRecipient($developer->email, $developer->name)
+			->setSubject($subject)
+			->setBody($body)
+			->Send();
+
+		if ($result === false)
+		{
+			throw new RuntimeException($this->mailer->ErrorInfo);
+		}
+
+		if ($result instanceof JException)
+		{
+			throw new RuntimeException($result->getMessage());
+		}
+
+		$this->storeEmail($extensionId, $subject, $body, $developer, $sender);
+	}
+
+	/**
+	 * Setup the mailer instance.
+	 *
+	 * @param   string  $fromName  The name of the person sending the email
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function setupMailer(string $fromName): void
+	{
+		// Instantiate the mailer
+		$this->mailer = Factory::getMailer();
+		$this->mailer->isHtml()
+			->addReplyTo('noreply@extensions.joomla.org', $fromName)
+			->setFrom('noreply@extensions.joomla.org', $fromName);
+	}
+
+	/**
+	 * Store the sent email.
+	 *
+	 * @param   int     $extensionId  The extension ID the message is about
+	 * @param   string  $subject      The message subject
+	 * @param   string  $body         The message body
+	 * @param   User    $developer    The developer details
+	 * @param   User    $sender       The JED member details
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	private function storeEmail(int $extensionId, string $subject, string $body,
+		User $developer, User $sender
+	): void {
+		$emailTable = Table::getInstance('Emaillog', 'Table');
+		$result = $emailTable->save(
+			[
+				'extension_id'    => $extensionId,
+				'subject'         => $subject,
+				'body'            => $body,
+				'developer_id'    => $developer->get('id'),
+				'developer_name'  => $developer->get('name'),
+				'developer_email' => $developer->get('email'),
+				'created'         => (Date::getInstance())->toSql(),
+				'created_by'      => $sender->get('id')
+			]
+		);
+
+		if ($result === false)
+		{
+			throw new RuntimeException($emailTable->getError());
+		}
 	}
 
 	/**
@@ -127,7 +252,9 @@ class JedModelEmail extends AdminModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_jed.edit.email.data', []);
+		$data = Factory::getApplication()->getUserState(
+			'com_jed.edit.email.data', []
+		);
 
 		if (0 === count($data))
 		{

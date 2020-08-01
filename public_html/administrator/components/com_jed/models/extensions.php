@@ -2,22 +2,18 @@
 /**
  * @package    JED
  *
- * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\Utilities\ArrayHelper;
 
 /**
- * Jed Extensions Model
+ * JED Extensions Model
  *
- * @package  Jed
+ * @package  JED
  * @since    4.0.0
  */
 class JedModelExtensions extends ListModel
@@ -30,69 +26,128 @@ class JedModelExtensions extends ListModel
 	 * @see     ListModel
 	 * @since   4.0.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
-				'id', 't.id',
-				'title', 't.title',
-				'category', 't.category',
-				'published', 't.published',
-				'approved', 't.approved',
-				'developer', 't.developer',
-				'type', 't.type',
-				'reviewCount', 't.reviewCount',
-
-			);
+			$config['filter_fields'] = [
+				'category_id',
+				'published',
+				'approved',
+				'developer',
+				'user_id',
+				'type',
+				'includes',
+				'extensions.published',
+				'extensions.approved',
+				'extensions.title',
+				'categories.title',
+				'extensions.modified_on',
+				'extensions.created_on',
+				'users.name',
+				'extensions.type',
+				'extensions.reviewcount',
+				'extensions.id',
+			];
 		}
 
 		parent::__construct($config);
 	}
 
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Method to get an array of data items.
 	 *
-	 * @param   string  $type    The table type to instantiate
-	 * @param   string  $prefix  A prefix for the table class name. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
+	 * @return  mixed  An array of data items on success, false on failure.
 	 *
-	 * @return  Table  A database object
 	 * @since   4.0.0
 	 */
-	public function getTable($type = 'Extension', $prefix = 'JedTable', $config = array())
+	public function getItems()
 	{
-		return Table::getInstance($type, $prefix, $config);
+		$items = parent::getItems();
+
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('COUNT(' . $db->quoteName('id') . ')')
+			->from($db->quoteName('#__jed_reviews'));
+
+		array_walk($items,
+			static function ($item) use ($db, $query) {
+				// Get the number of reviews
+				$query->clear('where')
+					->where($db->quoteName('extension_id') . ' = ' . (int) $item->id);
+				$db->setQuery($query);
+				$item->reviewCount = $db->loadResult();
+			}
+		);
+
+		return $items;
+	}
+
+	/**
+	 * Retrieve a list of developers matching a search query.
+	 *
+	 * @param   string  $search  The string to filter on
+	 *
+	 * @return  array List of developers.
+	 *
+	 * @since   4.0.0
+	 */
+	public function getDevelopers(string $search): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select(
+				$db->quoteName(
+					[
+						'users.id',
+						'users.name'
+					],
+					[
+						'data',
+						'value'
+					]
+				)
+			)
+			->from($db->quoteName('#__users', 'users'))
+			->leftJoin(
+				$db->quoteName('#__jed_extensions', 'extensions')
+				. ' ON ' . $db->quoteName('extensions.created_by') . ' = ' . $db->quoteName('users.id')
+			)
+			->where($db->quoteName('users.name') . ' LIKE ' . $db->quote('%' . $search . '%'));
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
 	}
 
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * @param   string  $ordering   The ordering field
-	 * @param   string  $direction  The ordering direction
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
 	 * @since   4.0.0
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = null, $direction = null): void
 	{
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		if ($ordering === null)
+		{
+			$ordering = 'extensions.created_on';
+		}
 
-		$accessId = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', null, 'int');
-		$this->setState('filter.access', $accessId);
+		if ($direction === null)
+		{
+			$direction = 'DESC';
+		}
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-
-		// Load the parameters.
-		$params = ComponentHelper::getParams('com_jed');
-		$this->setState('params', $params);
-
-		// List state information.
-		parent::populateState('t.id', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -107,34 +162,80 @@ class JedModelExtensions extends ListModel
 	 * @return  string  A store id.
 	 * @since   4.0.0
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.access');
-		$id .= ':' . $this->getState('filter.state');
+		$id .= ':' . $this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
 
 	/**
-	 * Method to build an SQL query to load the list data.
+	 * Method to get a \JDatabaseQuery object for retrieving the data set from a database.
 	 *
-	 * @return  string  An SQL query
+	 * @return  \JDatabaseQuery  A \JDatabaseQuery object to retrieve the data set.
+	 *
 	 * @since   4.0.0
 	 */
-	protected function getListQuery()
+	protected function getListQuery(): \JDatabaseQuery
 	{
-		// Create a new query object.
-		$db = Factory::getDBO();
+		$db = $this->getDbo();
 
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('*');
-
-		// From the #__jed_extensions table
-		$query->from($db->quoteName('#__jed_extensions') . ' AS t');
+		$query = $db->getQuery(true)
+			->select(
+				$db->quoteName(
+					[
+						'extensions.id',
+						'extensions.title',
+						'extensions.alias',
+						'extensions.created_by',
+						'extensions.modified_on',
+						'extensions.created_on',
+						'extensions.checked_out',
+						'extensions.checked_out_time',
+						'extensions.approved',
+						'extensions.published',
+						'extensions.type',
+						'categories.title',
+						'users.name',
+						'staff.name',
+					],
+					[
+						'id',
+						'title',
+						'alias',
+						'created_by',
+						'modified_on',
+						'created_on',
+						'checked_out',
+						'checked_out_time',
+						'approved',
+						'published',
+						'type',
+						'category',
+						'developer',
+						'editor'
+					]
+				)
+			)
+			->from($db->quoteName('#__jed_extensions', 'extensions'))
+			->leftJoin(
+				$db->quoteName('#__categories', 'categories')
+				. ' ON ' . $db->quoteName('categories.id') . ' = ' . $db->quoteName('extensions.category_id')
+			)
+			->leftJoin(
+				$db->quoteName('#__jed_extensions_types', 'types')
+				. ' ON ' . $db->quoteName('types.extension_id') . ' = ' . $db->quoteName('extensions.id')
+			)
+			->leftJoin(
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('extensions.created_by')
+			)
+			->leftJoin(
+				$db->quoteName('#__users', 'staff')
+				. ' ON ' . $db->quoteName('staff.id') . ' = ' . $db->quoteName('extensions.checked_out')
+			);
 
 		// Filter by search in id
 		$search = $this->getState('filter.search');
@@ -143,72 +244,70 @@ class JedModelExtensions extends ListModel
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->where('t.id = ' . (int) substr($search, 3));
+				$query->where('extensions.id = ' . (int) substr($search, 3));
 			}
 			else
 			{
 				$search = $db->quote('%' . $db->escape($search, true) . '%');
-				$query->where('t.id LIKE ' . $search);
+				$query->where($db->quoteName('extensions.title') . ' LIKE ' . $search);
 			}
 		}
 
+		$categoryIds = $this->getState('filter.category_id');
+
+		if ($categoryIds)
+		{
+			$query->where($db->quoteName('extensions.category_id') . ' IN (' . implode(',', $categoryIds) . ')');
+		}
+
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where($db->quoteName('extensions.published') . ' = ' . (int) $published);
+		}
+
+		$approved = $this->getState('filter.approved', '');
+
+		if ($approved !== '')
+		{
+			$query->where($db->quoteName('extensions.approved') . ' = ' . $db->quote($approved));
+		}
+
+		$userId = $this->getState('filter.user_id');
+
+		if ($userId)
+		{
+			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $userId);
+		}
+
+		$type = $this->getState('filter.type');
+
+		if ($type)
+		{
+			$query->where($db->quoteName('extensions.type') . ' = ' . $db->quote($type));
+		}
+
+		$includes = $this->getState('filter.includes');
+
+		if ($includes && $includes[0] !== '')
+		{
+			$query->where($db->quoteName('types.type') . ' IN (' . implode(',', $db->quote($includes, false)) . ')');
+		}
+
+		// Group by ID to ensure unique results
+		$query->group($db->quoteName('extensions.id'));
+
 		// Add the list ordering clause.
-		$ordering = $this->state->get('list.fullordering', 'id ASC');
-		$query->order($db->escape($ordering));
+		$query->order(
+			$db->quoteName(
+				$db->escape(
+					$this->getState('list.ordering', 'extensions.id')
+				)
+			) . ' ' . $db->escape($this->getState('list.direction', 'DESC'))
+		);
 
 		return $query;
 	}
 
-	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
-	 *
-	 * @since   4.0.0
-	 */
-	protected function canDelete($record)
-	{
-		$user = Factory::getUser();
-
-		return $user->authorise('core.delete', $this->option);
-	}
-
-	/**
-	 * Method to delete groups.
-	 *
-	 * @param   array  An array of item ids.
-	 *
-	 * @return  boolean  Returns true on success, false on failure.
-	 *
-	 * @since   4.0.0
-	 * @throws Exception
-	 */
-	public function delete($itemIds)
-	{
-		// Sanitize the ids.
-		$itemIds = (array) $itemIds;
-
-		ArrayHelper::toInteger($itemIds);
-
-		// Get a group row instance.
-		$table = $this->getTable();
-
-		// Iterate the items to delete each one.
-		foreach ($itemIds as $itemId)
-		{
-			if (!$table->delete($itemId))
-			{
-				$this->setError($table->getError());
-
-				return false;
-			}
-		}
-
-		// Clean the cache
-		$this->cleanCache();
-
-		return true;
-	}
 }
