@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 /**
- * @param   integer  $rating  The rounded average rating for an extension
+ * @param   integer  $score  The score of the extension
  */
 
 /** @var array $displayData */

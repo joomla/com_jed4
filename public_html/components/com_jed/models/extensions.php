@@ -10,6 +10,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Extensions model.
@@ -120,14 +121,22 @@ class JedModelExtensions extends ListModel
 
 		if ($category)
 		{
-
+			$query->where('extensions.category_id = ' . (int) $category);
 		}
 
-		$includes = $this->getState('filter.includes');
+		$extensionId = $this->getState('filter.extensionId');
 
-		if ($includes)
+		if (is_numeric($extensionId))
 		{
-
+			$type = $this->getState('filter.extensionId.include', true) ? '= ' : '<> ';
+			$query->where('extensions.id ' . $type . (int) $extensionId);
+		}
+		elseif (is_array($extensionId))
+		{
+			$extensionId = ArrayHelper::toInteger($extensionId);
+			$extensionId = implode(',', $extensionId);
+			$type        = $this->getState('filter.extensionId.include', true) ? 'IN' : 'NOT IN';
+			$query->where('extensions.id ' . $type . ' (' . $extensionId . ')');
 		}
 
 		$compatibility = $this->getState('filter.compatibility');
@@ -172,6 +181,15 @@ class JedModelExtensions extends ListModel
 
 		}
 
+		$developer = $this->getState('filter.developer');
+
+		if ($developer)
+		{
+			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developer);
+		}
+
+		$query->order($this->getState('list.ordering', 'extensions.ordering') . ' ' . $this->getState('list.direction', 'ASC'));
+
 		return $query;
 	}
 
@@ -194,13 +212,14 @@ class JedModelExtensions extends ListModel
 			{
 				$item->intro = HTMLHelper::_('string.truncate', $item->body, 150, true, false);
 			}
+
 			unset($item->body);
 
 			// Format the image
 			$item->image = JedHelper::formatImage($item->image, 'small');
 
-			// Make array of compatibility
-			$item->compatibility = JedHelper::formatCompatibility($item->compatibility);
+			// Make array of compatibility @TODO: get data from joined table
+			$item->compatibility = '';
 
 			// First character of type uppercase
 			$item->type = ucfirst($item->type);
@@ -256,13 +275,15 @@ class JedModelExtensions extends ListModel
 	{
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . json_encode($this->getState('filter.category'));
-		$id .= ':' . json_encode($this->getState('filter.includes'));
+		$id .= ':' . serialize($this->getState('filter.extensionId'));
+		$id .= ':' . $this->getState('filter.extensionId.include');
 		$id .= ':' . $this->getState('filter.compatibility');
 		$id .= ':' . $this->getState('filter.type');
 		$id .= ':' . $this->getState('filter.hasDemo');
 		$id .= ':' . $this->getState('filter.newUpdated');
 		$id .= ':' . $this->getState('filter.score');
 		$id .= ':' . $this->getState('filter.favourites');
+		$id .= ':' . $this->getState('filter.developer');
 
 		return parent::getStoreId($id);
 	}

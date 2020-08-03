@@ -22,6 +22,7 @@ Factory::getDocument()->addScriptDeclaration(<<<JS
     jed.searchForm();
 JS
 );
+
 ?>
 
 <div class="jed-cards-wrapper margin-bottom-half">
@@ -45,7 +46,6 @@ JS
 		</ul>
 	</div>
 </div>
-
 
 <?php echo $this->pagination->getPaginationLinks(); ?>
 <!--Hide for now-->
