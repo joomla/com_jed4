@@ -16,10 +16,13 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var JedViewExtension $this */
 
-HTMLHelper::_('formbehavior.chosen');
-HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('behavior.tabstate');
 HTMLHelper::_('script', 'com_jed/jed.js', ['version' => 'auto', 'relative' => true]);
+
+Factory::getApplication()->getDocument()->getWebAssetManager()
+	->useScript('form.validate')
+	->useScript('keepalive')
+	->usePreset('choicesjs')
+	->useScript('webcomponent.field-fancy-select');
 
 Text::script('COM_JED_EXTENSIONS_ERROR_DURING_SEND_EMAIL', true);
 Text::script('COM_JED_EXTENSIONS_MISSING_MESSAGE_ID', true);
@@ -64,10 +67,10 @@ JS
     <div class="form-horizontal">
 	    <?php echo $this->form->renderField('created_by'); ?>
 	    <?php echo $this->form->renderField('jedChecker'); ?>
-		<?php echo HTMLHelper::_('bootstrap.startTabSet', 'extensionTab', ['active' => 'general']); ?>
+		<?php echo HTMLHelper::_('uitab.startTabSet', 'extensionTab', ['active' => 'general']); ?>
 
 		<?php echo HTMLHelper::_(
-			'bootstrap.addTab',
+			'uitab.addTab',
 			'extensionTab',
 			'general',
 			Text::_('COM_JED_EXTENSIONS_INFO_TAB')
@@ -84,10 +87,10 @@ JS
                 </div>
             </div>
         </div>
-		<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
-	    	'bootstrap.addTab',
+	    	'uitab.addTab',
 		    'extensionTab',
 		    'info',
 		    Text::_('COM_JED_EXTENSIONS_CONTENT_TAB')
@@ -99,10 +102,10 @@ JS
                 </div>
             </div>
         </div>
-	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
-		    'bootstrap.addTab',
+		    'uitab.addTab',
 		    'extensionTab',
 		    'image',
 		    Text::_('COM_JED_EXTENSIONS_CONTENT_IMAGE')
@@ -114,10 +117,10 @@ JS
                 </div>
             </div>
         </div>
-	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
-	    	'bootstrap.addTab',
+	    	'uitab.addTab',
 		    'extensionTab',
 		    'downloads',
 		    Text::_('COM_JED_EXTENSIONS_DOWNLOADS_TAB')
@@ -136,10 +139,10 @@ JS
                 </div>
             </div>
         </div>
-	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
-	    	'bootstrap.addTab',
+	    	'uitab.addTab',
 		    'extensionTab',
 		    'reviews',
 		    Text::_('COM_JED_EXTENSIONS_REVIEWS_TAB')
@@ -158,10 +161,10 @@ JS
                 ?>
             </div>
         </div>
-	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
-	    	'bootstrap.addTab',
+	    	'uitab.addTab',
 		    'extensionTab',
 		    'communication',
 		    Text::_('COM_JED_EXTENSIONS_COMMUNICATION_TAB')
@@ -186,10 +189,10 @@ JS
                 </div>
             </div>
         </div>
-	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 	    <?php echo HTMLHelper::_(
-	    	'bootstrap.addTab',
+	    	'uitab.addTab',
 		    'extensionTab',
 		    'history',
 		    Text::_('COM_JED_EXTENSIONS_HISTORY_TAB')
@@ -245,9 +248,9 @@ JS
                 </table>
             </div>
         </div>
-	    <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-	    <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
+	    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     </div>
 
