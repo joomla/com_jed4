@@ -1,0 +1,28 @@
+/**
+* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
+* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
+**/
+
+/**
+ * @copyright   (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+Joomla = window.Joomla || {};
+
+(function (Joomla) {
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    Joomla.submitbuttonurl = function () {
+      var form = document.getElementById('adminForm');
+      var loading = document.getElementById('loading');
+
+      if (loading) {
+        loading.classList.remove('hidden');
+      }
+
+      form.installtype.value = 'url';
+      form.submit();
+    };
+  });
+})(Joomla);

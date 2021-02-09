@@ -2,22 +2,21 @@
 /**
  * Part of the Joomla Framework Registry Package
  *
- * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
 namespace Joomla\Registry\Format;
 
-use Joomla\Registry\AbstractRegistryFormat;
+use Joomla\Registry\FormatInterface;
 use Joomla\Utilities\ArrayHelper;
-use stdClass;
 
 /**
  * INI format handler for Registry.
  *
  * @since  1.0
  */
-class Ini extends AbstractRegistryFormat
+class Ini implements FormatInterface
 {
 	/**
 	 * Default options array
@@ -25,11 +24,11 @@ class Ini extends AbstractRegistryFormat
 	 * @var    array
 	 * @since  1.3.0
 	 */
-	protected static $options = array(
+	protected static $options = [
 		'supportArrayValues' => false,
 		'parseBooleanWords'  => false,
 		'processSections'    => false,
-	);
+	];
 
 	/**
 	 * A cache used by stringToObject.
@@ -37,7 +36,7 @@ class Ini extends AbstractRegistryFormat
 	 * @var    array
 	 * @since  1.0
 	 */
-	protected static $cache = array();
+	protected static $cache = [];
 
 	/**
 	 * Converts an object into an INI formatted string
@@ -52,17 +51,17 @@ class Ini extends AbstractRegistryFormat
 	 *
 	 * @since   1.0
 	 */
-	public function objectToString($object, $options = array())
+	public function objectToString($object, array $options = [])
 	{
-		$options            = array_merge(self::$options, $options);
+		$options            = array_merge(static::$options, $options);
 		$supportArrayValues = $options['supportArrayValues'];
 
-		$local  = array();
-		$global = array();
+		$local  = [];
+		$global = [];
 
 		$variables = get_object_vars($object);
 
-		$last = count($variables);
+		$last = \count($variables);
 
 		// Assume that the first element is in section
 		$inSection = true;
@@ -71,7 +70,7 @@ class Ini extends AbstractRegistryFormat
 		foreach ($variables as $key => $value)
 		{
 			// If the value is an object then we need to put it in a local section.
-			if (is_object($value))
+			if (\is_object($value))
 			{
 				// Add an empty line if previous string wasn't in a section
 				if (!$inSection)
@@ -85,7 +84,7 @@ class Ini extends AbstractRegistryFormat
 				// Add the properties for this section.
 				foreach (get_object_vars($value) as $k => $v)
 				{
-					if (is_array($v) && $supportArrayValues)
+					if (\is_array($v) && $supportArrayValues)
 					{
 						$assoc = ArrayHelper::isAssociative($v);
 
@@ -102,12 +101,12 @@ class Ini extends AbstractRegistryFormat
 				}
 
 				// Add empty line after section if it is not the last one
-				if (0 !== --$last)
+				if (--$last !== 0)
 				{
 					$local[] = '';
 				}
 			}
-			elseif (is_array($value) && $supportArrayValues)
+			elseif (\is_array($value) && $supportArrayValues)
 			{
 				$assoc = ArrayHelper::isAssociative($value);
 
@@ -138,25 +137,25 @@ class Ini extends AbstractRegistryFormat
 	 *
 	 * @since   1.0
 	 */
-	public function stringToObject($data, array $options = array())
+	public function stringToObject($data, array $options = [])
 	{
-		$options = array_merge(self::$options, $options);
+		$options = array_merge(static::$options, $options);
 
 		// Check the memory cache for already processed strings.
 		$hash = md5($data . ':' . (int) $options['processSections']);
 
-		if (isset(self::$cache[$hash]))
+		if (isset(static::$cache[$hash]))
 		{
-			return self::$cache[$hash];
+			return static::$cache[$hash];
 		}
 
 		// If no lines present just return the object.
 		if (empty($data))
 		{
-			return new stdClass;
+			return new \stdClass;
 		}
 
-		$obj     = new stdClass;
+		$obj     = new \stdClass;
 		$section = false;
 		$array   = false;
 		$lines   = explode("\n", $data);
@@ -175,13 +174,14 @@ class Ini extends AbstractRegistryFormat
 
 			if ($options['processSections'])
 			{
-				$length = strlen($line);
+				$length = \strlen($line);
 
 				// If we are processing sections and the line is a section add the object and continue.
 				if ($line[0] === '[' && ($line[$length - 1] === ']'))
 				{
 					$section       = substr($line, 1, $length - 2);
-					$obj->$section = new stdClass;
+					$obj->$section = new \stdClass;
+
 					continue;
 				}
 			}
@@ -198,7 +198,7 @@ class Ini extends AbstractRegistryFormat
 			}
 
 			// Get the key and value for the line.
-			list ($key, $value) = explode('=', $line, 2);
+			list($key, $value) = explode('=', $line, 2);
 
 			// If we have an array item
 			if (substr($key, -1) === ']' && ($openBrace = strpos($key, '[', 1)) !== false)
@@ -231,7 +231,7 @@ class Ini extends AbstractRegistryFormat
 			}
 
 			// If the value is quoted then we assume it is a string.
-			$length = strlen($value);
+			$length = \strlen($value);
 
 			if ($length && ($value[0] === '"') && ($value[$length - 1] === '"'))
 			{
@@ -249,18 +249,18 @@ class Ini extends AbstractRegistryFormat
 					$value = false;
 				}
 				elseif ($value === 'true')
-					// If the value is 'true' assume boolean true.
 				{
+					// If the value is 'true' assume boolean true.
 					$value = true;
 				}
-				elseif ($options['parseBooleanWords'] && in_array(strtolower($value), array('yes', 'no'), true))
-					// If the value is 'yes' or 'no' and option is enabled assume appropriate boolean
+				elseif ($options['parseBooleanWords'] && \in_array(strtolower($value), ['yes', 'no'], true))
 				{
+					// If the value is 'yes' or 'no' and option is enabled assume appropriate boolean
 					$value = (strtolower($value) === 'yes');
 				}
 				elseif (is_numeric($value))
-					// If the value is numeric than it is either a float or int.
 				{
+					// If the value is numeric than it is either a float or int.
 					// If there is a period then we assume a float.
 					if (strpos($value, '.') !== false)
 					{
@@ -280,7 +280,7 @@ class Ini extends AbstractRegistryFormat
 				{
 					if (!isset($obj->$section->$key))
 					{
-						$obj->$section->$key = array();
+						$obj->$section->$key = [];
 					}
 
 					if (!empty($arrayKey))
@@ -303,7 +303,7 @@ class Ini extends AbstractRegistryFormat
 				{
 					if (!isset($obj->$key))
 					{
-						$obj->$key = array();
+						$obj->$key = [];
 					}
 
 					if (!empty($arrayKey))
@@ -325,7 +325,7 @@ class Ini extends AbstractRegistryFormat
 		}
 
 		// Cache the string to save cpu cycles -- thus the world :)
-		self::$cache[$hash] = clone $obj;
+		static::$cache[$hash] = clone $obj;
 
 		return $obj;
 	}
@@ -343,20 +343,23 @@ class Ini extends AbstractRegistryFormat
 	{
 		$string = '';
 
-		switch (gettype($value))
+		switch (\gettype($value))
 		{
 			case 'integer':
 			case 'double':
 				$string = $value;
+
 				break;
 
 			case 'boolean':
 				$string = $value ? 'true' : 'false';
+
 				break;
 
 			case 'string':
 				// Sanitize any CRLF characters..
-				$string = '"' . str_replace(array("\r\n", "\n"), '\\n', $value) . '"';
+				$string = '"' . str_replace(["\r\n", "\n"], '\\n', $value) . '"';
+
 				break;
 		}
 

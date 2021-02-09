@@ -3,20 +3,21 @@
  * @package     Joomla.Administrator
  * @subpackage  mod_latest
  *
- * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @copyright   (C) 2005 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
-// Include dependencies.
-JLoader::register('ModLatestHelper', __DIR__ . '/helper.php');
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\Module\Latest\Administrator\Helper\LatestHelper;
 
-$list = ModLatestHelper::getList($params);
+$model = $app->bootComponent('com_content')->getMVCFactory()->createModel('Articles', 'Administrator', ['ignore_request' => true]);
+$list = LatestHelper::getList($params, $model);
 
 if ($params->get('automatic_title', 0))
 {
-	$module->title = ModLatestHelper::getTitle($params);
+	$module->title = LatestHelper::getTitle($params);
 }
 
-require JModuleHelper::getLayoutPath('mod_latest', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_latest', $params->get('layout', 'default'));

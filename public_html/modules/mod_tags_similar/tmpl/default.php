@@ -3,15 +3,21 @@
  * @package     Joomla.Site
  * @subpackage  mod_tags_similar
  *
- * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @copyright   (C) 2013 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Router\Route;
+
+if (!$list)
+{
+	return;
+}
+
 ?>
-<div class="tagssimilar<?php echo $moduleclass_sfx; ?>">
-<?php if ($list) : ?>
+<div class="mod-tagssimilar tagssimilar">
 	<ul>
 	<?php foreach ($list as $i => $item) : ?>
 		<li>
@@ -20,7 +26,7 @@ defined('_JEXEC') or die;
 					<?php echo htmlspecialchars($item->core_title, ENT_COMPAT, 'UTF-8'); ?>
 				<?php endif; ?>
 			<?php else : ?>
-				<a href="<?php echo JRoute::_($item->link); ?>">
+				<a href="<?php echo Route::_($item->link); ?>">
 					<?php if (!empty($item->core_title)) : ?>
 						<?php echo htmlspecialchars($item->core_title, ENT_COMPAT, 'UTF-8'); ?>
 					<?php endif; ?>
@@ -29,7 +35,4 @@ defined('_JEXEC') or die;
 		</li>
 	<?php endforeach; ?>
 	</ul>
-<?php else : ?>
-	<span><?php echo JText::_('MOD_TAGS_SIMILAR_NO_MATCHING_TAGS'); ?></span>
-<?php endif; ?>
 </div>
