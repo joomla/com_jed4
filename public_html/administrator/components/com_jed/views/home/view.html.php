@@ -73,14 +73,6 @@ class JedViewHome extends HtmlView
 	protected $helper;
 
 	/**
-	 * The sidebar menu
-	 *
-	 * @var    string
-	 * @since  4.0.0
-	 */
-	protected $sidebar = '';
-
-	/**
 	 * List of total statistics
 	 *
 	 * @var    array
@@ -126,10 +118,6 @@ class JedViewHome extends HtmlView
 		$this->tickets = $model->getTickets();
 
 		$this->addToolbar();
-
-		$helper = new JedHelper;
-		$helper->addSubmenu('home');
-		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 	}

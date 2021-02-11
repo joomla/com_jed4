@@ -55,14 +55,6 @@ class JedViewEmails extends HtmlView
 	protected $canDo;
 
 	/**
-	 * The sidebar to show
-	 *
-	 * @var    string
-	 * @since  4.0.0
-	 */
-	protected $sidebar = '';
-
-	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -71,7 +63,6 @@ class JedViewEmails extends HtmlView
 	 *
 	 * @since   4.0.0
 	 * @throws  Exception
-	 *
 	 */
 	public function display($tpl = null)
 	{
@@ -81,15 +72,8 @@ class JedViewEmails extends HtmlView
 		$this->pagination = $model->getPagination();
 		$this->canDo      = ContentHelper::getActions('com_jed');
 
-		// Show the toolbar
 		$this->toolbar();
 
-		// Render the sidebar
-		$this->helper = new JedHelper;
-		$this->helper->addSubmenu('emails');
-		$this->sidebar = JHtmlSidebar::render();
-
-		// Display it all
 		return parent::display($tpl);
 	}
 

@@ -8,7 +8,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
@@ -19,26 +18,10 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class JedController extends BaseController
 {
 	/**
-	 * display task
+	 * The default view for the display method.
 	 *
-	 * @param   boolean  $cachable
-	 * @param   array    $urlparams
-	 *
-	 * @return  object
-	 * @since   4.0.0
-	 * @throws  Exception
+	 * @var    string
+	 * @since  4.0.0
 	 */
-	function display($cachable = false, $urlparams = array())
-	{
-		$input = Factory::getApplication()->input;
-
-		$view = $input->get('view', false);
-
-		if ($view == false)
-		{
-			$input->set('view', 'home');
-		}
-
-		return parent::display();
-	}
+	protected $default_view = 'home';
 }

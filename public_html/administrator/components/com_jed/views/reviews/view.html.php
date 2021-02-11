@@ -90,11 +90,7 @@ class JedViewReviews extends HtmlView
 			throw new RuntimeException(implode("\n", $errors), 500);
 		}
 
-		// Add the toolbar
 		$this->addToolBar();
-		$helper = new JedHelper;
-		$helper->addSubmenu('reviews');
-		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 	}

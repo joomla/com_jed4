@@ -14,10 +14,7 @@ defined('_JEXEC') or die;
 /** @var JedViewHome $this */
 
 ?>
-<div id="j-sidebar-container" class="span2">
-	<?php echo $this->sidebar; ?>
-</div>
-<div id="j-main-container" class="span10">
+<div id="j-main-container" class="span12">
     <div class="pull-left">
         <h2><?php echo Text::_('COM_JED_HOME_TOTAL_REVIEWS'); ?></h2>
         <?php echo $this->totals['reviews']; ?>

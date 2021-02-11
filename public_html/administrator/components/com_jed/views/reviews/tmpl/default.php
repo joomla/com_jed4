@@ -28,14 +28,8 @@ HTMLHelper::_('formbehavior.chosen');
 
 <form action="<?php echo 'index.php?option=com_jed&view=reviews'; ?>" method="post" name="adminForm"
       id="adminForm">
-	<?php if (!empty($this->sidebar)) : ?>
-    <div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-    </div>
-    <div id="j-main-container" class="span10">
-		<?php else : ?>
+    <div id="j-main-container" class="span12">
         <div id="j-main-container">
-			<?php endif; ?>
 			<?php
 			echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
 			?>

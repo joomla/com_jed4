@@ -25,10 +25,7 @@ $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 ?>
 <form name="adminForm" id="adminForm" method="post" action="index.php?option=com_jed&view=extensions">
-    <div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-    </div>
-    <div id="j-main-container" class="span10">
+    <div id="j-main-container" class="span12">
 	    <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 	    <?php if (empty($this->items)) : ?>
             <div class="alert alert-no-items">

@@ -16,10 +16,7 @@ use Joomla\CMS\Router\Route;
 
 ?>
 <form name="adminForm" id="adminForm" method="post" action="index.php?option=com_jed&view=emails">
-	<div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container" class="span12">
         <?php if (empty($this->items)) : ?>
         <div class="alert alert-no-items">
 			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
