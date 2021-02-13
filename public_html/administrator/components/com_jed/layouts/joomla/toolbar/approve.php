@@ -39,7 +39,7 @@ switch ($displayData['approved'])
 }
 ?>
 <button type="button" data-toggle="modal"
-        onclick="jQuery('#approveModal').modal('show'); return true;"
+        data-bs-toggle="modal" data-bs-target="#approveModal"
         class="btn btn-small <?php
         echo $buttonClass; ?>">
     <span class="icon-checkmark-circle" aria-hidden="true"></span>

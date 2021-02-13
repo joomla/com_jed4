@@ -114,17 +114,18 @@ class JedViewExtension extends HtmlView
 		// Get the toolbar object instance
 		$bar = Toolbar::getInstance('toolbar');
 
-		// Instantiate a new FileLayout instance and render the batch button
-		$layout = new FileLayout('joomla.toolbar.approve');
+		$bar->popupButton()
+			->form('extension-form')
+			->layout('joomla.toolbar.approve')
+			->setOptions(['title' => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'), 'approved' => $this->item->approved])
+			->text(Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'))
+			->selector('approveModal');
 
-		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'), 'approved' => $this->item->approved]);
-		$bar->appendButton('Custom', $dhtml, 'approve');
-
-		// Instantiate a new FileLayout instance and render the batch button
-		$layout = new FileLayout('joomla.toolbar.publish');
-
-		$dhtml = $layout->render(['title' => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'), 'published' => $this->item->published]);
-		$bar->appendButton('Custom', $dhtml, 'publish');
+		$bar->popupButton()
+			->form('extension-form')
+			->layout('joomla.toolbar.publish')
+			->setOptions(['title' => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'), 'published' => $this->item->published])
+			->text(Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'))
+			->selector('publishModal');
 	}
-
 }

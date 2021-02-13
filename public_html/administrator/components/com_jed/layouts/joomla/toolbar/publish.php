@@ -21,7 +21,7 @@ HTMLHelper::_('behavior.core');
 $title = $displayData['title'];
 ?>
 <button type="button" data-toggle="modal"
-        onclick="jQuery('#publishModal').modal('show'); return true;"
+        data-bs-toggle="modal" data-bs-target="#publishModal"
         class="btn btn-small <?php
         echo (int) $displayData['published'] === 1 ? 'btn-success' : 'btn-danger'; ?>">
     <span class="icon-eye-open" aria-hidden="true"></span>
