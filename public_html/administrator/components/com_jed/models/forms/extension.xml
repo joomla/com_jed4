@@ -47,7 +47,7 @@
                 type="category"
                 label="JCATEGORY"
                 class="advancedSelect"
-                extension="com_jed"
+                extension="com_jed.extensions"
                 default=""
                 filter="integer"
                 multiple="false"
