@@ -6,7 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+namespace Joomla\Component\Jed\Administrator\Table;
+
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
@@ -19,6 +21,14 @@ use Joomla\CMS\Table\Table;
  */
 class TableExtension extends Table
 {
+	/**
+	 * Indicates that columns fully support the NULL value in the database
+	 *
+	 * @var    boolean
+	 * @since  4.0.0
+	 */
+	protected $_supportNullValue = true;
+
 	/**
 	 * Constructor
 	 *
@@ -46,13 +56,11 @@ class TableExtension extends Table
 
 		$this->set('modified_on', $date->toSql());
 
-		// Existing item
 		if ($this->get('id'))
 		{
 			$this->set('modified_by', $user->get('id'));
 		}
 
-		// Set alias
 		if (trim($this->get('alias')) === '')
 		{
 			$this->set('alias', $this->get('title'));

@@ -6,7 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+namespace Joomla\Component\Jed\Administrator\Controller;
+
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\AdminController;
 
@@ -15,7 +17,7 @@ use Joomla\CMS\MVC\Controller\AdminController;
  *
  * @since 4.0.0
  */
-class JedControllerExtensions extends AdminController
+class ExtensionsController extends AdminController
 {
 	/**
 	 * Set the text context
@@ -37,7 +39,7 @@ class JedControllerExtensions extends AdminController
 	 * @since   4.0.0
 	 * @throws  Exception
 	 */
-	public function getModel($name = 'Extension', $prefix = 'JedModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Extension', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
 		$model = parent::getModel($name, $prefix, $config);
 
