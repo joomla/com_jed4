@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="extension">
+
+        <field
+                name="title"
+                type="text"
+                label="JFIELD_TITLE_DESC"
+                class="input-xxlarge input-large-text"
+                size="40"
+                required="true"
+        />
+
+        <field
+                name="alias"
+                type="text"
+                label="COM_JED_EXTENSIONS_ALIAS"
+                description="JFIELD_ALIAS_DESC"
+                hint="JFIELD_ALIAS_PLACEHOLDER"
+                size="40"
+        />
+
+        <field
+                name="created_by"
+                type="user"
+                label="COM_JED_EXTENSIONS_DEVELOPER"
+        />
+
+        <field
+                name="jedChecker"
+                type="list"
+                label="COM_JED_EXTENSIONS_JED_CHECKER"
+                class="chzn-color-state advancedSelect"
+                size="1"
+                default="1"
+                filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+    </fieldset>
+
+    <fieldset name="info">
+        <field
+                name="category_id"
+                type="category"
+                label="JCATEGORY"
+                class="advancedSelect"
+                extension="com_jed.extensions"
+                default=""
+                filter="integer"
+                multiple="false"
+                required="true"
+        />
+
+        <field
+                name="related"
+                type="category"
+                label="COM_JED_EXTENSIONS_RELATED"
+                class="advancedSelect"
+                extension="com_jed"
+                default=""
+                filter="integer"
+                multiple="true"
+        />
+
+        <field
+                name="extensionTypes"
+                type="checkboxes"
+                label="COM_JED_EXTENSIONS_EXTENSION_TYPES"
+        >
+            <option value="component">COM_JED_EXTENSIONS_COMPONENT</option>
+            <option value="module">COM_JED_EXTENSIONS_MODULE</option>
+            <option value="plugin">COM_JED_EXTENSIONS_PLUGIN</option>
+            <option value="specific">COM_JED_EXTENSIONS_SPECIFIC</option>
+        </field>
+
+        <field
+                name="usesUpdater"
+                type="radio"
+                label="COM_JED_EXTENSIONS_USES_UPDATE_SERVERS"
+                class="btn-group btn-group-yesno"
+                default="0"
+                filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="nonGplCssJs"
+                type="radio"
+                label="COM_JED_EXTENSIONS_USES_NON_GPL"
+                class="btn-group btn-group-yesno"
+                default="0"
+                filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="usesThirdParty"
+                type="radio"
+                label="COM_JED_EXTENSIONS_USES_THIRD_PARTY"
+                class="btn-group btn-group-yesno"
+                default="0"
+                filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="version"
+                type="text"
+                label="COM_JED_EXTENSIONS_VERSION"
+                class="input-mini"
+        />
+
+        <field
+                name="phpVersion"
+                type="list"
+                label="COM_JED_EXTENSIONS_PHP_VERSION"
+                class="advancedSelect"
+                size="1"
+                filter="cmd"
+                multiple="true"
+        >
+            <option value="5.6.0">5.6.0</option>
+            <option value="7.0.0">7.0.0</option>
+            <option value="7.1.0">7.1.0</option>
+            <option value="7.2.0">7.2.0</option>
+            <option value="7.3.0">7.3.0</option>
+        </field>
+
+        <field
+                name="joomlaVersion"
+                type="list"
+                label="COM_JED_EXTENSIONS_JOOMLA_VERSION"
+                class="advancedSelect"
+                size="1"
+                filter="cmd"
+                multiple="true"
+        >
+            <option value="3.0.0">Joomla 3</option>
+            <option value="4.0.0">Joomla 4</option>
+        </field>
+
+        <field
+                name="homepageLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_HOMEPAGE_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="downloadLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="demoLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_DEMO_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="documentationLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_DOC_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="supportLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_SUPPORT_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="updateLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_UPDATE_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="translationLink"
+                type="text"
+                label="COM_JED_EXTENSIONS_TRANSLATION_LINK"
+                class="input-xxlarge"
+        />
+
+        <field
+                name="video"
+                type="text"
+                label="COM_JED_EXTENSIONS_VIDEO_LINK"
+                class="input-xxlarge"
+        />
+
+    </fieldset>
+
+    <fieldset name="publication">
+
+        <field
+                name="id"
+                type="text"
+                default="0"
+                label="COM_JED_EXTENSIONS_ID"
+                readonly="true"
+                description="JGLOBAL_FIELD_ID_DESC"
+                primary="true"
+        />
+
+        <field
+                name="created_on"
+                type="calendar"
+                label="COM_JED_FIELD_CREATED_TIME_LABEL"
+                format="%d/%m/%Y %H:%M"
+                readonly="true"
+        />
+
+        <field
+                name="numReviews"
+                type="text"
+                label="COM_JED_EXTENSIONS_REVIEWCOUNT"
+                default="0"
+                readonly="true"
+        />
+    </fieldset>
+
+    <fieldset name="content">
+
+        <field
+                name="body"
+                type="editor"
+                label="COM_JED_EXTENSIONS_DESCRIPTION"
+                buttons="true"
+                filter="safehtml"/>
+
+    </fieldset>
+
+    <fieldset name="image">
+
+        <field
+                name="logo"
+                type="media"
+                label="COM_JED_EXTENSIONS_LOGO"
+                class="input-xxlarge"
+                preview="true"
+                directory=""
+        />
+
+        <field
+                name="images"
+                type="subform"
+                label="COM_JED_EXTENSIONS_IMAGE"
+                multiple="true"
+                layout="joomla.form.field.subform.repeatable-table"
+                min="0"
+                max="10"
+        >
+            <form>
+                <field
+                        name="image"
+                        type="media"
+                        label="COM_JED_EXTENSIONS_IMAGE"
+                        class="input-xxlarge"
+                        preview="true"
+                        directory=""
+                />
+            </form>
+
+        </field>
+
+    </fieldset>
+
+    <fieldset name="downloads">
+
+        <field
+                name="downloadIntegrationType"
+                type="list"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE"
+                class="advancedSelect"
+                size="1"
+                default="1"
+                multiple="false"
+        >
+            <option value="1">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_1</option>
+            <option value="2">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_2</option>
+            <option value="3">COM_JED_EXTENSIONS_DOWNLOAD_TYPE_3</option>
+        </field>
+
+        <field
+                name="requiresRegistration"
+                type="radio"
+                label="COM_JED_EXTENSIONS_REQUIRE_REGISTRATION"
+                class="btn-group btn-group-yesno"
+                default="0"
+                filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="downloadIntegrationUrl"
+                type="text"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_URL"
+                class="input-xxlarge"
+                showon="downloadIntegrationType!:0"
+        />
+
+        <field
+                name="downloadIntegrationType1"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE1"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:2[OR]downloadIntegrationType:3"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
+        <field
+                name="downloadIntegrationType2"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE2"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:3"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
+        <field
+                name="downloadIntegrationType3"
+                type="jed.extensions"
+                label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE3"
+                class="input-xxlarge advancedSelect"
+                default=""
+                showon="downloadIntegrationType:1[OR]downloadIntegrationType:2"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+        </field>
+
+    </fieldset>
+
+    <fieldset name="reviews">
+
+        <field
+                name="recalculateScore"
+                type="button"
+                default="0"
+                class="btn btn-primary"
+                link="index.php?option=com_jed"
+                label="COM_JED_EXTENSIONS_RECALCULATE_SCORE"
+        />
+
+    </fieldset>
+
+    <fieldset name="communication">
+
+        <field
+                name="messageType"
+                type="list"
+                label="COM_JED_EXTENSIONS_MESSAGE_TYPE"
+                class="advancedSelect"
+                default="email"
+                onchange="jed.setMessageType(this.value)"
+        >
+            <option value="email">Email</option>
+            <option value="note">Note</option>
+        </field>
+
+        <field
+                name="template"
+                type="jed.emails"
+                label="COM_JED_EXTENSIONS_MESSAGE_TEMPLATE"
+                class="advancedSelect"
+                size="1"
+                default=""
+                onchange="jed.insertMessage(this.value);"
+                showon="messageType:email"
+        >
+            <option value="">COM_JED_EXTENSIONS_SELECT_TEMPLATE</option>
+        </field>
+
+        <field
+                name="message"
+                type="editor"
+                label="COM_JED_EXTENSIONS_MESSAGE"
+                buttons="true"
+        />
+
+    </fieldset>
+
+    <fieldset name="approve">
+        <fields name="approve">
+            <field
+                    name="approved"
+                    type="list"
+                    label="COM_JED_EXTENSIONS_APPROVED"
+                    class="advancedSelect"
+                    size="1"
+                    default="0"
+                    filter="integer"
+            >
+                <option value="0">COM_JED_EXTENSIONS_PENDING</option>
+                <option value="1">COM_JED_EXTENSIONS_APPROVED</option>
+                <option value="2">COM_JED_EXTENSIONS_REJECTED</option>
+                <option value="3">COM_JED_EXTENSIONS_AWAITING_RESPONSE</option>
+            </field>
+
+            <field
+                    name="approvedReason"
+                    type="jed.approved"
+                    label="COM_JED_EXTENSIONS_APPROVE_REASON"
+                    class="advancedSelect input-xxlarge"
+                    multiple="true"
+                    showon="approved:3"
+            />
+
+            <field
+                    name="approvedNotes"
+                    type="textarea"
+                    label="COM_JED_EXTENSIONS_APPROVE_NOTES"
+                    class="input-xxlarge"
+                    rows="10"
+            />
+        </fields>
+    </fieldset>
+
+    <fieldset name="publish">
+        <fields name="publish">
+            <field
+                    name="published"
+                    type="list"
+                    label="JSTATUS"
+                    description="JFIELD_PUBLISHED_DESC"
+                    class="advancedSelect"
+                    size="1"
+                    default="0"
+            >
+                <option value="0">JUNPUBLISHED</option>
+                <option value="1">JPUBLISHED</option>
+            </field>
+
+            <field
+                    name="publishedReason"
+                    type="jed.published"
+                    label="COM_JED_EXTENSIONS_PUBLISH_REASON"
+                    class="advancedSelect input-xxlarge"
+                    multiple="true"
+                    showon="published:0"
+            />
+
+            <field
+                    name="publishedNotes"
+                    type="textarea"
+                    label="COM_JED_EXTENSIONS_PUBLISH_NOTES"
+                    class="input-xxlarge"
+                    rows="10"
+            />
+        </fields>
+    </fieldset>
+</form>

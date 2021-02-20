@@ -13,7 +13,6 @@ namespace Joomla\Component\Jed\Administrator\Controller;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
-use Joomla\CMS\Router\Route;
 
 /**
  * Extension list controller class.
@@ -21,7 +20,7 @@ use Joomla\CMS\Router\Route;
  * @package  JED
  * @since    4.0.0
  */
-class JedControllerExtension extends FormController
+class ExtensionController extends FormController
 {
 	/**
 	 * Download a selected extension.

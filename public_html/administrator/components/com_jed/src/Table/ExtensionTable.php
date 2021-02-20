@@ -19,7 +19,7 @@ use Joomla\CMS\Table\Table;
  *
  * @since  4.0.0
  */
-class TableExtension extends Table
+class ExtensionTable extends Table
 {
 	/**
 	 * Indicates that columns fully support the NULL value in the database
