@@ -25,6 +25,5 @@ $title = $displayData['title'];
         class="btn btn-small <?php
         echo (int) $displayData['published'] === 1 ? 'btn-success' : 'btn-danger'; ?>">
     <span class="icon-eye-open" aria-hidden="true"></span>
-	<?php
-	echo $title; ?>
+	<?php echo $title; ?>
 </button>

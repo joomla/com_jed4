@@ -6,11 +6,15 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+namespace Joomla\Component\Jed\Administrator\Controller;
+
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
+use Joomla\Component\Jed\Administrator\Model\EmailModel;
+use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
 
 /**
  * JED AJAX controller.
@@ -18,7 +22,7 @@ use Joomla\CMS\Response\JsonResponse;
  * @package   JED
  * @since     4.0.0
  */
-class JedControllerAjax extends BaseController
+class AjaxController extends BaseController
 {
 	/**
 	 * Search for developers.
@@ -30,8 +34,8 @@ class JedControllerAjax extends BaseController
 	public function developers(): void
 	{
 		$search = $this->input->getString('query');
-		/** @var JedModelExtensions $model */
-		$model = $this->getModel('Extensions', 'JedModel');
+		/** @var ExtensionModel $model */
+		$model = $this->getModel('Extensions');
 		$data  = $model->getDevelopers($search);
 
 		echo json_encode(['suggestions' => $data]);
@@ -47,8 +51,8 @@ class JedControllerAjax extends BaseController
 	public function getMessage(): void
 	{
 		$messageId = $this->input->getInt('messageId');
-		/** @var JedModelEmail $model */
-		$model   = $this->getModel('Email', 'JedModel');
+		/** @var EmailModel $model */
+		$model   = $this->getModel('Email');
 		$message = $model->getItem($messageId);
 
 		echo(new JsonResponse($message->body));
@@ -73,8 +77,8 @@ class JedControllerAjax extends BaseController
 			$extensionId = $this->input->getInt('extensionId');
 			$userId      = $this->input->getInt('userId');
 
-			/** @var JedModelEmail $model */
-			$model = $this->getModel('Email', 'JedModel');
+			/** @var EmailModel $model */
+			$model = $this->getModel('Email');
 			$model->sendEmail($body, $messageId, $developerId, $userId, $extensionId);
 			$message = Text::_('COM_JED_MESSAGE_SENT_TO_DEVELOPER');
 
@@ -107,8 +111,8 @@ class JedControllerAjax extends BaseController
 			$extensionId = $this->input->getInt('extensionId');
 			$userId      = $this->input->getInt('userId');
 
-			/** @var JedModelExtension $model */
-			$model = $this->getModel('Extension', 'JedModel');
+			/** @var ExtensionModel $model */
+			$model = $this->getModel('Extension');
 			$model->storeNote($body, $developerId, $userId, $extensionId);
 			$message = Text::_('COM_JED_EXTENSION_NOTE_STORED');
 
@@ -138,8 +142,8 @@ class JedControllerAjax extends BaseController
 		try
 		{
 			$data = $this->input->get('jform', [], 'array');
-			/** @var JedModelExtension $model */
-			$model     = $this->getModel('Extension', 'JedModel');
+			/** @var ExtensionModel $model */
+			$model     = $this->getModel('Extension');
 			$form      = $model->getForm();
 			$validData = $model->validate($form, $data, 'approve');
 
@@ -176,8 +180,8 @@ class JedControllerAjax extends BaseController
 		try
 		{
 			$data = $this->input->get('jform', [], 'array');
-			/** @var JedModelExtension $model */
-			$model     = $this->getModel('Extension', 'JedModel');
+			/** @var ExtensionModel $model */
+			$model     = $this->getModel('Extension');
 			$form      = $model->getForm();
 			$validData = $model->validate($form, $data, 'publish');
 

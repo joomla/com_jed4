@@ -330,28 +330,22 @@ const jed = (function () {
      * @param type Which message type to render
      */
     function renderMessage(message, type) {
-        jQuery('#system-message-container').hide();
-
         const msg = {};
 
         switch (type) {
             case 'error':
-                msg.error = [];
-                msg.error[0] = message;
+                msg.error = [message];
                 break;
             case 'notice':
-                msg.notice = [];
-                msg.notice[0] = message;
+                msg.notice = [message];
                 break;
             case 'message':
-                msg.message = [];
-                msg.message[0] = message;
+                msg.message = [message];
                 break;
         }
 
         Joomla.renderMessages(msg);
     }
 
-    // Return the public parts
     return jed;
 }());

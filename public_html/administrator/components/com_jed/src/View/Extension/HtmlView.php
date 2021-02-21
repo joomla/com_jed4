@@ -69,10 +69,10 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		/** @var ExtensionModel $model */
-		$model         = $this->getModel();
-		$this->item    = $model->getItem();
-		$this->form    = $model->getForm();
-		$this->state   = $model->getState();
+		$model       = $this->getModel();
+		$this->item  = $model->getItem();
+		$this->form  = $model->getForm();
+		$this->state = $model->getState();
 
 		$this->addToolBar();
 
@@ -94,7 +94,11 @@ class HtmlView extends BaseHtmlView
 
 		$canDo = ContentHelper::getActions('com_jed', 'extension');
 
-		$title = !empty($this->item->title) ? $this->item->title : Text::_('JTOOLBAR_NEW');
+		$title = !empty($this->item->title)
+			? $this->item->title
+			: Text::_(
+				'JTOOLBAR_NEW'
+			);
 		ToolBarHelper::title($title, 'play');
 
 		// If not checked out, can save the item.
@@ -112,8 +116,14 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolBarHelper::cancel('extension.cancel', $title);
-		ToolbarHelper::custom('extension.preview', 'new-tab', '', 'COM_JED_EXTENSIONS_VIEW_FRONTEND', false);
-		ToolbarHelper::custom('extension.download', 'arrow-down-4', '', 'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false);
+		ToolbarHelper::custom(
+			'extension.preview', 'new-tab', '',
+			'COM_JED_EXTENSIONS_VIEW_FRONTEND', false
+		);
+		ToolbarHelper::custom(
+			'extension.download', 'arrow-down-4', '',
+			'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false
+		);
 
 		// Get the toolbar object instance
 		$bar = Toolbar::getInstance('toolbar');
@@ -121,14 +131,24 @@ class HtmlView extends BaseHtmlView
 		$bar->popupButton()
 			->form('extension-form')
 			->layout('joomla.toolbar.approve')
-			->setOptions(['title' => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'), 'approved' => $this->item->approved])
+			->setOptions(
+				[
+					'title'    => Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'),
+					'approved' => $this->item->approved
+				]
+			)
 			->text(Text::_('COM_JED_EXTENSIONS_APPROVE_STATE'))
 			->selector('approveModal');
 
 		$bar->popupButton()
 			->form('extension-form')
 			->layout('joomla.toolbar.publish')
-			->setOptions(['title' => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'), 'published' => $this->item->published])
+			->setOptions(
+				[
+					'title'     => Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'),
+					'published' => $this->item->published
+				]
+			)
 			->text(Text::_('COM_JED_EXTENSIONS_PUBLISH_STATE'))
 			->selector('publishModal');
 	}

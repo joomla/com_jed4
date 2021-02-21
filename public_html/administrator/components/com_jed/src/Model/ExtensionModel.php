@@ -65,12 +65,12 @@ class ExtensionModel extends AdminModel
 	 */
 	public function save($data): bool
 	{
-		if ( ! $data['id'])
+		if (!$data['id'])
 		{
 			$data['created_by'] = Factory::getUser()->get('id');
 		}
 
-		if ( ! parent::save($data))
+		if (!parent::save($data))
 		{
 			return false;
 		}
@@ -162,7 +162,7 @@ class ExtensionModel extends AdminModel
 			return;
 		}
 
-		$relatedCategoryIds = array_slice($relatedCategoryIds, 0,5);
+		$relatedCategoryIds = array_slice($relatedCategoryIds, 0, 5);
 
 		$query->clear()
 			->insert($db->quoteName('#__jed_extensions_categories'))
@@ -352,7 +352,7 @@ class ExtensionModel extends AdminModel
 	 */
 	public function saveApprove($data): void
 	{
-		if ( ! $data['id'])
+		if (!$data['id'])
 		{
 			throw new \InvalidArgumentException(
 				Text::_('COM_JED_EXTENSION_ID_MISSING')
@@ -367,7 +367,7 @@ class ExtensionModel extends AdminModel
 
 		$table->load($extensionId);
 
-		if ( ! $table->save($data))
+		if (!$table->save($data))
 		{
 			throw new \RuntimeException($table->getError());
 		}
@@ -414,7 +414,7 @@ class ExtensionModel extends AdminModel
 	 */
 	public function savePublish($data): void
 	{
-		if ( ! $data['id'])
+		if (!$data['id'])
 		{
 			throw new \InvalidArgumentException(
 				Text::_('COM_JED_EXTENSION_ID_MISSING')
@@ -429,7 +429,7 @@ class ExtensionModel extends AdminModel
 
 		$table->load($extensionId);
 
-		if ( ! $table->save($data))
+		if (!$table->save($data))
 		{
 			throw new \RuntimeException($table->getError());
 		}
@@ -519,7 +519,7 @@ class ExtensionModel extends AdminModel
 
 		if ($developer->get('id', null) === null)
 		{
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
 			);
 		}
@@ -539,24 +539,24 @@ class ExtensionModel extends AdminModel
 
 		if ($result === false)
 		{
-			throw new RuntimeException($noteTable->getError());
+			throw new \RuntimeException($noteTable->getError());
 		}
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return      mixed   The data for the form.
+	 * @return  mixed   The data for the form.
 	 *
-	 * @since       4.0.0
+	 * @since   4.0.0
 	 *
-	 * @throws      Exception
+	 * @throws  \Exception
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState(
-			'com_jed.edit.extension.data', array()
+			'com_jed.edit.extension.data', []
 		);
 
 		if (empty($data))
@@ -581,13 +581,13 @@ class ExtensionModel extends AdminModel
 		// Get the base details
 		$item = parent::getItem($pk);
 
-		if ( ! $item instanceof CMSObject)
+		if (!$item instanceof CMSObject)
 		{
 			return new CMSObject;
 		}
 
 		// If we have an empty object, we cannot fill it
-		if ( ! $item->id)
+		if (!$item->id)
 		{
 			return $item;
 		}
