@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Jed\Administrator\Field">
     <fieldset name="extension">
 
         <field
@@ -319,7 +319,7 @@
 
         <field
                 name="downloadIntegrationType1"
-                type="jed.extensions"
+                type="extensions"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE1"
                 class="input-xxlarge advancedSelect"
                 default=""
@@ -330,7 +330,7 @@
 
         <field
                 name="downloadIntegrationType2"
-                type="jed.extensions"
+                type="extensions"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE2"
                 class="input-xxlarge advancedSelect"
                 default=""
@@ -341,7 +341,7 @@
 
         <field
                 name="downloadIntegrationType3"
-                type="jed.extensions"
+                type="extensions"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE3"
                 class="input-xxlarge advancedSelect"
                 default=""
@@ -381,7 +381,7 @@
 
         <field
                 name="template"
-                type="jed.emails"
+                type="emails"
                 label="COM_JED_EXTENSIONS_MESSAGE_TEMPLATE"
                 class="advancedSelect"
                 size="1"
@@ -420,7 +420,7 @@
 
             <field
                     name="approvedReason"
-                    type="jed.approved"
+                    type="approved"
                     label="COM_JED_EXTENSIONS_APPROVE_REASON"
                     class="advancedSelect input-xxlarge"
                     multiple="true"
@@ -454,9 +454,9 @@
 
             <field
                     name="publishedReason"
-                    type="jed.published"
+                    type="published"
                     label="COM_JED_EXTENSIONS_PUBLISH_REASON"
-                    class="advancedSelect input-xxlarge"
+                    layout="joomla.form.field.list-fancy-select"
                     multiple="true"
                     showon="published:0"
             />

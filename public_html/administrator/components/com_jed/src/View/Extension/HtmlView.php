@@ -16,8 +16,10 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
 use Joomla\Registry\Registry;
 
 /**
@@ -33,7 +35,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Form
 	 * @since  4.0.0
 	 */
-	protected $form;
+	protected Form $form;
 
 	/**
 	 * The item object
@@ -46,10 +48,10 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The model state
 	 *
-	 * @var    Registry
+	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected $state;
+	protected CMSObject $state;
 
 	/**
 	 * Execute and display a template script.
@@ -62,11 +64,11 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since   4.0.0
 	 *
-	 * @throws  Exception
+	 * @throws  \Exception
 	 */
 	public function display($tpl = null)
 	{
-		/** @var JedModelExtension $model */
+		/** @var ExtensionModel $model */
 		$model         = $this->getModel();
 		$this->item    = $model->getItem();
 		$this->form    = $model->getForm();
@@ -74,7 +76,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolBar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
@@ -84,7 +86,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  4.0.0
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function addToolbar(): void
 	{
