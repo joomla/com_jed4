@@ -5,15 +5,14 @@
         <field
                 name="search"
                 type="text"
-                hint=""
+                inputmode="search"
+                hint="JSEARCH_FILTER"
                 label=""
-                class="js-stools-search-string"
         />
 
         <field
                 name="category_id"
                 type="category"
-                class="advancedSelect"
                 extension="com_jed"
                 default=""
                 filter="integer"
@@ -24,7 +23,6 @@
                 name="published"
                 type="list"
                 label="JPUBLISHED"
-                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -37,7 +35,6 @@
         <field
                 name="approved"
                 type="approved"
-                class="advancedSelect"
 				default=""
                 onchange="this.form.submit();"
         >
@@ -57,7 +54,6 @@
                 name="type"
                 type="list"
                 label="COM_JED_EXTENSIONS_TYPE"
-                class="advancedSelect"
                 size="1"
                 default=""
                 onchange="this.form.submit();"
@@ -72,7 +68,6 @@
                 name="includes"
                 type="list"
                 label="COM_JED_EXTENSIONS_INCLUDES"
-                class="advancedSelect"
                 multiple="true"
                 default=""
                 hint="COM_JED_EXTENSIONS_INCLUDES_SELECT"
@@ -88,7 +83,6 @@
 
         <field name="limit"
                type="limitbox"
-               class="input-mini advancedSelect"
                default="25"
                onchange="this.form.submit();"
         />

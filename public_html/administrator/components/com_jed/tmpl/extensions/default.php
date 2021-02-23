@@ -10,6 +10,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die;
 
@@ -23,51 +24,58 @@ $userId    = $user->get('id');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 ?>
-<form name="adminForm" id="adminForm" method="post" action="index.php?option=com_jed&view=extensions">
+<form id="adminForm" action="<?php echo Route::_('index.php?option=com_jed&view=extensions'); ?>" method="post" name="adminForm">
     <div class="row">
         <div class="col-md-12">
             <div id="j-main-container" class="j-main-container">
                 <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
                 <?php if (empty($this->items)) : ?>
-                    <div class="alert alert-no-items">
+                    <div class="alert alert-info">
                         <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
                         <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
                     </div>
                 <?php else : ?>
-                <table class="table itemList table-striped">
+                <table class="table itemList" id="extensionList">
+                    <caption class="visually-hidden">
+		                <?php echo Text::_('COM_CONTENT_ARTICLES_TABLE_CAPTION'); ?>,
+                        <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
+                        <span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+                    </caption>
                     <thead>
                     <tr>
-                        <th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-                        <th>
+                        <td class="w-1 text-center">
+	                        <?php echo HTMLHelper::_('grid.checkall'); ?>
+                        </td>
+                        <td scope="col" class="w-1 text-center d-none d-md-table-cell">
                             <?php echo HTMLHelper::_('searchtools.sort', 'JPUBLISHED', 'extensions.published', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-1 text-center d-none d-md-table-cell">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_APPROVED', 'extensions.approved', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-1 text-center">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_TITLE', 'extensions.title', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-10 d-none d-md-table-cell text-center">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_CATEGORY', 'categories.title', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-10 d-none d-md-table-cell text-center">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_LAST_UPDATED', 'extensions.modified_on', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-10 d-none d-md-table-cell text-center">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_DATE_ADDED', 'extensions.created_on', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-10 d-none d-md-table-cell text-center">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_DEVELOPER', 'users.name', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-10 d-none d-md-table-cell text-center">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_TYPE', 'extensions.type', $listDirn, $listOrder); ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td scope="col" class="w-10 d-none d-md-table-cell text-center">
                             <?php echo HTMLHelper::_('searchtools.sort', 'COM_JED_EXTENSIONS_REVIEWCOUNT', 'extensions.reviewcount', $listDirn, $listOrder); ?>
-                        </th>
-                        <th width="1%">
+                        </td>
+                        <td scope="col" class="w-3 d-none d-lg-table-cell">
                             <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'extensions.id', $listDirn, $listOrder); ?>
-                        </th>
+                        </td>
                     </tr>
                     </thead>
                     <tbody>
