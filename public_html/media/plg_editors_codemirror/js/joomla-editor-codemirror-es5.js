@@ -67,6 +67,14 @@ customElements.define('joomla-editor-codemirror', /*#__PURE__*/function (_HTMLEl
   }
 
   _createClass(_class, [{
+    key: "options",
+    get: function get() {
+      return JSON.parse(this.getAttribute('options'));
+    },
+    set: function set(value) {
+      this.setAttribute('options', value);
+    }
+  }, {
     key: "attributeChangedCallback",
     value: function attributeChangedCallback(attr, oldValue, newValue) {
       switch (attr) {
@@ -255,25 +263,17 @@ customElements.define('joomla-editor-codemirror', /*#__PURE__*/function (_HTMLEl
         header.classList.remove('hidden');
       }
     }
-  }, {
-    key: "options",
-    get: function get() {
-      return JSON.parse(this.getAttribute('options'));
-    },
-    set: function set(value) {
-      this.setAttribute('options', value);
-    }
   }], [{
+    key: "observedAttributes",
+    get: function get() {
+      return ['options'];
+    }
+  }, {
     key: "makeMarker",
     value: function makeMarker() {
       var marker = document.createElement('div');
       marker.className = 'CodeMirror-markergutter-mark';
       return marker;
-    }
-  }, {
-    key: "observedAttributes",
-    get: function get() {
-      return ['options'];
     }
   }]);
 

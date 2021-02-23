@@ -315,8 +315,8 @@ if (!Joomla) {
       }
     }, {
       key: "submitButtonUrl",
-      // eslint-disable-next-line class-methods-use-this
-      value: function submitButtonUrl() {
+      value: // eslint-disable-next-line class-methods-use-this
+      function submitButtonUrl() {
         var form = document.getElementById('adminForm'); // do field validation
 
         if (form.install_url.value === '' || form.install_url.value === 'http://' || form.install_url.value === 'https://') {

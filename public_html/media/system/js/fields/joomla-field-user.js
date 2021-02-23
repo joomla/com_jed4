@@ -161,9 +161,16 @@
 
     setValue(value, name) {
       this.input.setAttribute('value', value);
-      this.inputName.setAttribute('value', name || value); // trigger change event
+      this.inputName.setAttribute('value', name || value); // trigger change event both on the input and on the custom element
 
       this.input.dispatchEvent(new Event('change'));
+      this.dispatchEvent(new CustomEvent('change', {
+        detail: {
+          value,
+          name
+        },
+        bubbles: true
+      }));
     }
 
   }

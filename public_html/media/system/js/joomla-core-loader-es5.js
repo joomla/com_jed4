@@ -74,6 +74,14 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         this.shadowRoot.querySelector('div').classList.add('box');
       }
     }, {
+      key: "color",
+      get: function get() {
+        return this.getAttribute('color') || '#fff';
+      },
+      set: function set(value) {
+        this.setAttribute('color', value);
+      }
+    }, {
       key: "attributeChangedCallback",
       value: function attributeChangedCallback(attr, oldValue, newValue) {
         switch (attr) {
@@ -87,14 +95,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           default: // Do nothing
 
         }
-      }
-    }, {
-      key: "color",
-      get: function get() {
-        return this.getAttribute('color') || '#fff';
-      },
-      set: function set(value) {
-        this.setAttribute('color', value);
       }
     }], [{
       key: "observedAttributes",

@@ -59,10 +59,43 @@ window.customElements.define('joomla-field-fancy-select', /*#__PURE__*/function 
 
   var _super = _createSuper(_class);
 
+  /**
+   * Lifecycle
+   */
+  function _class() {
+    var _this;
+
+    _classCallCheck(this, _class);
+
+    _this = _super.call(this); // Keycodes
+
+    _this.keyCode = {
+      ENTER: 13
+    };
+
+    if (!Joomla) {
+      throw new Error('Joomla API is not properly initiated');
+    }
+
+    if (!window.Choices) {
+      throw new Error('JoomlaFieldFancySelect requires Choices.js to work');
+    }
+
+    _this.choicesCache = {};
+    _this.activeXHR = null;
+    _this.choicesInstance = null;
+    _this.isDisconnected = false;
+    return _this;
+  }
+  /**
+   * Lifecycle
+   */
+
+
   _createClass(_class, [{
     key: "allowCustom",
-    // Attributes to monitor
-    get: function get() {
+    get: // Attributes to monitor
+    function get() {
       return this.hasAttribute('allow-custom');
     }
   }, {
@@ -108,43 +141,7 @@ window.customElements.define('joomla-field-fancy-select', /*#__PURE__*/function 
     set: function set($val) {
       this.choicesInstance.setChoiceByValue($val);
     }
-    /**
-     * Lifecycle
-     */
-
-  }]);
-
-  function _class() {
-    var _this;
-
-    _classCallCheck(this, _class);
-
-    _this = _super.call(this); // Keycodes
-
-    _this.keyCode = {
-      ENTER: 13
-    };
-
-    if (!Joomla) {
-      throw new Error('Joomla API is not properly initiated');
-    }
-
-    if (!window.Choices) {
-      throw new Error('JoomlaFieldFancySelect requires Choices.js to work');
-    }
-
-    _this.choicesCache = {};
-    _this.activeXHR = null;
-    _this.choicesInstance = null;
-    _this.isDisconnected = false;
-    return _this;
-  }
-  /**
-   * Lifecycle
-   */
-
-
-  _createClass(_class, [{
+  }, {
     key: "connectedCallback",
     value: function connectedCallback() {
       var _this2 = this;

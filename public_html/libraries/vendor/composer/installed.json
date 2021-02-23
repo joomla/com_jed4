@@ -772,17 +772,17 @@
     },
     {
         "name": "joomla/console",
-        "version": "2.0.0-beta2",
-        "version_normalized": "2.0.0.0-beta2",
+        "version": "2.0.0-beta3",
+        "version_normalized": "2.0.0.0-beta3",
         "source": {
             "type": "git",
             "url": "https://github.com/joomla-framework/console.git",
-            "reference": "355fb82d414e58e30ea9fd870fc211c29f3f6338"
+            "reference": "972a0cb3d8498eb717e0f9b5fcb4584d41436bb9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/joomla-framework/console/zipball/355fb82d414e58e30ea9fd870fc211c29f3f6338",
-            "reference": "355fb82d414e58e30ea9fd870fc211c29f3f6338",
+            "url": "https://api.github.com/repos/joomla-framework/console/zipball/972a0cb3d8498eb717e0f9b5fcb4584d41436bb9",
+            "reference": "972a0cb3d8498eb717e0f9b5fcb4584d41436bb9",
             "shasum": ""
         },
         "require": {
@@ -801,7 +801,7 @@
         "suggest": {
             "psr/container-implementation": "To use the ContainerLoader"
         },
-        "time": "2020-06-28T19:54:55+00:00",
+        "time": "2020-11-28T14:40:42+00:00",
         "type": "joomla-package",
         "extra": {
             "branch-alias": {
@@ -824,6 +824,16 @@
             "console",
             "framework",
             "joomla"
+        ],
+        "funding": [
+            {
+                "url": "https://community.joomla.org/sponsorship-campaigns.html",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/joomla",
+                "type": "github"
+            }
         ]
     },
     {
@@ -1166,17 +1176,17 @@
     },
     {
         "name": "joomla/filter",
-        "version": "2.0.0-beta2",
-        "version_normalized": "2.0.0.0-beta2",
+        "version": "2.0.0-beta5",
+        "version_normalized": "2.0.0.0-beta5",
         "source": {
             "type": "git",
             "url": "https://github.com/joomla-framework/filter.git",
-            "reference": "8d326ca1862c1cdb5b9b01d6719730b663e411c6"
+            "reference": "8fbdae72ea6ceaece401f34c4ee179b4c01d2ee8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/joomla-framework/filter/zipball/8d326ca1862c1cdb5b9b01d6719730b663e411c6",
-            "reference": "8d326ca1862c1cdb5b9b01d6719730b663e411c6",
+            "url": "https://api.github.com/repos/joomla-framework/filter/zipball/8fbdae72ea6ceaece401f34c4ee179b4c01d2ee8",
+            "reference": "8fbdae72ea6ceaece401f34c4ee179b4c01d2ee8",
             "shasum": ""
         },
         "require": {
@@ -1187,14 +1197,14 @@
             "joomla/language": "<2.0"
         },
         "require-dev": {
-            "joomla/coding-standards": "^2.0@alpha",
+            "joomla/coding-standards": "^3.0@dev",
             "joomla/language": "^2.0",
             "phpunit/phpunit": "^8.5|^9.0"
         },
         "suggest": {
             "joomla/language": "Required only if you want to use `OutputFilter::stringURLSafe`."
         },
-        "time": "2020-06-08T23:03:46+00:00",
+        "time": "2021-02-01T12:25:08+00:00",
         "type": "joomla-package",
         "extra": {
             "branch-alias": {
@@ -1217,6 +1227,16 @@
             "filter",
             "framework",
             "joomla"
+        ],
+        "funding": [
+            {
+                "url": "https://community.joomla.org/sponsorship-campaigns.html",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/joomla",
+                "type": "github"
+            }
         ]
     },
     {

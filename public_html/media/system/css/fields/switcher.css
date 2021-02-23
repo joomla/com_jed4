@@ -93,10 +93,3 @@
 .switcher input ~ input:checked ~ .toggle-outside .toggle-inside {
   left: 30px;
 }
-
-.switcher__legend {
-  padding: 5px 0;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 400;
-}

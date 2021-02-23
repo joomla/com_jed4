@@ -51,6 +51,62 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     }
 
     _createClass(JoomlaFieldUser, [{
+      key: "url",
+      get: function get() {
+        return this.getAttribute('url');
+      },
+      set: function set(value) {
+        this.setAttribute('url', value);
+      }
+    }, {
+      key: "modalClass",
+      get: function get() {
+        return this.getAttribute('modal');
+      },
+      set: function set(value) {
+        this.setAttribute('modal', value);
+      }
+    }, {
+      key: "modalWidth",
+      get: function get() {
+        return this.getAttribute('modal-width');
+      },
+      set: function set(value) {
+        this.setAttribute('modal-width', value);
+      }
+    }, {
+      key: "modalHeight",
+      get: function get() {
+        return this.getAttribute('modal-height');
+      },
+      set: function set(value) {
+        this.setAttribute('modal-height', value);
+      }
+    }, {
+      key: "inputId",
+      get: function get() {
+        return this.getAttribute('input');
+      },
+      set: function set(value) {
+        this.setAttribute('input', value);
+      }
+    }, {
+      key: "inputNameClass",
+      get: function get() {
+        return this.getAttribute('input-name');
+      },
+      set: function set(value) {
+        this.setAttribute('input-name', value);
+      }
+    }, {
+      key: "buttonSelectClass",
+      get: function get() {
+        return this.getAttribute('button-select');
+      },
+      set: function set(value) {
+        this.setAttribute('button-select', value);
+      }
+    }, {
       key: "connectedCallback",
       value: function connectedCallback() {
         // Set up elements
@@ -148,65 +204,16 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       key: "setValue",
       value: function setValue(value, name) {
         this.input.setAttribute('value', value);
-        this.inputName.setAttribute('value', name || value); // trigger change event
+        this.inputName.setAttribute('value', name || value); // trigger change event both on the input and on the custom element
 
         this.input.dispatchEvent(new Event('change'));
-      }
-    }, {
-      key: "url",
-      get: function get() {
-        return this.getAttribute('url');
-      },
-      set: function set(value) {
-        this.setAttribute('url', value);
-      }
-    }, {
-      key: "modalClass",
-      get: function get() {
-        return this.getAttribute('modal');
-      },
-      set: function set(value) {
-        this.setAttribute('modal', value);
-      }
-    }, {
-      key: "modalWidth",
-      get: function get() {
-        return this.getAttribute('modal-width');
-      },
-      set: function set(value) {
-        this.setAttribute('modal-width', value);
-      }
-    }, {
-      key: "modalHeight",
-      get: function get() {
-        return this.getAttribute('modal-height');
-      },
-      set: function set(value) {
-        this.setAttribute('modal-height', value);
-      }
-    }, {
-      key: "inputId",
-      get: function get() {
-        return this.getAttribute('input');
-      },
-      set: function set(value) {
-        this.setAttribute('input', value);
-      }
-    }, {
-      key: "inputNameClass",
-      get: function get() {
-        return this.getAttribute('input-name');
-      },
-      set: function set(value) {
-        this.setAttribute('input-name', value);
-      }
-    }, {
-      key: "buttonSelectClass",
-      get: function get() {
-        return this.getAttribute('button-select');
-      },
-      set: function set(value) {
-        this.setAttribute('button-select', value);
+        this.dispatchEvent(new CustomEvent('change', {
+          detail: {
+            value: value,
+            name: name
+          },
+          bubbles: true
+        }));
       }
     }], [{
       key: "observedAttributes",

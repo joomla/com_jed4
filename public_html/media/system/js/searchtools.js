@@ -444,7 +444,7 @@ Joomla = window.Joomla || {};
           this.orderField.setAttribute('class', 'js-stools-field-order');
           this.orderField.setAttribute('name', self.options.orderFieldName);
           this.orderField.setAttribute('value', "".concat(self.activeOrder, " ").concat(this.activeDirection));
-          this.theForm.innerHTML += this.orderField.outerHTML;
+          this.theForm.append(this.orderField);
         } // Add missing columns to the order select
 
 

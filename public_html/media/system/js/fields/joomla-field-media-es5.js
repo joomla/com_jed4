@@ -60,141 +60,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     }
 
     _createClass(JoomlaFieldMedia, [{
-      key: "connectedCallback",
-      // attributeChangedCallback(attr, oldValue, newValue) {}
-      value: function connectedCallback() {
-        this.button = this.querySelector(this.buttonSelect);
-        this.inputElement = this.querySelector(this.input);
-        this.buttonClearEl = this.querySelector(this.buttonClear);
-        this.modalElement = this.querySelector('.joomla-modal');
-        this.buttonSaveSelectedElement = this.querySelector(this.buttonSaveSelected);
-        this.previewElement = this.querySelector('.field-media-preview');
-
-        if (!this.button || !this.inputElement || !this.buttonClearEl || !this.modalElement || !this.buttonSaveSelectedElement) {
-          throw new Error('Misconfiguaration...');
-        }
-
-        this.button.addEventListener('click', this.show); // Bootstrap modal init
-
-        if (this.modalElement && window.bootstrap && window.bootstrap.Modal && window.bootstrap.Modal.getInstance(this.modalElement) === undefined) {
-          Joomla.initialiseModal(this.modalElement, {
-            isJoomla: true
-          });
-        }
-
-        if (this.buttonClearEl) {
-          this.buttonClearEl.addEventListener('click', this.clearValue);
-        }
-
-        this.updatePreview();
-      }
-    }, {
-      key: "disconnectedCallback",
-      value: function disconnectedCallback() {
-        if (this.button) {
-          this.button.removeEventListener('click', this.show);
-        }
-
-        if (this.buttonClearEl) {
-          this.buttonClearEl.removeEventListener('click', this.clearValue);
-        }
-      }
-    }, {
-      key: "onSelected",
-      value: function onSelected(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.modalClose();
-        return false;
-      }
-    }, {
-      key: "show",
-      value: function show() {
-        this.modalElement.open();
-        Joomla.selectedMediaFile = {};
-        this.buttonSaveSelectedElement.addEventListener('click', this.onSelected);
-      }
-    }, {
-      key: "modalClose",
-      value: function () {
-        var _modalClose = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.prev = 0;
-                  _context.next = 3;
-                  return Joomla.getImage(Joomla.selectedMediaFile, this.inputElement, this);
-
-                case 3:
-                  _context.next = 8;
-                  break;
-
-                case 5:
-                  _context.prev = 5;
-                  _context.t0 = _context["catch"](0);
-                  Joomla.renderMessages({
-                    error: [Joomla.Text._('JLIB_APPLICATION_ERROR_SERVER')]
-                  });
-
-                case 8:
-                  Joomla.selectedMediaFile = {};
-                  Joomla.Modal.getCurrent().close();
-
-                case 10:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee, this, [[0, 5]]);
-        }));
-
-        function modalClose() {
-          return _modalClose.apply(this, arguments);
-        }
-
-        return modalClose;
-      }()
-    }, {
-      key: "setValue",
-      value: function setValue(value) {
-        this.inputElement.value = value;
-        this.updatePreview();
-      }
-    }, {
-      key: "clearValue",
-      value: function clearValue() {
-        this.setValue('');
-      }
-    }, {
-      key: "updatePreview",
-      value: function updatePreview() {
-        if (['true', 'static'].indexOf(this.preview) === -1 || this.preview === 'false' || !this.previewElement) {
-          return;
-        } // Reset preview
-
-
-        if (this.preview) {
-          var value = this.inputElement.value;
-
-          if (!value) {
-            this.previewElement.innerHTML = '<span class="field-media-preview-icon"></span>';
-          } else {
-            this.previewElement.innerHTML = '';
-            var imgPreview = new Image();
-            var mediaType = {
-              image: function image() {
-                imgPreview.src = /http/.test(value) ? value : Joomla.getOptions('system.paths').rootFull + value;
-                imgPreview.setAttribute('alt', '');
-              }
-            };
-            mediaType[this.type]();
-            this.previewElement.style.width = this.previewWidth;
-            this.previewElement.appendChild(imgPreview);
-          }
-        }
-      }
-    }, {
       key: "type",
       get: function get() {
         return this.getAttribute('type');
@@ -310,6 +175,149 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       key: "previewContainer",
       get: function get() {
         return this.getAttribute('preview-container');
+      } // attributeChangedCallback(attr, oldValue, newValue) {}
+
+    }, {
+      key: "connectedCallback",
+      value: function connectedCallback() {
+        this.button = this.querySelector(this.buttonSelect);
+        this.inputElement = this.querySelector(this.input);
+        this.buttonClearEl = this.querySelector(this.buttonClear);
+        this.modalElement = this.querySelector('.joomla-modal');
+        this.buttonSaveSelectedElement = this.querySelector(this.buttonSaveSelected);
+        this.previewElement = this.querySelector('.field-media-preview');
+
+        if (!this.button || !this.inputElement || !this.buttonClearEl || !this.modalElement || !this.buttonSaveSelectedElement) {
+          throw new Error('Misconfiguaration...');
+        }
+
+        this.button.addEventListener('click', this.show); // Bootstrap modal init
+
+        if (this.modalElement && window.bootstrap && window.bootstrap.Modal && window.bootstrap.Modal.getInstance(this.modalElement) === undefined) {
+          Joomla.initialiseModal(this.modalElement, {
+            isJoomla: true
+          });
+        }
+
+        if (this.buttonClearEl) {
+          this.buttonClearEl.addEventListener('click', this.clearValue);
+        }
+
+        this.updatePreview();
+      }
+    }, {
+      key: "disconnectedCallback",
+      value: function disconnectedCallback() {
+        if (this.button) {
+          this.button.removeEventListener('click', this.show);
+        }
+
+        if (this.buttonClearEl) {
+          this.buttonClearEl.removeEventListener('click', this.clearValue);
+        }
+      }
+    }, {
+      key: "onSelected",
+      value: function onSelected(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.modalClose();
+        return false;
+      }
+    }, {
+      key: "show",
+      value: function show() {
+        this.modalElement.open();
+        Joomla.selectedMediaFile = {};
+        this.buttonSaveSelectedElement.addEventListener('click', this.onSelected);
+      }
+    }, {
+      key: "modalClose",
+      value: function () {
+        var _modalClose = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _context.prev = 0;
+                  _context.next = 3;
+                  return Joomla.getImage(Joomla.selectedMediaFile, this.inputElement, this);
+
+                case 3:
+                  _context.next = 8;
+                  break;
+
+                case 5:
+                  _context.prev = 5;
+                  _context.t0 = _context["catch"](0);
+                  Joomla.renderMessages({
+                    error: [Joomla.Text._('JLIB_APPLICATION_ERROR_SERVER')]
+                  });
+
+                case 8:
+                  Joomla.selectedMediaFile = {};
+                  Joomla.Modal.getCurrent().close();
+
+                case 10:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, this, [[0, 5]]);
+        }));
+
+        function modalClose() {
+          return _modalClose.apply(this, arguments);
+        }
+
+        return modalClose;
+      }()
+    }, {
+      key: "setValue",
+      value: function setValue(value) {
+        this.inputElement.value = value;
+        this.updatePreview(); // trigger change event both on the input and on the custom element
+
+        this.inputElement.dispatchEvent(new Event('change'));
+        this.dispatchEvent(new CustomEvent('change', {
+          detail: {
+            value: value
+          },
+          bubbles: true
+        }));
+      }
+    }, {
+      key: "clearValue",
+      value: function clearValue() {
+        this.setValue('');
+      }
+    }, {
+      key: "updatePreview",
+      value: function updatePreview() {
+        if (['true', 'static'].indexOf(this.preview) === -1 || this.preview === 'false' || !this.previewElement) {
+          return;
+        } // Reset preview
+
+
+        if (this.preview) {
+          var value = this.inputElement.value;
+
+          if (!value) {
+            this.previewElement.innerHTML = '<span class="field-media-preview-icon"></span>';
+          } else {
+            this.previewElement.innerHTML = '';
+            var imgPreview = new Image();
+            var mediaType = {
+              image: function image() {
+                imgPreview.src = /http/.test(value) ? value : Joomla.getOptions('system.paths').rootFull + value;
+                imgPreview.setAttribute('alt', '');
+              }
+            };
+            mediaType[this.type]();
+            this.previewElement.style.width = this.previewWidth;
+            this.previewElement.appendChild(imgPreview);
+          }
+        }
       }
     }], [{
       key: "observedAttributes",

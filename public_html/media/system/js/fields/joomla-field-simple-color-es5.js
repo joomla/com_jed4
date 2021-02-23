@@ -319,8 +319,28 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         this.mousedown = this.mousedown.bind(this);
       }
     }, {
+      key: "textSelect",
+      get: function get() {
+        return this.getAttribute('text-select');
+      }
+    }, {
+      key: "textColor",
+      get: function get() {
+        return this.getAttribute('text-color');
+      }
+    }, {
+      key: "textClose",
+      get: function get() {
+        return this.getAttribute('text-close');
+      }
+    }, {
+      key: "textTransp",
+      get: function get() {
+        return this.getAttribute('text-transparent');
+      } // Show the panel
+
+    }, {
       key: "show",
-      // Show the panel
       value: function show() {
         document.addEventListener('mousedown', this.hide);
         this.addEventListener('keydown', this.keys);
@@ -371,7 +391,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         e.target.classList.add('active');
         this.icon.classList.remove('nocolor');
         this.icon.setAttribute('class', clss);
-        this.icon.style.backgroundColor = bgcolor; // Hide the panel
+        this.icon.style.backgroundColor = bgcolor; // trigger change event both on the select and on the custom element
+
+        this.select.dispatchEvent(new Event('change'));
+        this.dispatchEvent(new CustomEvent('change', {
+          detail: {
+            value: color
+          },
+          bubbles: true
+        })); // Hide the panel
 
         this.hide(); // Change select value
 
@@ -452,26 +480,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
         var matches = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
         return "#".concat(hex(matches[1])).concat(hex(matches[2])).concat(hex(matches[3]));
-      }
-    }, {
-      key: "textSelect",
-      get: function get() {
-        return this.getAttribute('text-select');
-      }
-    }, {
-      key: "textColor",
-      get: function get() {
-        return this.getAttribute('text-color');
-      }
-    }, {
-      key: "textClose",
-      get: function get() {
-        return this.getAttribute('text-close');
-      }
-    }, {
-      key: "textTransp",
-      get: function get() {
-        return this.getAttribute('text-transparent');
       }
     }], [{
       key: "observedAttributes",

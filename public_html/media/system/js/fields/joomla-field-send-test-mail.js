@@ -67,9 +67,16 @@
           if (typeof response.messages === 'object' && response.messages !== null) {
             Joomla.renderMessages(response.messages);
           }
+
+          document.body.scrollIntoView({
+            behavior: 'smooth'
+          });
         },
         onError: xhr => {
           Joomla.renderMessages(Joomla.ajaxErrorsMessages(xhr));
+          document.body.scrollIntoView({
+            behavior: 'smooth'
+          });
         }
       });
     }

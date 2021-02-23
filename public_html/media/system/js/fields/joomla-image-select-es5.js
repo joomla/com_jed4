@@ -268,6 +268,51 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
 
     _createClass(JoomlaFieldMediaOptions, [{
+      key: "parentId",
+      get: function get() {
+        return this.getAttribute('parent-id');
+      }
+    }, {
+      key: "lazytext",
+      get: function get() {
+        return this.getAttribute('lazy-label');
+      }
+    }, {
+      key: "alttext",
+      get: function get() {
+        return this.getAttribute('alt-label');
+      }
+    }, {
+      key: "altchecktext",
+      get: function get() {
+        return this.getAttribute('alt-check-label');
+      }
+    }, {
+      key: "altcheckdesctext",
+      get: function get() {
+        return this.getAttribute('alt-check-desc-label');
+      }
+    }, {
+      key: "classestext",
+      get: function get() {
+        return this.getAttribute('classes-label');
+      }
+    }, {
+      key: "figclassestext",
+      get: function get() {
+        return this.getAttribute('figure-classes-label');
+      }
+    }, {
+      key: "figcaptiontext",
+      get: function get() {
+        return this.getAttribute('figure-caption-label');
+      }
+    }, {
+      key: "summarytext",
+      get: function get() {
+        return this.getAttribute('summary-label');
+      }
+    }, {
       key: "connectedCallback",
       value: function connectedCallback() {
         this.innerHTML = "\n<details open>\n  <summary>".concat(this.summarytext, "</summary>\n  <div class=\"\">\n    <div class=\"form-group\">\n      <div class=\"input-group\">\n        <label class=\"input-group-text\" for=\"").concat(this.parentId, "-alt\">").concat(this.alttext, "</label>\n        <input class=\"form-control\" type=\"text\" id=\"").concat(this.parentId, "-alt\" />\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"form-check\">\n        <input class=\"form-check-input\" type=\"checkbox\" id=\"").concat(this.parentId, "-alt-check\">\n        <label class=\"form-check-label\" for=\"").concat(this.parentId, "-alt-check\">").concat(this.altchecktext, "</label>\n        <div><small class=\"form-text text-muted\">").concat(this.altcheckdesctext, "</small></div>\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"form-check\">\n        <input class=\"form-check-input\" type=\"checkbox\" id=\"").concat(this.parentId, "-lazy\" checked>\n        <label class=\"form-check-label\" for=\"").concat(this.parentId, "-lazy\">").concat(this.lazytext, "</label>\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"input-group\">\n        <label class=\"input-group-text\" for=\"").concat(this.parentId, "-classes\">").concat(this.classestext, "</label>\n        <input class=\"form-control\" type=\"text\" id=\"").concat(this.parentId, "-classes\" />\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"input-group\">\n        <label class=\"input-group-text\" for=\"").concat(this.parentId, "-figclasses\">").concat(this.figclassestext, "</label>\n        <input class=\"form-control\" type=\"text\" id=\"").concat(this.parentId, "-figclasses\" />\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"input-group\">\n        <label class=\"input-group-text\" for=\"").concat(this.parentId, "-figcaption\">").concat(this.figcaptiontext, "</label>\n        <input class=\"form-control\" type=\"text\" id=\"").concat(this.parentId, "-figcaption\" />\n      </div>\n    </div>\n  </div>\n</details>"); // Add event listeners
@@ -332,51 +377,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       key: "figcaptionFn",
       value: function figcaptionFn(e) {
         this.setAttribute('fig-caption', e.target.value);
-      }
-    }, {
-      key: "parentId",
-      get: function get() {
-        return this.getAttribute('parent-id');
-      }
-    }, {
-      key: "lazytext",
-      get: function get() {
-        return this.getAttribute('lazy-label');
-      }
-    }, {
-      key: "alttext",
-      get: function get() {
-        return this.getAttribute('alt-label');
-      }
-    }, {
-      key: "altchecktext",
-      get: function get() {
-        return this.getAttribute('alt-check-label');
-      }
-    }, {
-      key: "altcheckdesctext",
-      get: function get() {
-        return this.getAttribute('alt-check-desc-label');
-      }
-    }, {
-      key: "classestext",
-      get: function get() {
-        return this.getAttribute('classes-label');
-      }
-    }, {
-      key: "figclassestext",
-      get: function get() {
-        return this.getAttribute('figure-classes-label');
-      }
-    }, {
-      key: "figcaptiontext",
-      get: function get() {
-        return this.getAttribute('figure-caption-label');
-      }
-    }, {
-      key: "summarytext",
-      get: function get() {
-        return this.getAttribute('summary-label');
       }
     }]);
 

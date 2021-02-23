@@ -37,10 +37,33 @@ window.customElements.define('joomla-toolbar-button', /*#__PURE__*/function (_HT
 
   var _super = _createSuper(_class);
 
+  /**
+   * Lifecycle
+   */
+  function _class() {
+    var _this;
+
+    _classCallCheck(this, _class);
+
+    _this = _super.call(this);
+
+    if (!Joomla) {
+      throw new Error('Joomla API is not properly initiated');
+    }
+
+    _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
+    _this.executeTask = _this.executeTask.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+  /**
+   * Lifecycle
+   */
+
+
   _createClass(_class, [{
     key: "task",
-    // Attribute getters
-    get: function get() {
+    get: // Attribute getters
+    function get() {
       return this.getAttribute('task');
     }
   }, {
@@ -63,33 +86,7 @@ window.customElements.define('joomla-toolbar-button', /*#__PURE__*/function (_HT
     get: function get() {
       return this.getAttribute('confirm-message');
     }
-    /**
-     * Lifecycle
-     */
-
-  }]);
-
-  function _class() {
-    var _this;
-
-    _classCallCheck(this, _class);
-
-    _this = _super.call(this);
-
-    if (!Joomla) {
-      throw new Error('Joomla API is not properly initiated');
-    }
-
-    _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
-    _this.executeTask = _this.executeTask.bind(_assertThisInitialized(_this));
-    return _this;
-  }
-  /**
-   * Lifecycle
-   */
-
-
-  _createClass(_class, [{
+  }, {
     key: "connectedCallback",
     value: function connectedCallback() {
       // We need a button to support button behavior,

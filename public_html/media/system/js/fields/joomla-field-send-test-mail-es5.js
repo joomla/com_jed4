@@ -108,9 +108,16 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             if (_typeof(response.messages) === 'object' && response.messages !== null) {
               Joomla.renderMessages(response.messages);
             }
+
+            document.body.scrollIntoView({
+              behavior: 'smooth'
+            });
           },
           onError: function onError(xhr) {
             Joomla.renderMessages(Joomla.ajaxErrorsMessages(xhr));
+            document.body.scrollIntoView({
+              behavior: 'smooth'
+            });
           }
         });
       }

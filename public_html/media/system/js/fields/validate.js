@@ -61,6 +61,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }
 
     _createClass(JFormValidator, [{
+      key: "custom",
+      get: function get() {
+        return this.customValidators;
+      },
+      set: function set(value) {
+        this.customValidators = value;
+      }
+    }, {
       key: "setHandler",
       value: function setHandler(name, func, en) {
         var isEnabled = en === '' ? true : en;
@@ -337,14 +345,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             inputFields.push(element);
           }
         });
-      }
-    }, {
-      key: "custom",
-      get: function get() {
-        return this.customValidators;
-      },
-      set: function set(value) {
-        this.customValidators = value;
       }
     }]);
 

@@ -56,54 +56,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
     var _super = _createSuper(JoomlaFieldSubform);
 
-    _createClass(JoomlaFieldSubform, [{
-      key: "buttonAdd",
-      // Attribute getters
-      get: function get() {
-        return this.getAttribute('button-add');
-      }
-    }, {
-      key: "buttonRemove",
-      get: function get() {
-        return this.getAttribute('button-remove');
-      }
-    }, {
-      key: "buttonMove",
-      get: function get() {
-        return this.getAttribute('button-move');
-      }
-    }, {
-      key: "rowsContainer",
-      get: function get() {
-        return this.getAttribute('rows-container');
-      }
-    }, {
-      key: "repeatableElement",
-      get: function get() {
-        return this.getAttribute('repeatable-element');
-      }
-    }, {
-      key: "minimum",
-      get: function get() {
-        return this.getAttribute('minimum');
-      }
-    }, {
-      key: "maximum",
-      get: function get() {
-        return this.getAttribute('maximum');
-      }
-    }, {
-      key: "name",
-      get: function get() {
-        return this.getAttribute('name');
-      },
-      set: function set(value) {
-        // Update the template
-        this.template = this.template.replace(new RegExp(" name=\"".concat(this.name.replace(/[[\]]/g, '\\$&')), 'g'), " name=\"".concat(value));
-        return this.setAttribute('name', value);
-      }
-    }]);
-
     function JoomlaFieldSubform() {
       var _this;
 
@@ -197,6 +149,52 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
     _createClass(JoomlaFieldSubform, [{
+      key: "buttonAdd",
+      get: // Attribute getters
+      function get() {
+        return this.getAttribute('button-add');
+      }
+    }, {
+      key: "buttonRemove",
+      get: function get() {
+        return this.getAttribute('button-remove');
+      }
+    }, {
+      key: "buttonMove",
+      get: function get() {
+        return this.getAttribute('button-move');
+      }
+    }, {
+      key: "rowsContainer",
+      get: function get() {
+        return this.getAttribute('rows-container');
+      }
+    }, {
+      key: "repeatableElement",
+      get: function get() {
+        return this.getAttribute('repeatable-element');
+      }
+    }, {
+      key: "minimum",
+      get: function get() {
+        return this.getAttribute('minimum');
+      }
+    }, {
+      key: "maximum",
+      get: function get() {
+        return this.getAttribute('maximum');
+      }
+    }, {
+      key: "name",
+      get: function get() {
+        return this.getAttribute('name');
+      },
+      set: function set(value) {
+        // Update the template
+        this.template = this.template.replace(new RegExp(" name=\"".concat(this.name.replace(/[[\]]/g, '\\$&')), 'g'), " name=\"".concat(value));
+        return this.setAttribute('name', value);
+      }
+    }, {
       key: "getRows",
       value: function getRows() {
         var _this2 = this;
