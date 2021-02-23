@@ -33,12 +33,14 @@ class AjaxController extends BaseController
 	 */
 	public function developers(): void
 	{
-		$search = $this->input->getString('query');
+		$this->checkToken('get') || die;
+
+		$search = $this->input->getString('q');
 		/** @var ExtensionModel $model */
 		$model = $this->getModel('Extensions');
 		$data  = $model->getDevelopers($search);
 
-		echo json_encode(['suggestions' => $data]);
+		echo(new JsonResponse($data));
 	}
 
 	/**

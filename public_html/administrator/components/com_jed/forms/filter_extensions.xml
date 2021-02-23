@@ -13,7 +13,8 @@
         <field
                 name="category_id"
                 type="category"
-                extension="com_jed"
+                extension="com_jed.extensions"
+                layout="joomla.form.field.list-fancy-select"
                 default=""
                 filter="integer"
                 multiple="true"
@@ -42,11 +43,6 @@
         </field>
 
         <field
-            name="developer"
-            type="text"
-            hint="COM_JED_EXTENSIONS_DEVELOPER_LABEL"/>
-
-        <field
             name="user_id"
             type="hidden" />
 
@@ -68,6 +64,7 @@
                 name="includes"
                 type="list"
                 label="COM_JED_EXTENSIONS_INCLUDES"
+                layout="joomla.form.field.list-fancy-select"
                 multiple="true"
                 default=""
                 hint="COM_JED_EXTENSIONS_INCLUDES_SELECT"
@@ -77,6 +74,15 @@
             <option value="plugin">COM_JED_EXTENSIONS_INCLUDES_PLUGIN</option>
         </field>
 
+        <field
+                name="developer"
+                type="text"
+                hint="COM_JED_EXTENSIONS_DEVELOPER_LABEL"
+                autocomplete="off"/>
+
+        <field
+                name="developer_id"
+                type="hidden"/>
     </fields>
 
     <fields name="list">

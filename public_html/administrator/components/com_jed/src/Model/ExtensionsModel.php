@@ -103,10 +103,6 @@ class ExtensionsModel extends ListModel
 					[
 						'users.id',
 						'users.name'
-					],
-					[
-						'data',
-						'value'
 					]
 				)
 			)
@@ -115,7 +111,9 @@ class ExtensionsModel extends ListModel
 				$db->quoteName('#__jed_extensions', 'extensions')
 				. ' ON ' . $db->quoteName('extensions.created_by') . ' = ' . $db->quoteName('users.id')
 			)
-			->where($db->quoteName('users.name') . ' LIKE ' . $db->quote('%' . $search . '%'));
+			->where($db->quoteName('users.name') . ' LIKE ' . $db->quote('%' . $search . '%'))
+			->group($db->quoteName('users.id'))
+			->order($db->quoteName('users.name'));
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
@@ -276,11 +274,11 @@ class ExtensionsModel extends ListModel
 			$query->where($db->quoteName('extensions.approved') . ' = ' . $db->quote($approved));
 		}
 
-		$userId = $this->getState('filter.user_id');
+		$developerId = $this->getState('filter.developer_id');
 
-		if ($userId)
+		if ($developerId)
 		{
-			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $userId);
+			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developerId);
 		}
 
 		$type = $this->getState('filter.type');

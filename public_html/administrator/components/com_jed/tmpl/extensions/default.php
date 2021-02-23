@@ -16,8 +16,8 @@ defined('_JEXEC') or die;
 
 /** @var JedViewExtensions $this */
 
-//HTMLHelper::_('script', 'jui/jquery.autocomplete.min.js', ['version' => 'auto', 'relative' => true]);
-//HTMLHelper::_('stylesheet', 'com_finder/finder.css', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('script', 'com_jed/autoComplete.min.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('stylesheet', 'com_jed/autoComplete.css', ['version' => 'auto', 'relative' => true]);
 
 $user      = Factory::getUser();
 $userId    = $user->get('id');
@@ -197,18 +197,48 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
     </div>
 </form>
 
-<script type="text/javascript">
-    /**
-    var suggest = jQuery('#filter_developer').autocomplete({
-        serviceUrl: 'index.php?option=com_jed&task=ajax.developers&format=json&tmpl=component',
-        minChars: 3,
-        maxHeight: 400,
-        width: 300,
-        zIndex: 9999,
-        deferRequestBy: 500,
-        onSelect: function (suggestion) {
-            document.getElementById('filter_user_id').value = suggestion.data;
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const autoCompleteJS = new autoComplete({
+        data: {
+            src: async () => {
+                const query = document.querySelector("#filter_developer").value;
+                const source = await fetch(`index.php?option=com_jed&task=ajax.developers&format=json&tmpl=component&${Joomla.optionsStorage['csrf.token']}=1&q=${query}`);
+                const data = await source.json();
+                return data.data;
+            },
+            key: ["id","name"],
+            cache: false
+        },
+        selector: "#filter_developer",
+        observer: true,
+        threshold: 3,
+        debounce: 300,
+        resultsList: {
+            destination: "#filter_developer",
+            position: "afterend",
+            element: "ul"
+        },
+        maxResults: 5,
+        highlight: true,
+        resultItem: {
+            content: (data, source) => {
+                source.innerHTML = data.match;
+            },
+            element: "li"
+        },
+        noResults: (dataFeedback, generateList) => {
+            generateList(autoCompleteJS, dataFeedback, dataFeedback.results);
+            const result = document.createElement("li");
+            result.setAttribute("class", "no_result");
+            result.setAttribute("tabindex", "1");
+            result.innerHTML = `<span style="display: flex; align-items: center; font-weight: 100; color: rgba(0,0,0,.2);">Found No Results for "${dataFeedback.query}"</span>`;
+            document.querySelector(`#${autoCompleteJS.resultsList.idName}`).appendChild(result);
+        },
+        onSelection: feedback => {             // Action script onSelection event | (Optional)
+            document.getElementById('filter_developer').value = feedback.selection.value.name;
+            document.getElementById('filter_developer_id').value = feedback.selection.value.id;
         }
     });
-     **/
+    });
 </script>
