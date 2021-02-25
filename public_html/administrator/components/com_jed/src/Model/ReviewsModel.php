@@ -37,9 +37,10 @@ class ReviewsModel extends ListModel
 				'published',
 				'reviewer',
 				'extension',
-				'developer',
 				'ipaddress',
 				'flagged',
+				'developer',
+				'developer_id',
 
 				'reviews.published',
 				'reviews.created_on',

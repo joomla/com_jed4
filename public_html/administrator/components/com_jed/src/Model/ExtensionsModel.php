@@ -36,10 +36,12 @@ class ExtensionsModel extends ListModel
 				'category_id',
 				'published',
 				'approved',
-				'developer',
 				'user_id',
 				'type',
 				'includes',
+				'developer',
+				'developer_id',
+
 				'extensions.published',
 				'extensions.approved',
 				'extensions.title',
