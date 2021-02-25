@@ -11,11 +11,11 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Component\Jed\Administrator\View\Review\HtmlView;
 
-/** @var JedViewReview $this */
+/** @var HtmlView $this */
 
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('formbehavior.chosen');
 
 Factory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
@@ -142,7 +142,7 @@ Factory::getDocument()->addScriptDeclaration("
 					'https://batchrev.extensions.joomla.org/ipaddress/' . $this->item->ipAddress . '.html',
 					Text::_('JYES'),
 					'target="_blank"'
-				) . ' <span class="icon-new-tab"></span>'
+				)
 				: Text::_('JNO');
 			?>
         </td>

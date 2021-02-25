@@ -11,18 +11,19 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\Component\Jed\Administrator\View\Extensions\HtmlView;
 
 defined('_JEXEC') or die;
 
-/** @var JedViewExtensions $this */
+/** @var HtmlView $this */
 
 HTMLHelper::_('script', 'com_jed/autoComplete.min.js', ['version' => 'auto', 'relative' => true]);
 HTMLHelper::_('stylesheet', 'com_jed/autoComplete.css', ['version' => 'auto', 'relative' => true]);
 
 $user      = Factory::getUser();
 $userId    = $user->get('id');
-$listOrder  = $this->escape($this->state->get('list.ordering'));
-$listDirn   = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form id="adminForm" action="<?php echo Route::_('index.php?option=com_jed&view=extensions'); ?>" method="post" name="adminForm">
     <div class="row">

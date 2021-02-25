@@ -276,7 +276,7 @@ class ExtensionsModel extends ListModel
 
 		$developerId = $this->getState('filter.developer_id');
 
-		if ($developerId)
+		if (is_numeric($developerId))
 		{
 			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developerId);
 		}

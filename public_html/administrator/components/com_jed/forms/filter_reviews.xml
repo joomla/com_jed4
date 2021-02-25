@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Joomla\Component\Jed\Administrator\Field">
     <fields name="filter">
 
         <field
                 name="search"
                 type="text"
-                hint=""
+                hint="JSEARCH_FILTER"
                 label=""
-                class="js-stools-search-string"
         />
 
         <field
                 name="published"
                 type="list"
                 label="JPUBLISHED"
-                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -26,9 +24,8 @@
 
         <field
                 name="reviewer"
-                type="jed.reviewers"
+                type="reviewers"
                 label="JAUTHOR"
-                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -38,9 +35,8 @@
 
         <field
                 name="extension"
-                type="jed.extensions"
+                type="extensions"
                 label="COM_JED_EXTENSION"
-                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -49,22 +45,9 @@
         </field>
 
         <field
-                name="developer"
-                type="jed.developers"
-                label="COM_JED_EXTENSIONS_DEVELOPER"
-                class="advancedSelect"
-                default=""
-                size="1"
-                onchange="this.form.submit();"
-        >
-            <option value="">COM_JED_FILTER_DEVELOPER</option>
-        </field>
-
-        <field
                 name="ipaddress"
-                type="jed.ipaddresses"
+                type="ipaddresses"
                 label="COM_JED_REVIEWS_IP_ADDRESS"
-                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -76,7 +59,6 @@
                 name="flagged"
                 type="list"
                 label="COM_JED_REVIEWS_FLAGGED"
-                class="advancedSelect"
                 default=""
                 size="1"
                 onchange="this.form.submit();"
@@ -86,17 +68,28 @@
             <option value="0">COM_JED_REVIEWS_NOT_FLAGGED</option>
         </field>
 
+        <field
+                name="developer"
+                type="text"
+                label="COM_JED_EXTENSIONS_DEVELOPER_LABEL"
+                hint="COM_JED_EXTENSIONS_DEVELOPER_LABEL"
+                autocomplete="off"/>
+
+        <field
+                name="developer_id"
+                type="hidden"
+                default=""
+        />
+
     </fields>
 
     <fields name="list">
 
         <field name="limit"
                type="limitbox"
-               class="input-mini advancedSelect"
                default="25"
                onchange="this.form.submit();"
         />
 
     </fields>
-
 </form>

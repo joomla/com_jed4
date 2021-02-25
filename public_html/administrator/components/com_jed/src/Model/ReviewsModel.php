@@ -209,11 +209,11 @@ class ReviewsModel extends ListModel
 			$query->where($db->quoteName('reviews.extension_id') . ' = ' . (int) $extension);
 		}
 
-		$developer = $this->getState('filter.developer');
+		$developerId = $this->getState('filter.developer_id');
 
-		if (is_numeric($developer))
+		if (is_numeric($developerId))
 		{
-			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developer);
+			$query->where($db->quoteName('extensions.created_by') . ' = ' . (int) $developerId);
 		}
 
 		$reviewer = $this->getState('filter.reviewer');
