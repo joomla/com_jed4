@@ -16,6 +16,16 @@
       "version": "1.4.1"
     },
     {
+      "name": "short-and-sweet",
+      "type": "script",
+      "uri": "vendor/short-and-sweet/short-and-sweet.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "short-and-sweet",
+      "version": "1.0.2"
+    },
+    {
       "name": "accessibility",
       "type": "script",
       "uri": "vendor/accessibility/accessibility.min.js",
@@ -26,14 +36,68 @@
       "version": "3.0.13"
     },
     {
-      "name": "short-and-sweet",
+      "name": "awesomplete",
+      "type": "style",
+      "uri": "vendor/awesomplete/awesomplete.css",
+      "package": "awesomplete",
+      "version": "1.1.5"
+    },
+    {
+      "name": "awesomplete",
       "type": "script",
-      "uri": "vendor/short-and-sweet/short-and-sweet.min.js",
+      "uri": "vendor/awesomplete/awesomplete.min.js",
       "attributes": {
         "defer": true
       },
-      "package": "short-and-sweet",
-      "version": "1.0.2"
+      "package": "awesomplete",
+      "version": "1.1.5"
+    },
+    {
+      "name": "awesomplete",
+      "type": "preset",
+      "dependencies": [
+        "awesomplete#style",
+        "awesomplete#script"
+      ],
+      "package": "awesomplete",
+      "version": "1.1.5"
+    },
+    {
+      "name": "cropperjs",
+      "type": "style",
+      "uri": "vendor/cropperjs/cropper.min.css",
+      "package": "cropperjs",
+      "version": "1.5.9"
+    },
+    {
+      "name": "cropperjs",
+      "type": "script",
+      "uri": "vendor/cropperjs/cropper.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "cropperjs",
+      "version": "1.5.9"
+    },
+    {
+      "name": "cropperjs",
+      "type": "preset",
+      "dependencies": [
+        "cropperjs#style",
+        "cropperjs#script"
+      ],
+      "package": "cropperjs",
+      "version": "1.5.9"
+    },
+    {
+      "name": "diff",
+      "type": "script",
+      "uri": "vendor/diff/diff.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "diff",
+      "version": "4.0.2"
     },
     {
       "name": "choicesjs",
@@ -97,40 +161,6 @@
       "version": "5.2.0"
     },
     {
-      "name": "awesomplete",
-      "type": "style",
-      "uri": "vendor/awesomplete/awesomplete.css",
-      "package": "awesomplete",
-      "version": "1.1.5"
-    },
-    {
-      "name": "awesomplete",
-      "type": "script",
-      "uri": "vendor/awesomplete/awesomplete.min.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "awesomplete",
-      "version": "1.1.5"
-    },
-    {
-      "name": "awesomplete",
-      "type": "preset",
-      "dependencies": [
-        "awesomplete#style",
-        "awesomplete#script"
-      ],
-      "package": "awesomplete",
-      "version": "1.1.5"
-    },
-    {
-      "name": "jquery",
-      "type": "script",
-      "uri": "vendor/jquery/jquery.min.js",
-      "package": "jquery",
-      "version": "3.5.1"
-    },
-    {
       "name": "jquery-migrate",
       "type": "script",
       "uri": "vendor/jquery-migrate/jquery-migrate.min.js",
@@ -139,6 +169,13 @@
       ],
       "package": "jquery-migrate",
       "version": "3.3.2"
+    },
+    {
+      "name": "jquery",
+      "type": "script",
+      "uri": "vendor/jquery/jquery.min.js",
+      "package": "jquery",
+      "version": "3.5.1"
     },
     {
       "name": "webcomponent.joomla-alert",
@@ -239,20 +276,6 @@
       "version": "2.3.5"
     },
     {
-      "name": "wcpolyfill",
-      "type": "script",
-      "uri": "vendor/webcomponentsjs/webcomponents-sd-ce-pf.js",
-      "attributes": {
-        "nomodule": true,
-        "defer": true
-      },
-      "dependencies": [
-        "core"
-      ],
-      "package": "@webcomponents/webcomponentsjs",
-      "version": "2.5.0"
-    },
-    {
       "name": "chosen",
       "type": "style",
       "uri": "vendor/chosen/chosen.css",
@@ -288,6 +311,20 @@
       },
       "package": "metismenujs",
       "version": "1.2.1"
+    },
+    {
+      "name": "wcpolyfill",
+      "type": "script",
+      "uri": "vendor/webcomponentsjs/webcomponents-sd-ce-pf.js",
+      "attributes": {
+        "nomodule": true,
+        "defer": true
+      },
+      "dependencies": [
+        "core"
+      ],
+      "package": "@webcomponents/webcomponentsjs",
+      "version": "2.5.0"
     },
     {
       "name": "qrcode",
@@ -336,43 +373,6 @@
       },
       "package": "skipto",
       "version": "4.0.1"
-    },
-    {
-      "name": "diff",
-      "type": "script",
-      "uri": "vendor/diff/diff.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "diff",
-      "version": "4.0.2"
-    },
-    {
-      "name": "cropperjs",
-      "type": "style",
-      "uri": "vendor/cropperjs/cropper.min.css",
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "cropperjs",
-      "type": "script",
-      "uri": "vendor/cropperjs/cropper.min.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "cropperjs",
-      "type": "preset",
-      "dependencies": [
-        "cropperjs#style",
-        "cropperjs#script"
-      ],
-      "package": "cropperjs",
-      "version": "1.5.9"
     },
     {
       "name": "fontawesome",

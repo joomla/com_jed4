@@ -1,5 +1,5 @@
 import { _ as _objectSpread2 } from './carousel.js';
-import { B as BaseComponent, S as SelectorEngine, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, b as typeCheckConfig, r as reflow, c as isRTL, M as Manipulator, D as Data, g as getElementFromSelector, i as isVisible, d as defineJQueryPlugin } from './dom.js?1614049248';
+import { B as BaseComponent, S as SelectorEngine, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, b as typeCheckConfig, r as reflow, c as isRTL, M as Manipulator, D as Data, g as getElementFromSelector, i as isVisible, d as defineJQueryPlugin } from './dom.js?1614308452';
 
 /**
  * ------------------------------------------------------------------------
