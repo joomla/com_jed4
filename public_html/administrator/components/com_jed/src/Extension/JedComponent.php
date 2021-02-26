@@ -9,7 +9,7 @@
 
 namespace Joomla\Component\Jed\Administrator\Extension;
 
-\defined('JPATH_PLATFORM') or die;
+defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Categories\CategoryServiceInterface;
 use Joomla\CMS\Categories\CategoryServiceTrait;
@@ -22,6 +22,8 @@ use Joomla\CMS\Tag\TagServiceInterface;
 use Joomla\CMS\Tag\TagServiceTrait;
 use Joomla\Component\Jed\Administrator\Service\Html\Jed;
 use Psr\Container\ContainerInterface;
+
+use function defined;
 
 /**
  * Component class for com_jed

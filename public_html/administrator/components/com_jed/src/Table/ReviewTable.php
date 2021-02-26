@@ -8,9 +8,12 @@
 
 namespace Joomla\Component\Jed\Administrator\Table;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
+
+use function defined;
 
 /**
  * JED Review table class
@@ -30,7 +33,7 @@ class ReviewTable extends Table
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabaseDriver  $db  A database connector object
+	 * @param   DatabaseDriver  $db  A database connector object
 	 *
 	 * @since   4.0.0
 	 */

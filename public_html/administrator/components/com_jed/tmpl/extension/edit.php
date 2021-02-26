@@ -13,8 +13,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Jed\Administrator\View\Extension\HtmlView;
 
-/** @var JedViewExtension $this */
+/** @var HtmlView $this */
 
 HTMLHelper::_('script', 'com_jed/jed.js', ['version' => 'auto', 'relative' => true]);
 

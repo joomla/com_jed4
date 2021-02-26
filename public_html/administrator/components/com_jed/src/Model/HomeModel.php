@@ -8,9 +8,11 @@
 
 namespace Joomla\Component\Jed\Administrator\Model;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use function defined;
 
 /**
  * JED Home Model
@@ -32,21 +34,18 @@ class HomeModel extends BaseDatabaseModel
 		$totals = [];
 		$db     = $this->getDbo();
 
-		// Get total number of extensions
 		$query = $db->getQuery(true)
 			->select('COUNT(' . $db->quoteName('id') . ')')
 			->from($db->quoteName('#__jed_extensions'));
 		$db->setQuery($query);
 		$totals['extensions'] = $db->loadResult();
 
-		// Get total number of reviews
 		$query = $db->getQuery(true)
 			->select('COUNT(' . $db->quoteName('id') . ')')
 			->from($db->quoteName('#__jed_reviews'));
 		$db->setQuery($query);
 		$totals['reviews'] = $db->loadResult();
 
-		// Get total number of reviews per day
 		$query = $db->getQuery(true)
 			->select('CEIL(COUNT(' . $db->quoteName('id') . ') / COUNT(DISTINCT DATE(' . $db->quoteName('created_on') . ')))')
 			->from($db->quoteName('#__jed_reviews'));

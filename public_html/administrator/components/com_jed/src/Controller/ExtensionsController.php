@@ -8,9 +8,12 @@
 
 namespace Joomla\Component\Jed\Administrator\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\MVC\Controller\AdminController;
+
+use function defined;
 
 /**
  * Extensions list controller class.
@@ -41,8 +44,6 @@ class ExtensionsController extends AdminController
 	 */
 	public function getModel($name = 'Extension', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
+		return parent::getModel($name, $prefix, $config);
 	}
 }

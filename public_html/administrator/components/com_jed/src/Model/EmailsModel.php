@@ -8,9 +8,11 @@
 
 namespace Joomla\Component\Jed\Administrator\Model;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\QueryInterface;
+use RuntimeException;
 
 /**
  * Emails model
@@ -43,39 +45,49 @@ class EmailsModel extends ListModel
 			$direction = 'DESC';
 		}
 
-		// List state information.
 		parent::populateState($ordering, $direction);
 	}
 
 	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return  JDatabaseQuery
+	 * @return  QueryInterface
 	 *
 	 * @since   4.0.0
-	 *
 	 * @throws  RuntimeException
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 
-		// Select the required fields from the table.
 		$query->select(
 			$db->quoteName(
+				[
+					'emails.id',
+					'emails.subject',
+					'emails.body',
+					'emails.checked_out',
+					'emails.checked_out_time',
+					'users.name'
+				],
 				[
 					'id',
 					'subject',
 					'body',
+					'checked_out',
+					'checked_out_time',
+					'editor'
 				]
 			)
 		);
 
-		$query->from($db->quoteName('#__jed_emails'));
+		$query->from($db->quoteName('#__jed_emails', 'emails'))
+			->leftJoin(
+				$db->quoteName('#__users', 'users')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('emails.checked_out')
+			);
 
-		// Add the list ordering clause.
 		$query->order(
 			$db->quoteName(
 				$db->escape(

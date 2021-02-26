@@ -8,12 +8,14 @@
 
 namespace Joomla\Component\Jed\Administrator\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
+use Joomla\Component\Jed\Administrator\Model\EmailModel;
+
+use function defined;
 
 /**
  * Emails controller.
@@ -31,11 +33,11 @@ class EmailsController extends AdminController
 	 * @param   string  $prefix  The class prefix. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  \JModelLegacy|boolean  Model object on success; otherwise false on failure.
+	 * @return  BaseDatabaseModel Model object on success; otherwise false on failure.
 	 *
 	 * @since   4.0.0
 	 */
-	public function getModel($name = 'Email', $prefix = 'JedModel', $config = array())
+	public function getModel($name = 'Email', $prefix = 'Administrator', $config = array())
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
@@ -47,17 +49,15 @@ class EmailsController extends AdminController
 	 *
 	 * @since   4.0.0
 	 *
-	 * @throws  Exception
+	 * @throws  \Exception
 	 */
 	public function testEmail(): void
 	{
-		// Check for request forgeries
-		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or die;
 
-		/** @var JedModelEmail $model */
-		$model  = $this->getModel('Email', 'JedModel');
+		/** @var EmailModel $model */
+		$model  = $this->getModel();
 		$result = $model->testEmail();
-		$app    = Factory::getApplication();
-		$app->redirect('index.php?option=com_jed&view=emails', $result['msg'], $result['state']);
+		$this->setRedirect('index.php?option=com_jed&view=emails', $result['msg'], $result['state']);
 	}
 }

@@ -8,9 +8,13 @@
 
 namespace Joomla\Component\Jed\Administrator\Table;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
+
+use function defined;
 
 /**
  * Email table class
@@ -30,11 +34,44 @@ class EmailTable extends Table
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabaseDriver  $db  A database connector object
+	 * @param   DatabaseDriver  $db  A database connector object
 	 * @since   4.0.0
 	 */
 	public function __construct($db)
 	{
 		parent::__construct('#__jed_emails', 'id', $db);
+	}
+
+	/**
+	 * Overloaded check function
+	 *
+	 * @return  boolean
+	 *
+	 * @see     Table::check
+	 * @since   4.0.0
+	 */
+	public function check(): bool
+	{
+		$date = Factory::getDate();
+		$user = Factory::getUser();
+
+		if (!(int) $this->get('created'))
+		{
+			$this->set('created', $date->toSql());
+		}
+
+		if (!$this->get('modified'))
+		{
+			$this->set('modified', $this->get('created'));
+		}
+
+		$this->set('modified_on', $date->toSql());
+
+		if ($this->get('id'))
+		{
+			$this->set('modified_by', $user->get('id'));
+		}
+
+		return true;
 	}
 }

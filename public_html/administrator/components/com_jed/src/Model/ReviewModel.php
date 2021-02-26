@@ -8,10 +8,13 @@
 
 namespace Joomla\Component\Jed\Administrator\Model;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
+
+use function defined;
 
 /**
  * JED Review Model
@@ -33,9 +36,10 @@ class ReviewModel extends AdminModel
 	 */
 	public function getForm($data = [], $loadData = true)
 	{
-		// Get the form.
-		$form = $this->loadForm('com_jed.review', 'review',
-			array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm(
+			'com_jed.review', 'review',
+			['control' => 'jform', 'load_data' => $loadData]
+		);
 
 		if (empty($form))
 		{
@@ -48,16 +52,16 @@ class ReviewModel extends AdminModel
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return      mixed   The data for the form.
+	 * @return  mixed   The data for the form.
 	 *
-	 * @since       4.0.0
-	 * @throws      Exception
-	 *
+	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_jed.edit.review.data', []);
+		$data = Factory::getApplication()->getUserState(
+			'com_jed.edit.review.data', []
+		);
 
 		if (empty($data))
 		{
@@ -84,50 +88,56 @@ class ReviewModel extends AdminModel
 		$query = $db->getQuery(true);
 
 		// @TODO calculation for overall_score column
-		$query->select($db->quoteName(
-			[
-				'reviews.published',
-				'reviews.id',
-				'reviews.title',
-				'reviews.created_on',
-				'reviews.ipAddress',
-				'reviews.flagged',
-				'reviews.extension_id',
-				'reviews.created_by',
-				'users.id',
-				'users.username',
-				'extensions.title',
-				'extensions.created_by',
-				'developers.username',
-			],
-			[
-				'published',
-				'id',
-				'title',
-				'created_on',
-				'ipAddress',
-				'flagged',
-				'extensionId',
-				'created_by',
-				'userId',
-				'username',
-				'extensionname',
-				'developerId',
-				'developer',
-			]
-		))
+		$query->select(
+			$db->quoteName(
+				[
+					'reviews.published',
+					'reviews.id',
+					'reviews.title',
+					'reviews.created_on',
+					'reviews.ipAddress',
+					'reviews.flagged',
+					'reviews.extension_id',
+					'reviews.created_by',
+					'users.id',
+					'users.username',
+					'extensions.title',
+					'extensions.created_by',
+					'developers.username',
+				],
+				[
+					'published',
+					'id',
+					'title',
+					'created_on',
+					'ipAddress',
+					'flagged',
+					'extensionId',
+					'created_by',
+					'userId',
+					'username',
+					'extensionname',
+					'developerId',
+					'developer',
+				]
+			)
+		)
 			->from($db->quoteName('#__jed_reviews', 'reviews'))
 			->leftJoin(
 				$db->quoteName('#__users', 'users')
-				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName('reviews.created_by')
+				. ' ON ' . $db->quoteName('users.id') . ' = ' . $db->quoteName(
+					'reviews.created_by'
+				)
 			)
 			->leftJoin(
 				$db->quoteName('#__jed_extensions', 'extensions')
-				. ' ON ' . $db->quoteName('extensions.id') . ' = ' . $db->quoteName('reviews.extension_id')
+				. ' ON ' . $db->quoteName('extensions.id') . ' = '
+				. $db->quoteName('reviews.extension_id')
 			)
 			->leftJoin(
 				$db->quoteName('#__users', 'developers')
-				. ' ON ' . $db->quoteName('developers.id') . ' = ' . $db->quoteName('extensions.created_by')
+				. ' ON ' . $db->quoteName('developers.id') . ' = '
+				. $db->quoteName('extensions.created_by')
 			)
 			->where($db->quoteName('reviews.id') . ' = ' . (int) $item->id);
 

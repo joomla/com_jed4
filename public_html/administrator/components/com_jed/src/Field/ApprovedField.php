@@ -8,11 +8,15 @@
 
 namespace Joomla\Component\Jed\Administrator\Field;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\HTML\HTMLHelper;
+
+use RuntimeException;
+
+use function defined;
 
 /**
  * List of approved states.
@@ -36,7 +40,7 @@ class ApprovedField extends ListField
 	 * @return  array  List of approved states.
 	 *
 	 * @since   4.0.0
-	 * @throws  \RuntimeException
+	 * @throws  RuntimeException
 	 */
 	public function getOptions(): array
 	{

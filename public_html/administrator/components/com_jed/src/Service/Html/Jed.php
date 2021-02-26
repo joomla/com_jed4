@@ -9,7 +9,9 @@
 
 namespace Joomla\Component\Jed\Administrator\Service\Html;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
+
+use function defined;
 
 /**
  * JED HTML class.

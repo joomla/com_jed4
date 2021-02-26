@@ -8,9 +8,11 @@
 
 namespace Joomla\Component\Jed\Administrator\Model;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\ListModel;
+
+use function defined;
 
 /**
  * JED Extensions Model
@@ -76,7 +78,6 @@ class ExtensionsModel extends ListModel
 
 		array_walk($items,
 			static function ($item) use ($db, $query) {
-				// Get the number of reviews
 				$query->clear('where')
 					->where($db->quoteName('extension_id') . ' = ' . (int) $item->id);
 				$db->setQuery($query);
@@ -166,7 +167,6 @@ class ExtensionsModel extends ListModel
 	 */
 	protected function getStoreId($id = ''): string
 	{
-		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.published');
 
@@ -239,7 +239,6 @@ class ExtensionsModel extends ListModel
 				. ' ON ' . $db->quoteName('staff.id') . ' = ' . $db->quoteName('extensions.checked_out')
 			);
 
-		// Filter by search in id
 		$search = $this->getState('filter.search');
 
 		if (!empty($search))
@@ -297,10 +296,8 @@ class ExtensionsModel extends ListModel
 			$query->where($db->quoteName('types.type') . ' IN (' . implode(',', $db->quote($includes, false)) . ')');
 		}
 
-		// Group by ID to ensure unique results
 		$query->group($db->quoteName('extensions.id'));
 
-		// Add the list ordering clause.
 		$query->order(
 			$db->quoteName(
 				$db->escape(

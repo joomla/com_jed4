@@ -8,8 +8,10 @@
 
 namespace Joomla\Component\Jed\Administrator\Model;
 
-\defined('_JEXEC') or die();
+defined('_JEXEC') or die();
 
+use Exception;
+use InvalidArgumentException;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -17,6 +19,11 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\User\User;
+use Joomla\Component\Jed\Administrator\Table\ExtensionTable;
+use RuntimeException;
+use stdClass;
+
+use function defined;
 
 /**
  * JED Extension Model
@@ -38,7 +45,6 @@ class ExtensionModel extends AdminModel
 	 */
 	public function getForm($data = [], $loadData = true)
 	{
-		// Get the form.
 		$form = $this->loadForm(
 			'com_jed.extension', 'extension',
 			['control' => 'jform', 'load_data' => $loadData]
@@ -202,14 +208,12 @@ class ExtensionModel extends AdminModel
 	): void {
 		$db = $this->getDbo();
 
-		// Delete any existing relations
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__jed_extensions_' . $type . '_versions'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query)
 			->execute();
 
-		// If there are no versions to store, return
 		if (empty($versions))
 		{
 			return;
@@ -249,16 +253,13 @@ class ExtensionModel extends AdminModel
 	 */
 	private function storeExtensionTypes(int $extensionId, array $types): void
 	{
-		$db = $this->getDbo();
-
-		// Delete any existing relations
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__jed_extensions_types'))
 			->where($db->quoteName('extension_id') . ' = ' . $extensionId);
 		$db->setQuery($query)
 			->execute();
 
-		// Do not do anything else if no options are checked
 		if (empty($types))
 		{
 			return;
@@ -306,7 +307,6 @@ class ExtensionModel extends AdminModel
 		$db->setQuery($query)
 			->execute();
 
-		// Do not do anything else if no options are checked
 		if (empty($images))
 		{
 			return;
@@ -350,11 +350,11 @@ class ExtensionModel extends AdminModel
 	 *
 	 * @throws  Exception
 	 */
-	public function saveApprove($data): void
+	public function saveApprove(array $data): void
 	{
 		if (!$data['id'])
 		{
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				Text::_('COM_JED_EXTENSION_ID_MISSING')
 			);
 		}
@@ -362,14 +362,14 @@ class ExtensionModel extends AdminModel
 		$db          = $this->getDbo();
 		$extensionId = (int) $data['id'];
 
-		/** @var TableExtension $table */
+		/** @var ExtensionTable $table */
 		$table = $this->getTable('Extension');
 
 		$table->load($extensionId);
 
 		if (!$table->save($data))
 		{
-			throw new \RuntimeException($table->getError());
+			throw new RuntimeException($table->getError());
 		}
 
 		$this->removeApprovedReason($extensionId);
@@ -409,14 +409,13 @@ class ExtensionModel extends AdminModel
 	 * @return  void
 	 *
 	 * @since   4.0.0
-	 *
 	 * @throws  Exception
 	 */
-	public function savePublish($data): void
+	public function savePublish(array $data): void
 	{
 		if (!$data['id'])
 		{
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				Text::_('COM_JED_EXTENSION_ID_MISSING')
 			);
 		}
@@ -424,14 +423,14 @@ class ExtensionModel extends AdminModel
 		$db          = $this->getDbo();
 		$extensionId = (int) $data['id'];
 
-		/** @var TableExtension $table */
+		/** @var ExtensionTable $table */
 		$table = $this->getTable('Extension');
 
 		$table->load($extensionId);
 
 		if (!$table->save($data))
 		{
-			throw new \RuntimeException($table->getError());
+			throw new RuntimeException($table->getError());
 		}
 
 		$this->removePublishedReason($extensionId);
@@ -514,12 +513,11 @@ class ExtensionModel extends AdminModel
 	public function storeNote(string $body, int $developerId, int $userId,
 		int $extensionId
 	): void {
-		// Get the developer details
 		$developer = User::getInstance($developerId);
 
 		if ($developer->get('id', null) === null)
 		{
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				Text::_('COM_JED_DEVELOPER_NOT_FOUND')
 			);
 		}
@@ -539,7 +537,7 @@ class ExtensionModel extends AdminModel
 
 		if ($result === false)
 		{
-			throw new \RuntimeException($noteTable->getError());
+			throw new RuntimeException($noteTable->getError());
 		}
 	}
 
@@ -550,11 +548,10 @@ class ExtensionModel extends AdminModel
 	 *
 	 * @since   4.0.0
 	 *
-	 * @throws  \Exception
+	 * @throws  Exception
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState(
 			'com_jed.edit.extension.data', []
 		);
@@ -586,20 +583,17 @@ class ExtensionModel extends AdminModel
 			return new CMSObject;
 		}
 
-		// If we have an empty object, we cannot fill it
 		if (!$item->id)
 		{
 			return $item;
 		}
 
-		// Rework the approved state
 		$approved                   = [];
 		$approved['approved']       = $item->get('approved');
 		$approved['approvedReason'] = $this->getApprovedReasons($item->id);
 		$approved['approvedNotes']  = $item->get('approvedNotes');
 		$item->set('approve', $approved);
 
-		// Rework the published state
 		$published                    = [];
 		$published['published']       = $item->get('published');
 		$published['publishedReason'] = $this->getPublishedReasons($item->id);
@@ -692,7 +686,6 @@ class ExtensionModel extends AdminModel
 	 */
 	public function getVersions(int $extensionId, string $type): array
 	{
-		// Get the related categories
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('version'))
@@ -735,9 +728,7 @@ class ExtensionModel extends AdminModel
 	 */
 	public function getHistory(int $extensionId): array
 	{
-		$db = $this->getDbo();
-
-		// Get the action log entries
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select(
 				$db->quoteName(
@@ -775,7 +766,6 @@ class ExtensionModel extends AdminModel
 
 		$actionLogs = $db->loadObjectList();
 
-		// Get the mails
 		$query->clear()
 			->select(
 				$db->quoteName(
@@ -819,7 +809,6 @@ class ExtensionModel extends AdminModel
 
 		$emailLogs = $db->loadObjectList();
 
-		// Get the mails
 		$query->clear()
 			->select(
 				$db->quoteName(
@@ -859,10 +848,8 @@ class ExtensionModel extends AdminModel
 
 		$notes = $db->loadObjectList();
 
-		// Combine all the logs
 		$logs = array_merge($actionLogs, $emailLogs, $notes);
 
-		// Order de logs by date
 		usort(
 			$logs,
 			static function ($a, $b) {

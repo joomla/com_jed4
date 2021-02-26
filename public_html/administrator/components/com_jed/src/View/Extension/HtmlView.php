@@ -8,7 +8,7 @@
 
 namespace Joomla\Component\Jed\Administrator\View\Extension;
 
-\defined('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -21,6 +21,8 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
 use Joomla\Registry\Registry;
+
+use function defined;
 
 /**
  * JED Edit Extension View

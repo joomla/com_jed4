@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -15,6 +16,7 @@ use Joomla\Component\Jed\Administrator\View\Emails\HtmlView;
 
 /** @var HtmlView $this */
 
+$user = Factory::getUser();
 ?>
 <form id="adminForm" action="<?php echo Route::_('index.php?option=com_jed&view=emails'); ?>" method="post" name="adminForm">
     <div class="row">
@@ -23,35 +25,44 @@ use Joomla\Component\Jed\Administrator\View\Emails\HtmlView;
                 <?php if (empty($this->items)) : ?>
                 <div class="alert alert-no-items">
                     <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
-                    <?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+                    <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
                 </div>
                 <?php else: ?>
                     <?php if ($this->canDo->get('core.create')) : ?>
                         <?php echo Text::_('COM_JED_TESTMAIL_ADDRESS'); ?>
                         <div id="testmail">
-                            <input type="text" name="email" value="" size="50" />
+                            <input type="text" class="input-full" name="email" value="" size="50" />
                         </div>
                     <?php endif; ?>
-
                     <table class="table itemList" id="emailList">
+                        <caption class="visually-hidden">
+		                    <?php echo Text::_('COM_JED_EMAILS_TABLE_CAPTION'); ?>,
+                            <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
+                            <span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+                        </caption>
                         <thead>
                             <tr>
-                                <th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-                                <th><?php echo Text::_('COM_JED_SUBJECT'); ?></th>
+                                <td class="w-1 text-center">
+		                            <?php echo HTMLHelper::_('grid.checkall'); ?>
+                                </td>
+                                <td scope="col" class="w-10 text-left">
+                                    <?php echo Text::_('COM_JED_SUBJECT'); ?>
+                                </td>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3"><?php echo $this->pagination->getListFooter(); ?></td>
-                            </tr>
-                        </tfoot>
                         <tbody>
                             <?php foreach ($this->items as $i => $item) : ?>
+                                <?php
+	                            $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || is_null($item->checked_out);
+                                ?>
                                 <tr>
-                                    <td>
-                                        <?php echo HTMLHelper::_('grid.checkedout',  $item, $i, 'id'); ?>
+                                    <td class="w-1 text-center">
+	                                    <?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->subject); ?>
                                     </td>
-                                    <td>
+                                    <th>
+	                                    <?php if ($item->checked_out) : ?>
+		                                    <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'emails.', $canCheckin); ?>
+	                                    <?php endif; ?>
                                         <?php
                                             echo HTMLHelper::_(
                                                 'link',
@@ -59,11 +70,12 @@ use Joomla\Component\Jed\Administrator\View\Emails\HtmlView;
                                                 $item->subject
                                             );
                                         ?>
-                                    </td>
+                                    </th>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+	                <?php echo $this->pagination->getListFooter(); ?>
                 <?php endif; ?>
                 <input type="hidden" name="task" value="" />
                 <input type="hidden" name="boxchecked" value="0" />

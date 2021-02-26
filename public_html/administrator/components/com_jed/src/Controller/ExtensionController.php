@@ -8,11 +8,17 @@
 
 namespace Joomla\Component\Jed\Administrator\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
+use Exception;
+use InvalidArgumentException;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
+
+use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
+
+use function defined;
 
 /**
  * Extension list controller class.
@@ -33,7 +39,7 @@ class ExtensionController extends FormController
 	 */
 	public function download(): void
 	{
-		/** @var JedModelExtension $model */
+		/** @var ExtensionModel $model */
 		$model       = $this->getModel();
 		$id          = $this->input->getInt('id');
 		$fileDetails = $model->getFilename($id);

@@ -81,8 +81,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                     </thead>
                     <tbody>
                     <?php foreach ($this->items as $i => $item):
-
-                        $ordering = ($listOrder === 'extension.id');
+	                    $ordering = ($listOrder === 'extension.id');
                         $canCreate = $user->authorise('core.create', 'com_jed.extension.' . $item->id);
                         $canEdit = $user->authorise('core.edit', 'com_jed.extension.' . $item->id);
                         $canCheckin = $user->authorise('core.manage',

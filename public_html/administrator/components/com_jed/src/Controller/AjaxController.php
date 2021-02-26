@@ -8,13 +8,15 @@
 
 namespace Joomla\Component\Jed\Administrator\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\Component\Jed\Administrator\Model\EmailModel;
-use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
+use Joomla\Component\Jed\Administrator\Model\ExtensionsModel;
+
+use function defined;
 
 /**
  * JED AJAX controller.
@@ -36,7 +38,7 @@ class AjaxController extends BaseController
 		$this->checkToken('get') || die;
 
 		$search = $this->input->getString('q');
-		/** @var ExtensionModel $model */
+		/** @var ExtensionsModel $model */
 		$model = $this->getModel('Extensions');
 		$data  = $model->getDevelopers($search);
 

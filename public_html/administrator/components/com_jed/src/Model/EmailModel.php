@@ -8,8 +8,9 @@
 
 namespace Joomla\Component\Jed\Administrator\Model;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -17,6 +18,8 @@ use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\User\User;
+
+use function defined;
 
 /**
  * Email model
@@ -31,7 +34,7 @@ class EmailModel extends AdminModel
 	 * @var    Mail
 	 * @since  4.0.0
 	 */
-	private $mailer;
+	private Mail $mailer;
 
 	/**
 	 * Get the form.
@@ -54,7 +57,7 @@ class EmailModel extends AdminModel
 			['control' => 'jform', 'load_data' => $loadData]
 		);
 
-		if ( ! is_object($form))
+		if (!is_object($form))
 		{
 			return false;
 		}
@@ -73,7 +76,7 @@ class EmailModel extends AdminModel
 	 */
 	public function testEmail(): array
 	{
-		$config   = Factory::getConfig();
+		$config   = Factory::getApplication()->getConfig();
 		$from     = $config->get('mailfrom');
 		$fromName = $config->get('fromname');
 		$mail     = Factory::getMailer();
@@ -85,11 +88,11 @@ class EmailModel extends AdminModel
 		$result['msg']   = '';
 		$result['state'] = 'error';
 
-		if ( ! $cids || ! $email)
+		if (!$cids || !$email)
 		{
 			$result['msg'] = Text::_('COM_JED_NO_EMAILS_FOUND');
 
-			if ( ! $email)
+			if (!$email)
 			{
 				$result['msg'] = Text::_('COM_JED_MISSING_EMAIL_ADDRESS');
 			}
@@ -123,7 +126,7 @@ class EmailModel extends AdminModel
 					true
 				))
 				{
-					$result['msg']   = Text::_('COM_JED_TESTEMAIL_SENT');
+					$result['msg']   = Text::sprintf('COM_JED_TESTEMAIL_SENT', $email);
 					$result['state'] = '';
 				}
 			}
@@ -223,7 +226,7 @@ class EmailModel extends AdminModel
 		User $developer, User $sender
 	): void {
 		$emailTable = Table::getInstance('Emaillog', 'Table');
-		$result = $emailTable->save(
+		$result     = $emailTable->save(
 			[
 				'extension_id'    => $extensionId,
 				'subject'         => $subject,

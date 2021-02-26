@@ -8,7 +8,7 @@
 
 namespace Joomla\Component\Jed\Administrator\View\Review;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -18,6 +18,8 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
+
+use function defined;
 
 /**
  * View to edit a review.

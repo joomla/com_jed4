@@ -8,9 +8,12 @@
 
 namespace Joomla\Component\Jed\Administrator\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\MVC\Controller\AdminController;
+
+use function defined;
 
 /**
  * Extensions list controller class.
@@ -39,7 +42,7 @@ class ReviewsController extends AdminController
 	 * @since   4.0.0
 	 * @throws  Exception
 	 */
-	public function getModel($name = 'Review', $prefix = 'JedModel', $config = ['ignore_request' => true])
+	public function getModel($name = 'Review', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
