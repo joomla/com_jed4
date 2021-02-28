@@ -16,16 +16,6 @@
       "version": "1.4.1"
     },
     {
-      "name": "short-and-sweet",
-      "type": "script",
-      "uri": "vendor/short-and-sweet/short-and-sweet.min.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "short-and-sweet",
-      "version": "1.0.2"
-    },
-    {
       "name": "accessibility",
       "type": "script",
       "uri": "vendor/accessibility/accessibility.min.js",
@@ -34,6 +24,16 @@
       },
       "package": "accessibility",
       "version": "3.0.13"
+    },
+    {
+      "name": "short-and-sweet",
+      "type": "script",
+      "uri": "vendor/short-and-sweet/short-and-sweet.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "short-and-sweet",
+      "version": "1.0.2"
     },
     {
       "name": "awesomplete",
@@ -63,43 +63,6 @@
       "version": "1.1.5"
     },
     {
-      "name": "cropperjs",
-      "type": "style",
-      "uri": "vendor/cropperjs/cropper.min.css",
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "cropperjs",
-      "type": "script",
-      "uri": "vendor/cropperjs/cropper.min.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "cropperjs",
-      "type": "preset",
-      "dependencies": [
-        "cropperjs#style",
-        "cropperjs#script"
-      ],
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "diff",
-      "type": "script",
-      "uri": "vendor/diff/diff.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "diff",
-      "version": "4.0.2"
-    },
-    {
       "name": "choicesjs",
       "type": "style",
       "uri": "vendor/choicesjs/choices.min.css",
@@ -125,6 +88,33 @@
       ],
       "package": "choices.js",
       "version": "9.0.1"
+    },
+    {
+      "name": "cropperjs",
+      "type": "style",
+      "uri": "vendor/cropperjs/cropper.min.css",
+      "package": "cropperjs",
+      "version": "1.5.9"
+    },
+    {
+      "name": "cropperjs",
+      "type": "script",
+      "uri": "vendor/cropperjs/cropper.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "cropperjs",
+      "version": "1.5.9"
+    },
+    {
+      "name": "cropperjs",
+      "type": "preset",
+      "dependencies": [
+        "cropperjs#style",
+        "cropperjs#script"
+      ],
+      "package": "cropperjs",
+      "version": "1.5.9"
     },
     {
       "name": "dragula",
@@ -246,6 +236,16 @@
       "version": "0.0.40"
     },
     {
+      "name": "diff",
+      "type": "script",
+      "uri": "vendor/diff/diff.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "diff",
+      "version": "4.0.2"
+    },
+    {
       "name": "minicolors",
       "type": "style",
       "uri": "vendor/minicolors/jquery.minicolors.css",
@@ -303,16 +303,6 @@
       "version": "1.8.7"
     },
     {
-      "name": "metismenujs",
-      "type": "script",
-      "uri": "vendor/metismenujs/metismenujs.min.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "metismenujs",
-      "version": "1.2.1"
-    },
-    {
       "name": "wcpolyfill",
       "type": "script",
       "uri": "vendor/webcomponentsjs/webcomponents-sd-ce-pf.js",
@@ -325,6 +315,26 @@
       ],
       "package": "@webcomponents/webcomponentsjs",
       "version": "2.5.0"
+    },
+    {
+      "name": "metismenujs",
+      "type": "script",
+      "uri": "vendor/metismenujs/metismenujs.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "metismenujs",
+      "version": "1.2.1"
+    },
+    {
+      "name": "skipto",
+      "type": "script",
+      "uri": "vendor/skipto/skipto.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "skipto",
+      "version": "4.0.1"
     },
     {
       "name": "qrcode",
@@ -363,16 +373,6 @@
       ],
       "package": "qrcode-generator",
       "version": "1.4.4"
-    },
-    {
-      "name": "skipto",
-      "type": "script",
-      "uri": "vendor/skipto/skipto.min.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "skipto",
-      "version": "4.0.1"
     },
     {
       "name": "fontawesome",
