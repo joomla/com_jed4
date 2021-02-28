@@ -6,11 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-\defined('JPATH_BASE') or die;
-
-use Joomla\CMS\HTML\HTMLHelper;
-
-HTMLHelper::_('behavior.core');
+defined('JPATH_BASE') or die;
 
 /**
  * @var array   $displayData The array with values
@@ -20,6 +16,7 @@ HTMLHelper::_('behavior.core');
  */
 $title = $displayData['title'];
 ?>
+<joomla-toolbar-button id="toolbar-eye-open">
 <button type="button" data-toggle="modal"
         data-bs-toggle="modal" data-bs-target="#publishModal"
         class="btn btn-small <?php
@@ -27,3 +24,4 @@ $title = $displayData['title'];
     <span class="icon-eye-open" aria-hidden="true"></span>
 	<?php echo $title; ?>
 </button>
+</joomla-toolbar-button>

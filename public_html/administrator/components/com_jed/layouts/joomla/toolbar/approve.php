@@ -6,11 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-\defined('JPATH_BASE') or die;
-
-use Joomla\CMS\HTML\HTMLHelper;
-
-HTMLHelper::_('behavior.core');
+defined('JPATH_BASE') or die;
 
 /**
  * @var array   $displayData The array with values
@@ -38,10 +34,12 @@ switch ($displayData['approved'])
 		break;
 }
 ?>
-<button type="button" data-toggle="modal"
-        data-bs-toggle="modal" data-bs-target="#approveModal"
-        class="btn btn-small <?php
-        echo $buttonClass; ?>">
-    <span class="icon-checkmark-circle" aria-hidden="true"></span>
-	<?php echo $title; ?>
-</button>
+<joomla-toolbar-button id="toolbar-checkmark-cicle">
+    <button type="button" data-toggle="modal"
+            data-bs-toggle="modal" data-bs-target="#approveModal"
+            class="btn btn-small <?php
+            echo $buttonClass; ?>">
+        <span class="icon-checkmark-circle" aria-hidden="true"></span>
+        <?php echo $title; ?>
+    </button>
+</joomla-toolbar-button>
