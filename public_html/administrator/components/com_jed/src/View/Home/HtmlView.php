@@ -10,12 +10,14 @@ namespace Joomla\Component\Jed\Administrator\View\Home;
 
 defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\HomeModel;
 use Joomla\Registry\Registry;
 
 use function defined;
@@ -31,10 +33,10 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The form filter
 	 *
-	 * @var    Form
+	 * @var    Form|null
 	 * @since  4.0.0
 	 */
-	public $filterForm;
+	public ?Form $filterForm;
 
 	/**
 	 * The active filters
@@ -42,7 +44,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	public $activeFilters = [];
+	public array $activeFilters = [];
 
 	/**
 	 * List of items to show
@@ -50,7 +52,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	protected $items = [];
+	protected array $items = [];
 
 	/**
 	 * Pagination object
@@ -58,7 +60,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Pagination
 	 * @since  4.0.0
 	 */
-	protected $pagination;
+	protected Pagination $pagination;
 
 	/**
 	 * The model state
@@ -66,15 +68,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Registry
 	 * @since  4.0.0
 	 */
-	protected $state;
-
-	/**
-	 * The general helper
-	 *
-	 * @var    object
-	 * @since  4.0.0
-	 */
-	protected $helper;
+	protected Registry $state;
 
 	/**
 	 * List of total statistics
@@ -82,7 +76,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	protected $totals = [];
+	protected array $totals = [];
 
 	/**
 	 * Last 5 reviews
@@ -90,7 +84,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	protected $reviews = [];
+	protected array $reviews = [];
 
 	/**
 	 * Last 5 tickets
@@ -98,22 +92,19 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	protected $tickets = [];
+	protected array $tickets = [];
 
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise an Error object.
-	 *
-	 * @see     \JViewLegacy::loadTemplate()
+	 * @return  void
 	 *
 	 * @since   4.0.0
-	 *
 	 * @throws  Exception
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
 		/** @var HomeModel $model */
 		$model         = $this->getModel();
@@ -123,7 +114,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
@@ -135,9 +126,12 @@ class HtmlView extends BaseHtmlView
 	{
 		ToolBarHelper::title(Text::_('COM_JED'));
 
-		$user  = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
-		if ($user->authorise('core.admin', 'com_jed') || $user->authorise('core.options', 'com_jed'))
+		if ($user->authorise('core.admin', 'com_jed')
+			|| $user->authorise(
+				'core.options', 'com_jed'
+			))
 		{
 			ToolbarHelper::preferences('com_jed');
 		}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "jed",
+  "version": "4.0.0",
+  "description": "Joomla Extension Directory",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "jed",
+      "type": "script",
+      "uri": "media/com_jed/js/jed.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    },
+    {
+      "name": "autoComplete",
+      "type": "script",
+      "uri": "media/com_jed/js/autoComplete.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "autoComplete",
+      "version": "8.3.2"
+    },
+    {
+      "name": "autoComplete",
+      "type": "style",
+      "uri": "media/com_jed/css/autoComplete.css",
+      "package": "autoComplete",
+      "version": "8.3.2"
+    },
+    {
+      "name": "autoComplete",
+      "type": "preset",
+      "dependencies": [
+        "autoComplete#style",
+        "autoComplete#script",
+        "jed#script"
+      ],
+      "package": "autocComplete",
+      "version": "8.3.2"
+    }
+  ]
+}

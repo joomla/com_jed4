@@ -10,12 +10,15 @@ namespace Joomla\Component\Jed\Administrator\View\Emails;
 
 defined('_JEXEC') or die;
 
+use Exception;
+use JedHelper;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\EmailsModel;
 
 use function defined;
 
@@ -32,7 +35,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    JedHelper
 	 * @since  4.0.0
 	 */
-	protected $helper;
+	protected JedHelper $helper;
 
 	/**
 	 * List of items
@@ -40,7 +43,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	protected $items = [];
+	protected array $items = [];
 
 	/**
 	 * The pagination object
@@ -48,7 +51,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Pagination
 	 * @since  4.0.0
 	 */
-	protected $pagination;
+	protected Pagination $pagination;
 
 	/**
 	 * Access rights of a user
@@ -56,21 +59,21 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected $canDo;
+	protected CMSObject $canDo;
 
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  void
 	 *
 	 * @since   4.0.0
 	 * @throws  Exception
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
-		/** @var JedModelEmails $model */
+		/** @var EmailsModel $model */
 		$model            = $this->getModel();
 		$this->items      = $model->getItems();
 		$this->pagination = $model->getPagination();
@@ -78,7 +81,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->toolbar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
@@ -97,19 +100,27 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::addNew('email.add');
 		}
 
-		if ($this->canDo->get('core.edit') || $this->canDo->get('core.edit.own'))
+		if ($this->canDo->get('core.edit')
+			|| $this->canDo->get(
+				'core.edit.own'
+			))
 		{
 			ToolbarHelper::editList('email.edit');
 		}
 
 		if ($this->canDo->get('core.delete'))
 		{
-			ToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'emails.delete', 'JTOOLBAR_DELETE');
+			ToolbarHelper::deleteList(
+				'JGLOBAL_CONFIRM_DELETE', 'emails.delete'
+			);
 		}
 
 		if ($this->canDo->get('core.create'))
 		{
-			ToolbarHelper::custom('emails.testemail', 'mail', 'mail', Text::_('COM_JED_SEND_TESTEMAIL'));
+			ToolbarHelper::custom(
+				'emails.testemail', 'mail', 'mail',
+				Text::_('COM_JED_SEND_TESTEMAIL')
+			);
 		}
 	}
 }

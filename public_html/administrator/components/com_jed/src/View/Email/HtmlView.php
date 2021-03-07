@@ -10,6 +10,7 @@ namespace Joomla\Component\Jed\Administrator\View\Email;
 
 defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
@@ -17,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\object\CMSObject;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\EmailModel;
 use Joomla\Registry\Registry;
 
 use function defined;
@@ -31,10 +33,10 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Form with settings
 	 *
-	 * @var    Form
+	 * @var    Form|null
 	 * @since  4.0.0
 	 */
-	protected $form;
+	protected ?Form $form;
 
 	/**
 	 * The item object
@@ -42,7 +44,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected $item;
+	protected CMSObject $item;
 
 	/**
 	 * Get the state
@@ -50,7 +52,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Registry
 	 * @since  4.0.0
 	 */
-	protected $state;
+	protected Registry $state;
 
 	/**
 	 * Access rights of a user
@@ -58,33 +60,30 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected $canDo;
+	protected CMSObject $canDo;
 
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  void
 	 *
 	 * @since   2.0.0
 	 * @throws  Exception
-	 *
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
-		/** @var JedModelEmail $model */
+		/** @var EmailModel $model */
 		$model       = $this->getModel();
 		$this->form  = $model->getForm();
 		$this->item  = $model->getItem();
 		$this->state = $model->getState();
 		$this->canDo = ContentHelper::getActions('com_jed');
 
-		// Add the toolbar
 		$this->addToolbar();
 
-		// Display it all
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
@@ -93,10 +92,9 @@ class HtmlView extends BaseHtmlView
 	 * @return  void
 	 *
 	 * @since   4.0.0
-	 *
 	 * @throws  Exception
 	 */
-	private function addToolbar()
+	private function addToolbar(): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
@@ -108,12 +106,15 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::save('email.save');
 		}
 
-		if ($this->canDo->get('core.create') && $this->canDo->get('core.manage'))
+		if ($this->canDo->get('core.create')
+			&& $this->canDo->get(
+				'core.manage'
+			))
 		{
 			ToolbarHelper::save2new('email.save2new');
 		}
 
-		if (!$this->item->id)
+		if (!$this->item->get('id'))
 		{
 			ToolbarHelper::cancel('email.cancel');
 		}

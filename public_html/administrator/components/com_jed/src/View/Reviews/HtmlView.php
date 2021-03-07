@@ -10,13 +10,16 @@ namespace Joomla\Component\Jed\Administrator\View\Reviews;
 
 defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\ReviewsModel;
 use Joomla\Registry\Registry;
+use RuntimeException;
 
 use function defined;
 
@@ -31,10 +34,10 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Form object for search filters
 	 *
-	 * @var    Form
+	 * @var    Form|null
 	 * @since  4.0.0
 	 */
-	public $filterForm;
+	public ?Form $filterForm;
 
 	/**
 	 * The active search filters
@@ -42,7 +45,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	public $activeFilters;
+	public array $activeFilters;
 
 	/**
 	 * An array of items
@@ -50,7 +53,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    array
 	 * @since  4.0.0
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * The pagination object
@@ -58,7 +61,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Pagination
 	 * @since  4.0.0
 	 */
-	protected $pagination;
+	protected Pagination $pagination;
 
 	/**
 	 * The model state
@@ -66,21 +69,21 @@ class HtmlView extends BaseHtmlView
 	 * @var    Registry
 	 * @since  4.0.0
 	 */
-	protected $state;
+	protected Registry $state;
 
 	/**
 	 * Display method of reviews view
 	 *
 	 * @param   string  $tpl  The template name
 	 *
-	 * @return  string
+	 * @return  void
 	 *
 	 * @since   4.0.0
 	 * @throws  Exception
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
-		/** @var JedModelReviews $model */
+		/** @var ReviewsModel $model */
 		$model               = $this->getModel();
 		$this->state         = $model->getState();
 		$this->items         = $model->getItems();
@@ -96,7 +99,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolBar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
@@ -105,9 +108,8 @@ class HtmlView extends BaseHtmlView
 	 * @return void
 	 *
 	 * @since  4.0.0
-	 * @throws Exception
 	 */
-	protected function addToolBar()
+	private function addToolBar(): void
 	{
 		$canDo = ContentHelper::getActions(
 			'com_jed', 'review', $this->state->get('filter.published')

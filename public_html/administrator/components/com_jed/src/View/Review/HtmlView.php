@@ -10,14 +10,17 @@ namespace Joomla\Component\Jed\Administrator\View\Review;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\Form;
-use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\Registry\Registry;
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\ReviewModel;
+use Joomla\Registry\Registry;
+use RuntimeException;
 
 use function defined;
 
@@ -34,7 +37,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Form
 	 * @since  4.0.0
 	 */
-	protected $form;
+	protected Form $form;
 
 	/**
 	 * The item data.
@@ -42,7 +45,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected $item;
+	protected CMSObject $item;
 
 	/**
 	 * The model state.
@@ -50,7 +53,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Registry
 	 * @since  4.0.0
 	 */
-	protected $state;
+	protected Registry $state;
 
 	/**
 	 * Display the view
@@ -62,14 +65,14 @@ class HtmlView extends BaseHtmlView
 	 * @since   4.0.0
 	 * @throws  Exception
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
-		/** @var JedModelReview $model */
-		$model = $this->getModel();
+		/** @var ReviewModel $model */
+		$model       = $this->getModel();
 		$this->state = $model->getState();
-		$this->item = $model->getItem();
-		$this->form = $model->getForm();
-		$errors = $model->getErrors();
+		$this->item  = $model->getItem();
+		$this->form  = $model->getForm();
+		$errors      = $model->getErrors();
 
 		if ($errors && count($errors))
 		{
@@ -78,7 +81,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**
@@ -105,7 +108,7 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::save('review.save');
 		}
 
-		if (empty($this->item->id))
+		if (empty($this->item->get('id')))
 		{
 			ToolbarHelper::cancel('review.cancel');
 		}

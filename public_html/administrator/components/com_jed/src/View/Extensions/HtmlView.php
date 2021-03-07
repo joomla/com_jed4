@@ -10,6 +10,7 @@ namespace Joomla\Component\Jed\Administrator\View\Extensions;
 
 defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
@@ -17,6 +18,8 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Jed\Administrator\Model\ExtensionsModel;
+use RuntimeException;
 
 use function defined;
 
@@ -31,51 +34,55 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Form object for search filters
 	 *
-	 * @var     Form
+	 * @var     Form|null
 	 * @since   4.0.0
 	 */
-	public $filterForm;
+	public ?Form $filterForm;
+
 	/**
 	 * The active search filters
 	 *
 	 * @var     array
 	 * @since   4.0.0
 	 */
-	public $activeFilters = [];
+	public array $activeFilters = [];
+
 	/**
 	 * An array of items
 	 *
 	 * @var     array
 	 * @since   4.0.0
 	 */
-	protected $items = [];
+	protected array $items = [];
+
 	/**
 	 * The pagination object
 	 *
 	 * @var     Pagination
 	 * @since   4.0.0
 	 */
-	protected $pagination;
+	protected Pagination $pagination;
+
 	/**
 	 * The model state
 	 *
 	 * @var     CMSObject
 	 * @since   4.0.0
 	 */
-	protected $state;
+	protected CMSObject $state;
 
 	/**
 	 * Display method of extensions view
 	 *
 	 * @param   string  $tpl  The template name
 	 *
-	 * @return  string
+	 * @return  void
 	 *
 	 * @since   4.0.0
 	 *
 	 * @throws  Exception
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
 		/** @var ExtensionsModel $model */
 		$model               = $this->getModel();
@@ -93,7 +100,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolBar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 	}
 
 	/**

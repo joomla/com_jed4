@@ -35,6 +35,7 @@ class HtmlView extends BaseHtmlView
 	 * Form with settings
 	 *
 	 * @var    Form
+	 *
 	 * @since  4.0.0
 	 */
 	protected Form $form;
