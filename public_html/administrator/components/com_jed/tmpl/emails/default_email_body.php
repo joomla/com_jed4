@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
                 </label>
             </div>
             <div class="controls">
-                <input type="text" name="email" id="testEmail" value="" class="form-control input-xxlarge">
+                <input type="email" name="email" id="testEmail" value="" class="form-control required validate-email">
             </div>
         </div>
 	<?php endif; ?>

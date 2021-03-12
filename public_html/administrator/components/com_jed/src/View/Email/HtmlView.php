@@ -49,10 +49,10 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Get the state
 	 *
-	 * @var    Registry
+	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected Registry $state;
+	protected CMSObject $state;
 
 	/**
 	 * Access rights of a user

@@ -17,8 +17,10 @@ use Joomla\Component\Jed\Administrator\View\Emails\HtmlView;
 /** @var HtmlView $this */
 
 $user = Factory::getUser();
+Factory::getApplication()->getDocument()->getWebAssetManager()
+	->useScript('form.validate');
 ?>
-<form id="adminForm" action="<?php echo Route::_('index.php?option=com_jed&view=emails'); ?>" method="post" name="adminForm">
+<form id="adminForm" action="<?php echo Route::_('index.php?option=com_jed&view=emails'); ?>" method="post" name="adminForm" class="form-validate">
     <div class="row">
         <div class="col-md-12">
             <div id="j-main-container" class="j-main-container">
