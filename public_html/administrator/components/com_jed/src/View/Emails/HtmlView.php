@@ -12,11 +12,14 @@ defined('_JEXEC') or die;
 
 use Exception;
 use JedHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Jed\Administrator\Model\EmailsModel;
 
@@ -117,10 +120,14 @@ class HtmlView extends BaseHtmlView
 
 		if ($this->canDo->get('core.create'))
 		{
-			ToolbarHelper::custom(
-				'emails.testemail', 'mail', 'mail',
-				Text::_('COM_JED_SEND_TESTEMAIL')
-			);
+			$bar = Toolbar::getInstance();
+
+			$bar->popupButton()
+				->form('adminForm')
+				->icon('icon-mail')
+				->listCheck(true)
+				->text(Text::_('COM_JED_SEND_TESTEMAIL'))
+				->selector('emailModal');
 		}
 	}
 }

@@ -28,12 +28,6 @@ $user = Factory::getUser();
                     <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
                 </div>
                 <?php else: ?>
-                    <?php if ($this->canDo->get('core.create')) : ?>
-                        <?php echo Text::_('COM_JED_TESTMAIL_ADDRESS'); ?>
-                        <div id="testmail">
-                            <input type="text" class="input-full" name="email" value="" size="50" />
-                        </div>
-                    <?php endif; ?>
                     <table class="table itemList" id="emailList">
                         <caption class="visually-hidden">
 		                    <?php echo Text::_('COM_JED_EMAILS_TABLE_CAPTION'); ?>,
@@ -83,4 +77,15 @@ $user = Factory::getUser();
             </div>
         </div>
     </div>
+
+	<?php echo HTMLHelper::_(
+		'bootstrap.renderModal',
+		'emailModal',
+		[
+			'title'  => Text::_('COM_JED_SEND_TESTEMAIL'),
+			'footer' => $this->loadTemplate('email_footer'),
+			'modalWidth' => '60vh'
+		],
+		$this->loadTemplate('email_body')
+	); ?>
 </form>

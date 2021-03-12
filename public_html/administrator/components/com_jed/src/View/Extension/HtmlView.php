@@ -18,6 +18,7 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
 use Joomla\Registry\Registry;
@@ -128,8 +129,7 @@ class HtmlView extends BaseHtmlView
 			'COM_JED_EXTENSIONS_DOWNLOAD_EXTENSION', false
 		);
 
-		// Get the toolbar object instance
-		$bar = Toolbar::getInstance('toolbar');
+		$bar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar('toolbar');
 
 		$bar->popupButton()
 			->form('extension-form')
