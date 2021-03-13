@@ -24,7 +24,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The jed service provider.
+ * The JED service provider.
  *
  * @since  4.0.0
  */

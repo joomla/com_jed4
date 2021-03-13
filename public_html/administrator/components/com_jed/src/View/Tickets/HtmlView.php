@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\View\Reviews;
+namespace Joomla\Component\Jed\Administrator\View\Tickets;
 
 defined('_JEXEC') or die;
 
@@ -18,14 +18,13 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Jed\Administrator\Model\ReviewsModel;
-use Joomla\Registry\Registry;
+use Joomla\Component\Jed\Administrator\Model\TicketsModel;
 use RuntimeException;
 
 use function defined;
 
 /**
- * View for JED Reviews
+ * View for JED Tickets
  *
  * @package   Joomla.JED
  * @since     4.0.0
@@ -84,7 +83,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
-		/** @var ReviewsModel $model */
+		/** @var TicketsModel $model */
 		$model               = $this->getModel();
 		$this->state         = $model->getState();
 		$this->items         = $model->getItems();
@@ -113,16 +112,16 @@ class HtmlView extends BaseHtmlView
 	private function addToolBar(): void
 	{
 		$canDo = ContentHelper::getActions(
-			'com_jed', 'review', $this->state->get('filter.published')
+			'com_jed', 'ticket', $this->state->get('filter.published')
 		);
 
-		ToolBarHelper::title(Text::_('COM_JED_TITLE_REVIEWS'), 'star');
+		ToolBarHelper::title(Text::_('COM_JED_TITLE_TICKETS'), 'fas fa-bug');
 
 		if ($canDo->get('core.edit.state'))
 		{
-			ToolbarHelper::publish('reviews.publish', 'JTOOLBAR_PUBLISH', true);
+			ToolbarHelper::publish('tickets.publish', 'JTOOLBAR_PUBLISH', true);
 			ToolbarHelper::unpublish(
-				'reviews.unpublish', 'JTOOLBAR_UNPUBLISH', true
+				'tickets.unpublish', 'JTOOLBAR_UNPUBLISH', true
 			);
 		}
 	}
