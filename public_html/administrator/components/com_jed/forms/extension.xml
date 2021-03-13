@@ -322,10 +322,10 @@
                 type="extensions"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE1"
                 class="input-xxlarge advancedSelect"
-                default=""
+                default="0"
                 showon="downloadIntegrationType:2[OR]downloadIntegrationType:3"
         >
-            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+            <option value="0">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
         </field>
 
         <field
@@ -333,10 +333,10 @@
                 type="extensions"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE2"
                 class="input-xxlarge advancedSelect"
-                default=""
+                default="0"
                 showon="downloadIntegrationType:1[OR]downloadIntegrationType:3"
         >
-            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+            <option value="0">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
         </field>
 
         <field
@@ -344,10 +344,10 @@
                 type="extensions"
                 label="COM_JED_EXTENSIONS_DOWNLOAD_INTEGRATION_TYPE3"
                 class="input-xxlarge advancedSelect"
-                default=""
+                default="0"
                 showon="downloadIntegrationType:1[OR]downloadIntegrationType:2"
         >
-            <option value="">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
+            <option value="0">COM_JED_EXTENSIONS_SELECT_EXTENSION</option>
         </field>
 
     </fieldset>

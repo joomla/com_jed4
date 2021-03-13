@@ -14,6 +14,7 @@ use Exception;
 use InvalidArgumentException;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Object\CMSObject;
@@ -42,6 +43,7 @@ class ExtensionModel extends AdminModel
 	 * @return  mixed   A JForm object on success, false on failure
 	 *
 	 * @since   4.0.0
+	 * @throws  Exception
 	 */
 	public function getForm($data = [], $loadData = true)
 	{
@@ -50,12 +52,7 @@ class ExtensionModel extends AdminModel
 			['control' => 'jform', 'load_data' => $loadData]
 		);
 
-		if (empty($form))
-		{
-			return false;
-		}
-
-		return $form;
+		return $form ?? new Form('com_jed.extension');
 	}
 
 	/**
@@ -71,6 +68,8 @@ class ExtensionModel extends AdminModel
 	 */
 	public function save($data): bool
 	{
+		unset($data['created_on']);
+
 		if (!$data['id'])
 		{
 			$data['created_by'] = Factory::getUser()->get('id');
