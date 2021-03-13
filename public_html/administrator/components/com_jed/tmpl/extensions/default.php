@@ -174,7 +174,15 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                 <?php echo $item->category; ?>
                             </td>
                             <td>
-                                <?php echo HTMLHelper::_('date', $item->modified_on, Text::_('COM_JED_DATETIME_FORMAT')); ?>
+                                <?php
+                                    if (!is_null($item->modified_on))
+                                    {
+	                                    echo HTMLHelper::_(
+		                                    'date', $item->modified_on,
+		                                    Text::_('COM_JED_DATETIME_FORMAT')
+	                                    );
+                                    }
+                                ?>
                             </td>
                             <td>
                                 <?php echo HTMLHelper::_('date', $item->created_on, Text::_('COM_JED_DATETIME_FORMAT')); ?>
