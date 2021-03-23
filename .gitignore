@@ -73,3 +73,4 @@ yarn-error.log
 
 # Security headers
 /public_html/.user.ini
+dwsync.xml
