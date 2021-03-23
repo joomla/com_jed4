@@ -29,6 +29,7 @@
 .DS_Store
 .idea
 .htaccess
+dwsync.xml
 
 # OSX #
 ._*
