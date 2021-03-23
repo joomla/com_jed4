@@ -10,6 +10,23 @@
 	<version>4.0.0</version>
 	<description>COM_JED_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Jed</namespace>
+	<install> <!-- Runs on install --> 
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update>  <!-- Runs on update -->
+		<sql>
+			<sql>
+			<file driver="mysql" charset="utf8">sql/update.mysql.utf8.sql</file>
+		</sql>
+		</sql>
+	</update>
 	<administration>
 		<files folder="admin">
 			<folder>controllers</folder>
@@ -22,5 +39,10 @@
 			<filename>controller.php</filename>
 			<filename>jed.php</filename>
 		</files>
+	<!-- Menu entries -->
+		<menu view="Jed">COM_JED</menu>
+		<submenu>
+			<menu link="option=com_Jed">COM_JED</menu> 
+		</submenu>
 	</administration>
 </extension>
