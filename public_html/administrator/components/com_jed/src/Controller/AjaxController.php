@@ -6,15 +6,15 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\Controller;
+namespace Jed\Component\Jed\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
-use Joomla\Component\Jed\Administrator\Model\EmailModel;
-use Joomla\Component\Jed\Administrator\Model\ExtensionsModel;
+use Jed\Component\Jed\Administrator\Model\EmailModel;
+use Jed\Component\Jed\Administrator\Model\ExtensionsModel;
 
 use function defined;
 

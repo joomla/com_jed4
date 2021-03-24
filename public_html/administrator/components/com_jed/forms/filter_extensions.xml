@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form addfieldprefix="Joomla\Component\Jed\Administrator\Field">
+<form addfieldprefix="Jed\Component\Jed\Administrator\Field">
     <fields name="filter">
 
         <field

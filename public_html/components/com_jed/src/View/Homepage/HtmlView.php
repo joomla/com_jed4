@@ -6,9 +6,18 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Jed\Component\Jed\Site\View\Homepage;
+
 defined('_JEXEC') or die;
 
-/** @var JedViewHomepage $this */
-?>
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
-<h1>Home placeholder</h1>
+/**
+ * Homepage view.
+ *
+ * @package   JED
+ * @since     4.0.0
+ */
+class HtmlView extends BaseHtmlView
+{
+}

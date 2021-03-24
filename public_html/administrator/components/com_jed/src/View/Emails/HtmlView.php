@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\View\Emails;
+namespace Jed\Component\Jed\Administrator\View\Emails;
 
 defined('_JEXEC') or die;
 
@@ -21,7 +21,7 @@ use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Jed\Administrator\Model\EmailsModel;
+use Jed\Component\Jed\Administrator\Model\EmailsModel;
 
 use function defined;
 

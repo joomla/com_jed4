@@ -13,7 +13,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Component\Jed\Administrator\View\Extension\HtmlView;
+use Jed\Component\Jed\Administrator\View\Extension\HtmlView;
 
 /** @var HtmlView $this */
 

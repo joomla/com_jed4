@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\Field;
+namespace Jed\Component\Jed\Administrator\Field;
 
 defined('_JEXEC') or die;
 

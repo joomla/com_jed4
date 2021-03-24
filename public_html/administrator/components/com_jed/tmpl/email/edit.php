@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\Component\Jed\Administrator\View\Email\HtmlView;
+use Jed\Component\Jed\Administrator\View\Email\HtmlView;
 
 /** @var HtmlView $this */
 

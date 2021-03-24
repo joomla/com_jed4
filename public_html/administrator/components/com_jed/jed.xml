@@ -9,8 +9,8 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>4.0.0</version>
 	<description>COM_JED_XML_DESCRIPTION</description>
-	<namespace path="src">Joomla\Component\Jed</namespace>
-	<install> <!-- Runs on install --> 
+	<namespace path="src">Jed\Component\Jed</namespace>
+	<install> <!-- Runs on install -->
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
 		</sql>
@@ -42,7 +42,7 @@
 	<!-- Menu entries -->
 		<menu view="Jed">COM_JED</menu>
 		<submenu>
-			<menu link="option=com_Jed">COM_JED</menu> 
+			<menu link="option=com_Jed">COM_JED</menu>
 		</submenu>
 	</administration>
 </extension>

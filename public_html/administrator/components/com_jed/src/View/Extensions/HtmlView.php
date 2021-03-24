@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\View\Extensions;
+namespace Jed\Component\Jed\Administrator\View\Extensions;
 
 defined('_JEXEC') or die;
 
@@ -18,7 +18,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Jed\Administrator\Model\ExtensionsModel;
+use Jed\Component\Jed\Administrator\Model\ExtensionsModel;
 use RuntimeException;
 
 use function defined;

@@ -11,7 +11,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\Component\Jed\Administrator\View\Extensions\HtmlView;
+use Jed\Component\Jed\Administrator\View\Extensions\HtmlView;
 
 defined('_JEXEC') or die;
 

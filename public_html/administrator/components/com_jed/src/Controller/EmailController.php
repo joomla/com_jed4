@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\Controller;
+namespace Jed\Component\Jed\Administrator\Controller;
 
 defined('_JEXEC') or die;
 

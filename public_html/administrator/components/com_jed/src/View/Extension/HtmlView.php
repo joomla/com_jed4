@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\View\Extension;
+namespace Jed\Component\Jed\Administrator\View\Extension;
 
 defined('_JEXEC') or die();
 
@@ -20,7 +20,7 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
+use Jed\Component\Jed\Administrator\Model\ExtensionModel;
 use Joomla\Registry\Registry;
 
 use function defined;

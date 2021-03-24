@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\View\Email;
+namespace Jed\Component\Jed\Administrator\View\Email;
 
 defined('_JEXEC') or die;
 
@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\object\CMSObject;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Jed\Administrator\Model\EmailModel;
+use Jed\Component\Jed\Administrator\Model\EmailModel;
 use Joomla\Registry\Registry;
 
 use function defined;

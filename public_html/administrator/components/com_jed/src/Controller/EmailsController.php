@@ -6,14 +6,14 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\Controller;
+namespace Jed\Component\Jed\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
-use Joomla\Component\Jed\Administrator\Model\EmailModel;
+use Jed\Component\Jed\Administrator\Model\EmailModel;
 
 use function defined;
 

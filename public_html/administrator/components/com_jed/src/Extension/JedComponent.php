@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\Extension;
+namespace Jed\Component\Jed\Administrator\Extension;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -20,7 +20,7 @@ use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
 use Joomla\CMS\Tag\TagServiceInterface;
 use Joomla\CMS\Tag\TagServiceTrait;
-use Joomla\Component\Jed\Administrator\Service\Html\Jed;
+use Jed\Component\Jed\Administrator\Service\Html\Jed;
 use Psr\Container\ContainerInterface;
 
 use function defined;

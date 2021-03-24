@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Jed\Administrator\Controller;
+namespace Jed\Component\Jed\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 
-use Joomla\Component\Jed\Administrator\Model\ExtensionModel;
+use Jed\Component\Jed\Administrator\Model\ExtensionModel;
 
 use function defined;
 
