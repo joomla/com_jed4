@@ -5,7 +5,7 @@
  * @copyright  Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
+/*
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
@@ -21,3 +21,4 @@ HTMLHelper::_('stylesheet', 'com_jed/style.css', ['version' => 'auto', 'relative
 $controller = BaseController::getInstance('jed');
 $controller->execute(Factory::getApplication()->input->get('task'));
 $controller->redirect();
+*/

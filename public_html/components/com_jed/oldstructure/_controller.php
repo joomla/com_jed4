@@ -16,4 +16,4 @@ use Joomla\CMS\MVC\Controller\BaseController;
  * @package   JED
  * @since     4.0.0
  */
-class JedController extends BaseController { }
+/* class JedController extends BaseController { } */
