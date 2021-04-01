@@ -6,12 +6,14 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
-
 namespace Jed\Component\Jed\Site\Service;
+
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Factory;
+
+use function defined;
 
 /**
  * JED Router.
