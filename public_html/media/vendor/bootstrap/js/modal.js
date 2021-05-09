@@ -1,51 +1,254 @@
-import { _ as _objectSpread2 } from './carousel.js';
-import { B as BaseComponent, S as SelectorEngine, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, b as typeCheckConfig, r as reflow, c as isRTL, M as Manipulator, D as Data, g as getElementFromSelector, i as isVisible, d as defineJQueryPlugin } from './dom.js?1614481245';
+import { M as Manipulator, S as SelectorEngine, k as execute, r as reflow, b as typeCheckConfig, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, B as BaseComponent, c as isRTL, g as getElementFromSelector, i as isVisible, d as defineJQueryPlugin } from './dom.js?1620567725';
 
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0): util/scrollBar.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+const SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
+const SELECTOR_STICKY_CONTENT = '.sticky-top';
+
+const getWidth = () => {
+  // https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth#usage_notes
+  const documentWidth = document.documentElement.clientWidth;
+  return Math.abs(window.innerWidth - documentWidth);
+};
+
+const hide = (width = getWidth()) => {
+  _disableOverFlow(); // give padding to element to balances the hidden scrollbar width
+
+
+  _setElementAttributes('body', 'paddingRight', calculatedValue => calculatedValue + width); // trick: We adjust positive paddingRight and negative marginRight to sticky-top elements, to keep shown fullwidth
+
+
+  _setElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight', calculatedValue => calculatedValue + width);
+
+  _setElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight', calculatedValue => calculatedValue - width);
+};
+
+const _disableOverFlow = () => {
+  const actualValue = document.body.style.overflow;
+
+  if (actualValue) {
+    Manipulator.setDataAttribute(document.body, 'overflow', actualValue);
+  }
+
+  document.body.style.overflow = 'hidden';
+};
+
+const _setElementAttributes = (selector, styleProp, callback) => {
+  const scrollbarWidth = getWidth();
+  SelectorEngine.find(selector).forEach(element => {
+    if (element !== document.body && window.innerWidth > element.clientWidth + scrollbarWidth) {
+      return;
+    }
+
+    const actualValue = element.style[styleProp];
+    const calculatedValue = window.getComputedStyle(element)[styleProp];
+    Manipulator.setDataAttribute(element, styleProp, actualValue);
+    element.style[styleProp] = `${callback(Number.parseFloat(calculatedValue))}px`;
+  });
+};
+
+const reset = () => {
+  _resetElementAttributes('body', 'overflow');
+
+  _resetElementAttributes('body', 'paddingRight');
+
+  _resetElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight');
+
+  _resetElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight');
+};
+
+const _resetElementAttributes = (selector, styleProp) => {
+  SelectorEngine.find(selector).forEach(element => {
+    const value = Manipulator.getDataAttribute(element, styleProp);
+
+    if (typeof value === 'undefined') {
+      element.style.removeProperty(styleProp);
+    } else {
+      Manipulator.removeDataAttribute(element, styleProp);
+      element.style[styleProp] = value;
+    }
+  });
+};
+
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0): util/backdrop.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+const Default$1 = {
+  isVisible: true,
+  // if false, we use the backdrop helper without adding any element to the dom
+  isAnimated: false,
+  rootElement: document.body,
+  // give the choice to place backdrop under different elements
+  clickCallback: null
+};
+const DefaultType$1 = {
+  isVisible: 'boolean',
+  isAnimated: 'boolean',
+  rootElement: 'element',
+  clickCallback: '(function|null)'
+};
+const NAME$1 = 'backdrop';
+const CLASS_NAME_BACKDROP = 'modal-backdrop';
+const CLASS_NAME_FADE$1 = 'fade';
+const CLASS_NAME_SHOW$1 = 'show';
+const EVENT_MOUSEDOWN = `mousedown.bs.${NAME$1}`;
+
+class Backdrop {
+  constructor(config) {
+    this._config = this._getConfig(config);
+    this._isAppended = false;
+    this._element = null;
+  }
+
+  show(callback) {
+    if (!this._config.isVisible) {
+      execute(callback);
+      return;
+    }
+
+    this._append();
+
+    if (this._config.isAnimated) {
+      reflow(this._getElement());
+    }
+
+    this._getElement().classList.add(CLASS_NAME_SHOW$1);
+
+    this._emulateAnimation(() => {
+      execute(callback);
+    });
+  }
+
+  hide(callback) {
+    if (!this._config.isVisible) {
+      execute(callback);
+      return;
+    }
+
+    this._getElement().classList.remove(CLASS_NAME_SHOW$1);
+
+    this._emulateAnimation(() => {
+      this.dispose();
+      execute(callback);
+    });
+  } // Private
+
+
+  _getElement() {
+    if (!this._element) {
+      const backdrop = document.createElement('div');
+      backdrop.className = CLASS_NAME_BACKDROP;
+
+      if (this._config.isAnimated) {
+        backdrop.classList.add(CLASS_NAME_FADE$1);
+      }
+
+      this._element = backdrop;
+    }
+
+    return this._element;
+  }
+
+  _getConfig(config) {
+    config = { ...Default$1,
+      ...(typeof config === 'object' ? config : {})
+    };
+    typeCheckConfig(NAME$1, config, DefaultType$1);
+    return config;
+  }
+
+  _append() {
+    if (this._isAppended) {
+      return;
+    }
+
+    this._config.rootElement.appendChild(this._getElement());
+
+    EventHandler.on(this._getElement(), EVENT_MOUSEDOWN, () => {
+      execute(this._config.clickCallback);
+    });
+    this._isAppended = true;
+  }
+
+  dispose() {
+    if (!this._isAppended) {
+      return;
+    }
+
+    EventHandler.off(this._element, EVENT_MOUSEDOWN);
+
+    this._getElement().parentNode.removeChild(this._element);
+
+    this._isAppended = false;
+  }
+
+  _emulateAnimation(callback) {
+    if (!this._config.isAnimated) {
+      execute(callback);
+      return;
+    }
+
+    const backdropTransitionDuration = getTransitionDurationFromElement(this._getElement());
+    EventHandler.one(this._getElement(), 'transitionend', () => execute(callback));
+    emulateTransitionEnd(this._getElement(), backdropTransitionDuration);
+  }
+
+}
+
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0): modal.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
 /**
  * ------------------------------------------------------------------------
  * Constants
  * ------------------------------------------------------------------------
  */
 
-var NAME = 'modal';
-var DATA_KEY = 'bs.modal';
-var EVENT_KEY = ".".concat(DATA_KEY);
-var DATA_API_KEY = '.data-api';
-var ESCAPE_KEY = 'Escape';
-var Default = {
+const NAME = 'modal';
+const DATA_KEY = 'bs.modal';
+const EVENT_KEY = `.${DATA_KEY}`;
+const DATA_API_KEY = '.data-api';
+const ESCAPE_KEY = 'Escape';
+const Default = {
   backdrop: true,
   keyboard: true,
   focus: true
 };
-var DefaultType = {
+const DefaultType = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
   focus: 'boolean'
 };
-var EVENT_HIDE = "hide".concat(EVENT_KEY);
-var EVENT_HIDE_PREVENTED = "hidePrevented".concat(EVENT_KEY);
-var EVENT_HIDDEN = "hidden".concat(EVENT_KEY);
-var EVENT_SHOW = "show".concat(EVENT_KEY);
-var EVENT_SHOWN = "shown".concat(EVENT_KEY);
-var EVENT_FOCUSIN = "focusin".concat(EVENT_KEY);
-var EVENT_RESIZE = "resize".concat(EVENT_KEY);
-var EVENT_CLICK_DISMISS = "click.dismiss".concat(EVENT_KEY);
-var EVENT_KEYDOWN_DISMISS = "keydown.dismiss".concat(EVENT_KEY);
-var EVENT_MOUSEUP_DISMISS = "mouseup.dismiss".concat(EVENT_KEY);
-var EVENT_MOUSEDOWN_DISMISS = "mousedown.dismiss".concat(EVENT_KEY);
-var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
-var CLASS_NAME_SCROLLBAR_MEASURER = 'modal-scrollbar-measure';
-var CLASS_NAME_BACKDROP = 'modal-backdrop';
-var CLASS_NAME_OPEN = 'modal-open';
-var CLASS_NAME_FADE = 'fade';
-var CLASS_NAME_SHOW = 'show';
-var CLASS_NAME_STATIC = 'modal-static';
-var SELECTOR_DIALOG = '.modal-dialog';
-var SELECTOR_MODAL_BODY = '.modal-body';
-var SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"]';
-var SELECTOR_DATA_DISMISS = '[data-bs-dismiss="modal"]';
-var SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
-var SELECTOR_STICKY_CONTENT = '.sticky-top';
+const EVENT_HIDE = `hide${EVENT_KEY}`;
+const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY}`;
+const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOW = `show${EVENT_KEY}`;
+const EVENT_SHOWN = `shown${EVENT_KEY}`;
+const EVENT_FOCUSIN = `focusin${EVENT_KEY}`;
+const EVENT_RESIZE = `resize${EVENT_KEY}`;
+const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY}`;
+const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`;
+const EVENT_MOUSEUP_DISMISS = `mouseup.dismiss${EVENT_KEY}`;
+const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY}`;
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
+const CLASS_NAME_OPEN = 'modal-open';
+const CLASS_NAME_FADE = 'fade';
+const CLASS_NAME_SHOW = 'show';
+const CLASS_NAME_STATIC = 'modal-static';
+const SELECTOR_DIALOG = '.modal-dialog';
+const SELECTOR_MODAL_BODY = '.modal-body';
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"]';
+const SELECTOR_DATA_DISMISS = '[data-bs-dismiss="modal"]';
 /**
  * ------------------------------------------------------------------------
  * Class Definition
@@ -56,13 +259,11 @@ class Modal extends BaseComponent {
   constructor(element, config) {
     super(element);
     this._config = this._getConfig(config);
-    this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, element);
-    this._backdrop = null;
+    this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
+    this._backdrop = this._initializeBackDrop();
     this._isShown = false;
-    this._isBodyOverflowing = false;
     this._ignoreBackdropClick = false;
     this._isTransitioning = false;
-    this._scrollbarWidth = 0;
   } // Getters
 
 
@@ -84,11 +285,11 @@ class Modal extends BaseComponent {
       return;
     }
 
-    if (this._element.classList.contains(CLASS_NAME_FADE)) {
+    if (this._isAnimated()) {
       this._isTransitioning = true;
     }
 
-    var showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
+    const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
       relatedTarget
     });
 
@@ -97,10 +298,8 @@ class Modal extends BaseComponent {
     }
 
     this._isShown = true;
-
-    this._checkScrollbar();
-
-    this._setScrollbar();
+    hide();
+    document.body.classList.add(CLASS_NAME_OPEN);
 
     this._adjustDialog();
 
@@ -129,7 +328,7 @@ class Modal extends BaseComponent {
       return;
     }
 
-    var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
+    const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
 
     if (hideEvent.defaultPrevented) {
       return;
@@ -137,9 +336,9 @@ class Modal extends BaseComponent {
 
     this._isShown = false;
 
-    var transition = this._element.classList.contains(CLASS_NAME_FADE);
+    const isAnimated = this._isAnimated();
 
-    if (transition) {
+    if (isAnimated) {
       this._isTransitioning = true;
     }
 
@@ -154,8 +353,8 @@ class Modal extends BaseComponent {
     EventHandler.off(this._element, EVENT_CLICK_DISMISS);
     EventHandler.off(this._dialog, EVENT_MOUSEDOWN_DISMISS);
 
-    if (transition) {
-      var transitionDuration = getTransitionDurationFromElement(this._element);
+    if (isAnimated) {
+      const transitionDuration = getTransitionDurationFromElement(this._element);
       EventHandler.one(this._element, 'transitionend', event => this._hideModal(event));
       emulateTransitionEnd(this._element, transitionDuration);
     } else {
@@ -164,7 +363,7 @@ class Modal extends BaseComponent {
   }
 
   dispose() {
-    [window, this._element, this._dialog].forEach(htmlElement => EventHandler.off(htmlElement, EVENT_KEY));
+    [window, this._dialog].forEach(htmlElement => EventHandler.off(htmlElement, EVENT_KEY));
     super.dispose();
     /**
      * `document` has 2 events `EVENT_FOCUSIN` and `EVENT_CLICK_DATA_API`
@@ -175,12 +374,13 @@ class Modal extends BaseComponent {
     EventHandler.off(document, EVENT_FOCUSIN);
     this._config = null;
     this._dialog = null;
+
+    this._backdrop.dispose();
+
     this._backdrop = null;
     this._isShown = null;
-    this._isBodyOverflowing = null;
     this._ignoreBackdropClick = null;
     this._isTransitioning = null;
-    this._scrollbarWidth = null;
   }
 
   handleUpdate() {
@@ -188,16 +388,27 @@ class Modal extends BaseComponent {
   } // Private
 
 
+  _initializeBackDrop() {
+    return new Backdrop({
+      isVisible: Boolean(this._config.backdrop),
+      // 'static' option will be translated to true, and booleans will keep their value
+      isAnimated: this._isAnimated()
+    });
+  }
+
   _getConfig(config) {
-    config = _objectSpread2(_objectSpread2({}, Default), config);
+    config = { ...Default,
+      ...Manipulator.getDataAttributes(this._element),
+      ...config
+    };
     typeCheckConfig(NAME, config, DefaultType);
     return config;
   }
 
   _showElement(relatedTarget) {
-    var transition = this._element.classList.contains(CLASS_NAME_FADE);
+    const isAnimated = this._isAnimated();
 
-    var modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
+    const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
 
     if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
       // Don't move modal's DOM position
@@ -218,7 +429,7 @@ class Modal extends BaseComponent {
       modalBody.scrollTop = 0;
     }
 
-    if (transition) {
+    if (isAnimated) {
       reflow(this._element);
     }
 
@@ -228,7 +439,7 @@ class Modal extends BaseComponent {
       this._enforceFocus();
     }
 
-    var transitionComplete = () => {
+    const transitionComplete = () => {
       if (this._config.focus) {
         this._element.focus();
       }
@@ -239,8 +450,8 @@ class Modal extends BaseComponent {
       });
     };
 
-    if (transition) {
-      var transitionDuration = getTransitionDurationFromElement(this._dialog);
+    if (isAnimated) {
+      const transitionDuration = getTransitionDurationFromElement(this._dialog);
       EventHandler.one(this._dialog, 'transitionend', transitionComplete);
       emulateTransitionEnd(this._dialog, transitionDuration);
     } else {
@@ -292,96 +503,49 @@ class Modal extends BaseComponent {
 
     this._isTransitioning = false;
 
-    this._showBackdrop(() => {
+    this._backdrop.hide(() => {
       document.body.classList.remove(CLASS_NAME_OPEN);
 
       this._resetAdjustments();
 
-      this._resetScrollbar();
-
+      reset();
       EventHandler.trigger(this._element, EVENT_HIDDEN);
     });
   }
 
-  _removeBackdrop() {
-    this._backdrop.parentNode.removeChild(this._backdrop);
-
-    this._backdrop = null;
-  }
-
   _showBackdrop(callback) {
-    var animate = this._element.classList.contains(CLASS_NAME_FADE) ? CLASS_NAME_FADE : '';
-
-    if (this._isShown && this._config.backdrop) {
-      this._backdrop = document.createElement('div');
-      this._backdrop.className = CLASS_NAME_BACKDROP;
-
-      if (animate) {
-        this._backdrop.classList.add(animate);
-      }
-
-      document.body.appendChild(this._backdrop);
-      EventHandler.on(this._element, EVENT_CLICK_DISMISS, event => {
-        if (this._ignoreBackdropClick) {
-          this._ignoreBackdropClick = false;
-          return;
-        }
-
-        if (event.target !== event.currentTarget) {
-          return;
-        }
-
-        if (this._config.backdrop === 'static') {
-          this._triggerBackdropTransition();
-        } else {
-          this.hide();
-        }
-      });
-
-      if (animate) {
-        reflow(this._backdrop);
-      }
-
-      this._backdrop.classList.add(CLASS_NAME_SHOW);
-
-      if (!animate) {
-        callback();
+    EventHandler.on(this._element, EVENT_CLICK_DISMISS, event => {
+      if (this._ignoreBackdropClick) {
+        this._ignoreBackdropClick = false;
         return;
       }
 
-      var backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
-      EventHandler.one(this._backdrop, 'transitionend', callback);
-      emulateTransitionEnd(this._backdrop, backdropTransitionDuration);
-    } else if (!this._isShown && this._backdrop) {
-      this._backdrop.classList.remove(CLASS_NAME_SHOW);
-
-      var callbackRemove = () => {
-        this._removeBackdrop();
-
-        callback();
-      };
-
-      if (this._element.classList.contains(CLASS_NAME_FADE)) {
-        var _backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
-
-        EventHandler.one(this._backdrop, 'transitionend', callbackRemove);
-        emulateTransitionEnd(this._backdrop, _backdropTransitionDuration);
-      } else {
-        callbackRemove();
+      if (event.target !== event.currentTarget) {
+        return;
       }
-    } else {
-      callback();
-    }
+
+      if (this._config.backdrop === true) {
+        this.hide();
+      } else if (this._config.backdrop === 'static') {
+        this._triggerBackdropTransition();
+      }
+    });
+
+    this._backdrop.show(callback);
+  }
+
+  _isAnimated() {
+    return this._element.classList.contains(CLASS_NAME_FADE);
   }
 
   _triggerBackdropTransition() {
-    var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
+    const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
 
     if (hideEvent.defaultPrevented) {
       return;
     }
 
-    var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+    const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
 
     if (!isModalOverflowing) {
       this._element.style.overflowY = 'hidden';
@@ -389,7 +553,7 @@ class Modal extends BaseComponent {
 
     this._element.classList.add(CLASS_NAME_STATIC);
 
-    var modalTransitionDuration = getTransitionDurationFromElement(this._dialog);
+    const modalTransitionDuration = getTransitionDurationFromElement(this._dialog);
     EventHandler.off(this._element, 'transitionend');
     EventHandler.one(this._element, 'transitionend', () => {
       this._element.classList.remove(CLASS_NAME_STATIC);
@@ -410,98 +574,38 @@ class Modal extends BaseComponent {
 
 
   _adjustDialog() {
-    var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+    const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+    const scrollbarWidth = getWidth();
+    const isBodyOverflowing = scrollbarWidth > 0;
 
-    if (!this._isBodyOverflowing && isModalOverflowing && !isRTL || this._isBodyOverflowing && !isModalOverflowing && isRTL) {
-      this._element.style.paddingLeft = "".concat(this._scrollbarWidth, "px");
+    if (!isBodyOverflowing && isModalOverflowing && !isRTL() || isBodyOverflowing && !isModalOverflowing && isRTL()) {
+      this._element.style.paddingLeft = `${scrollbarWidth}px`;
     }
 
-    if (this._isBodyOverflowing && !isModalOverflowing && !isRTL || !this._isBodyOverflowing && isModalOverflowing && isRTL) {
-      this._element.style.paddingRight = "".concat(this._scrollbarWidth, "px");
+    if (isBodyOverflowing && !isModalOverflowing && !isRTL() || !isBodyOverflowing && isModalOverflowing && isRTL()) {
+      this._element.style.paddingRight = `${scrollbarWidth}px`;
     }
   }
 
   _resetAdjustments() {
     this._element.style.paddingLeft = '';
     this._element.style.paddingRight = '';
-  }
-
-  _checkScrollbar() {
-    var rect = document.body.getBoundingClientRect();
-    this._isBodyOverflowing = Math.round(rect.left + rect.right) < window.innerWidth;
-    this._scrollbarWidth = this._getScrollbarWidth();
-  }
-
-  _setScrollbar() {
-    if (this._isBodyOverflowing) {
-      this._setElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight', calculatedValue => calculatedValue + this._scrollbarWidth);
-
-      this._setElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight', calculatedValue => calculatedValue - this._scrollbarWidth);
-
-      this._setElementAttributes('body', 'paddingRight', calculatedValue => calculatedValue + this._scrollbarWidth);
-    }
-
-    document.body.classList.add(CLASS_NAME_OPEN);
-  }
-
-  _setElementAttributes(selector, styleProp, callback) {
-    SelectorEngine.find(selector).forEach(element => {
-      var actualValue = element.style[styleProp];
-      var calculatedValue = window.getComputedStyle(element)[styleProp];
-      Manipulator.setDataAttribute(element, styleProp, actualValue);
-      element.style[styleProp] = callback(Number.parseFloat(calculatedValue)) + 'px';
-    });
-  }
-
-  _resetScrollbar() {
-    this._resetElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight');
-
-    this._resetElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight');
-
-    this._resetElementAttributes('body', 'paddingRight');
-  }
-
-  _resetElementAttributes(selector, styleProp) {
-    SelectorEngine.find(selector).forEach(element => {
-      var value = Manipulator.getDataAttribute(element, styleProp);
-
-      if (typeof value === 'undefined' && element === document.body) {
-        element.style[styleProp] = '';
-      } else {
-        Manipulator.removeDataAttribute(element, styleProp);
-        element.style[styleProp] = value;
-      }
-    });
-  }
-
-  _getScrollbarWidth() {
-    // thx d.walsh
-    var scrollDiv = document.createElement('div');
-    scrollDiv.className = CLASS_NAME_SCROLLBAR_MEASURER;
-    document.body.appendChild(scrollDiv);
-    var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
-    document.body.removeChild(scrollDiv);
-    return scrollbarWidth;
   } // Static
 
 
   static jQueryInterface(config, relatedTarget) {
     return this.each(function () {
-      var data = Data.getData(this, DATA_KEY);
+      const data = Modal.getInstance(this) || new Modal(this, typeof config === 'object' ? config : {});
 
-      var _config = _objectSpread2(_objectSpread2(_objectSpread2({}, Default), Manipulator.getDataAttributes(this)), typeof config === 'object' && config ? config : {});
-
-      if (!data) {
-        data = new Modal(this, _config);
+      if (typeof config !== 'string') {
+        return;
       }
 
-      if (typeof config === 'string') {
-        if (typeof data[config] === 'undefined') {
-          throw new TypeError("No method named \"".concat(config, "\""));
-        }
-
-        data[config](relatedTarget);
+      if (typeof data[config] === 'undefined') {
+        throw new TypeError(`No method named "${config}"`);
       }
+
+      data[config](relatedTarget);
     });
   }
 
@@ -514,9 +618,9 @@ class Modal extends BaseComponent {
 
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-  var target = getElementFromSelector(this);
+  const target = getElementFromSelector(this);
 
-  if (this.tagName === 'A' || this.tagName === 'AREA') {
+  if (['A', 'AREA'].includes(this.tagName)) {
     event.preventDefault();
   }
 
@@ -532,14 +636,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
       }
     });
   });
-  var data = Data.getData(target, DATA_KEY);
-
-  if (!data) {
-    var config = _objectSpread2(_objectSpread2({}, Manipulator.getDataAttributes(target)), Manipulator.getDataAttributes(this));
-
-    data = new Modal(target, config);
-  }
-
+  const data = Modal.getInstance(target) || new Modal(target);
   data.toggle(this);
 });
 /**
@@ -578,11 +675,11 @@ Joomla.initialiseModal = (modal, options) => {
     Joomla.Modal.setCurrent(modal);
 
     if (modal.dataset.url) {
-      var modalBody = modal.querySelector('.modal-body');
-      var iframe = modalBody.querySelector('iframe');
+      const modalBody = modal.querySelector('.modal-body');
+      const iframe = modalBody.querySelector('iframe');
 
       if (iframe) {
-        var addData = modal.querySelector('joomla-field-mediamore');
+        const addData = modal.querySelector('joomla-field-mediamore');
 
         if (addData) {
           addData.parentNode.removeChild(addData);
@@ -594,39 +691,39 @@ Joomla.initialiseModal = (modal, options) => {
 
 
       if (modal.dataset.iframe.indexOf('document.getElementById') > 0) {
-        var iframeTextArr = modal.dataset.iframe.split('+');
-        var idFieldArr = iframeTextArr[1].split('"');
-        var el;
+        const iframeTextArr = modal.dataset.iframe.split('+');
+        const idFieldArr = iframeTextArr[1].split('"');
+        let el;
         idFieldArr[0] = idFieldArr[0].replace(/&quot;/g, '"');
 
         if (!document.getElementById(idFieldArr[1])) {
           // eslint-disable-next-line no-new-func
-          var fn = new Function("return ".concat(idFieldArr[0])); // This is UNSAFE!!!!
+          const fn = new Function(`return ${idFieldArr[0]}`); // This is UNSAFE!!!!
 
           el = fn.call(null);
         } else {
           el = document.getElementById(idFieldArr[1]).value;
         }
 
-        modalBody.insertAdjacentHTML('afterbegin', "".concat(iframeTextArr[0]).concat(el).concat(iframeTextArr[2]));
+        modalBody.insertAdjacentHTML('afterbegin', `${iframeTextArr[0]}${el}${iframeTextArr[2]}`);
       } else {
         modalBody.insertAdjacentHTML('afterbegin', modal.dataset.iframe);
       }
     }
   });
   modal.addEventListener('shown.bs.modal', () => {
-    var modalBody = modal.querySelector('.modal-body');
-    var modalHeader = modal.querySelector('.modal-header');
-    var modalFooter = modal.querySelector('.modal-footer');
-    var modalHeaderHeight = 0;
-    var modalFooterHeight = 0;
-    var maxModalBodyHeight = 0;
-    var modalBodyPadding = 0;
-    var modalBodyHeightOuter = 0;
+    const modalBody = modal.querySelector('.modal-body');
+    const modalHeader = modal.querySelector('.modal-header');
+    const modalFooter = modal.querySelector('.modal-footer');
+    let modalHeaderHeight = 0;
+    let modalFooterHeight = 0;
+    let maxModalBodyHeight = 0;
+    let modalBodyPadding = 0;
+    let modalBodyHeightOuter = 0;
 
     if (modalBody) {
       if (modalHeader) {
-        var modalHeaderRects = modalHeader.getBoundingClientRect();
+        const modalHeaderRects = modalHeader.getBoundingClientRect();
         modalHeaderHeight = modalHeaderRects.height;
         modalBodyHeightOuter = modalBody.offsetHeight;
       }
@@ -635,17 +732,17 @@ Joomla.initialiseModal = (modal, options) => {
         modalFooterHeight = parseFloat(getComputedStyle(modalFooter, null).height.replace('px', ''));
       }
 
-      var modalBodyHeight = parseFloat(getComputedStyle(modalBody, null).height.replace('px', ''));
-      var padding = modalBody.offsetTop;
-      var maxModalHeight = parseFloat(getComputedStyle(document.body, null).height.replace('px', '')) - padding * 2;
+      const modalBodyHeight = parseFloat(getComputedStyle(modalBody, null).height.replace('px', ''));
+      const padding = modalBody.offsetTop;
+      const maxModalHeight = parseFloat(getComputedStyle(document.body, null).height.replace('px', '')) - padding * 2;
       modalBodyPadding = modalBodyHeightOuter - modalBodyHeight; // eslint-disable-next-line max-len
 
       maxModalBodyHeight = maxModalHeight - (modalHeaderHeight + modalFooterHeight + modalBodyPadding);
     }
 
     if (modal.dataset.url) {
-      var iframeEl = modal.querySelector('iframe');
-      var iframeHeight = parseFloat(getComputedStyle(iframeEl, null).height.replace('px', ''));
+      const iframeEl = modal.querySelector('iframe');
+      const iframeHeight = parseFloat(getComputedStyle(iframeEl, null).height.replace('px', ''));
 
       if (iframeHeight > maxModalBodyHeight) {
         modalBody.style.maxHeight = maxModalBodyHeight;
@@ -655,7 +752,7 @@ Joomla.initialiseModal = (modal, options) => {
     }
   });
   modal.addEventListener('hide.bs.modal', () => {
-    var modalBody = modal.querySelector('.modal-body');
+    const modalBody = modal.querySelector('.modal-body');
     modalBody.style.maxHeight = 'initial';
   });
   modal.addEventListener('hidden.bs.modal', () => {
@@ -680,10 +777,10 @@ Joomla.iframeButtonClick = options => {
     throw new Error('Selector is missing');
   }
 
-  var iframe = document.querySelector("".concat(options.iframeSelector, " iframe"));
+  const iframe = document.querySelector(`${options.iframeSelector} iframe`);
 
   if (iframe) {
-    var button = iframe.contentWindow.document.querySelector(options.buttonSelector);
+    const button = iframe.contentWindow.document.querySelector(options.buttonSelector);
 
     if (button) {
       button.click();
@@ -693,12 +790,12 @@ Joomla.iframeButtonClick = options => {
 
 if (Joomla && Joomla.getOptions) {
   // Get the elements/configurations from the PHP
-  var modals = Joomla.getOptions('bootstrap.modal'); // Initialise the elements
+  const modals = Joomla.getOptions('bootstrap.modal'); // Initialise the elements
 
   if (typeof modals === 'object' && modals !== null) {
     Object.keys(modals).forEach(modal => {
-      var opt = modals[modal];
-      var options = {
+      const opt = modals[modal];
+      const options = {
         backdrop: opt.backdrop ? opt.backdrop : true,
         keyboard: opt.keyboard ? opt.keyboard : true,
         focus: opt.focus ? opt.focus : true
@@ -708,4 +805,4 @@ if (Joomla && Joomla.getOptions) {
   }
 }
 
-export { Modal as M };
+export { Backdrop as B, Modal as M, hide as h, reset as r };

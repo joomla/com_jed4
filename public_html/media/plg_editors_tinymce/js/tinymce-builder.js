@@ -1,23 +1,17 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 Joomla = window.Joomla || {};
 
-(function (Joomla, window) {
-  'use strict';
+((Joomla, window) => {
   /**
    * Fake TinyMCE object to allow to use TinyMCE translation for the button labels
    *
    * @since  3.7.0
    */
 
-  var tinymce = {
+  const tinymce = {
     langCode: 'en',
     langStrings: {},
     icons: {
@@ -191,25 +185,23 @@ Joomla = window.Joomla || {};
       searchreplace: 'search',
       strikethrough: 'strike-through'
     },
-    addI18n: function addI18n(code, strings) {
+    addI18n: (code, strings) => {
       tinymce.langCode = code;
       tinymce.langStrings = strings || {};
     },
-    translate: function translate(string) {
-      return tinymce.langStrings[string] || string;
-    },
-    showIcon: function showIcon(name) {
-      var iconname = tinymce.iconsmap[name] || name;
+    translate: string => tinymce.langStrings[string] || string,
+    showIcon: name => {
+      const iconname = tinymce.iconsmap[name] || name;
       return tinymce.icons[iconname] || tinymce.icons[name] || name;
     }
   };
   window.tinymce = tinymce;
 
-  var TinyMCEBuilder = function TinyMCEBuilder(container, options) {
-    var $sourceMenu = container.querySelector('.tinymce-builder-menu.source');
-    var $sourceToolbar = container.querySelector('.tinymce-builder-toolbar.source');
-    var $targetMenu = container.querySelectorAll('.tinymce-builder-menu.target');
-    var $targetToolbar = container.querySelectorAll('.tinymce-builder-toolbar.target');
+  const TinyMCEBuilder = (container, options) => {
+    const $sourceMenu = container.querySelector('.tinymce-builder-menu.source');
+    const $sourceToolbar = container.querySelector('.tinymce-builder-toolbar.source');
+    const $targetMenu = container.querySelectorAll('.tinymce-builder-menu.target');
+    const $targetToolbar = container.querySelectorAll('.tinymce-builder-toolbar.target');
     /**
      * Append input to the button item
      * @param {HTMLElement} element
@@ -219,10 +211,10 @@ Joomla = window.Joomla || {};
      * @since  3.7.0
      */
 
-    var appendInput = function appendInput(element, group, set) {
-      var name = "".concat(options.formControl, "[").concat(set, "][").concat(group, "][]");
-      var value = element.getAttribute('data-name');
-      var input = "<input type=\"hidden\" name=\"".concat(name, "\" value=\"").concat(value, "\">");
+    const appendInput = (element, group, set) => {
+      const name = `${options.formControl}[${set}][${group}][]`;
+      const value = element.getAttribute('data-name');
+      const input = `<input type="hidden" name="${name}" value="${value}">`;
       element.innerHTML += input;
     };
     /**
@@ -237,23 +229,23 @@ Joomla = window.Joomla || {};
      */
 
 
-    var createButton = function createButton(name, info, type) {
-      var title = tinymce.translate(info.label);
-      var content = '';
-      var bclass = 'tox-mbtn';
+    const createButton = (name, info, type) => {
+      const title = tinymce.translate(info.label);
+      let content = '';
+      let bclass = 'tox-mbtn';
 
       if (type === 'menu') {
         content = title;
       } else if (info.text) {
-        var text = tinymce.translate(info.text);
+        const text = tinymce.translate(info.text);
         bclass += ' tox-tbtn--bespoke';
-        var chevron = tinymce.showIcon('chevron-down');
-        content = info.text !== '|' ? "<span class=\"tox-tbtn__select-label\">".concat(text, "</span><div class=\"tox-tbtn__select-chevron\">").concat(chevron, "</div>") : text;
+        const chevron = tinymce.showIcon('chevron-down');
+        content = info.text !== '|' ? `<span class="tox-tbtn__select-label">${text}</span><div class="tox-tbtn__select-chevron">${chevron}</div>` : text;
       } else {
         content = tinymce.showIcon(name);
       }
 
-      var $btn = "<button type=\"button\" data-name=\"".concat(name, "\" class=\"").concat(bclass, "\" data-toggle=\"tooltip\" title=\"").concat(title, "\">").concat(content, "</button>");
+      const $btn = `<button type="button" data-name="${name}" class="${bclass}" data-toggle="tooltip" title="${title}">${content}</button>`;
       return $btn;
     };
     /**
@@ -268,23 +260,23 @@ Joomla = window.Joomla || {};
      */
 
 
-    var renderBar = function renderBar(box, type, val, withInput) {
-      var group = box.getAttribute('data-group');
-      var set = box.getAttribute('data-set');
-      var items = type === 'menu' ? options.menus : options.buttons;
-      var value = val || JSON.parse(box.getAttribute('data-value')) || [];
-      var item;
-      var name;
-      var $btn;
+    const renderBar = (box, type, val, withInput) => {
+      const group = box.getAttribute('data-group');
+      const set = box.getAttribute('data-set');
+      const items = type === 'menu' ? options.menus : options.buttons;
+      const value = val || JSON.parse(box.getAttribute('data-value')) || [];
+      let item;
+      let name;
+      let $btn;
 
-      for (var i = 0, l = value.length; i < l; i += 1) {
+      for (let i = 0, l = value.length; i < l; i += 1) {
         name = value[i];
         item = items[name];
 
         if (item) {
           $btn = createButton(name, item, type);
           box.innerHTML += $btn;
-          var newbutton = box.querySelector('.tox-mbtn:last-child'); // Enable tooltip
+          const newbutton = box.querySelector('.tox-mbtn:last-child'); // Enable tooltip
 
           if (newbutton.tooltip) {
             newbutton.tooltip({
@@ -305,14 +297,16 @@ Joomla = window.Joomla || {};
      */
 
 
-    var clearPane = function clearPane(sets) {
-      var item = sets.set;
-      $targetMenu.forEach(function (elem) {
+    const clearPane = sets => {
+      const {
+        set: item
+      } = sets;
+      $targetMenu.forEach(elem => {
         if (elem.getAttribute('data-set') === item) {
           elem.innerHTML = '';
         }
       });
-      $targetToolbar.forEach(function (elem) {
+      $targetToolbar.forEach(elem => {
         if (elem.getAttribute('data-set') === item) {
           elem.innerHTML = '';
         }
@@ -324,26 +318,28 @@ Joomla = window.Joomla || {};
      */
 
 
-    var setPreset = function setPreset(attrib) {
-      var item = attrib.set;
-      var preset = options.toolbarPreset[attrib.preset] || null;
+    const setPreset = attrib => {
+      const {
+        set: item
+      } = attrib;
+      const preset = options.toolbarPreset[attrib.preset] || null;
 
       if (!preset) {
-        throw new Error("Unknown Preset \"".concat(attrib.preset, "\""));
+        throw new Error(`Unknown Preset "${attrib.preset}"`);
       }
 
       clearPane(attrib);
-      Object.keys(preset).forEach(function (group) {
-        var type = group === 'menu' ? 'menu' : 'toolbar'; // Find correct container for current set
+      Object.keys(preset).forEach(group => {
+        const type = group === 'menu' ? 'menu' : 'toolbar'; // Find correct container for current set
 
         if (group === 'menu') {
-          $targetMenu.forEach(function (target) {
+          $targetMenu.forEach(target => {
             if (target.getAttribute('data-group') === group && target.getAttribute('data-set') === item) {
               renderBar(target, type, preset[group], true);
             }
           });
         } else {
-          $targetToolbar.forEach(function (target) {
+          $targetToolbar.forEach(target => {
             if (target.getAttribute('data-group') === group && target.getAttribute('data-set') === item) {
               renderBar(target, type, preset[group], true);
             }
@@ -358,66 +354,59 @@ Joomla = window.Joomla || {};
 
     /* global dragula */
 
-    var drakeMenu = dragula([$sourceMenu], {
-      copy: function copy(el, source) {
-        return source === $sourceMenu;
-      },
-      accepts: function accepts(el, target) {
-        return target !== $sourceMenu;
-      },
+    const drakeMenu = dragula([$sourceMenu], {
+      copy: (el, source) => source === $sourceMenu,
+      accepts: (el, target) => target !== $sourceMenu,
       removeOnSpill: true
-    }).on('drag', function () {
-      $targetMenu.forEach(function (target) {
+    }).on('drag', () => {
+      $targetMenu.forEach(target => {
         target.classList.add('drop-area-highlight');
       });
-    }).on('dragend', function () {
-      $targetMenu.forEach(function (target) {
+    }).on('dragend', () => {
+      $targetMenu.forEach(target => {
         target.classList.remove('drop-area-highlight');
       });
-    }).on('drop', function (el, target) {
+    }).on('drop', (el, target) => {
       if (target !== $sourceMenu) {
         appendInput(el, target.getAttribute('data-group'), target.getAttribute('data-set'));
       }
     });
-    $targetMenu.forEach(function (target) {
+    $targetMenu.forEach(target => {
       renderBar(target, 'menu', null, true);
       drakeMenu.containers.push(target);
     });
-    var drakeToolbar = dragula([$sourceToolbar], {
-      copy: function copy(el, source) {
-        return source === $sourceToolbar;
-      },
-      accepts: function accepts(el, target) {
-        return target !== $sourceToolbar;
-      },
+    const drakeToolbar = dragula([$sourceToolbar], {
+      copy: (el, source) => source === $sourceToolbar,
+      accepts: (el, target) => target !== $sourceToolbar,
       removeOnSpill: true
-    }).on('drag', function () {
-      $targetToolbar.forEach(function (target) {
+    }).on('drag', () => {
+      $targetToolbar.forEach(target => {
         target.classList.add('drop-area-highlight');
       });
-    }).on('dragend', function () {
-      $targetToolbar.forEach(function (target) {
+    }).on('dragend', () => {
+      $targetToolbar.forEach(target => {
         target.classList.remove('drop-area-highlight');
       });
-    }).on('drop', function (el, target) {
+    }).on('drop', (el, target) => {
       if (target !== $sourceToolbar) {
         appendInput(el, target.getAttribute('data-group'), target.getAttribute('data-set'));
       }
     });
-    $targetToolbar.forEach(function (target) {
+    $targetToolbar.forEach(target => {
       renderBar(target, 'toolbar', null, true);
       drakeToolbar.containers.push(target);
     }); // Bind actions buttons
 
-    var actionButtons = container.querySelectorAll('.button-action');
-    actionButtons.forEach(function (elem) {
-      elem.addEventListener('click', function (_ref) {
-        var target = _ref.target;
-        var action = target.getAttribute('data-action');
-        var actionoptions = {};
-        [].forEach.call(target.attributes, function (attrib) {
+    const actionButtons = container.querySelectorAll('.button-action');
+    actionButtons.forEach(elem => {
+      elem.addEventListener('click', ({
+        target
+      }) => {
+        const action = target.getAttribute('data-action');
+        const actionoptions = {};
+        [].forEach.call(target.attributes, attrib => {
           if (/^data-/.test(attrib.name)) {
-            var key = attrib.name.substr(5);
+            const key = attrib.name.substr(5);
             actionoptions[key] = attrib.value;
           }
         }); // Don't allow wild function calling
@@ -432,7 +421,7 @@ Joomla = window.Joomla || {};
             break;
 
           default:
-            throw new Error("Unsupported action: ".concat(action));
+            throw new Error(`Unsupported action: ${action}`);
         }
       });
     });
@@ -441,37 +430,35 @@ Joomla = window.Joomla || {};
   Joomla.TinyMCEBuilder = TinyMCEBuilder;
 })(Joomla, window);
 
-document.addEventListener('DOMContentLoaded', function () {
-  var options = Joomla.getOptions ? Joomla.getOptions('plg_editors_tinymce_builder', {}) : Joomla.optionsStorage.plg_editors_tinymce_builder || {};
-  var builder = document.getElementById('joomla-tinymce-builder');
+document.addEventListener('DOMContentLoaded', () => {
+  const options = Joomla.getOptions ? Joomla.getOptions('plg_editors_tinymce_builder', {}) : Joomla.optionsStorage.plg_editors_tinymce_builder || {};
+  const builder = document.getElementById('joomla-tinymce-builder');
   Joomla.TinyMCEBuilder(builder, options);
-  var selects = builder.querySelectorAll('.access-select'); // Allow to select the group only once per the set
+  const selects = builder.querySelectorAll('.access-select'); // Allow to select the group only once per the set
 
-  var toggleAvailableOption = function toggleAvailableOption() {
-    selects.forEach(function (select) {
+  const toggleAvailableOption = () => {
+    selects.forEach(select => {
       select.enableAllOptions();
     }); // Disable already selected options in the other selects
 
-    selects.forEach(function (select) {
-      var values = select.value;
-      selects.forEach(function (select1) {
+    selects.forEach(select => {
+      const values = select.value;
+      selects.forEach(select1 => {
         if (select === select1) {
           return;
         }
 
-        values.forEach(function (value) {
+        values.forEach(value => {
           select1.disableByValue(value);
         });
       });
     });
   };
 
-  window.addEventListener('load', function () {
-    return toggleAvailableOption();
-  }); // Allow to select the group only once per the set
+  window.addEventListener('load', () => toggleAvailableOption()); // Allow to select the group only once per the set
 
-  selects.forEach(function (select) {
-    select.addEventListener('change', function () {
+  selects.forEach(select => {
+    select.addEventListener('change', () => {
       toggleAvailableOption();
     });
   });

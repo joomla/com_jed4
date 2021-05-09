@@ -1,46 +1,40 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @since      3.5.0
  */
-(function (document) {
-  'use strict'; // Selectors used by this script
+(document => {
 
-  var statsDataTogglerId = 'js-pstats-data-details-toggler';
-  var statsDataDetailsId = 'js-pstats-data-details';
-  var resetId = 'js-pstats-reset-uid';
-  var uniqueIdFieldId = 'jform_params_unique_id';
+  const statsDataTogglerId = 'js-pstats-data-details-toggler';
+  const statsDataDetailsId = 'js-pstats-data-details';
+  const resetId = 'js-pstats-reset-uid';
+  const uniqueIdFieldId = 'jform_params_unique_id';
 
-  var onToggle = function onToggle(event) {
+  const onToggle = event => {
     event.preventDefault();
-    var element = document.getElementById(statsDataDetailsId);
+    const element = document.getElementById(statsDataDetailsId);
 
     if (element) {
       element.classList.toggle('d-none');
     }
   };
 
-  var onReset = function onReset(event) {
+  const onReset = event => {
     event.preventDefault();
     document.getElementById(uniqueIdFieldId).value = '';
     Joomla.submitbutton('plugin.apply');
   };
 
-  var onBoot = function onBoot() {
+  const onBoot = () => {
     // Toggle stats details
-    var toggler = document.getElementById(statsDataTogglerId);
+    const toggler = document.getElementById(statsDataTogglerId);
 
     if (toggler) {
       toggler.addEventListener('click', onToggle);
     } // Reset the unique id
 
 
-    var reset = document.getElementById(resetId);
+    const reset = document.getElementById(resetId);
 
     if (reset) {
       reset.addEventListener('click', onReset);

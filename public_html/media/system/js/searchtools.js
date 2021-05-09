@@ -1,18 +1,6 @@
-/**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 Joomla = window.Joomla || {};
 
-(function (Joomla) {
-  'use strict';
+(Joomla => {
   /**
    * Method that resets the filter inputs and submits the relative form
    *
@@ -21,18 +9,20 @@ Joomla = window.Joomla || {};
    * @since   4.0
    */
 
-  Joomla.resetFilters = function (element) {
-    var form = element.form;
+  Joomla.resetFilters = element => {
+    const {
+      form
+    } = element;
 
     if (!form) {
       throw new Error('Element must be inside a form!');
     }
 
-    var elementsArray = [].slice.call(form.elements);
+    const elementsArray = [].slice.call(form.elements);
 
     if (elementsArray.length) {
-      var newElementsArray = [];
-      elementsArray.forEach(function (elem) {
+      const newElementsArray = [];
+      elementsArray.forEach(elem => {
         // Skip the token, the task, the boxchecked and the calling element
         if (elem.getAttribute('name') === 'task' || elem.getAttribute('name') === 'boxchecked' || elem.value === '1' && /^[0-9A-F]{32}$/i.test(elem.name) || elem === element) {
           return;
@@ -41,18 +31,16 @@ Joomla = window.Joomla || {};
         newElementsArray.push(elem);
       }); // Reset all filters
 
-      newElementsArray.forEach(function (elem) {
+      newElementsArray.forEach(elem => {
         elem.value = '';
       });
       form.submit();
     }
   };
 
-  var Searchtools = /*#__PURE__*/function () {
-    function Searchtools(elem, options) {
-      _classCallCheck(this, Searchtools);
-
-      var defaults = {
+  class Searchtools {
+    constructor(elem, options) {
+      const defaults = {
         // Form options
         formSelector: '.js-stools-form',
         // Search
@@ -86,25 +74,25 @@ Joomla = window.Joomla || {};
 
       this.theForm = document.querySelector(this.options.formSelector); // Filters
 
-      this.filterButton = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.filterBtnSelector));
-      this.filterContainer = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.filterContainerSelector)) ? document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.filterContainerSelector)) : '';
+      this.filterButton = document.querySelector(`${this.options.formSelector} ${this.options.filterBtnSelector}`);
+      this.filterContainer = document.querySelector(`${this.options.formSelector} ${this.options.filterContainerSelector}`) ? document.querySelector(`${this.options.formSelector} ${this.options.filterContainerSelector}`) : '';
       this.filtersHidden = this.options.filtersHidden; // List fields
 
       this.listButton = document.querySelector(this.options.listBtnSelector);
-      this.listContainer = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.listContainerSelector));
+      this.listContainer = document.querySelector(`${this.options.formSelector} ${this.options.listContainerSelector}`);
       this.listHidden = this.options.listHidden; // Main container
 
       this.mainContainer = document.querySelector(this.options.mainContainerSelector); // Search
 
-      this.searchButton = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.searchBtnSelector));
-      this.searchField = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.searchFieldSelector));
+      this.searchButton = document.querySelector(`${this.options.formSelector} ${this.options.searchBtnSelector}`);
+      this.searchField = document.querySelector(`${this.options.formSelector} ${this.options.searchFieldSelector}`);
       this.searchString = null;
       this.clearButton = document.querySelector(this.options.clearBtnSelector); // Ordering
 
-      this.orderCols = Array.prototype.slice.call(document.querySelectorAll("".concat(this.options.formSelector, " ").concat(this.options.orderColumnSelector)));
-      this.orderField = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.orderFieldSelector)); // Limit
+      this.orderCols = Array.prototype.slice.call(document.querySelectorAll(`${this.options.formSelector} ${this.options.orderColumnSelector}`));
+      this.orderField = document.querySelector(`${this.options.formSelector} ${this.options.orderFieldSelector}`); // Limit
 
-      this.limitField = document.querySelector("".concat(this.options.formSelector, " ").concat(this.options.limitFieldSelector)); // Init trackers
+      this.limitField = document.querySelector(`${this.options.formSelector} ${this.options.limitFieldSelector}`); // Init trackers
 
       this.activeColumn = null;
       this.activeDirection = this.options.activeDirection;
@@ -112,7 +100,7 @@ Joomla = window.Joomla || {};
       this.activeLimit = null; // Extra options
 
       this.clearListOptions = this.options.clearListOptions;
-      var self = this; // Get values
+      const self = this; // Get values
 
       this.searchString = this.searchField.value; // Do some binding
 
@@ -146,7 +134,7 @@ Joomla = window.Joomla || {};
       }
 
       if (this.filterButton) {
-        this.filterButton.addEventListener('click', function (e) {
+        this.filterButton.addEventListener('click', e => {
           self.toggleFilters();
           e.stopPropagation();
           e.preventDefault();
@@ -154,7 +142,7 @@ Joomla = window.Joomla || {};
       }
 
       if (this.listButton) {
-        this.listButton.addEventListener('click', function (e) {
+        this.listButton.addEventListener('click', e => {
           self.toggleList();
           e.stopPropagation();
           e.preventDefault();
@@ -163,9 +151,9 @@ Joomla = window.Joomla || {};
 
 
       if (this.getFilterFields()) {
-        this.getFilterFields().forEach(function (i) {
+        this.getFilterFields().forEach(i => {
           self.checkFilter(i);
-          i.addEventListener('change', function () {
+          i.addEventListener('change', () => {
             self.checkFilter(i);
           });
         });
@@ -177,14 +165,15 @@ Joomla = window.Joomla || {};
 
 
       this.createOrderField();
-      this.orderCols.forEach(function (item) {
-        item.addEventListener('click', function (_ref) {
-          var target = _ref.target;
-          var element = target.tagName.toLowerCase() === 'span' ? target.parentNode : target; // Order to set
+      this.orderCols.forEach(item => {
+        item.addEventListener('click', ({
+          target
+        }) => {
+          const element = target.tagName.toLowerCase() === 'span' ? target.parentNode : target; // Order to set
 
-          var newOrderCol = element.getAttribute('data-order');
-          var newDirection = element.getAttribute('data-direction');
-          var newOrdering = "".concat(newOrderCol, " ").concat(newDirection); // The data-order attribute is required
+          const newOrderCol = element.getAttribute('data-order');
+          const newDirection = element.getAttribute('data-direction');
+          const newOrdering = `${newOrderCol} ${newDirection}`; // The data-order attribute is required
 
           if (newOrderCol.length) {
             self.activeColumn = newOrderCol;
@@ -205,354 +194,326 @@ Joomla = window.Joomla || {};
       this.checkActiveStatus(this);
     }
 
-    _createClass(Searchtools, [{
-      key: "checkFilter",
-      value: function checkFilter(element) {
+    checkFilter(element) {
+      if (element.tagName.toLowerCase() === 'select') {
+        const option = element.querySelector('option:checked');
+
+        if (option) {
+          if (option.value !== '') {
+            this.activeFilter(element, this);
+          } else {
+            this.deactiveFilter(element, this);
+          }
+        }
+      } else if (element.value !== '') {
+        this.activeFilter(element, this);
+      } else {
+        this.deactiveFilter(element, this);
+      }
+    }
+
+    clear() {
+      const self = this;
+
+      if (self.searchField) {
+        self.searchField.value = '';
+      }
+
+      if (self.getFilterFields()) {
+        self.getFilterFields().forEach(i => {
+          i.value = '';
+          self.checkFilter(i);
+
+          if (window.jQuery && window.jQuery.chosen) {
+            window.jQuery(i).trigger('chosen:updated');
+          }
+        });
+      }
+
+      if (self.clearListOptions) {
+        self.getListFields().forEach(i => {
+          i.value = '';
+          self.checkFilter(i);
+
+          if (window.jQuery && window.jQuery.chosen) {
+            window.jQuery(i).trigger('chosen:updated');
+          }
+        }); // Special case to limit box to the default config limit
+
+        document.querySelector('#list_limit').value = self.options.defaultLimit;
+
+        if (window.jQuery && window.jQuery.chosen) {
+          window.jQuery('#list_limit').trigger('chosen:updated');
+        }
+      }
+
+      self.theForm.submit();
+    } // eslint-disable-next-line class-methods-use-this
+
+
+    updateFilterCount(count) {
+      if (this.clearButton) {
+        this.clearButton.disabled = count === 0 && !this.searchString.length;
+      }
+    } // eslint-disable-next-line class-methods-use-this
+
+
+    checkActiveStatus(cont) {
+      const els = this.getFilterFields();
+      let activeFilterCount = 0;
+      els.forEach(item => {
+        if (item.classList.contains('active')) {
+          activeFilterCount += 1;
+          cont.filterButton.classList.remove('btn-secondary');
+          cont.filterButton.classList.add('btn-primary');
+        }
+      }); // If there are no active filters - remove the filtered caption area from the table
+
+      if (activeFilterCount === 0) {
+        const filteredByCaption = document.getElementById('filteredBy');
+
+        if (filteredByCaption) {
+          filteredByCaption.parentNode.removeChild(filteredByCaption);
+        }
+      } // Disable clear button when no filter is active and search is empty
+
+
+      if (this.clearButton) {
+        this.clearButton.disabled = activeFilterCount === 0 && !this.searchString.length;
+      }
+    } // eslint-disable-next-line class-methods-use-this
+
+
+    activeFilter(element) {
+      element.classList.add('active');
+      const chosenId = `#${element.getAttribute('id')}`;
+      const tmpEl = element.querySelector(chosenId);
+
+      if (tmpEl) {
+        tmpEl.classList.add('active');
+      } // Add all active filters to the table caption for screen-readers
+
+
+      const filteredByCaption = document.getElementById('filteredBy');
+      const isHidden = Object.prototype.hasOwnProperty.call(element.attributes, 'type') && element.attributes.type.value === 'hidden'; // The caption won't exist if no items match the filters so check for the element first
+
+      if (filteredByCaption && !isHidden) {
+        let captionContent = '';
+
         if (element.tagName.toLowerCase() === 'select') {
-          var option = element.querySelector('option:checked');
-
-          if (option) {
-            if (option.value !== '') {
-              this.activeFilter(element, this);
-            } else {
-              this.deactiveFilter(element, this);
-            }
-          }
-        } else if (element.value !== '') {
-          this.activeFilter(element, this);
-        } else {
-          this.deactiveFilter(element, this);
-        }
-      }
-    }, {
-      key: "clear",
-      value: function clear() {
-        var self = this;
-
-        if (self.searchField) {
-          self.searchField.value = '';
-        }
-
-        if (self.getFilterFields()) {
-          self.getFilterFields().forEach(function (i) {
-            i.value = '';
-            self.checkFilter(i);
-
-            if (window.jQuery && window.jQuery.chosen) {
-              window.jQuery(i).trigger('chosen:updated');
-            }
-          });
-        }
-
-        if (self.clearListOptions) {
-          self.getListFields().forEach(function (i) {
-            i.value = '';
-            self.checkFilter(i);
-
-            if (window.jQuery && window.jQuery.chosen) {
-              window.jQuery(i).trigger('chosen:updated');
-            }
-          }); // Special case to limit box to the default config limit
-
-          document.querySelector('#list_limit').value = self.options.defaultLimit;
-
-          if (window.jQuery && window.jQuery.chosen) {
-            window.jQuery('#list_limit').trigger('chosen:updated');
-          }
-        }
-
-        self.theForm.submit();
-      } // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "updateFilterCount",
-      value: function updateFilterCount(count) {
-        if (this.clearButton) {
-          this.clearButton.disabled = count === 0 && !this.searchString.length;
-        }
-      } // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "checkActiveStatus",
-      value: function checkActiveStatus(cont) {
-        var els = this.getFilterFields();
-        var activeFilterCount = 0;
-        els.forEach(function (item) {
-          if (item.classList.contains('active')) {
-            activeFilterCount += 1;
-            cont.filterButton.classList.remove('btn-secondary');
-            cont.filterButton.classList.add('btn-primary');
-          }
-        }); // If there are no active filters - remove the filtered caption area from the table
-
-        if (activeFilterCount === 0) {
-          var filteredByCaption = document.getElementById('filteredBy');
-
-          if (filteredByCaption) {
-            filteredByCaption.parentNode.removeChild(filteredByCaption);
-          }
-        } // Disable clear button when no filter is active and search is empty
-
-
-        if (this.clearButton) {
-          this.clearButton.disabled = activeFilterCount === 0 && !this.searchString.length;
-        }
-      } // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "activeFilter",
-      value: function activeFilter(element) {
-        element.classList.add('active');
-        var chosenId = "#".concat(element.getAttribute('id'));
-        var tmpEl = element.querySelector(chosenId);
-
-        if (tmpEl) {
-          tmpEl.classList.add('active');
-        } // Add all active filters to the table caption for screen-readers
-
-
-        var filteredByCaption = document.getElementById('filteredBy');
-        var isHidden = Object.prototype.hasOwnProperty.call(element.attributes, 'type') && element.attributes.type.value === 'hidden'; // The caption won't exist if no items match the filters so check for the element first
-
-        if (filteredByCaption && !isHidden) {
-          var captionContent = '';
-
-          if (element.tagName.toLowerCase() === 'select') {
-            if (element.multiple === true) {
-              var selectedOptions = element.querySelectorAll('option:checked');
-              var selectedTextValues = [].slice.call(selectedOptions).map(function (el) {
-                return el.text;
-              });
-              captionContent = "".concat(element.labels[0].textContent, " - ").concat(selectedTextValues.join());
-            } else {
-              captionContent = "".concat(element.labels[0].textContent, " - ").concat(element.options[element.selectedIndex].text);
-            }
+          if (element.multiple === true) {
+            const selectedOptions = element.querySelectorAll('option:checked');
+            const selectedTextValues = [].slice.call(selectedOptions).map(el => el.text);
+            captionContent = `${element.labels[0].textContent} - ${selectedTextValues.join()}`;
           } else {
-            captionContent = "".concat(element.labels[0].textContent, " - ").concat(element.value);
+            captionContent = `${element.labels[0].textContent} - ${element.options[element.selectedIndex].text}`;
           }
-
-          filteredByCaption.textContent += captionContent;
-        }
-      } // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "deactiveFilter",
-      value: function deactiveFilter(element) {
-        element.classList.remove('active');
-        var chosenId = "#".concat(element.getAttribute('id'));
-        var tmpEl = element.querySelector(chosenId);
-
-        if (tmpEl) {
-          tmpEl.classList.remove('active');
-        }
-      } // eslint-disable-next-line consistent-return
-
-    }, {
-      key: "getFilterFields",
-      value: function getFilterFields() {
-        if (this.filterContainer) {
-          return Array.prototype.slice.call(this.filterContainer.querySelectorAll('select,input'));
-        }
-      }
-    }, {
-      key: "getListFields",
-      value: function getListFields() {
-        return Array.prototype.slice.call(this.listContainer.querySelectorAll('select'));
-      } // Common container functions
-      // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "hideContainer",
-      value: function hideContainer(container) {
-        if (container) {
-          container.classList.remove('js-stools-container-filters-visible');
-          document.body.classList.remove('filters-shown');
-        }
-      } // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "showContainer",
-      value: function showContainer(container) {
-        container.classList.add('js-stools-container-filters-visible');
-        document.body.classList.add('filters-shown');
-      }
-    }, {
-      key: "toggleContainer",
-      value: function toggleContainer(container) {
-        if (container.classList.contains('js-stools-container-filters-visible')) {
-          this.hideContainer(container);
         } else {
-          this.showContainer(container);
-        }
-      } // List container management
-
-    }, {
-      key: "hideList",
-      value: function hideList() {
-        this.hideContainer(this.filterContainer);
-      }
-    }, {
-      key: "showList",
-      value: function showList() {
-        this.showContainer(this.filterContainer);
-      }
-    }, {
-      key: "toggleList",
-      value: function toggleList() {
-        this.toggleContainer(this.filterContainer);
-      } // Filters container management
-
-    }, {
-      key: "hideFilters",
-      value: function hideFilters() {
-        this.hideContainer(this.filterContainer);
-      }
-    }, {
-      key: "showFilters",
-      value: function showFilters() {
-        this.showContainer(this.filterContainer);
-      }
-    }, {
-      key: "toggleFilters",
-      value: function toggleFilters() {
-        this.toggleContainer(this.filterContainer);
-      }
-    }, {
-      key: "toggleDirection",
-      value: function toggleDirection() {
-        var self = this;
-        var newDirection = 'ASC';
-
-        if (self.activeDirection.toUpperCase() === 'ASC') {
-          newDirection = 'DESC';
+          captionContent = `${element.labels[0].textContent} - ${element.value}`;
         }
 
-        self.activeDirection = newDirection;
-        self.activeOrder = "".concat(self.activeColumn, " ").concat(newDirection);
-        self.updateFieldValue(self.orderField, self.activeOrder);
+        filteredByCaption.textContent += captionContent;
       }
-    }, {
-      key: "createOrderField",
-      value: function createOrderField() {
-        var _this = this;
-
-        var self = this;
-
-        if (!this.orderField) {
-          this.orderField = document.createElement('input');
-          this.orderField.setAttribute('type', 'hidden');
-          this.orderField.setAttribute('id', 'js-stools-field-order');
-          this.orderField.setAttribute('class', 'js-stools-field-order');
-          this.orderField.setAttribute('name', self.options.orderFieldName);
-          this.orderField.setAttribute('value', "".concat(self.activeOrder, " ").concat(this.activeDirection));
-          this.theForm.append(this.orderField);
-        } // Add missing columns to the order select
+    } // eslint-disable-next-line class-methods-use-this
 
 
-        if (this.orderField.tagName.toLowerCase() === 'select') {
-          var allOptions = [].slice.call(this.orderField.options);
-          allOptions.forEach(function (option) {
-            var value = option.getAttribute('data-order');
-            var name = option.getAttribute('data-name');
-            var direction = option.getAttribute('data-direction');
+    deactiveFilter(element) {
+      element.classList.remove('active');
+      const chosenId = `#${element.getAttribute('id')}`;
+      const tmpEl = element.querySelector(chosenId);
 
-            if (value && value.length) {
-              value = "".concat(value, " ").concat(direction);
-              var $option = self.findOption(self.orderField, value);
-
-              if (!$option.length) {
-                $option = document.createElement('option');
-                $option.text = name;
-                $option.value = value; // If it is the active option select it
-
-                if (option.classList.contains('active')) {
-                  $option.setAttribute('selected', 'selected');
-                } // Append the option and repopulate the chosen field
+      if (tmpEl) {
+        tmpEl.classList.remove('active');
+      }
+    } // eslint-disable-next-line consistent-return
 
 
-                _this.orderFieldName.innerHTML += $option;
-              }
+    getFilterFields() {
+      if (this.filterContainer) {
+        return Array.prototype.slice.call(this.filterContainer.querySelectorAll('select,input'));
+      }
+    }
+
+    getListFields() {
+      return Array.prototype.slice.call(this.listContainer.querySelectorAll('select'));
+    } // Common container functions
+    // eslint-disable-next-line class-methods-use-this
+
+
+    hideContainer(container) {
+      if (container) {
+        container.classList.remove('js-stools-container-filters-visible');
+        document.body.classList.remove('filters-shown');
+      }
+    } // eslint-disable-next-line class-methods-use-this
+
+
+    showContainer(container) {
+      container.classList.add('js-stools-container-filters-visible');
+      document.body.classList.add('filters-shown');
+    }
+
+    toggleContainer(container) {
+      if (container.classList.contains('js-stools-container-filters-visible')) {
+        this.hideContainer(container);
+      } else {
+        this.showContainer(container);
+      }
+    } // List container management
+
+
+    hideList() {
+      this.hideContainer(this.filterContainer);
+    }
+
+    showList() {
+      this.showContainer(this.filterContainer);
+    }
+
+    toggleList() {
+      this.toggleContainer(this.filterContainer);
+    } // Filters container management
+
+
+    hideFilters() {
+      this.hideContainer(this.filterContainer);
+    }
+
+    showFilters() {
+      this.showContainer(this.filterContainer);
+    }
+
+    toggleFilters() {
+      this.toggleContainer(this.filterContainer);
+    }
+
+    toggleDirection() {
+      const self = this;
+      let newDirection = 'ASC';
+
+      if (self.activeDirection.toUpperCase() === 'ASC') {
+        newDirection = 'DESC';
+      }
+
+      self.activeDirection = newDirection;
+      self.activeOrder = `${self.activeColumn} ${newDirection}`;
+      self.updateFieldValue(self.orderField, self.activeOrder);
+    }
+
+    createOrderField() {
+      const self = this;
+
+      if (!this.orderField) {
+        this.orderField = document.createElement('input');
+        this.orderField.setAttribute('type', 'hidden');
+        this.orderField.setAttribute('id', 'js-stools-field-order');
+        this.orderField.setAttribute('class', 'js-stools-field-order');
+        this.orderField.setAttribute('name', self.options.orderFieldName);
+        this.orderField.setAttribute('value', `${self.activeOrder} ${this.activeDirection}`);
+        this.theForm.append(this.orderField);
+      } // Add missing columns to the order select
+
+
+      if (this.orderField.tagName.toLowerCase() === 'select') {
+        const allOptions = [].slice.call(this.orderField.options);
+        allOptions.forEach(option => {
+          let value = option.getAttribute('data-order');
+          const name = option.getAttribute('data-name');
+          const direction = option.getAttribute('data-direction');
+
+          if (value && value.length) {
+            value = `${value} ${direction}`;
+            let $option = self.findOption(self.orderField, value);
+
+            if (!$option.length) {
+              $option = document.createElement('option');
+              $option.text = name;
+              $option.value = value; // If it is the active option select it
+
+              if (option.classList.contains('active')) {
+                $option.setAttribute('selected', 'selected');
+              } // Append the option and repopulate the chosen field
+
+
+              this.orderFieldName.innerHTML += $option;
             }
-          });
-
-          if (window.jQuery && window.jQuery.chosen) {
-            window.jQuery(this.orderField).trigger('chosen:updated');
           }
-        }
+        });
 
-        this.activeOrder = this.orderField.value;
-      } // eslint-disable-next-line class-methods-use-this
-
-    }, {
-      key: "updateFieldValue",
-      value: function updateFieldValue(field, newValue) {
-        var type = field.getAttribute('type');
-
-        if (type === 'hidden' || type === 'text') {
-          field.setAttribute('value', newValue);
-        } else if (field.tagName.toLowerCase() === 'select') {
-          var allOptions = [].slice.call(field.options);
-          var desiredOption; // Select the option result
-
-          allOptions.forEach(function (option) {
-            if (option.value === newValue) {
-              desiredOption = option;
-            }
-          });
-
-          if (desiredOption && desiredOption.length) {
-            desiredOption.setAttribute('selected', 'selected');
-          } else {
-            // If the option does not exist create it on the fly
-            var option = document.createElement('option');
-            option.text = newValue;
-            option.value = newValue;
-            option.setAttribute('selected', 'selected'); // Append the option and repopulate the chosen field
-
-            field.appendChild(option);
-          }
-
-          field.value = newValue; // Trigger the chosen update
-
-          if (window.jQuery && window.jQuery.chosen) {
-            field.trigger('chosen:updated');
-          }
-        }
-      } // eslint-disable-next-line class-methods-use-this,consistent-return
-
-    }, {
-      key: "findOption",
-      value: function findOption(select, value) {
-        // eslint-disable-next-line no-plusplus
-        for (var i = 0, l = select.length; l > i; i++) {
-          if (select[i].value === value) {
-            return select[i];
-          }
+        if (window.jQuery && window.jQuery.chosen) {
+          window.jQuery(this.orderField).trigger('chosen:updated');
         }
       }
-    }]);
 
-    return Searchtools;
-  }();
+      this.activeOrder = this.orderField.value;
+    } // eslint-disable-next-line class-methods-use-this
 
-  var onBoot = function onBoot() {
+
+    updateFieldValue(field, newValue) {
+      const type = field.getAttribute('type');
+
+      if (type === 'hidden' || type === 'text') {
+        field.setAttribute('value', newValue);
+      } else if (field.tagName.toLowerCase() === 'select') {
+        const allOptions = [].slice.call(field.options);
+        let desiredOption; // Select the option result
+
+        allOptions.forEach(option => {
+          if (option.value === newValue) {
+            desiredOption = option;
+          }
+        });
+
+        if (desiredOption && desiredOption.length) {
+          desiredOption.setAttribute('selected', 'selected');
+        } else {
+          // If the option does not exist create it on the fly
+          const option = document.createElement('option');
+          option.text = newValue;
+          option.value = newValue;
+          option.setAttribute('selected', 'selected'); // Append the option and repopulate the chosen field
+
+          field.appendChild(option);
+        }
+
+        field.value = newValue; // Trigger the chosen update
+
+        if (window.jQuery && window.jQuery.chosen) {
+          field.trigger('chosen:updated');
+        }
+      }
+    } // eslint-disable-next-line class-methods-use-this,consistent-return
+
+
+    findOption(select, value) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0, l = select.length; l > i; i++) {
+        if (select[i].value === value) {
+          return select[i];
+        }
+      }
+    }
+
+  }
+
+  const onBoot = () => {
     if (Joomla.getOptions('searchtools')) {
-      var options = Joomla.getOptions('searchtools');
-      var element = document.querySelector(options.selector); // eslint-disable-next-line no-new
+      const options = Joomla.getOptions('searchtools');
+      const element = document.querySelector(options.selector); // eslint-disable-next-line no-new
 
       new Searchtools(element, options);
     }
 
-    var sort = document.getElementById('sorted');
-    var order = document.getElementById('orderedBy');
+    const sort = document.getElementById('sorted');
+    const order = document.getElementById('orderedBy');
 
     if (sort && sort.hasAttribute('data-caption') && order) {
-      var orderedBy = sort.getAttribute('data-caption');
+      const orderedBy = sort.getAttribute('data-caption');
       order.textContent += orderedBy;
     }
 
     if (sort && sort.hasAttribute('data-sort')) {
-      var ariasort = sort.getAttribute('data-sort');
+      const ariasort = sort.getAttribute('data-sort');
       sort.parentNode.setAttribute('aria-sort', ariasort);
     } // Cleanup
 

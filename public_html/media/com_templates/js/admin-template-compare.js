@@ -1,18 +1,12 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var decodeHtmlspecialChars = function decodeHtmlspecialChars(text) {
-      var map = {
+  document.addEventListener('DOMContentLoaded', () => {
+    const decodeHtmlspecialChars = text => {
+      const map = {
         '&amp;': '&',
         '&#038;': '&',
         '&lt;': '<',
@@ -28,21 +22,21 @@
       };
       /* eslint-disable */
 
-      return text.replace(/\&[\w\d\#]{2,5}\;/g, function (m) {
-        var n = map[m];
+      return text.replace(/\&[\w\d\#]{2,5}\;/g, m => {
+        const n = map[m];
         return n;
       });
     };
 
-    var compare = function compare(original, changed) {
-      var display = changed.nextElementSibling;
-      var color = '';
-      var pre = null;
-      var diff = Diff.diffLines(original.innerHTML, changed.innerHTML);
-      var fragment = document.createDocumentFragment();
+    const compare = (original, changed) => {
+      const display = changed.nextElementSibling;
+      let color = '';
+      let pre = null;
+      const diff = Diff.diffLines(original.innerHTML, changed.innerHTML);
+      const fragment = document.createDocumentFragment();
       /* eslint-enable */
 
-      diff.forEach(function (part) {
+      diff.forEach(part => {
         if (part.added) {
           color = '#a6f3a6';
         } else if (part.removed) {
@@ -60,9 +54,9 @@
       display.appendChild(fragment);
     };
 
-    var diffs = [].slice.call(document.querySelectorAll('#original'));
+    const diffs = [].slice.call(document.querySelectorAll('#original'));
 
-    for (var i = 0, l = diffs.length; i < l; i += 1) {
+    for (let i = 0, l = diffs.length; i < l; i += 1) {
       compare(diffs[i], diffs[i].nextElementSibling);
     }
   });

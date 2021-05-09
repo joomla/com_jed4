@@ -1,23 +1,17 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document, submitForm) {
-  'use strict'; // Selectors used by this script
+((document, submitForm) => {
 
-  var buttonDataSelector = 'data-submit-task';
+  const buttonDataSelector = 'data-submit-task';
   /**
    * Submit the task
    * @param task
    * @param form
    */
 
-  var submitTask = function submitTask(task, form) {
+  const submitTask = (task, form) => {
     if (task === 'modules.cancel' || document.formvalidator.isValid(form)) {
       submitForm(task, form);
     }
@@ -27,18 +21,18 @@
    */
 
 
-  var registerEvents = function registerEvents() {
-    var buttons = [].slice.call(document.querySelectorAll("[".concat(buttonDataSelector, "]")));
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function (e) {
+  const registerEvents = () => {
+    const buttons = [].slice.call(document.querySelectorAll(`[${buttonDataSelector}]`));
+    buttons.forEach(button => {
+      button.addEventListener('click', e => {
         e.preventDefault();
-        var task = e.currentTarget.getAttribute(buttonDataSelector);
+        const task = e.currentTarget.getAttribute(buttonDataSelector);
         submitTask(task, e.currentTarget.form);
       });
     });
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     registerEvents();
   });
 })(document, Joomla.submitform);

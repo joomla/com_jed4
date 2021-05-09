@@ -1,39 +1,32 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (Joomla) {
-  'use strict';
+(Joomla => {
 
   if (Joomla.getOptions('menus-default')) {
     // eslint-disable-next-line prefer-destructuring
-    var items = Joomla.getOptions('menus-default').items;
-    items.forEach(function (item) {
-      window["jSelectPosition_".concat(item)] = function (name) {
+    const items = Joomla.getOptions('menus-default').items;
+    items.forEach(item => {
+      window[`jSelectPosition_${item}`] = name => {
         document.getElementById(item).value = name;
         Joomla.Modal.getCurrent().close();
       };
     });
   }
 
-  Array.from(document.querySelectorAll('.modal')).forEach(function (modalEl) {
-    modalEl.addEventListener('hidden.bs.modal', function () {
-      setTimeout(function () {
+  Array.from(document.querySelectorAll('.modal')).forEach(modalEl => {
+    modalEl.addEventListener('hidden.bs.modal', () => {
+      setTimeout(() => {
         window.parent.location.reload();
       }, 1000);
     });
   });
 })(Joomla);
 
-(function (originalFn) {
-  'use strict';
+(originalFn => {
 
-  Joomla.submitform = function (task, form) {
+  Joomla.submitform = (task, form) => {
     originalFn(task, form);
 
     if (task === 'menu.exportXml') {

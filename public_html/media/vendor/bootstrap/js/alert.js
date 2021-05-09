@@ -1,8 +1,8 @@
-import { B as BaseComponent, g as getElementFromSelector, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, D as Data, d as defineJQueryPlugin } from './dom.js?1614481245';
+import { B as BaseComponent, g as getElementFromSelector, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, D as Data, d as defineJQueryPlugin } from './dom.js?1620567725';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): alert.js
+ * Bootstrap (v5.0.0): alert.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -12,17 +12,17 @@ import { B as BaseComponent, g as getElementFromSelector, E as EventHandler, a a
  * ------------------------------------------------------------------------
  */
 
-var NAME = 'alert';
-var DATA_KEY = 'bs.alert';
-var EVENT_KEY = ".".concat(DATA_KEY);
-var DATA_API_KEY = '.data-api';
-var SELECTOR_DISMISS = '[data-bs-dismiss="alert"]';
-var EVENT_CLOSE = "close".concat(EVENT_KEY);
-var EVENT_CLOSED = "closed".concat(EVENT_KEY);
-var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
-var CLASS_NAME_ALERT = 'alert';
-var CLASS_NAME_FADE = 'fade';
-var CLASS_NAME_SHOW = 'show';
+const NAME = 'alert';
+const DATA_KEY = 'bs.alert';
+const EVENT_KEY = `.${DATA_KEY}`;
+const DATA_API_KEY = '.data-api';
+const SELECTOR_DISMISS = '[data-bs-dismiss="alert"]';
+const EVENT_CLOSE = `close${EVENT_KEY}`;
+const EVENT_CLOSED = `closed${EVENT_KEY}`;
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
+const CLASS_NAME_ALERT = 'alert';
+const CLASS_NAME_FADE = 'fade';
+const CLASS_NAME_SHOW = 'show';
 /**
  * ------------------------------------------------------------------------
  * Class Definition
@@ -37,9 +37,9 @@ class Alert extends BaseComponent {
 
 
   close(element) {
-    var rootElement = element ? this._getRootElement(element) : this._element;
+    const rootElement = element ? this._getRootElement(element) : this._element;
 
-    var customEvent = this._triggerCloseEvent(rootElement);
+    const customEvent = this._triggerCloseEvent(rootElement);
 
     if (customEvent === null || customEvent.defaultPrevented) {
       return;
@@ -50,7 +50,7 @@ class Alert extends BaseComponent {
 
 
   _getRootElement(element) {
-    return getElementFromSelector(element) || element.closest(".".concat(CLASS_NAME_ALERT));
+    return getElementFromSelector(element) || element.closest(`.${CLASS_NAME_ALERT}`);
   }
 
   _triggerCloseEvent(element) {
@@ -66,7 +66,7 @@ class Alert extends BaseComponent {
       return;
     }
 
-    var transitionDuration = getTransitionDurationFromElement(element);
+    const transitionDuration = getTransitionDurationFromElement(element);
     EventHandler.one(element, 'transitionend', () => this._destroyElement(element));
     emulateTransitionEnd(element, transitionDuration);
   }
@@ -82,7 +82,7 @@ class Alert extends BaseComponent {
 
   static jQueryInterface(config) {
     return this.each(function () {
-      var data = Data.getData(this, DATA_KEY);
+      let data = Data.get(this, DATA_KEY);
 
       if (!data) {
         data = new Alert(this);
@@ -127,7 +127,7 @@ window.bootstrap.Alert = Alert;
 
 if (Joomla && Joomla.getOptions) {
   // Get the elements/configurations from the PHP
-  var alerts = Joomla.getOptions('bootstrap.alert'); // Initialise the elements
+  const alerts = Joomla.getOptions('bootstrap.alert'); // Initialise the elements
 
   if (alerts && alerts.length) {
     alerts.forEach(selector => {

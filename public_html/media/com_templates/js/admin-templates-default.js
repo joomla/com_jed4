@@ -1,34 +1,28 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var folders = [].slice.call(document.querySelectorAll('.folder-url, .component-folder-url, .plugin-folder-url, .layout-folder-url'));
-    var innerLists = [].slice.call(document.querySelectorAll('.folder ul, .component-folder ul, .plugin-folder ul, .layout-folder ul'));
-    var openLists = [].slice.call(document.querySelectorAll('.show > ul'));
-    var fileModalFolders = [].slice.call(document.querySelectorAll('#fileModal .folder-url'));
-    var folderModalFolders = [].slice.call(document.querySelectorAll('#folderModal .folder-url')); // Hide all the folders when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    const folders = [].slice.call(document.querySelectorAll('.folder-url, .component-folder-url, .plugin-folder-url, .layout-folder-url'));
+    const innerLists = [].slice.call(document.querySelectorAll('.folder ul, .component-folder ul, .plugin-folder ul, .layout-folder ul'));
+    const openLists = [].slice.call(document.querySelectorAll('.show > ul'));
+    const fileModalFolders = [].slice.call(document.querySelectorAll('#fileModal .folder-url'));
+    const folderModalFolders = [].slice.call(document.querySelectorAll('#folderModal .folder-url')); // Hide all the folders when the page loads
 
-    innerLists.forEach(function (innerList) {
+    innerLists.forEach(innerList => {
       innerList.classList.add('hidden');
     }); // Show all the lists in the path of an open file
 
-    openLists.forEach(function (openList) {
+    openLists.forEach(openList => {
       openList.classList.remove('hidden');
     }); // Stop the default action of anchor tag on a click event and release the inner list
 
-    folders.forEach(function (folder) {
-      folder.addEventListener('click', function (event) {
+    folders.forEach(folder => {
+      folder.addEventListener('click', event => {
         event.preventDefault();
-        var list = event.currentTarget.parentNode.querySelector('ul');
+        const list = event.currentTarget.parentNode.querySelector('ul');
 
         if (!list.classList.contains('hidden')) {
           list.classList.add('hidden');
@@ -38,53 +32,53 @@
       });
     }); // File modal tree selector
 
-    fileModalFolders.forEach(function (fileModalFolder) {
-      fileModalFolder.addEventListener('click', function (event) {
+    fileModalFolders.forEach(fileModalFolder => {
+      fileModalFolder.addEventListener('click', event => {
         event.preventDefault();
-        fileModalFolders.forEach(function (fileModalFold) {
+        fileModalFolders.forEach(fileModalFold => {
           fileModalFold.classList.remove('selected');
         });
         event.currentTarget.classList.add('selected');
-        var listElsAddressToAdd = [].slice.call(document.querySelectorAll('#fileModal input.address'));
-        listElsAddressToAdd.forEach(function (element) {
+        const listElsAddressToAdd = [].slice.call(document.querySelectorAll('#fileModal input.address'));
+        listElsAddressToAdd.forEach(element => {
           element.value = event.currentTarget.getAttribute('data-id');
         });
       });
     }); // Folder modal tree selector
 
-    folderModalFolders.forEach(function (folderModalFolder) {
-      folderModalFolder.addEventListener('click', function (event) {
+    folderModalFolders.forEach(folderModalFolder => {
+      folderModalFolder.addEventListener('click', event => {
         event.preventDefault();
-        folderModalFolders.forEach(function (folderModalFldr) {
+        folderModalFolders.forEach(folderModalFldr => {
           folderModalFldr.classList.remove('selected');
         });
         event.currentTarget.classList.add('selected');
-        var listElsAddressToAdd = [].slice.call(document.querySelectorAll('#folderModal input.address'));
-        listElsAddressToAdd.forEach(function (element) {
+        const listElsAddressToAdd = [].slice.call(document.querySelectorAll('#folderModal input.address'));
+        listElsAddressToAdd.forEach(element => {
           element.value = event.currentTarget.getAttribute('data-id');
         });
       });
     });
-    var treeContainer = document.querySelector('#treeholder .treeselect');
-    var listEls = [].slice.call(treeContainer.querySelectorAll('.folder.show'));
-    var filePathEl = document.querySelector('p.lead.hidden.path');
+    const treeContainer = document.querySelector('#treeholder .treeselect');
+    const listEls = [].slice.call(treeContainer.querySelectorAll('.folder.show'));
+    const filePathEl = document.querySelector('p.lead.hidden.path');
 
     if (filePathEl) {
-      var filePathTmp = document.querySelector('p.lead.hidden.path').innerText;
+      let filePathTmp = document.querySelector('p.lead.hidden.path').innerText;
 
       if (filePathTmp && filePathTmp.charAt(0) === '/') {
         filePathTmp = filePathTmp.slice(1);
         filePathTmp = filePathTmp.split('/');
         filePathTmp = filePathTmp[filePathTmp.length - 1];
-        listEls.forEach(function (element, index) {
+        listEls.forEach((element, index) => {
           element.querySelector('a').classList.add('active');
 
           if (index === listEls.length - 1) {
-            var parentUl = element.querySelector('ul');
-            var allLi = [].slice.call(parentUl.querySelectorAll('li'));
-            allLi.forEach(function (liElement) {
-              var aEl = liElement.querySelector('a');
-              var spanEl = aEl.querySelector('span');
+            const parentUl = element.querySelector('ul');
+            const allLi = [].slice.call(parentUl.querySelectorAll('li'));
+            allLi.forEach(liElement => {
+              const aEl = liElement.querySelector('a');
+              const spanEl = aEl.querySelector('span');
 
               if (spanEl && spanEl.innerText.trim()) {
                 aEl.classList.add('active');
@@ -96,11 +90,11 @@
     } // Image cropper
 
 
-    var image = document.getElementById('image-crop');
+    const image = document.getElementById('image-crop');
 
     if (image) {
-      var width = document.getElementById('imageWidth').value;
-      var height = document.getElementById('imageHeight').value; // eslint-disable-next-line no-new
+      const width = document.getElementById('imageWidth').value;
+      const height = document.getElementById('imageHeight').value; // eslint-disable-next-line no-new
 
       new window.Cropper(image, {
         viewMode: 1,
@@ -117,7 +111,7 @@
         minCanvasWidth: width,
         minCanvasHeight: height
       });
-      image.addEventListener('crop', function (e) {
+      image.addEventListener('crop', e => {
         document.getElementById('x').value = e.detail.x;
         document.getElementById('y').value = e.detail.y;
         document.getElementById('w').value = e.detail.width;

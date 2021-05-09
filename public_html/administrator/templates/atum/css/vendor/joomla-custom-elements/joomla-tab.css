@@ -13,67 +13,56 @@ joomla-tab > ul {
   display: flex;
   flex-flow: wrap;
   padding: 0;
-  margin: 0;
   white-space: nowrap;
   list-style: outside none none;
-  border-radius: 0;
-  -o-border-image: none;
-     border-image: none;
+  border-bottom: 1px solid var(--atum-bg-dark-10);
+}
+joomla-tab > ul li + li {
+  margin-left: 1px;
 }
 joomla-tab > ul a[role=tab] {
   position: relative;
   box-sizing: border-box;
   display: block;
-  padding: 0.5rem 1rem;
-  color: var(--atum-link-color);
+  padding: 0.6rem 1rem;
+  color: var(--primary);
   text-decoration: none;
-  border: 0 solid var(--bluegray);
+  border: 0;
   border-top: 0;
   border-right: 0;
   border-bottom: 0;
   box-shadow: none;
 }
 joomla-tab > ul a[role=tab][active], joomla-tab > ul a[role=tab]:hover {
-  margin: -1px;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid var(--bluegray);
-  border-bottom: solid 1px #fff;
+  border: 0;
   border-radius: 0;
   box-shadow: none;
 }
 joomla-tab > ul a[role=tab][active]::after, joomla-tab > ul a[role=tab]:hover::after {
   position: absolute;
-  top: -1px;
   right: 0;
+  bottom: -1px;
   left: 0;
-  height: 4px;
+  height: 3px;
   content: "";
-  background-color: var(--atum-contrast);
+  background-color: var(--atum-link-color);
   opacity: 0.8;
 }
 joomla-tab > ul a[role=tab][active] {
   font-weight: 700;
+  background: var(--atum-bg-dark-3);
 }
 joomla-tab > section {
+  --gutter-x: 2rem;
   display: none;
   padding: 30px 2vw;
   background-color: #fff;
-  border: 1px solid var(--bluegray);
-  border-radius: 0;
+  border: 0;
+  border-radius: 0.25rem;
   box-shadow: none;
-}
-[dir=ltr] joomla-tab > section {
-  margin-left: -1px;
-}
-[dir=rtl] joomla-tab > section {
-  margin-right: -1px;
 }
 joomla-tab > section[active] {
   display: block;
-}
-joomla-tab > section .tab-pane {
-  margin: 0;
 }
 joomla-tab[orientation=vertical] {
   flex-direction: row;
@@ -245,4 +234,7 @@ joomla-tab[view=accordion] #permissions-sliders section[active] {
   joomla-tab[view=accordion] #permissions-sliders section[active] .oddCol {
     background: var(--atum-bg-light);
   }
+}
+.main-card-columns > * > joomla-tab {
+  border-left: 1px solid var(--atum-bg-dark-10);
 }

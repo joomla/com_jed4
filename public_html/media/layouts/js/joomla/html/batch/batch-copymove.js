@@ -1,22 +1,17 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  var onSelect = function onSelect() {
-    var batchCategory = document.getElementById('batch-category-id');
-    var batchMenu = document.getElementById('batch-menu-id');
-    var batchPosition = document.getElementById('batch-position-id');
-    var batchGroup = document.getElementById('batch-group-id');
-    var batchCopyMove = document.getElementById('batch-copy-move');
-    var batchSelector;
+(() => {
+  const onSelect = () => {
+    const batchCategory = document.getElementById('batch-category-id');
+    const batchMenu = document.getElementById('batch-menu-id');
+    const batchPosition = document.getElementById('batch-position-id');
+    const batchGroup = document.getElementById('batch-group-id');
+    const batchCopyMove = document.getElementById('batch-copy-move');
+    let batchSelector;
 
-    var onChange = function onChange() {
+    const onChange = () => {
       if (!batchSelector.value || batchSelector.value && parseInt(batchSelector.value, 10) === 0) {
         batchCopyMove.classList.add('hidden');
       } else {

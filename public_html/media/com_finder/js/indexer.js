@@ -1,33 +1,25 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // eslint-disable no-alert
-(function (Joomla, document) {
-  'use strict';
+((Joomla, document) => {
 
   if (!Joomla) {
     throw new Error('core.js was not properly initialised');
   }
 
-  Joomla.finderIndexer = function () {
-    var getRequest;
-    var totalItems = null;
-    var offset = null;
-    var progress = null;
-    var optimized = false;
-    var path = 'index.php?option=com_finder&tmpl=component&format=json';
-    var token = "&".concat(document.getElementById('finder-indexer-token').getAttribute('name'), "=1");
+  Joomla.finderIndexer = () => {
+    let getRequest;
+    let totalItems = null;
+    let offset = null;
+    let progress = null;
+    let optimized = false;
+    const path = 'index.php?option=com_finder&tmpl=component&format=json';
+    const token = `&${document.getElementById('finder-indexer-token').getAttribute('name')}=1`;
 
-    var removeElement = function removeElement(id) {
-      var element = document.getElementById(id);
+    const removeElement = id => {
+      const element = document.getElementById(id);
 
       if (element) {
         return element.parentNode.removeChild(element);
@@ -36,11 +28,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return null;
     };
 
-    var updateProgress = function updateProgress(header, message) {
+    const updateProgress = (header, message) => {
       progress = offset / totalItems * 100;
-      var progressBar = document.getElementById('progress-bar');
-      var progressHeader = document.getElementById('finder-progress-header');
-      var progressMessage = document.getElementById('finder-progress-message');
+      const progressBar = document.getElementById('progress-bar');
+      const progressHeader = document.getElementById('finder-progress-header');
+      const progressMessage = document.getElementById('finder-progress-message');
 
       if (progressHeader) {
         progressHeader.innerText = header;
@@ -52,14 +44,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       if (progressBar) {
         if (progress < 100) {
-          progressBar.style.width = "".concat(progress, "%");
+          progressBar.style.width = `${progress}%`;
           progressBar.setAttribute('aria-valuenow', progress);
         } else {
           progressBar.classList.remove('bar-success');
           progressBar.classList.add('bar-warning');
           progressBar.setAttribute('aria-valuemin', 100);
           progressBar.setAttribute('aria-valuemax', 200);
-          progressBar.style.width = "".concat(progress, "%");
+          progressBar.style.width = `${progress}%`;
           progressBar.setAttribute('aria-valuenow', progress);
         } // Auto close the window
 
@@ -71,9 +63,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     };
 
-    var handleResponse = function handleResponse(json, resp) {
-      var progressHeader = document.getElementById('finder-progress-header');
-      var progressMessage = document.getElementById('finder-progress-message');
+    const handleResponse = (json, resp) => {
+      const progressHeader = document.getElementById('finder-progress-header');
+      const progressMessage = document.getElementById('finder-progress-message');
 
       try {
         if (json === null) {
@@ -89,10 +81,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           totalItems = json.totalItems;
 
           if (document.getElementById('finder-debug-data')) {
-            var debuglist = document.getElementById('finder-debug-data');
-            Object.entries(json.pluginState).forEach(function (context) {
-              var item = "<dt class=\"col-sm-3\">".concat(context[0], "</dt>");
-              item += "<dd id=\"finder-".concat(context[0].replace(/\s+/g, '-').toLowerCase(), "\" class=\"col-sm-9\"></dd>");
+            const debuglist = document.getElementById('finder-debug-data');
+            Object.entries(json.pluginState).forEach(context => {
+              let item = `<dt class="col-sm-3">${context[0]}</dt>`;
+              item += `<dd id="finder-${context[0].replace(/\s+/g, '-').toLowerCase()}" class="col-sm-9"></dd>`;
               debuglist.insertAdjacentHTML('beforeend', item);
             });
           }
@@ -102,8 +94,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         updateProgress(json.header, json.message);
 
         if (document.getElementById('finder-debug-data')) {
-          Object.entries(json.pluginState).forEach(function (context) {
-            document.getElementById("finder-".concat(context[0].replace(/\s+/g, '-').toLowerCase())).innerHTML = "".concat(json.pluginState[context[0]].offset, " of ").concat(json.pluginState[context[0]].total);
+          Object.entries(json.pluginState).forEach(context => {
+            document.getElementById(`finder-${context[0].replace(/\s+/g, '-').toLowerCase()}`).innerHTML = `${json.pluginState[context[0]].offset} of ${json.pluginState[context[0]].total}`;
           });
         }
 
@@ -149,14 +141,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return true;
     };
 
-    var handleFailure = function handleFailure(xhr) {
-      var progressHeader = document.getElementById('finder-progress-header');
-      var progressMessage = document.getElementById('finder-progress-message');
-      var data = _typeof(xhr) === 'object' && xhr.responseText ? xhr.responseText : null;
+    const handleFailure = xhr => {
+      const progressHeader = document.getElementById('finder-progress-header');
+      const progressMessage = document.getElementById('finder-progress-message');
+      let data = typeof xhr === 'object' && xhr.responseText ? xhr.responseText : null;
       data = data ? JSON.parse(data) : null;
       removeElement('progress');
-      var header = data ? data.header : Joomla.JText._('COM_FINDER_AN_ERROR_HAS_OCCURRED');
-      var message = data ? data.message : "".concat(Joomla.JText._('COM_FINDER_MESSAGE_RETURNED'), "<br>").concat(data);
+      const header = data ? data.header : Joomla.JText._('COM_FINDER_AN_ERROR_HAS_OCCURRED');
+      const message = data ? data.message : `${Joomla.JText._('COM_FINDER_MESSAGE_RETURNED')}<br>${data}`;
 
       if (progressHeader) {
         progressHeader.innerText = header;
@@ -169,25 +161,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     };
 
-    getRequest = function getRequest(task) {
+    getRequest = task => {
       Joomla.request({
-        url: "".concat(path, "&task=").concat(task).concat(token),
+        url: `${path}&task=${task}${token}`,
         method: 'GET',
         data: '',
         perform: true,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        onSuccess: function onSuccess(response) {
+        onSuccess: response => {
           handleResponse(JSON.parse(response));
         },
-        onError: function onError(xhr) {
+        onError: xhr => {
           handleFailure(xhr);
         }
       });
     };
 
-    var initialize = function initialize() {
+    const initialize = () => {
       offset = 0;
       progress = 0;
       getRequest('indexer.start');
@@ -198,6 +190,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 })(Joomla, document); // @todo use directly the Joomla.finderIndexer() instead of the Indexer()!!!
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   window.Indexer = Joomla.finderIndexer();
 });

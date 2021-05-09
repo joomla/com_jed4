@@ -12,7 +12,7 @@ class CharsetNegotiatorTest extends TestCase
      */
     private $negotiator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->negotiator = new CharsetNegotiator();
     }
@@ -43,7 +43,7 @@ class CharsetNegotiatorTest extends TestCase
     public function testGetBest($accept, $priorities, $expected)
     {
         if (is_null($expected))
-            $this->setExpectedException('Negotiation\Exception\InvalidArgument');
+            $this->expectException('Negotiation\Exception\InvalidArgument');
 
         $accept = $this->negotiator->getBest($accept, $priorities);
         if (null === $accept) {

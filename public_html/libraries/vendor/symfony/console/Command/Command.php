@@ -29,6 +29,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Command
 {
+    // see https://tldp.org/LDP/abs/html/exitcodes.html
     public const SUCCESS = 0;
     public const FAILURE = 1;
 
@@ -281,7 +282,14 @@ class Command
         if ($code instanceof \Closure) {
             $r = new \ReflectionFunction($code);
             if (null === $r->getClosureThis()) {
-                $code = \Closure::bind($code, $this);
+                set_error_handler(static function () {});
+                try {
+                    if ($c = \Closure::bind($code, $this)) {
+                        $code = $c;
+                    }
+                } finally {
+                    restore_error_handler();
+                }
             }
         }
 
@@ -387,9 +395,9 @@ class Command
     /**
      * Adds an option.
      *
-     * @param string|array|null             $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-     * @param int|null                      $mode     The option mode: One of the InputOption::VALUE_* constants
-     * @param string|string[]|int|bool|null $default  The default value (must be null for InputOption::VALUE_NONE)
+     * @param string|array|null         $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     * @param int|null                  $mode     The option mode: One of the InputOption::VALUE_* constants
+     * @param string|string[]|bool|null $default  The default value (must be null for InputOption::VALUE_NONE)
      *
      * @throws InvalidArgumentException If option mode is invalid or incompatible
      *

@@ -1,16 +1,16 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): util/index.js
+ * Bootstrap (v5.0.0): util/index.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-var MAX_UID = 1000000;
-var MILLISECONDS_MULTIPLIER = 1000;
-var TRANSITION_END = 'transitionend'; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
+const MAX_UID = 1000000;
+const MILLISECONDS_MULTIPLIER = 1000;
+const TRANSITION_END = 'transitionend'; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
 
-var toType = obj => {
+const toType = obj => {
   if (obj === null || obj === undefined) {
-    return "".concat(obj);
+    return `${obj}`;
   }
 
   return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
@@ -22,7 +22,7 @@ var toType = obj => {
  */
 
 
-var getUID = prefix => {
+const getUID = prefix => {
   do {
     prefix += Math.floor(Math.random() * MAX_UID);
   } while (document.getElementById(prefix));
@@ -30,11 +30,11 @@ var getUID = prefix => {
   return prefix;
 };
 
-var getSelector = element => {
-  var selector = element.getAttribute('data-bs-target');
+const getSelector = element => {
+  let selector = element.getAttribute('data-bs-target');
 
   if (!selector || selector === '#') {
-    var hrefAttr = element.getAttribute('href'); // The only valid content that could double as a selector are IDs or classes,
+    let hrefAttr = element.getAttribute('href'); // The only valid content that could double as a selector are IDs or classes,
     // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
     // `document.querySelector` will rightfully complain it is invalid.
     // See https://github.com/twbs/bootstrap/issues/32273
@@ -45,7 +45,7 @@ var getSelector = element => {
 
 
     if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
-      hrefAttr = '#' + hrefAttr.split('#')[1];
+      hrefAttr = `#${hrefAttr.split('#')[1]}`;
     }
 
     selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;
@@ -54,8 +54,8 @@ var getSelector = element => {
   return selector;
 };
 
-var getSelectorFromElement = element => {
-  var selector = getSelector(element);
+const getSelectorFromElement = element => {
+  const selector = getSelector(element);
 
   if (selector) {
     return document.querySelector(selector) ? selector : null;
@@ -64,23 +64,23 @@ var getSelectorFromElement = element => {
   return null;
 };
 
-var getElementFromSelector = element => {
-  var selector = getSelector(element);
+const getElementFromSelector = element => {
+  const selector = getSelector(element);
   return selector ? document.querySelector(selector) : null;
 };
 
-var getTransitionDurationFromElement = element => {
+const getTransitionDurationFromElement = element => {
   if (!element) {
     return 0;
   } // Get transition-duration of the element
 
 
-  var {
+  let {
     transitionDuration,
     transitionDelay
   } = window.getComputedStyle(element);
-  var floatTransitionDuration = Number.parseFloat(transitionDuration);
-  var floatTransitionDelay = Number.parseFloat(transitionDelay); // Return 0 if element or transition duration is not found
+  const floatTransitionDuration = Number.parseFloat(transitionDuration);
+  const floatTransitionDelay = Number.parseFloat(transitionDelay); // Return 0 if element or transition duration is not found
 
   if (!floatTransitionDuration && !floatTransitionDelay) {
     return 0;
@@ -92,16 +92,16 @@ var getTransitionDurationFromElement = element => {
   return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;
 };
 
-var triggerTransitionEnd = element => {
+const triggerTransitionEnd = element => {
   element.dispatchEvent(new Event(TRANSITION_END));
 };
 
-var isElement = obj => (obj[0] || obj).nodeType;
+const isElement = obj => (obj[0] || obj).nodeType;
 
-var emulateTransitionEnd = (element, duration) => {
-  var called = false;
-  var durationPadding = 5;
-  var emulatedDuration = duration + durationPadding;
+const emulateTransitionEnd = (element, duration) => {
+  let called = false;
+  const durationPadding = 5;
+  const emulatedDuration = duration + durationPadding;
 
   function listener() {
     called = true;
@@ -116,40 +116,56 @@ var emulateTransitionEnd = (element, duration) => {
   }, emulatedDuration);
 };
 
-var typeCheckConfig = (componentName, config, configTypes) => {
+const typeCheckConfig = (componentName, config, configTypes) => {
   Object.keys(configTypes).forEach(property => {
-    var expectedTypes = configTypes[property];
-    var value = config[property];
-    var valueType = value && isElement(value) ? 'element' : toType(value);
+    const expectedTypes = configTypes[property];
+    const value = config[property];
+    const valueType = value && isElement(value) ? 'element' : toType(value);
 
     if (!new RegExp(expectedTypes).test(valueType)) {
-      throw new TypeError("".concat(componentName.toUpperCase(), ": ") + "Option \"".concat(property, "\" provided type \"").concat(valueType, "\" ") + "but expected type \"".concat(expectedTypes, "\"."));
+      throw new TypeError(`${componentName.toUpperCase()}: Option "${property}" provided type "${valueType}" but expected type "${expectedTypes}".`);
     }
   });
 };
 
-var isVisible = element => {
+const isVisible = element => {
   if (!element) {
     return false;
   }
 
   if (element.style && element.parentNode && element.parentNode.style) {
-    var elementStyle = getComputedStyle(element);
-    var parentNodeStyle = getComputedStyle(element.parentNode);
+    const elementStyle = getComputedStyle(element);
+    const parentNodeStyle = getComputedStyle(element.parentNode);
     return elementStyle.display !== 'none' && parentNodeStyle.display !== 'none' && elementStyle.visibility !== 'hidden';
   }
 
   return false;
 };
 
-var findShadowRoot = element => {
+const isDisabled = element => {
+  if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+    return true;
+  }
+
+  if (element.classList.contains('disabled')) {
+    return true;
+  }
+
+  if (typeof element.disabled !== 'undefined') {
+    return element.disabled;
+  }
+
+  return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
+};
+
+const findShadowRoot = element => {
   if (!document.documentElement.attachShadow) {
     return null;
   } // Can find the shadow root otherwise it'll return the document
 
 
   if (typeof element.getRootNode === 'function') {
-    var root = element.getRootNode();
+    const root = element.getRootNode();
     return root instanceof ShadowRoot ? root : null;
   }
 
@@ -165,12 +181,12 @@ var findShadowRoot = element => {
   return findShadowRoot(element.parentNode);
 };
 
-var noop = () => function () {};
+const noop = () => {};
 
-var reflow = element => element.offsetHeight;
+const reflow = element => element.offsetHeight;
 
-var getjQuery = () => {
-  var {
+const getjQuery = () => {
+  const {
     jQuery
   } = window;
 
@@ -181,7 +197,7 @@ var getjQuery = () => {
   return null;
 };
 
-var onDOMContentLoaded = callback => {
+const onDOMContentLoaded = callback => {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', callback);
   } else {
@@ -189,15 +205,15 @@ var onDOMContentLoaded = callback => {
   }
 };
 
-var isRTL = document.documentElement.dir === 'rtl';
+const isRTL = () => document.documentElement.dir === 'rtl';
 
-var defineJQueryPlugin = (name, plugin) => {
+const defineJQueryPlugin = (name, plugin) => {
   onDOMContentLoaded(() => {
-    var $ = getjQuery();
+    const $ = getjQuery();
     /* istanbul ignore if */
 
     if ($) {
-      var JQUERY_NO_CONFLICT = $.fn[name];
+      const JQUERY_NO_CONFLICT = $.fn[name];
       $.fn[name] = plugin.jQueryInterface;
       $.fn[name].Constructor = plugin;
 
@@ -209,9 +225,15 @@ var defineJQueryPlugin = (name, plugin) => {
   });
 };
 
+const execute = callback => {
+  if (typeof callback === 'function') {
+    callback();
+  }
+};
+
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): dom/data.js
+ * Bootstrap (v5.0.0): dom/data.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -221,70 +243,51 @@ var defineJQueryPlugin = (name, plugin) => {
  * Constants
  * ------------------------------------------------------------------------
  */
-var mapData = (() => {
-  var storeData = {};
-  var id = 1;
-  return {
-    set(element, key, data) {
-      if (typeof element.bsKey === 'undefined') {
-        element.bsKey = {
-          key,
-          id
-        };
-        id++;
-      }
-
-      storeData[element.bsKey.id] = data;
-    },
-
-    get(element, key) {
-      if (!element || typeof element.bsKey === 'undefined') {
-        return null;
-      }
-
-      var keyProperties = element.bsKey;
-
-      if (keyProperties.key === key) {
-        return storeData[keyProperties.id];
-      }
-
-      return null;
-    },
-
-    delete(element, key) {
-      if (typeof element.bsKey === 'undefined') {
-        return;
-      }
-
-      var keyProperties = element.bsKey;
-
-      if (keyProperties.key === key) {
-        delete storeData[keyProperties.id];
-        delete element.bsKey;
-      }
+const elementMap = new Map();
+var Data = {
+  set(element, key, instance) {
+    if (!elementMap.has(element)) {
+      elementMap.set(element, new Map());
     }
 
-  };
-})();
+    const instanceMap = elementMap.get(element); // make it clear we only want one instance per element
+    // can be removed later when multiple key/instances are fine to be used
 
-var Data = {
-  setData(instance, key, data) {
-    mapData.set(instance, key, data);
+    if (!instanceMap.has(key) && instanceMap.size !== 0) {
+      // eslint-disable-next-line no-console
+      console.error(`Bootstrap doesn't allow more than one instance per element. Bound instance: ${Array.from(instanceMap.keys())[0]}.`);
+      return;
+    }
+
+    instanceMap.set(key, instance);
   },
 
-  getData(instance, key) {
-    return mapData.get(instance, key);
+  get(element, key) {
+    if (elementMap.has(element)) {
+      return elementMap.get(element).get(key) || null;
+    }
+
+    return null;
   },
 
-  removeData(instance, key) {
-    mapData.delete(instance, key);
+  remove(element, key) {
+    if (!elementMap.has(element)) {
+      return;
+    }
+
+    const instanceMap = elementMap.get(element);
+    instanceMap.delete(key); // free up element references if there are no instances left for an element
+
+    if (instanceMap.size === 0) {
+      elementMap.delete(element);
+    }
   }
 
 };
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): dom/event-handler.js
+ * Bootstrap (v5.0.0): dom/event-handler.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -294,17 +297,18 @@ var Data = {
  * ------------------------------------------------------------------------
  */
 
-var namespaceRegex = /[^.]*(?=\..*)\.|.*/;
-var stripNameRegex = /\..*/;
-var stripUidRegex = /::\d+$/;
-var eventRegistry = {}; // Events storage
+const namespaceRegex = /[^.]*(?=\..*)\.|.*/;
+const stripNameRegex = /\..*/;
+const stripUidRegex = /::\d+$/;
+const eventRegistry = {}; // Events storage
 
-var uidEvent = 1;
-var customEvents = {
+let uidEvent = 1;
+const customEvents = {
   mouseenter: 'mouseover',
   mouseleave: 'mouseout'
 };
-var nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);
+const customEventsRegex = /^(mouseenter|mouseleave)/i;
+const nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);
 /**
  * ------------------------------------------------------------------------
  * Private methods
@@ -312,11 +316,11 @@ var nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contex
  */
 
 function getUidEvent(element, uid) {
-  return uid && "".concat(uid, "::").concat(uidEvent++) || element.uidEvent || uidEvent++;
+  return uid && `${uid}::${uidEvent++}` || element.uidEvent || uidEvent++;
 }
 
 function getEvent(element) {
-  var uid = getUidEvent(element);
+  const uid = getUidEvent(element);
   element.uidEvent = uid;
   eventRegistry[uid] = eventRegistry[uid] || {};
   return eventRegistry[uid];
@@ -336,18 +340,18 @@ function bootstrapHandler(element, fn) {
 
 function bootstrapDelegationHandler(element, selector, fn) {
   return function handler(event) {
-    var domElements = element.querySelectorAll(selector);
+    const domElements = element.querySelectorAll(selector);
 
-    for (var {
+    for (let {
       target
     } = event; target && target !== this; target = target.parentNode) {
-      for (var i = domElements.length; i--;) {
+      for (let i = domElements.length; i--;) {
         if (domElements[i] === target) {
           event.delegateTarget = target;
 
           if (handler.oneOff) {
             // eslint-disable-next-line unicorn/consistent-destructuring
-            EventHandler.off(element, event.type, fn);
+            EventHandler.off(element, event.type, selector, fn);
           }
 
           return fn.apply(target, [event]);
@@ -360,12 +364,11 @@ function bootstrapDelegationHandler(element, selector, fn) {
   };
 }
 
-function findHandler(events, handler) {
-  var delegationSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  var uidEventList = Object.keys(events);
+function findHandler(events, handler, delegationSelector = null) {
+  const uidEventList = Object.keys(events);
 
-  for (var i = 0, len = uidEventList.length; i < len; i++) {
-    var event = events[uidEventList[i]];
+  for (let i = 0, len = uidEventList.length; i < len; i++) {
+    const event = events[uidEventList[i]];
 
     if (event.originalHandler === handler && event.delegationSelector === delegationSelector) {
       return event;
@@ -376,17 +379,10 @@ function findHandler(events, handler) {
 }
 
 function normalizeParams(originalTypeEvent, handler, delegationFn) {
-  var delegation = typeof handler === 'string';
-  var originalHandler = delegation ? delegationFn : handler; // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
-
-  var typeEvent = originalTypeEvent.replace(stripNameRegex, '');
-  var custom = customEvents[typeEvent];
-
-  if (custom) {
-    typeEvent = custom;
-  }
-
-  var isNative = nativeEvents.has(typeEvent);
+  const delegation = typeof handler === 'string';
+  const originalHandler = delegation ? delegationFn : handler;
+  let typeEvent = getTypeEvent(originalTypeEvent);
+  const isNative = nativeEvents.has(typeEvent);
 
   if (!isNative) {
     typeEvent = originalTypeEvent;
@@ -403,20 +399,38 @@ function addHandler(element, originalTypeEvent, handler, delegationFn, oneOff) {
   if (!handler) {
     handler = delegationFn;
     delegationFn = null;
+  } // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
+  // this prevents the handler from being dispatched the same way as mouseover or mouseout does
+
+
+  if (customEventsRegex.test(originalTypeEvent)) {
+    const wrapFn = fn => {
+      return function (event) {
+        if (!event.relatedTarget || event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget)) {
+          return fn.call(this, event);
+        }
+      };
+    };
+
+    if (delegationFn) {
+      delegationFn = wrapFn(delegationFn);
+    } else {
+      handler = wrapFn(handler);
+    }
   }
 
-  var [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn);
-  var events = getEvent(element);
-  var handlers = events[typeEvent] || (events[typeEvent] = {});
-  var previousFn = findHandler(handlers, originalHandler, delegation ? handler : null);
+  const [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn);
+  const events = getEvent(element);
+  const handlers = events[typeEvent] || (events[typeEvent] = {});
+  const previousFn = findHandler(handlers, originalHandler, delegation ? handler : null);
 
   if (previousFn) {
     previousFn.oneOff = previousFn.oneOff && oneOff;
     return;
   }
 
-  var uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''));
-  var fn = delegation ? bootstrapDelegationHandler(element, handler, delegationFn) : bootstrapHandler(element, handler);
+  const uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''));
+  const fn = delegation ? bootstrapDelegationHandler(element, handler, delegationFn) : bootstrapHandler(element, handler);
   fn.delegationSelector = delegation ? handler : null;
   fn.originalHandler = originalHandler;
   fn.oneOff = oneOff;
@@ -426,7 +440,7 @@ function addHandler(element, originalTypeEvent, handler, delegationFn, oneOff) {
 }
 
 function removeHandler(element, events, typeEvent, handler, delegationSelector) {
-  var fn = findHandler(events[typeEvent], handler, delegationSelector);
+  const fn = findHandler(events[typeEvent], handler, delegationSelector);
 
   if (!fn) {
     return;
@@ -437,16 +451,22 @@ function removeHandler(element, events, typeEvent, handler, delegationSelector) 
 }
 
 function removeNamespacedHandlers(element, events, typeEvent, namespace) {
-  var storeElementEvent = events[typeEvent] || {};
+  const storeElementEvent = events[typeEvent] || {};
   Object.keys(storeElementEvent).forEach(handlerKey => {
     if (handlerKey.includes(namespace)) {
-      var event = storeElementEvent[handlerKey];
+      const event = storeElementEvent[handlerKey];
       removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
     }
   });
 }
 
-var EventHandler = {
+function getTypeEvent(event) {
+  // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
+  event = event.replace(stripNameRegex, '');
+  return customEvents[event] || event;
+}
+
+const EventHandler = {
   on(element, event, handler, delegationFn) {
     addHandler(element, event, handler, delegationFn, false);
   },
@@ -460,10 +480,10 @@ var EventHandler = {
       return;
     }
 
-    var [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn);
-    var inNamespace = typeEvent !== originalTypeEvent;
-    var events = getEvent(element);
-    var isNamespace = originalTypeEvent.startsWith('.');
+    const [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn);
+    const inNamespace = typeEvent !== originalTypeEvent;
+    const events = getEvent(element);
+    const isNamespace = originalTypeEvent.startsWith('.');
 
     if (typeof originalHandler !== 'undefined') {
       // Simplest case: handler is passed, remove that listener ONLY.
@@ -481,12 +501,12 @@ var EventHandler = {
       });
     }
 
-    var storeElementEvent = events[typeEvent] || {};
+    const storeElementEvent = events[typeEvent] || {};
     Object.keys(storeElementEvent).forEach(keyHandlers => {
-      var handlerKey = keyHandlers.replace(stripUidRegex, '');
+      const handlerKey = keyHandlers.replace(stripUidRegex, '');
 
       if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
-        var event = storeElementEvent[keyHandlers];
+        const event = storeElementEvent[keyHandlers];
         removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
       }
     });
@@ -497,15 +517,15 @@ var EventHandler = {
       return null;
     }
 
-    var $ = getjQuery();
-    var typeEvent = event.replace(stripNameRegex, '');
-    var inNamespace = event !== typeEvent;
-    var isNative = nativeEvents.has(typeEvent);
-    var jQueryEvent;
-    var bubbles = true;
-    var nativeDispatch = true;
-    var defaultPrevented = false;
-    var evt = null;
+    const $ = getjQuery();
+    const typeEvent = getTypeEvent(event);
+    const inNamespace = event !== typeEvent;
+    const isNative = nativeEvents.has(typeEvent);
+    let jQueryEvent;
+    let bubbles = true;
+    let nativeDispatch = true;
+    let defaultPrevented = false;
+    let evt = null;
 
     if (inNamespace && $) {
       jQueryEvent = $.Event(event, args);
@@ -556,7 +576,7 @@ var EventHandler = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): base-component.js
+ * Bootstrap (v5.0.0): base-component.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -566,27 +586,30 @@ var EventHandler = {
  * ------------------------------------------------------------------------
  */
 
-var VERSION = '5.0.0-beta2';
+const VERSION = '5.0.0';
 
 class BaseComponent {
   constructor(element) {
+    element = typeof element === 'string' ? document.querySelector(element) : element;
+
     if (!element) {
       return;
     }
 
     this._element = element;
-    Data.setData(element, this.constructor.DATA_KEY, this);
+    Data.set(this._element, this.constructor.DATA_KEY, this);
   }
 
   dispose() {
-    Data.removeData(this._element, this.constructor.DATA_KEY);
+    Data.remove(this._element, this.constructor.DATA_KEY);
+    EventHandler.off(this._element, `.${this.constructor.DATA_KEY}`);
     this._element = null;
   }
   /** Static */
 
 
   static getInstance(element) {
-    return Data.getData(element, this.DATA_KEY);
+    return Data.get(element, this.DATA_KEY);
   }
 
   static get VERSION() {
@@ -597,7 +620,7 @@ class BaseComponent {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): dom/manipulator.js
+ * Bootstrap (v5.0.0): dom/manipulator.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -622,16 +645,16 @@ function normalizeData(val) {
 }
 
 function normalizeDataKey(key) {
-  return key.replace(/[A-Z]/g, chr => "-".concat(chr.toLowerCase()));
+  return key.replace(/[A-Z]/g, chr => `-${chr.toLowerCase()}`);
 }
 
-var Manipulator = {
+const Manipulator = {
   setDataAttribute(element, key, value) {
-    element.setAttribute("data-bs-".concat(normalizeDataKey(key)), value);
+    element.setAttribute(`data-bs-${normalizeDataKey(key)}`, value);
   },
 
   removeDataAttribute(element, key) {
-    element.removeAttribute("data-bs-".concat(normalizeDataKey(key)));
+    element.removeAttribute(`data-bs-${normalizeDataKey(key)}`);
   },
 
   getDataAttributes(element) {
@@ -639,9 +662,9 @@ var Manipulator = {
       return {};
     }
 
-    var attributes = {};
+    const attributes = {};
     Object.keys(element.dataset).filter(key => key.startsWith('bs')).forEach(key => {
-      var pureKey = key.replace(/^bs/, '');
+      let pureKey = key.replace(/^bs/, '');
       pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length);
       attributes[pureKey] = normalizeData(element.dataset[key]);
     });
@@ -649,11 +672,11 @@ var Manipulator = {
   },
 
   getDataAttribute(element, key) {
-    return normalizeData(element.getAttribute("data-bs-".concat(normalizeDataKey(key))));
+    return normalizeData(element.getAttribute(`data-bs-${normalizeDataKey(key)}`));
   },
 
   offset(element) {
-    var rect = element.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
     return {
       top: rect.top + document.body.scrollTop,
       left: rect.left + document.body.scrollLeft
@@ -671,7 +694,7 @@ var Manipulator = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): dom/selector-engine.js
+ * Bootstrap (v5.0.0): dom/selector-engine.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -681,15 +704,13 @@ var Manipulator = {
  * Constants
  * ------------------------------------------------------------------------
  */
-var NODE_TEXT = 3;
-var SelectorEngine = {
-  find(selector) {
-    var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
+const NODE_TEXT = 3;
+const SelectorEngine = {
+  find(selector, element = document.documentElement) {
     return [].concat(...Element.prototype.querySelectorAll.call(element, selector));
   },
 
-  findOne(selector) {
-    var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
+  findOne(selector, element = document.documentElement) {
     return Element.prototype.querySelector.call(element, selector);
   },
 
@@ -698,8 +719,8 @@ var SelectorEngine = {
   },
 
   parents(element, selector) {
-    var parents = [];
-    var ancestor = element.parentNode;
+    const parents = [];
+    let ancestor = element.parentNode;
 
     while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
       if (ancestor.matches(selector)) {
@@ -713,7 +734,7 @@ var SelectorEngine = {
   },
 
   prev(element, selector) {
-    var previous = element.previousElementSibling;
+    let previous = element.previousElementSibling;
 
     while (previous) {
       if (previous.matches(selector)) {
@@ -727,7 +748,7 @@ var SelectorEngine = {
   },
 
   next(element, selector) {
-    var next = element.nextElementSibling;
+    let next = element.nextElementSibling;
 
     while (next) {
       if (next.matches(selector)) {
@@ -742,4 +763,4 @@ var SelectorEngine = {
 
 };
 
-export { BaseComponent as B, Data as D, EventHandler as E, Manipulator as M, SelectorEngine as S, getTransitionDurationFromElement as a, typeCheckConfig as b, isRTL as c, defineJQueryPlugin as d, emulateTransitionEnd as e, getSelectorFromElement as f, getElementFromSelector as g, isElement as h, isVisible as i, findShadowRoot as j, getUID as k, noop as n, reflow as r, triggerTransitionEnd as t };
+export { BaseComponent as B, Data as D, EventHandler as E, Manipulator as M, SelectorEngine as S, getTransitionDurationFromElement as a, typeCheckConfig as b, isRTL as c, defineJQueryPlugin as d, emulateTransitionEnd as e, getSelectorFromElement as f, getElementFromSelector as g, isElement as h, isVisible as i, isDisabled as j, execute as k, findShadowRoot as l, getUID as m, noop as n, reflow as r, triggerTransitionEnd as t };

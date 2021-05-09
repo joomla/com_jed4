@@ -1,15 +1,10 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (Joomla) {
-  var id = Joomla.getOptions('category-change');
-  var element = document.querySelector("#".concat(id));
+(Joomla => {
+  const id = Joomla.getOptions('category-change');
+  const element = document.querySelector(`#${id}`);
 
   if (!element) {
     throw new Error('Category Id element not found');
@@ -22,7 +17,7 @@
     element.setAttribute('data-refresh-catid', element.value);
   }
 
-  window.Joomla.categoryHasChanged = function (el) {
+  window.Joomla.categoryHasChanged = el => {
     if (el.value === el.getAttribute('data-refresh-catid')) {
       return;
     }
@@ -30,9 +25,9 @@
     document.body.appendChild(document.createElement('joomla-core-loader')); // Custom Fields
 
     if (el.getAttribute('data-refresh-section')) {
-      document.querySelector('input[name=task]').value = "".concat(el.getAttribute('data-refresh-section'), ".reload");
+      document.querySelector('input[name=task]').value = `${el.getAttribute('data-refresh-section')}.reload`;
     }
 
-    Joomla.submitform("".concat(el.getAttribute('data-refresh-section'), ".reload"), element.form);
+    Joomla.submitform(`${el.getAttribute('data-refresh-section')}.reload`, element.form);
   };
 })(Joomla);

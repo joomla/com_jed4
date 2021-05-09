@@ -1,20 +1,14 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-document.addEventListener('DOMContentLoaded', function () {
-  'use strict'; // The container where the draggable will be enabled
+document.addEventListener('DOMContentLoaded', () => {
 
-  var url;
-  var direction;
-  var isNested;
-  var container = document.querySelector('.js-draggable');
-  var orderRows = container.querySelectorAll('[name="order[]"]');
+  let url;
+  let direction;
+  let isNested;
+  let container = document.querySelector('.js-draggable');
+  const orderRows = container.querySelectorAll('[name="order[]"]');
 
   if (container) {
     /** The script expects a form with a class js-form
@@ -26,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     direction = container.getAttribute('data-direction');
     isNested = container.getAttribute('data-nested');
   } else if (Joomla.getOptions('draggable-list')) {
-    var options = Joomla.getOptions('draggable-list');
+    const options = Joomla.getOptions('draggable-list');
     container = document.querySelector(options.id);
     /**
      * This is here to make the transition to new forms easier.
@@ -36,26 +30,30 @@ document.addEventListener('DOMContentLoaded', function () {
       container.classList.add('js-draggable');
     }
 
-    url = options.url;
-    direction = options.direction;
+    ({
+      url
+    } = options);
+    ({
+      direction
+    } = options);
     isNested = options.nested;
   }
 
   if (container) {
     // Add data order attribute for initial ordering
-    for (var i = 0, l = orderRows.length; l > i; i += 1) {
+    for (let i = 0, l = orderRows.length; l > i; i += 1) {
       orderRows[i].setAttribute('data-order', i + 1);
     } // IOS 10 BUG
 
 
-    document.addEventListener('touchstart', function () {}, false);
+    document.addEventListener('touchstart', () => {}, false);
 
-    var getOrderData = function getOrderData(wrapper, dir) {
-      var i;
-      var l;
-      var result = [];
-      var rows = [].slice.call(wrapper.querySelectorAll('[name="order[]"]'));
-      var inputRows = [].slice.call(wrapper.querySelectorAll('[name="cid[]"]'));
+    const getOrderData = (wrapper, dir) => {
+      let i;
+      let l;
+      const result = [];
+      const rows = [].slice.call(wrapper.querySelectorAll('[name="order[]"]'));
+      const inputRows = [].slice.call(wrapper.querySelectorAll('[name="cid[]"]'));
 
       if (dir === 'desc') {
         // Reverse the array
@@ -66,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       for (i = 0, l = rows.length; l > i; i += 1) {
         rows[i].value = i + 1;
-        result.push("order[]=".concat(encodeURIComponent(rows[i].value)));
-        result.push("cid[]=".concat(encodeURIComponent(inputRows[i].value)));
+        result.push(`order[]=${encodeURIComponent(rows[i].value)}`);
+        result.push(`cid[]=${encodeURIComponent(inputRows[i].value)}`);
       }
 
       return result;
@@ -83,9 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
       // copySortSource: true,
       // spilling will put the element back where it was dragged from, if this is true
       revertOnSpill: true,
+
       // spilling will `.remove` the element, if this is true
       // removeOnSpill: false,
-      accepts: function accepts(el, target, source, sibling) {
+      accepts(el, target, source, sibling) {
         if (isNested) {
           if (sibling !== null) {
             return sibling.getAttribute('data-draggable-group') && sibling.getAttribute('data-draggable-group') === el.getAttribute('data-draggable-group');
@@ -95,22 +94,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         return sibling === null || sibling && sibling.tagName.toLowerCase() === 'tr';
-      }
-    }).on('drag', function () {}).on('cloned', function () {
-      var el = document.querySelector('.gu-mirror');
-      el.classList.add('table');
-    }).on('drop', function () {
+      },
+
+      mirrorContainer: container
+    }).on('drag', () => {}).on('cloned', () => {}).on('drop', () => {
       if (url) {
         // Detach task field if exists
-        var task = document.querySelector('[name="task"]'); // Detach task field if exists
+        const task = document.querySelector('[name="task"]'); // Detach task field if exists
 
         if (task) {
           task.setAttribute('name', 'some__Temporary__Name__');
         } // Prepare the options
 
 
-        var ajaxOptions = {
-          url: url,
+        const ajaxOptions = {
+          url,
           method: 'POST',
           data: getOrderData(container, direction).join('&'),
           perform: true
@@ -121,11 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
           task.setAttribute('name', 'task');
         }
       }
-    }).on('dragend', function () {
-      var elements = container.querySelectorAll('[name="order[]"]'); // Reset data order attribute for initial ordering
+    }).on('dragend', () => {
+      const elements = container.querySelectorAll('[name="order[]"]'); // Reset data order attribute for initial ordering
 
-      for (var _i = 0, _l = elements.length; _l > _i; _i += 1) {
-        elements[_i].setAttribute('data-order', _i + 1);
+      for (let i = 0, l = elements.length; l > i; i += 1) {
+        elements[i].setAttribute('data-order', i + 1);
       }
     });
   }

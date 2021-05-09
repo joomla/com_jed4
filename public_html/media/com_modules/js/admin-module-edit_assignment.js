@@ -1,16 +1,10 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
 
-  var onChange = function onChange(value) {
+  const onChange = value => {
     if (value === '-' || parseInt(value, 10) === 0) {
       document.getElementById('menuselect-group').classList.add('hidden');
     } else {
@@ -18,15 +12,16 @@
     }
   };
 
-  var onBoot = function onBoot() {
-    var element = document.getElementById('jform_assignment');
+  const onBoot = () => {
+    const element = document.getElementById('jform_assignment');
 
     if (element) {
       // Initialise the state
       onChange(element.value); // Check for changes in the state
 
-      element.addEventListener('change', function (_ref) {
-        var target = _ref.target;
+      element.addEventListener('change', ({
+        target
+      }) => {
         onChange(target.value);
       });
     }

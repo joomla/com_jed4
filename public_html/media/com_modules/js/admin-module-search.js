@@ -1,9 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -37,44 +32,54 @@
  * probably going to be creating multiple instances of the same module, one after another, as is
  * typical when building a new Joomla! site.
  */
-(function (document) {
-  'use strict'; // Make sure the element exists i.e. a template override has not removed it.
+(document => {
 
-  var elSearch = document.getElementById('comModulesSelectSearch');
-  var elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
+  const elSearch = document.getElementById('comModulesSelectSearch');
+  const elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
 
   if (!elSearch || !elSearchContainer) {
     return;
   } // Add the keyboard event listener which performs the live search in the cards
 
 
-  elSearch.addEventListener('keyup', function (event) {
+  elSearch.addEventListener('keyup', event => {
     /** @type {KeyboardEvent} event */
-    var partialSearch = event.target.value;
-    var elCards = document.querySelectorAll('.comModulesSelectCard'); // Save the search string into session storage
+    const partialSearch = event.target.value;
+    const alert = document.querySelector('.alert');
+    const elCards = document.querySelectorAll('.comModulesSelectCard');
+    let countOfMatchFound = 0; // Save the search string into session storage
 
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem('Joomla.com_modules.new.search', partialSearch);
     } // Iterate all the module cards
 
 
-    elCards.forEach(function (card) {
-      var cardHeaderList = card.querySelectorAll('.card-header');
-      var cardBodyList = card.querySelectorAll('.card-body');
-      var title = cardHeaderList.length ? cardHeaderList[0].textContent : '';
-      var description = cardBodyList.length ? cardBodyList[0].textContent : ''; // First remove the classes which hide the module cards
+    elCards.forEach(card => {
+      const cardHeaderList = card.querySelectorAll('.card-header');
+      const cardBodyList = card.querySelectorAll('.card-body');
+      const title = cardHeaderList.length ? cardHeaderList[0].textContent : '';
+      const description = cardBodyList.length ? cardBodyList[0].textContent : ''; // First remove the classes which hide the module cards
 
-      card.classList.remove('d-none'); // An empty search string means that we should show everything
+      card.classList.remove('d-none');
+      countOfMatchFound += 1; // An empty search string means that we should show everything
 
       if (partialSearch === '') {
+        countOfMatchFound = elCards.length;
         return;
       } // If the module title and description don’t match add a class to hide it.
 
 
       if (!title.toLowerCase().includes(partialSearch.toLowerCase()) && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
         card.classList.add('d-none');
+        countOfMatchFound -= 1;
       }
     });
+
+    if (countOfMatchFound <= 0) {
+      alert.classList.remove('d-none');
+    } else {
+      alert.classList.add('d-none');
+    }
   }); // For reasons of progressive enhancement the search box is hidden by default.
 
   elSearchContainer.classList.remove('d-none'); // Focus the just show element

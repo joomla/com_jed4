@@ -1,70 +1,27 @@
-import { B as BaseComponent, S as SelectorEngine, i as isVisible, t as triggerTransitionEnd, E as EventHandler, b as typeCheckConfig, c as isRTL, r as reflow, a as getTransitionDurationFromElement, e as emulateTransitionEnd, D as Data, M as Manipulator, g as getElementFromSelector, d as defineJQueryPlugin } from './dom.js?1614481245';
+import { B as BaseComponent, S as SelectorEngine, i as isVisible, t as triggerTransitionEnd, E as EventHandler, b as typeCheckConfig, r as reflow, a as getTransitionDurationFromElement, e as emulateTransitionEnd, c as isRTL, D as Data, M as Manipulator, g as getElementFromSelector, d as defineJQueryPlugin } from './dom.js?1620567725';
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0): carousel.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
 /**
  * ------------------------------------------------------------------------
  * Constants
  * ------------------------------------------------------------------------
  */
 
-var NAME = 'carousel';
-var DATA_KEY = 'bs.carousel';
-var EVENT_KEY = ".".concat(DATA_KEY);
-var DATA_API_KEY = '.data-api';
-var ARROW_LEFT_KEY = 'ArrowLeft';
-var ARROW_RIGHT_KEY = 'ArrowRight';
-var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
+const NAME = 'carousel';
+const DATA_KEY = 'bs.carousel';
+const EVENT_KEY = `.${DATA_KEY}`;
+const DATA_API_KEY = '.data-api';
+const ARROW_LEFT_KEY = 'ArrowLeft';
+const ARROW_RIGHT_KEY = 'ArrowRight';
+const TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
 
-var SWIPE_THRESHOLD = 40;
-var Default = {
+const SWIPE_THRESHOLD = 40;
+const Default = {
   interval: 5000,
   keyboard: true,
   slide: false,
@@ -72,7 +29,7 @@ var Default = {
   wrap: true,
   touch: true
 };
-var DefaultType = {
+const DefaultType = {
   interval: '(number|boolean)',
   keyboard: 'boolean',
   slide: '(boolean|string)',
@@ -80,42 +37,42 @@ var DefaultType = {
   wrap: 'boolean',
   touch: 'boolean'
 };
-var DIRECTION_NEXT = 'next';
-var DIRECTION_PREV = 'prev';
-var DIRECTION_LEFT = 'left';
-var DIRECTION_RIGHT = 'right';
-var EVENT_SLIDE = "slide".concat(EVENT_KEY);
-var EVENT_SLID = "slid".concat(EVENT_KEY);
-var EVENT_KEYDOWN = "keydown".concat(EVENT_KEY);
-var EVENT_MOUSEENTER = "mouseenter".concat(EVENT_KEY);
-var EVENT_MOUSELEAVE = "mouseleave".concat(EVENT_KEY);
-var EVENT_TOUCHSTART = "touchstart".concat(EVENT_KEY);
-var EVENT_TOUCHMOVE = "touchmove".concat(EVENT_KEY);
-var EVENT_TOUCHEND = "touchend".concat(EVENT_KEY);
-var EVENT_POINTERDOWN = "pointerdown".concat(EVENT_KEY);
-var EVENT_POINTERUP = "pointerup".concat(EVENT_KEY);
-var EVENT_DRAG_START = "dragstart".concat(EVENT_KEY);
-var EVENT_LOAD_DATA_API = "load".concat(EVENT_KEY).concat(DATA_API_KEY);
-var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
-var CLASS_NAME_CAROUSEL = 'carousel';
-var CLASS_NAME_ACTIVE = 'active';
-var CLASS_NAME_SLIDE = 'slide';
-var CLASS_NAME_END = 'carousel-item-end';
-var CLASS_NAME_START = 'carousel-item-start';
-var CLASS_NAME_NEXT = 'carousel-item-next';
-var CLASS_NAME_PREV = 'carousel-item-prev';
-var CLASS_NAME_POINTER_EVENT = 'pointer-event';
-var SELECTOR_ACTIVE = '.active';
-var SELECTOR_ACTIVE_ITEM = '.active.carousel-item';
-var SELECTOR_ITEM = '.carousel-item';
-var SELECTOR_ITEM_IMG = '.carousel-item img';
-var SELECTOR_NEXT_PREV = '.carousel-item-next, .carousel-item-prev';
-var SELECTOR_INDICATORS = '.carousel-indicators';
-var SELECTOR_INDICATOR = '[data-bs-target]';
-var SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to]';
-var SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"]';
-var POINTER_TYPE_TOUCH = 'touch';
-var POINTER_TYPE_PEN = 'pen';
+const ORDER_NEXT = 'next';
+const ORDER_PREV = 'prev';
+const DIRECTION_LEFT = 'left';
+const DIRECTION_RIGHT = 'right';
+const EVENT_SLIDE = `slide${EVENT_KEY}`;
+const EVENT_SLID = `slid${EVENT_KEY}`;
+const EVENT_KEYDOWN = `keydown${EVENT_KEY}`;
+const EVENT_MOUSEENTER = `mouseenter${EVENT_KEY}`;
+const EVENT_MOUSELEAVE = `mouseleave${EVENT_KEY}`;
+const EVENT_TOUCHSTART = `touchstart${EVENT_KEY}`;
+const EVENT_TOUCHMOVE = `touchmove${EVENT_KEY}`;
+const EVENT_TOUCHEND = `touchend${EVENT_KEY}`;
+const EVENT_POINTERDOWN = `pointerdown${EVENT_KEY}`;
+const EVENT_POINTERUP = `pointerup${EVENT_KEY}`;
+const EVENT_DRAG_START = `dragstart${EVENT_KEY}`;
+const EVENT_LOAD_DATA_API = `load${EVENT_KEY}${DATA_API_KEY}`;
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
+const CLASS_NAME_CAROUSEL = 'carousel';
+const CLASS_NAME_ACTIVE = 'active';
+const CLASS_NAME_SLIDE = 'slide';
+const CLASS_NAME_END = 'carousel-item-end';
+const CLASS_NAME_START = 'carousel-item-start';
+const CLASS_NAME_NEXT = 'carousel-item-next';
+const CLASS_NAME_PREV = 'carousel-item-prev';
+const CLASS_NAME_POINTER_EVENT = 'pointer-event';
+const SELECTOR_ACTIVE = '.active';
+const SELECTOR_ACTIVE_ITEM = '.active.carousel-item';
+const SELECTOR_ITEM = '.carousel-item';
+const SELECTOR_ITEM_IMG = '.carousel-item img';
+const SELECTOR_NEXT_PREV = '.carousel-item-next, .carousel-item-prev';
+const SELECTOR_INDICATORS = '.carousel-indicators';
+const SELECTOR_INDICATOR = '[data-bs-target]';
+const SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to]';
+const SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"]';
+const POINTER_TYPE_TOUCH = 'touch';
+const POINTER_TYPE_PEN = 'pen';
 /**
  * ------------------------------------------------------------------------
  * Class Definition
@@ -153,7 +110,7 @@ class Carousel extends BaseComponent {
 
   next() {
     if (!this._isSliding) {
-      this._slide(DIRECTION_NEXT);
+      this._slide(ORDER_NEXT);
     }
   }
 
@@ -167,7 +124,7 @@ class Carousel extends BaseComponent {
 
   prev() {
     if (!this._isSliding) {
-      this._slide(DIRECTION_PREV);
+      this._slide(ORDER_PREV);
     }
   }
 
@@ -205,7 +162,7 @@ class Carousel extends BaseComponent {
   to(index) {
     this._activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
-    var activeIndex = this._getItemIndex(this._activeElement);
+    const activeIndex = this._getItemIndex(this._activeElement);
 
     if (index > this._items.length - 1 || index < 0) {
       return;
@@ -222,14 +179,12 @@ class Carousel extends BaseComponent {
       return;
     }
 
-    var direction = index > activeIndex ? DIRECTION_NEXT : DIRECTION_PREV;
+    const order = index > activeIndex ? ORDER_NEXT : ORDER_PREV;
 
-    this._slide(direction, this._items[index]);
+    this._slide(order, this._items[index]);
   }
 
   dispose() {
-    super.dispose();
-    EventHandler.off(this._element, EVENT_KEY);
     this._items = null;
     this._config = null;
     this._interval = null;
@@ -237,41 +192,33 @@ class Carousel extends BaseComponent {
     this._isSliding = null;
     this._activeElement = null;
     this._indicatorsElement = null;
+    super.dispose();
   } // Private
 
 
   _getConfig(config) {
-    config = _objectSpread2(_objectSpread2({}, Default), config);
+    config = { ...Default,
+      ...config
+    };
     typeCheckConfig(NAME, config, DefaultType);
     return config;
   }
 
   _handleSwipe() {
-    var absDeltax = Math.abs(this.touchDeltaX);
+    const absDeltax = Math.abs(this.touchDeltaX);
 
     if (absDeltax <= SWIPE_THRESHOLD) {
       return;
     }
 
-    var direction = absDeltax / this.touchDeltaX;
-    this.touchDeltaX = 0; // swipe left
+    const direction = absDeltax / this.touchDeltaX;
+    this.touchDeltaX = 0;
 
-    if (direction > 0) {
-      if (isRTL) {
-        this.next();
-      } else {
-        this.prev();
-      }
-    } // swipe right
-
-
-    if (direction < 0) {
-      if (isRTL) {
-        this.prev();
-      } else {
-        this.next();
-      }
+    if (!direction) {
+      return;
     }
+
+    this._slide(direction > 0 ? DIRECTION_RIGHT : DIRECTION_LEFT);
   }
 
   _addEventListeners() {
@@ -290,7 +237,7 @@ class Carousel extends BaseComponent {
   }
 
   _addTouchEventListeners() {
-    var start = event => {
+    const start = event => {
       if (this._pointerEvent && (event.pointerType === POINTER_TYPE_PEN || event.pointerType === POINTER_TYPE_TOUCH)) {
         this.touchStartX = event.clientX;
       } else if (!this._pointerEvent) {
@@ -298,16 +245,12 @@ class Carousel extends BaseComponent {
       }
     };
 
-    var move = event => {
+    const move = event => {
       // ensure swiping with one touch and not pinching
-      if (event.touches && event.touches.length > 1) {
-        this.touchDeltaX = 0;
-      } else {
-        this.touchDeltaX = event.touches[0].clientX - this.touchStartX;
-      }
+      this.touchDeltaX = event.touches && event.touches.length > 1 ? 0 : event.touches[0].clientX - this.touchStartX;
     };
 
-    var end = event => {
+    const end = event => {
       if (this._pointerEvent && (event.pointerType === POINTER_TYPE_PEN || event.pointerType === POINTER_TYPE_TOUCH)) {
         this.touchDeltaX = event.clientX - this.touchStartX;
       }
@@ -356,19 +299,11 @@ class Carousel extends BaseComponent {
     if (event.key === ARROW_LEFT_KEY) {
       event.preventDefault();
 
-      if (isRTL) {
-        this.next();
-      } else {
-        this.prev();
-      }
+      this._slide(DIRECTION_RIGHT);
     } else if (event.key === ARROW_RIGHT_KEY) {
       event.preventDefault();
 
-      if (isRTL) {
-        this.prev();
-      } else {
-        this.next();
-      }
+      this._slide(DIRECTION_LEFT);
     }
   }
 
@@ -377,28 +312,28 @@ class Carousel extends BaseComponent {
     return this._items.indexOf(element);
   }
 
-  _getItemByDirection(direction, activeElement) {
-    var isNextDirection = direction === DIRECTION_NEXT;
-    var isPrevDirection = direction === DIRECTION_PREV;
+  _getItemByOrder(order, activeElement) {
+    const isNext = order === ORDER_NEXT;
+    const isPrev = order === ORDER_PREV;
 
-    var activeIndex = this._getItemIndex(activeElement);
+    const activeIndex = this._getItemIndex(activeElement);
 
-    var lastItemIndex = this._items.length - 1;
-    var isGoingToWrap = isPrevDirection && activeIndex === 0 || isNextDirection && activeIndex === lastItemIndex;
+    const lastItemIndex = this._items.length - 1;
+    const isGoingToWrap = isPrev && activeIndex === 0 || isNext && activeIndex === lastItemIndex;
 
     if (isGoingToWrap && !this._config.wrap) {
       return activeElement;
     }
 
-    var delta = direction === DIRECTION_PREV ? -1 : 1;
-    var itemIndex = (activeIndex + delta) % this._items.length;
+    const delta = isPrev ? -1 : 1;
+    const itemIndex = (activeIndex + delta) % this._items.length;
     return itemIndex === -1 ? this._items[this._items.length - 1] : this._items[itemIndex];
   }
 
   _triggerSlideEvent(relatedTarget, eventDirectionName) {
-    var targetIndex = this._getItemIndex(relatedTarget);
+    const targetIndex = this._getItemIndex(relatedTarget);
 
-    var fromIndex = this._getItemIndex(SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element));
+    const fromIndex = this._getItemIndex(SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element));
 
     return EventHandler.trigger(this._element, EVENT_SLIDE, {
       relatedTarget,
@@ -410,12 +345,12 @@ class Carousel extends BaseComponent {
 
   _setActiveIndicatorElement(element) {
     if (this._indicatorsElement) {
-      var activeIndicator = SelectorEngine.findOne(SELECTOR_ACTIVE, this._indicatorsElement);
+      const activeIndicator = SelectorEngine.findOne(SELECTOR_ACTIVE, this._indicatorsElement);
       activeIndicator.classList.remove(CLASS_NAME_ACTIVE);
       activeIndicator.removeAttribute('aria-current');
-      var indicators = SelectorEngine.find(SELECTOR_INDICATOR, this._indicatorsElement);
+      const indicators = SelectorEngine.find(SELECTOR_INDICATOR, this._indicatorsElement);
 
-      for (var i = 0; i < indicators.length; i++) {
+      for (let i = 0; i < indicators.length; i++) {
         if (Number.parseInt(indicators[i].getAttribute('data-bs-slide-to'), 10) === this._getItemIndex(element)) {
           indicators[i].classList.add(CLASS_NAME_ACTIVE);
           indicators[i].setAttribute('aria-current', 'true');
@@ -426,13 +361,13 @@ class Carousel extends BaseComponent {
   }
 
   _updateInterval() {
-    var element = this._activeElement || SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
+    const element = this._activeElement || SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
     if (!element) {
       return;
     }
 
-    var elementInterval = Number.parseInt(element.getAttribute('data-bs-interval'), 10);
+    const elementInterval = Number.parseInt(element.getAttribute('data-bs-interval'), 10);
 
     if (elementInterval) {
       this._config.defaultInterval = this._config.defaultInterval || this._config.interval;
@@ -442,26 +377,30 @@ class Carousel extends BaseComponent {
     }
   }
 
-  _slide(direction, element) {
-    var activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
+  _slide(directionOrOrder, element) {
+    const order = this._directionToOrder(directionOrOrder);
 
-    var activeElementIndex = this._getItemIndex(activeElement);
+    const activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
-    var nextElement = element || activeElement && this._getItemByDirection(direction, activeElement);
+    const activeElementIndex = this._getItemIndex(activeElement);
 
-    var nextElementIndex = this._getItemIndex(nextElement);
+    const nextElement = element || this._getItemByOrder(order, activeElement);
 
-    var isCycling = Boolean(this._interval);
-    var directionalClassName = direction === DIRECTION_NEXT ? CLASS_NAME_START : CLASS_NAME_END;
-    var orderClassName = direction === DIRECTION_NEXT ? CLASS_NAME_NEXT : CLASS_NAME_PREV;
-    var eventDirectionName = direction === DIRECTION_NEXT ? DIRECTION_LEFT : DIRECTION_RIGHT;
+    const nextElementIndex = this._getItemIndex(nextElement);
+
+    const isCycling = Boolean(this._interval);
+    const isNext = order === ORDER_NEXT;
+    const directionalClassName = isNext ? CLASS_NAME_START : CLASS_NAME_END;
+    const orderClassName = isNext ? CLASS_NAME_NEXT : CLASS_NAME_PREV;
+
+    const eventDirectionName = this._orderToDirection(order);
 
     if (nextElement && nextElement.classList.contains(CLASS_NAME_ACTIVE)) {
       this._isSliding = false;
       return;
     }
 
-    var slideEvent = this._triggerSlideEvent(nextElement, eventDirectionName);
+    const slideEvent = this._triggerSlideEvent(nextElement, eventDirectionName);
 
     if (slideEvent.defaultPrevented) {
       return;
@@ -487,7 +426,7 @@ class Carousel extends BaseComponent {
       reflow(nextElement);
       activeElement.classList.add(directionalClassName);
       nextElement.classList.add(directionalClassName);
-      var transitionDuration = getTransitionDurationFromElement(activeElement);
+      const transitionDuration = getTransitionDurationFromElement(activeElement);
       EventHandler.one(activeElement, 'transitionend', () => {
         nextElement.classList.remove(directionalClassName, orderClassName);
         nextElement.classList.add(CLASS_NAME_ACTIVE);
@@ -518,19 +457,46 @@ class Carousel extends BaseComponent {
     if (isCycling) {
       this.cycle();
     }
+  }
+
+  _directionToOrder(direction) {
+    if (![DIRECTION_RIGHT, DIRECTION_LEFT].includes(direction)) {
+      return direction;
+    }
+
+    if (isRTL()) {
+      return direction === DIRECTION_LEFT ? ORDER_PREV : ORDER_NEXT;
+    }
+
+    return direction === DIRECTION_LEFT ? ORDER_NEXT : ORDER_PREV;
+  }
+
+  _orderToDirection(order) {
+    if (![ORDER_NEXT, ORDER_PREV].includes(order)) {
+      return order;
+    }
+
+    if (isRTL()) {
+      return order === ORDER_PREV ? DIRECTION_LEFT : DIRECTION_RIGHT;
+    }
+
+    return order === ORDER_PREV ? DIRECTION_RIGHT : DIRECTION_LEFT;
   } // Static
 
 
   static carouselInterface(element, config) {
-    var data = Data.getData(element, DATA_KEY);
-
-    var _config = _objectSpread2(_objectSpread2({}, Default), Manipulator.getDataAttributes(element));
+    let data = Data.get(element, DATA_KEY);
+    let _config = { ...Default,
+      ...Manipulator.getDataAttributes(element)
+    };
 
     if (typeof config === 'object') {
-      _config = _objectSpread2(_objectSpread2({}, _config), config);
+      _config = { ..._config,
+        ...config
+      };
     }
 
-    var action = typeof config === 'string' ? config : _config.slide;
+    const action = typeof config === 'string' ? config : _config.slide;
 
     if (!data) {
       data = new Carousel(element, _config);
@@ -540,7 +506,7 @@ class Carousel extends BaseComponent {
       data.to(config);
     } else if (typeof action === 'string') {
       if (typeof data[action] === 'undefined') {
-        throw new TypeError("No method named \"".concat(action, "\""));
+        throw new TypeError(`No method named "${action}"`);
       }
 
       data[action]();
@@ -557,15 +523,16 @@ class Carousel extends BaseComponent {
   }
 
   static dataApiClickHandler(event) {
-    var target = getElementFromSelector(this);
+    const target = getElementFromSelector(this);
 
     if (!target || !target.classList.contains(CLASS_NAME_CAROUSEL)) {
       return;
     }
 
-    var config = _objectSpread2(_objectSpread2({}, Manipulator.getDataAttributes(target)), Manipulator.getDataAttributes(this));
-
-    var slideIndex = this.getAttribute('data-bs-slide-to');
+    const config = { ...Manipulator.getDataAttributes(target),
+      ...Manipulator.getDataAttributes(this)
+    };
+    const slideIndex = this.getAttribute('data-bs-slide-to');
 
     if (slideIndex) {
       config.interval = false;
@@ -574,7 +541,7 @@ class Carousel extends BaseComponent {
     Carousel.carouselInterface(target, config);
 
     if (slideIndex) {
-      Data.getData(target, DATA_KEY).to(slideIndex);
+      Data.get(target, DATA_KEY).to(slideIndex);
     }
 
     event.preventDefault();
@@ -590,10 +557,10 @@ class Carousel extends BaseComponent {
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, Carousel.dataApiClickHandler);
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
-  var carousels = SelectorEngine.find(SELECTOR_DATA_RIDE);
+  const carousels = SelectorEngine.find(SELECTOR_DATA_RIDE);
 
-  for (var i = 0, len = carousels.length; i < len; i++) {
-    Carousel.carouselInterface(carousels[i], Data.getData(carousels[i], DATA_KEY));
+  for (let i = 0, len = carousels.length; i < len; i++) {
+    Carousel.carouselInterface(carousels[i], Data.get(carousels[i], DATA_KEY));
   }
 });
 /**
@@ -610,12 +577,12 @@ window.bootstrap.Carousel = Carousel;
 
 if (Joomla && Joomla.getOptions) {
   // Get the elements/configurations from the PHP
-  var carousels = Joomla.getOptions('bootstrap.carousel'); // Initialise the elements
+  const carousels = Joomla.getOptions('bootstrap.carousel'); // Initialise the elements
 
   if (typeof carousels === 'object' && carousels !== null) {
     Object.keys(carousels).forEach(carousel => {
-      var opt = carousels[carousel];
-      var options = {
+      const opt = carousels[carousel];
+      const options = {
         interval: opt.interval ? opt.interval : 5000,
         keyboard: opt.keyboard ? opt.keyboard : true,
         pause: opt.pause ? opt.pause : 'hover',
@@ -623,7 +590,7 @@ if (Joomla && Joomla.getOptions) {
         wrap: opt.wrap ? opt.wrap : true,
         touch: opt.touch ? opt.touch : true
       };
-      var elements = Array.from(document.querySelectorAll(carousel));
+      const elements = Array.from(document.querySelectorAll(carousel));
 
       if (elements.length) {
         elements.map(el => new window.bootstrap.Carousel(el, options));
@@ -632,4 +599,4 @@ if (Joomla && Joomla.getOptions) {
   }
 }
 
-export { Carousel as C, _objectSpread2 as _ };
+export { Carousel as C };

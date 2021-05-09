@@ -1,27 +1,21 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (Awesomplete, Joomla, window, document) {
-  'use strict';
+((Awesomplete, Joomla, window, document) => {
 
   if (!Joomla) {
     throw new Error('core.js was not properly initialised');
   } // Handle the autocomplete
 
 
-  var onKeyUp = function onKeyUp(_ref) {
-    var target = _ref.target;
-
+  const onInputChange = ({
+    target
+  }) => {
     if (target.value.length > 1) {
       target.awesomplete.list = [];
       Joomla.request({
-        url: "".concat(Joomla.getOptions('finder-search').url, "&q=").concat(target.value),
+        url: `${Joomla.getOptions('finder-search').url}&q=${target.value}`,
         method: 'GET',
         data: {
           q: target.value
@@ -30,14 +24,14 @@
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        onSuccess: function onSuccess(resp) {
-          var response = JSON.parse(resp);
+        onSuccess: resp => {
+          const response = JSON.parse(resp);
 
           if (Object.prototype.toString.call(response.suggestions) === '[object Array]') {
             target.awesomplete.list = response.suggestions;
           }
         },
-        onError: function onError(xhr) {
+        onError: xhr => {
           if (xhr.status > 0) {
             Joomla.renderMessages(Joomla.ajaxErrorsMessages(xhr));
           }
@@ -47,13 +41,13 @@
   }; // Handle the submit
 
 
-  var onSubmit = function onSubmit(event) {
+  const onSubmit = event => {
     event.stopPropagation();
-    var advanced = event.target.querySelector('.js-finder-advanced'); // Disable select boxes with no value selected.
+    const advanced = event.target.querySelector('.js-finder-advanced'); // Disable select boxes with no value selected.
 
     if (advanced) {
-      var fields = [].slice.call(advanced.querySelectorAll('select'));
-      fields.forEach(function (field) {
+      const fields = [].slice.call(advanced.querySelectorAll('select'));
+      fields.forEach(field => {
         if (!field.value) {
           field.setAttribute('disabled', 'disabled');
         }
@@ -62,18 +56,18 @@
   }; // The boot sequence
 
 
-  var onBoot = function onBoot() {
-    var searchWords = [].slice.call(document.querySelectorAll('.js-finder-search-query'));
-    searchWords.forEach(function (searchword) {
+  const onBoot = () => {
+    const searchWords = [].slice.call(document.querySelectorAll('.js-finder-search-query'));
+    searchWords.forEach(searchword => {
       // Handle the auto suggestion
       if (Joomla.getOptions('finder-search')) {
         searchword.awesomplete = new Awesomplete(searchword); // If the current value is empty, set the previous value.
 
-        searchword.addEventListener('keyup', onKeyUp);
+        searchword.addEventListener('input', onInputChange);
       }
     });
-    var forms = [].slice.call(document.querySelectorAll('.js-finder-searchform'));
-    forms.forEach(function (form) {
+    const forms = [].slice.call(document.querySelectorAll('.js-finder-searchform'));
+    forms.forEach(form => {
       form.addEventListener('submit', onSubmit);
     }); // Cleanup
 

@@ -1,17 +1,11 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
 
-  var showDiffChangedOff = function showDiffChangedOff() {
-    var diffMain = document.getElementById('diff-main');
+  const showDiffChangedOff = () => {
+    const diffMain = document.getElementById('diff-main');
 
     if (diffMain) {
       diffMain.classList.remove('active');
@@ -22,8 +16,8 @@
     }
   };
 
-  var showDiffChangedOn = function showDiffChangedOn() {
-    var diffMain = document.getElementById('diff-main');
+  const showDiffChangedOn = () => {
+    const diffMain = document.getElementById('diff-main');
 
     if (diffMain) {
       diffMain.classList.add('active');
@@ -34,10 +28,10 @@
     }
   };
 
-  var showCoreChangedOff = function showCoreChangedOff() {
-    var override = document.getElementById('override-pane');
-    var corePane = document.getElementById('core-pane');
-    var fieldset = override.parentElement.parentElement;
+  const showCoreChangedOff = () => {
+    const override = document.getElementById('override-pane');
+    const corePane = document.getElementById('core-pane');
+    const fieldset = override.parentElement.parentElement;
 
     if (corePane && override) {
       corePane.classList.remove('active');
@@ -53,10 +47,10 @@
     }
   };
 
-  var showCoreChangedOn = function showCoreChangedOn() {
-    var override = document.getElementById('override-pane');
-    var corePane = document.getElementById('core-pane');
-    var fieldset = override.parentElement.parentElement;
+  const showCoreChangedOn = () => {
+    const override = document.getElementById('override-pane');
+    const corePane = document.getElementById('core-pane');
+    const fieldset = override.parentElement.parentElement;
 
     if (corePane && override) {
       corePane.classList.add('active');
@@ -76,11 +70,11 @@
     }
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var JformShowDiffOn = document.getElementById('jform_show_diff1');
-    var JformShowDiffOff = document.getElementById('jform_show_diff0');
-    var JformShowCoreOn = document.getElementById('jform_show_core1');
-    var JformShowCoreOff = document.getElementById('jform_show_core0');
+  document.addEventListener('DOMContentLoaded', () => {
+    const JformShowDiffOn = document.getElementById('jform_show_diff1');
+    const JformShowDiffOff = document.getElementById('jform_show_diff0');
+    const JformShowCoreOn = document.getElementById('jform_show_core1');
+    const JformShowCoreOff = document.getElementById('jform_show_core0');
 
     if (JformShowDiffOn && JformShowDiffOff) {
       JformShowDiffOn.addEventListener('click', showDiffChangedOn);

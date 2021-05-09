@@ -6,14 +6,18 @@
   "license": "GPL-2.0-or-later",
   "assets": [
     {
-      "name": "punycode",
+      "name": "wcpolyfill",
       "type": "script",
-      "uri": "vendor/punycode/punycode.js",
+      "uri": "vendor/webcomponentsjs/webcomponents-bundle.js",
       "attributes": {
+        "nomodule": true,
         "defer": true
       },
-      "package": "punycode",
-      "version": "1.4.1"
+      "dependencies": [
+        "core"
+      ],
+      "package": "@webcomponents/webcomponentsjs",
+      "version": "2.5.0"
     },
     {
       "name": "accessibility",
@@ -63,6 +67,33 @@
       "version": "1.1.5"
     },
     {
+      "name": "cropperjs",
+      "type": "style",
+      "uri": "vendor/cropperjs/cropper.min.css",
+      "package": "cropperjs",
+      "version": "1.5.11"
+    },
+    {
+      "name": "cropperjs",
+      "type": "script",
+      "uri": "vendor/cropperjs/cropper.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "cropperjs",
+      "version": "1.5.11"
+    },
+    {
+      "name": "cropperjs",
+      "type": "preset",
+      "dependencies": [
+        "cropperjs#style",
+        "cropperjs#script"
+      ],
+      "package": "cropperjs",
+      "version": "1.5.11"
+    },
+    {
       "name": "choicesjs",
       "type": "style",
       "uri": "vendor/choicesjs/choices.min.css",
@@ -90,31 +121,14 @@
       "version": "9.0.1"
     },
     {
-      "name": "cropperjs",
-      "type": "style",
-      "uri": "vendor/cropperjs/cropper.min.css",
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "cropperjs",
+      "name": "diff",
       "type": "script",
-      "uri": "vendor/cropperjs/cropper.min.js",
+      "uri": "vendor/diff/diff.js",
       "attributes": {
         "defer": true
       },
-      "package": "cropperjs",
-      "version": "1.5.9"
-    },
-    {
-      "name": "cropperjs",
-      "type": "preset",
-      "dependencies": [
-        "cropperjs#style",
-        "cropperjs#script"
-      ],
-      "package": "cropperjs",
-      "version": "1.5.9"
+      "package": "diff",
+      "version": "4.0.2"
     },
     {
       "name": "dragula",
@@ -165,7 +179,7 @@
       "type": "script",
       "uri": "vendor/jquery/jquery.min.js",
       "package": "jquery",
-      "version": "3.5.1"
+      "version": "3.6.0"
     },
     {
       "name": "webcomponent.joomla-alert",
@@ -236,16 +250,6 @@
       "version": "0.0.40"
     },
     {
-      "name": "diff",
-      "type": "script",
-      "uri": "vendor/diff/diff.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "diff",
-      "version": "4.0.2"
-    },
-    {
       "name": "minicolors",
       "type": "style",
       "uri": "vendor/minicolors/jquery.minicolors.css",
@@ -303,20 +307,6 @@
       "version": "1.8.7"
     },
     {
-      "name": "wcpolyfill",
-      "type": "script",
-      "uri": "vendor/webcomponentsjs/webcomponents-sd-ce-pf.js",
-      "attributes": {
-        "nomodule": true,
-        "defer": true
-      },
-      "dependencies": [
-        "core"
-      ],
-      "package": "@webcomponents/webcomponentsjs",
-      "version": "2.5.0"
-    },
-    {
       "name": "metismenujs",
       "type": "script",
       "uri": "vendor/metismenujs/metismenujs.min.js",
@@ -334,7 +324,7 @@
         "defer": true
       },
       "package": "skipto",
-      "version": "4.0.1"
+      "version": "4.0.5"
     },
     {
       "name": "qrcode",
@@ -379,14 +369,14 @@
       "type": "style",
       "uri": "vendor/fontawesome-free/fontawesome.min.css",
       "package": "@fortawesome/fontawesome-free",
-      "version": "5.15.2"
+      "version": "5.15.3"
     },
     {
       "name": "bootstrap.css",
       "type": "style",
       "uri": "vendor/bootstrap/bootstrap.min.css",
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.css.grid",
@@ -396,7 +386,7 @@
         "bootstrap.css"
       ],
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.es5",
@@ -410,7 +400,7 @@
         "defer": true
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.alert",
@@ -423,7 +413,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.button",
@@ -436,7 +426,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.carousel",
@@ -449,7 +439,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.collapse",
@@ -462,7 +452,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.dropdown",
@@ -475,7 +465,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.modal",
@@ -488,7 +478,20 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
+    },
+    {
+      "name": "bootstrap.offcanvas",
+      "type": "script",
+      "uri": "vendor/bootstrap/offcanvas.min.js",
+      "dependencies": [
+        "bootstrap.es5"
+      ],
+      "attributes": {
+        "type": "module"
+      },
+      "package": "bootstrap",
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.popover",
@@ -501,7 +504,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.scrollspy",
@@ -514,7 +517,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.tab",
@@ -527,7 +530,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     },
     {
       "name": "bootstrap.toast",
@@ -540,7 +543,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0-beta2"
+      "version": "5.0.0"
     }
   ]
 }

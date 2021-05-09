@@ -1,5 +1,3 @@
-"use strict";
-
 ((customElements, Joomla) => {
   class JoomlaFieldUser extends HTMLElement {
     constructor() {
@@ -81,7 +79,7 @@
       this.inputName = this.querySelector(this.inputNameClass);
       this.buttonSelect = this.querySelector(this.buttonSelectClass); // Bootstrap modal init
 
-      if (this.modal && window.bootstrap && window.bootstrap.Modal && window.bootstrap.Modal.getInstance(this.modal) === undefined) {
+      if (this.modal && window.bootstrap && window.bootstrap.Modal && !window.bootstrap.Modal.getInstance(this.modal)) {
         Joomla.initialiseModal(this.modal, {
           isJoomla: true
         });

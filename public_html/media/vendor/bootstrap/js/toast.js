@@ -1,35 +1,40 @@
-import { _ as _objectSpread2 } from './carousel.js';
-import { B as BaseComponent, E as EventHandler, r as reflow, a as getTransitionDurationFromElement, e as emulateTransitionEnd, M as Manipulator, b as typeCheckConfig, D as Data, d as defineJQueryPlugin } from './dom.js?1614481245';
+import { B as BaseComponent, E as EventHandler, r as reflow, a as getTransitionDurationFromElement, e as emulateTransitionEnd, M as Manipulator, b as typeCheckConfig, D as Data, d as defineJQueryPlugin } from './dom.js?1620567725';
 
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0): toast.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
 /**
  * ------------------------------------------------------------------------
  * Constants
  * ------------------------------------------------------------------------
  */
 
-var NAME = 'toast';
-var DATA_KEY = 'bs.toast';
-var EVENT_KEY = ".".concat(DATA_KEY);
-var EVENT_CLICK_DISMISS = "click.dismiss".concat(EVENT_KEY);
-var EVENT_HIDE = "hide".concat(EVENT_KEY);
-var EVENT_HIDDEN = "hidden".concat(EVENT_KEY);
-var EVENT_SHOW = "show".concat(EVENT_KEY);
-var EVENT_SHOWN = "shown".concat(EVENT_KEY);
-var CLASS_NAME_FADE = 'fade';
-var CLASS_NAME_HIDE = 'hide';
-var CLASS_NAME_SHOW = 'show';
-var CLASS_NAME_SHOWING = 'showing';
-var DefaultType = {
+const NAME = 'toast';
+const DATA_KEY = 'bs.toast';
+const EVENT_KEY = `.${DATA_KEY}`;
+const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY}`;
+const EVENT_HIDE = `hide${EVENT_KEY}`;
+const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOW = `show${EVENT_KEY}`;
+const EVENT_SHOWN = `shown${EVENT_KEY}`;
+const CLASS_NAME_FADE = 'fade';
+const CLASS_NAME_HIDE = 'hide';
+const CLASS_NAME_SHOW = 'show';
+const CLASS_NAME_SHOWING = 'showing';
+const DefaultType = {
   animation: 'boolean',
   autohide: 'boolean',
   delay: 'number'
 };
-var Default = {
+const Default = {
   animation: true,
   autohide: true,
   delay: 5000
 };
-var SELECTOR_DATA_DISMISS = '[data-bs-dismiss="toast"]';
+const SELECTOR_DATA_DISMISS = '[data-bs-dismiss="toast"]';
 /**
  * ------------------------------------------------------------------------
  * Class Definition
@@ -60,7 +65,7 @@ class Toast extends BaseComponent {
 
 
   show() {
-    var showEvent = EventHandler.trigger(this._element, EVENT_SHOW);
+    const showEvent = EventHandler.trigger(this._element, EVENT_SHOW);
 
     if (showEvent.defaultPrevented) {
       return;
@@ -72,7 +77,7 @@ class Toast extends BaseComponent {
       this._element.classList.add(CLASS_NAME_FADE);
     }
 
-    var complete = () => {
+    const complete = () => {
       this._element.classList.remove(CLASS_NAME_SHOWING);
 
       this._element.classList.add(CLASS_NAME_SHOW);
@@ -93,7 +98,7 @@ class Toast extends BaseComponent {
     this._element.classList.add(CLASS_NAME_SHOWING);
 
     if (this._config.animation) {
-      var transitionDuration = getTransitionDurationFromElement(this._element);
+      const transitionDuration = getTransitionDurationFromElement(this._element);
       EventHandler.one(this._element, 'transitionend', complete);
       emulateTransitionEnd(this._element, transitionDuration);
     } else {
@@ -106,13 +111,13 @@ class Toast extends BaseComponent {
       return;
     }
 
-    var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
+    const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
 
     if (hideEvent.defaultPrevented) {
       return;
     }
 
-    var complete = () => {
+    const complete = () => {
       this._element.classList.add(CLASS_NAME_HIDE);
 
       EventHandler.trigger(this._element, EVENT_HIDDEN);
@@ -121,7 +126,7 @@ class Toast extends BaseComponent {
     this._element.classList.remove(CLASS_NAME_SHOW);
 
     if (this._config.animation) {
-      var transitionDuration = getTransitionDurationFromElement(this._element);
+      const transitionDuration = getTransitionDurationFromElement(this._element);
       EventHandler.one(this._element, 'transitionend', complete);
       emulateTransitionEnd(this._element, transitionDuration);
     } else {
@@ -136,14 +141,16 @@ class Toast extends BaseComponent {
       this._element.classList.remove(CLASS_NAME_SHOW);
     }
 
-    EventHandler.off(this._element, EVENT_CLICK_DISMISS);
     super.dispose();
     this._config = null;
   } // Private
 
 
   _getConfig(config) {
-    config = _objectSpread2(_objectSpread2(_objectSpread2({}, Default), Manipulator.getDataAttributes(this._element)), typeof config === 'object' && config ? config : {});
+    config = { ...Default,
+      ...Manipulator.getDataAttributes(this._element),
+      ...(typeof config === 'object' && config ? config : {})
+    };
     typeCheckConfig(NAME, config, this.constructor.DefaultType);
     return config;
   }
@@ -160,9 +167,9 @@ class Toast extends BaseComponent {
 
   static jQueryInterface(config) {
     return this.each(function () {
-      var data = Data.getData(this, DATA_KEY);
+      let data = Data.get(this, DATA_KEY);
 
-      var _config = typeof config === 'object' && config;
+      const _config = typeof config === 'object' && config;
 
       if (!data) {
         data = new Toast(this, _config);
@@ -170,7 +177,7 @@ class Toast extends BaseComponent {
 
       if (typeof config === 'string') {
         if (typeof data[config] === 'undefined') {
-          throw new TypeError("No method named \"".concat(config, "\""));
+          throw new TypeError(`No method named "${config}"`);
         }
 
         data[config](this);
@@ -194,17 +201,17 @@ window.bootstrap.Toast = Toast;
 
 if (Joomla && Joomla.getOptions) {
   // Get the elements/configurations from the PHP
-  var toasts = Joomla.getOptions('bootstrap.toast'); // Initialise the elements
+  const toasts = Joomla.getOptions('bootstrap.toast'); // Initialise the elements
 
   if (typeof toasts === 'object' && toasts !== null) {
     Object.keys(toasts).forEach(toast => {
-      var opt = toasts[toast];
-      var options = {
+      const opt = toasts[toast];
+      const options = {
         animation: opt.animation ? opt.animation : true,
         autohide: opt.autohide ? opt.autohide : true,
         delay: opt.delay ? opt.delay : 5000
       };
-      var elements = Array.from(document.querySelectorAll(toast));
+      const elements = Array.from(document.querySelectorAll(toast));
 
       if (elements.length) {
         elements.map(el => new window.bootstrap.Toast(el, options));

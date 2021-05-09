@@ -1,9 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -11,23 +6,22 @@
 /**
  * Ajax call to get the update status of Joomla
  */
-(function (document, Joomla) {
-  'use strict';
+((document, Joomla) => {
 
-  var checkForJoomlaUpdates = function checkForJoomlaUpdates() {
+  const checkForJoomlaUpdates = () => {
     if (Joomla.getOptions('js-extensions-update')) {
-      var options = Joomla.getOptions('js-joomla-update');
+      const options = Joomla.getOptions('js-joomla-update');
 
-      var update = function update(type, text) {
-        var link = document.getElementById('plg_quickicon_joomlaupdate');
-        var linkSpans = [].slice.call(link.querySelectorAll('span.j-links-link'));
+      const update = (type, text) => {
+        const link = document.getElementById('plg_quickicon_joomlaupdate');
+        const linkSpans = [].slice.call(link.querySelectorAll('span.j-links-link'));
 
         if (link) {
           link.classList.add(type);
         }
 
         if (linkSpans.length) {
-          linkSpans.forEach(function (span) {
+          linkSpans.forEach(span => {
             span.innerHTML = text;
           });
         }
@@ -38,18 +32,18 @@
         method: 'GET',
         data: '',
         perform: true,
-        onSuccess: function onSuccess(response) {
-          var updateInfoList = JSON.parse(response);
+        onSuccess: response => {
+          const updateInfoList = JSON.parse(response);
 
           if (Array.isArray(updateInfoList)) {
             if (updateInfoList.length === 0) {
               // No updates
               update('success', Joomla.Text._('PLG_QUICKICON_JOOMLAUPDATE_UPTODATE'));
             } else {
-              var updateInfo = updateInfoList.shift();
+              const updateInfo = updateInfoList.shift();
 
               if (updateInfo.version !== options.version) {
-                update('danger', Joomla.Text._('PLG_QUICKICON_JOOMLAUPDATE_UPDATEFOUND').replace('%s', "<span class=\"badge text-dark bg-light\"> \u200E ".concat(updateInfo.version, "</span>")));
+                update('danger', Joomla.Text._('PLG_QUICKICON_JOOMLAUPDATE_UPDATEFOUND').replace('%s', `<span class="badge text-dark bg-light"> \u200E ${updateInfo.version}</span>`));
               } else {
                 update('success', Joomla.Text._('PLG_QUICKICON_JOOMLAUPDATE_UPTODATE'));
               }
@@ -59,7 +53,7 @@
             update('danger', Joomla.Text._('PLG_QUICKICON_JOOMLAUPDATE_ERROR'));
           }
         },
-        onError: function onError() {
+        onError: () => {
           // An error occurred
           update('danger', Joomla.Text._('PLG_QUICKICON_JOOMLAUPDATE_ERROR'));
         }
@@ -67,7 +61,7 @@
     }
   };
 
-  var onBoot = function onBoot() {
+  const onBoot = () => {
     if (!Joomla || typeof Joomla.getOptions !== 'function' || !Joomla.getOptions('js-joomla-update')) {
       throw new Error('Script is not properly initialised');
     }

@@ -1,5 +1,3 @@
-"use strict";
-
 (customElements => {
   'strict';
   /**
@@ -59,8 +57,6 @@
           }
 
           break;
-
-        default: // Do nothing
 
       }
     }

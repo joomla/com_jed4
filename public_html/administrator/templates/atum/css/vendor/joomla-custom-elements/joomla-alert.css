@@ -129,9 +129,9 @@ html[dir=rtl] joomla-alert .joomla-alert-button--close {
   min-width: 16rem;
   padding: 0;
   margin-bottom: 1rem;
-  color: var(--atum-text-dark);
-  background-color: var(--white);
-  border: 1px solid var(--alert-accent-color, transparent);
+  color: var(--alert-accent-color, var(--atum-bg-dark));
+  background-color: var(--alert-bg-color, var(--white));
+  border: 1px solid var(--alert-accent-color, var(--atum-bg-dark));
   border-radius: 0.25rem;
   transition: opacity 0.15s linear;
 }
@@ -139,10 +139,10 @@ html[dir=rtl] joomla-alert .joomla-alert-button--close {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-content: center;
   padding: 0.8rem;
-  color: var(--alert-heading-text);
-  background: var(--alert-accent-color, transparent);
+  color: var(--white);
+  background: var(--alert-accent-color, var(--atum-bg-dark));
+  align-content: center;
 }
 #system-message-container joomla-alert .alert-heading .message::before,
 #system-message-container joomla-alert .alert-heading .success::before {
@@ -167,7 +167,7 @@ html[dir=rtl] joomla-alert .joomla-alert-button--close {
   width: 1em;
   height: 1em;
   content: "";
-  background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1024 1375v-190q0-14-9.5-23.5t-22.5-9.5h-192q-13 0-22.5 9.5t-9.5 23.5v190q0 14 9.5 23.5t22.5 9.5h192q13 0 22.5-9.5t9.5-23.5zm-2-374l18-459q0-12-10-19-13-11-24-11h-220q-11 0-24 11-10 7-10 21l17 457q0 10 10 16.5t24 6.5h185q14 0 23.5-6.5t10.5-16.5zm-14-934l768 1408q35 63-2 126-17 29-46.5 46t-63.5 17h-1536q-34 0-63.5-17t-46.5-46q-37-63-2-126l768-1408q17-31 47-49t65-18 65 18 47 49z"/></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255, 255, 255, .95)" d="M1024 1375v-190q0-14-9.5-23.5t-22.5-9.5h-192q-13 0-22.5 9.5t-9.5 23.5v190q0 14 9.5 23.5t22.5 9.5h192q13 0 22.5-9.5t9.5-23.5zm-2-374l18-459q0-12-10-19-13-11-24-11h-220q-11 0-24 11-10 7-10 21l17 457q0 10 10 16.5t24 6.5h185q14 0 23.5-6.5t10.5-16.5zm-14-934l768 1408q35 63-2 126-17 29-46.5 46t-63.5 17h-1536q-34 0-63.5-17t-46.5-46q-37-63-2-126l768-1408q17-31 47-49t65-18 65 18 47 49z"/></svg>');
   background-size: 100%;
 }
 #system-message-container joomla-alert .alert-heading .error::before,
@@ -183,40 +183,34 @@ html[dir=rtl] joomla-alert .joomla-alert-button--close {
   width: 100%;
 }
 #system-message-container joomla-alert .alert-link {
-  color: var(--success, inherit);
+  color: var(--atum-link-color);
+  text-decoration: underline;
 }
 #system-message-container joomla-alert[type=success], #system-message-container joomla-alert[type=message] {
-  --alert-accent-color: var(--success);
-  --alert-heading-text: rgba(255, 255, 255, .95);
-  --alert-close-button: var(--success);
-  background-color: var(--white-offset);
+  --alert-accent-color: #457d54;
+  --alert-bg-color: #f2f8f4;
 }
 #system-message-container joomla-alert[type=info], #system-message-container joomla-alert[type=notice] {
-  --alert-accent-color: var(--info);
-  --alert-heading-text: rgba(255, 255, 255, .95);
-  --alert-close-button: var(--info);
-  background-color: var(--white-offset);
+  --alert-accent-color: var(--atum-bg-dark-70);
+  --alert-bg-color: var(--white);
 }
 #system-message-container joomla-alert[type=warning] {
-  --alert-accent-color: var(--warning);
-  --alert-heading-text: #000;
-  --alert-close-button: #000;
-  background-color: var(--white-offset);
+  --alert-accent-color: #996900;
+  --alert-bg-color: #fffcf4;
 }
 #system-message-container joomla-alert[type=error], #system-message-container joomla-alert[type=danger] {
-  --alert-accent-color: var(--danger);
-  --alert-heading-text: rgba(255, 255, 255, .95);
-  --alert-close-button: var(--danger);
-  background-color: var(--white-offset);
+  --alert-accent-color: #c52827;
+  --alert-bg-color: #fef8f8;
 }
 #system-message-container joomla-alert .joomla-alert--close,
 #system-message-container joomla-alert .joomla-alert-button--close {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0.2rem 0.8rem;
+  padding: 0.75rem 0.8rem;
   font-size: 2rem;
-  color: var(--alert-close-button);
+  line-height: 1rem;
+  color: var(--alert-accent-color);
   background: none;
   border: 0;
   opacity: 1;
@@ -238,11 +232,10 @@ html[dir=rtl] joomla-alert .joomla-alert-button--close {
   font-size: 1rem;
 }
 #system-message-container joomla-alert div .alert-message {
-  padding: 0.3rem 2rem 0.3rem 0.3rem;
+  padding: 0.15rem 0.3rem;
+  -webkit-padding-end: 2rem;
+          padding-inline-end: 2rem;
   margin: 0.5rem;
-}
-[dir=rtl] #system-message-container joomla-alert div .alert-message {
-  padding: 0.3rem 0.3rem 0.3rem 2rem;
 }
 #system-message-container joomla-alert div .alert-message:not(:first-of-type) {
   border-top: 1px solid var(--alert-accent-color);
