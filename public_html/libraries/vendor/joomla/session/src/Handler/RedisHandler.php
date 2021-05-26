@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2021 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Redis session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class RedisHandler implements HandlerInterface
 {
@@ -21,7 +21,7 @@ class RedisHandler implements HandlerInterface
 	 * Session ID prefix to avoid naming conflicts
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $prefix;
 
@@ -29,7 +29,7 @@ class RedisHandler implements HandlerInterface
 	 * Redis driver
 	 *
 	 * @var    \Redis
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $redis;
 
@@ -37,7 +37,7 @@ class RedisHandler implements HandlerInterface
 	 * Time to live in seconds
 	 *
 	 * @var    integer
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $ttl;
 
@@ -47,7 +47,7 @@ class RedisHandler implements HandlerInterface
 	 * @param   \Redis  $redis    A Redis instance
 	 * @param   array   $options  Associative array of options to configure the handler
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(\Redis $redis, array $options = [])
 	{
@@ -65,29 +65,29 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close()
 	{
-		$this->redis->close();
-
+		// No need to close the connection to Redis server manually.
 		return true;
 	}
 
 	/**
-	 * Destroy a session
+	 * Destroy a session, called automatically when running session_regenerate_id().
 	 *
 	 * @param   integer  $session_id  The session ID being destroyed
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
-	public function destroy($session_id)
+	public function destroy($session_id): bool
 	{
 		$this->redis->del($this->prefix . $session_id);
 
-		return $this->close();
+		// Session callback must have a return value of type bool when session_regenerate_id() is called.
+		return true;
 	}
 
 	/**
@@ -97,7 +97,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc($maxlifetime)
 	{
@@ -109,7 +109,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{
@@ -124,7 +124,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function open($save_path, $session_id)
 	{
@@ -138,7 +138,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function read($session_id)
 	{
@@ -153,7 +153,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function write($session_id, $session_data)
 	{
