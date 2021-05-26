@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3b9955eb526d9bc75e863c96da3666a3
+class ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -905,7 +905,9 @@ class ComposerStaticInit3b9955eb526d9bc75e863c96da3666a3
         'Joomla\\CMS\\Console\\CheckUpdatesCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/CheckUpdatesCommand.php',
         'Joomla\\CMS\\Console\\CleanCacheCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/CleanCacheCommand.php',
         'Joomla\\CMS\\Console\\DeleteUserCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/DeleteUserCommand.php',
+        'Joomla\\CMS\\Console\\ExtensionDiscoverCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionDiscoverCommand.php',
         'Joomla\\CMS\\Console\\ExtensionDiscoverInstallCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionDiscoverInstallCommand.php',
+        'Joomla\\CMS\\Console\\ExtensionDiscoverListCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionDiscoverListCommand.php',
         'Joomla\\CMS\\Console\\ExtensionInstallCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionInstallCommand.php',
         'Joomla\\CMS\\Console\\ExtensionRemoveCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionRemoveCommand.php',
         'Joomla\\CMS\\Console\\ExtensionsListCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionsListCommand.php',
@@ -2267,9 +2269,9 @@ class ComposerStaticInit3b9955eb526d9bc75e863c96da3666a3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3b9955eb526d9bc75e863c96da3666a3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3b9955eb526d9bc75e863c96da3666a3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3b9955eb526d9bc75e863c96da3666a3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d::$classMap;
 
         }, null, ClassLoader::class);
     }

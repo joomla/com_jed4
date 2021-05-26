@@ -17795,7 +17795,7 @@ var JoomlaMediaManager = (function () {
 
         var extensionWithPreview = ['jpg', 'jpeg', 'png', 'gif', 'mp4']; // Show preview
 
-        if (this.item.extension && !extensionWithPreview.includes(this.item.extension.toLowerCase())) {
+        if (this.item.extension && extensionWithPreview.includes(this.item.extension.toLowerCase())) {
           this.$store.commit(SHOW_PREVIEW_MODAL);
           this.$store.dispatch('getFullContents', this.item);
         }
@@ -19716,18 +19716,33 @@ var JoomlaMediaManager = (function () {
 
   if (options.providers === undefined || options.providers.length === 0) {
     throw new TypeError('Media providers are not defined.');
-  } // Load disks from options
+  }
+  /**
+   * Get the drives
+   *
+   * @param  {Array}  adapterNames
+   * @param  {String} provider
+   *
+   * @return {Array}
+   */
+
+
+  var getDrives = function getDrives(adapterNames, provider) {
+    var drives = [];
+    adapterNames.map(function (name) {
+      return drives.push({
+        root: provider + "-" + name + ":/",
+        displayName: name
+      });
+    });
+    return drives;
+  }; // Load disks from options
 
 
   var loadedDisks = options.providers.map(function (disk) {
     return {
       displayName: disk.displayName,
-      drives: disk.adapterNames.map(function (account, index) {
-        return {
-          root: disk.name + "-" + index + ":/",
-          displayName: account
-        };
-      })
+      drives: getDrives(disk.adapterNames, disk.name)
     };
   });
 

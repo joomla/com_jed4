@@ -9,7 +9,12 @@
     throw new Error('Joomla API is not initialized');
   }
 
-  var storageEnabled = typeof Storage !== 'undefined';
+  var getCookie = function getCookie() {
+    return document.cookie.length && document.cookie.split('; ').find(function (row) {
+      return row.startsWith('atumSidebarState=');
+    }).split('=')[1];
+  };
+
   var mobile = window.matchMedia('(max-width: 992px)');
   var small = window.matchMedia('(max-width: 575.98px)');
   var tablet = window.matchMedia('(min-width: 576px) and (max-width:991.98px)');
@@ -20,6 +25,7 @@
   var sidebarWrapper = document.querySelector('.sidebar-wrapper');
   var logo = document.querySelector('.logo');
   var isLogin = document.querySelector('body.com_login');
+  var menuToggleIcon = document.getElementById('menu-collapse-icon');
   var navDropDownIcon = document.querySelectorAll('.nav-item.dropdown span[class*="icon-angle-"]');
   var headerTitleArea = document.querySelector('#header .header-title');
   var headerItemsArea = document.querySelector('#header .header-items');
@@ -51,12 +57,22 @@
       return;
     }
 
-    var state = change || storageEnabled && localStorage.getItem('atum-sidebar');
+    var state = change || getCookie();
 
     if (state === 'closed') {
       logo.classList.add('small');
     } else {
       logo.classList.remove('small');
+    }
+
+    if (menuToggleIcon) {
+      if (wrapper.classList.contains('closed')) {
+        menuToggleIcon.classList.add('icon-toggle-on');
+        menuToggleIcon.classList.remove('icon-toggle-off');
+      } else {
+        menuToggleIcon.classList.remove('icon-toggle-on');
+        menuToggleIcon.classList.add('icon-toggle-off');
+      }
     }
   }
   /**
@@ -138,8 +154,6 @@
 
 
   function setMobile() {
-    changeLogo('closed');
-
     if (small.matches) {
       toggleArrowIcon();
 
@@ -163,6 +177,8 @@
       if (subhead) subhead.classList.remove('collapse');
       if (sidebarWrapper) sidebarWrapper.classList.remove('collapse');
     }
+
+    changeLogo('closed');
   }
   /**
    * Change appearance for mobile devices
@@ -175,7 +191,7 @@
     if (!sidebarWrapper) {
       changeLogo('closed');
     } else {
-      changeLogo();
+      changeLogo(getCookie() || 'open');
       sidebarWrapper.classList.remove('collapse');
     }
 
@@ -218,26 +234,23 @@
         }
       });
     }
-  }
+  } // Initialize
+
 
   headerItemsInDropdown();
   reactToResize();
   subheadScrolling();
 
-  if (mobile.matches) {
-    setMobile();
-  } else {
-    setDesktop();
-
-    if (!navigator.cookieEnabled) {
-      Joomla.renderMessages({
-        error: [Joomla.Text._('JGLOBAL_WARNCOOKIES')]
-      }, undefined, false, 6000);
-    }
-
-    window.addEventListener('joomla:menu-toggle', function () {
-      headerItemsInDropdown();
-    });
+  if (!navigator.cookieEnabled) {
+    Joomla.renderMessages({
+      error: [Joomla.Text._('JGLOBAL_WARNCOOKIES')]
+    }, undefined, false, 6000);
   }
+
+  window.addEventListener('joomla:menu-toggle', function (event) {
+    headerItemsInDropdown();
+    document.cookie = "atumSidebarState=" + event.detail + ";";
+    changeLogo(event.detail);
+  });
 
 }());

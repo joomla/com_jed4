@@ -1,8 +1,8 @@
-import { B as BaseComponent, E as EventHandler, r as reflow, a as getTransitionDurationFromElement, e as emulateTransitionEnd, M as Manipulator, b as typeCheckConfig, D as Data, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, E as EventHandler, r as reflow, M as Manipulator, a as typeCheckConfig, D as Data, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): toast.js
+ * Bootstrap (v5.0.1): toast.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16,6 +16,10 @@ const NAME = 'toast';
 const DATA_KEY = 'bs.toast';
 const EVENT_KEY = `.${DATA_KEY}`;
 const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY}`;
+const EVENT_MOUSEOVER = `mouseover${EVENT_KEY}`;
+const EVENT_MOUSEOUT = `mouseout${EVENT_KEY}`;
+const EVENT_FOCUSIN = `focusin${EVENT_KEY}`;
+const EVENT_FOCUSOUT = `focusout${EVENT_KEY}`;
 const EVENT_HIDE = `hide${EVENT_KEY}`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
 const EVENT_SHOW = `show${EVENT_KEY}`;
@@ -46,6 +50,8 @@ class Toast extends BaseComponent {
     super(element);
     this._config = this._getConfig(config);
     this._timeout = null;
+    this._hasMouseInteraction = false;
+    this._hasKeyboardInteraction = false;
 
     this._setListeners();
   } // Getters
@@ -59,8 +65,8 @@ class Toast extends BaseComponent {
     return Default;
   }
 
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -84,11 +90,7 @@ class Toast extends BaseComponent {
 
       EventHandler.trigger(this._element, EVENT_SHOWN);
 
-      if (this._config.autohide) {
-        this._timeout = setTimeout(() => {
-          this.hide();
-        }, this._config.delay);
-      }
+      this._maybeScheduleHide();
     };
 
     this._element.classList.remove(CLASS_NAME_HIDE);
@@ -97,13 +99,7 @@ class Toast extends BaseComponent {
 
     this._element.classList.add(CLASS_NAME_SHOWING);
 
-    if (this._config.animation) {
-      const transitionDuration = getTransitionDurationFromElement(this._element);
-      EventHandler.one(this._element, 'transitionend', complete);
-      emulateTransitionEnd(this._element, transitionDuration);
-    } else {
-      complete();
-    }
+    this._queueCallback(complete, this._element, this._config.animation);
   }
 
   hide() {
@@ -125,13 +121,7 @@ class Toast extends BaseComponent {
 
     this._element.classList.remove(CLASS_NAME_SHOW);
 
-    if (this._config.animation) {
-      const transitionDuration = getTransitionDurationFromElement(this._element);
-      EventHandler.one(this._element, 'transitionend', complete);
-      emulateTransitionEnd(this._element, transitionDuration);
-    } else {
-      complete();
-    }
+    this._queueCallback(complete, this._element, this._config.animation);
   }
 
   dispose() {
@@ -142,7 +132,6 @@ class Toast extends BaseComponent {
     }
 
     super.dispose();
-    this._config = null;
   } // Private
 
 
@@ -155,8 +144,54 @@ class Toast extends BaseComponent {
     return config;
   }
 
+  _maybeScheduleHide() {
+    if (!this._config.autohide) {
+      return;
+    }
+
+    if (this._hasMouseInteraction || this._hasKeyboardInteraction) {
+      return;
+    }
+
+    this._timeout = setTimeout(() => {
+      this.hide();
+    }, this._config.delay);
+  }
+
+  _onInteraction(event, isInteracting) {
+    switch (event.type) {
+      case 'mouseover':
+      case 'mouseout':
+        this._hasMouseInteraction = isInteracting;
+        break;
+
+      case 'focusin':
+      case 'focusout':
+        this._hasKeyboardInteraction = isInteracting;
+        break;
+    }
+
+    if (isInteracting) {
+      this._clearTimeout();
+
+      return;
+    }
+
+    const nextElement = event.relatedTarget;
+
+    if (this._element === nextElement || this._element.contains(nextElement)) {
+      return;
+    }
+
+    this._maybeScheduleHide();
+  }
+
   _setListeners() {
     EventHandler.on(this._element, EVENT_CLICK_DISMISS, SELECTOR_DATA_DISMISS, () => this.hide());
+    EventHandler.on(this._element, EVENT_MOUSEOVER, event => this._onInteraction(event, true));
+    EventHandler.on(this._element, EVENT_MOUSEOUT, event => this._onInteraction(event, false));
+    EventHandler.on(this._element, EVENT_FOCUSIN, event => this._onInteraction(event, true));
+    EventHandler.on(this._element, EVENT_FOCUSOUT, event => this._onInteraction(event, false));
   }
 
   _clearTimeout() {
@@ -194,7 +229,7 @@ class Toast extends BaseComponent {
  */
 
 
-defineJQueryPlugin(NAME, Toast);
+defineJQueryPlugin(Toast);
 
 window.bootstrap = window.bootstrap || {};
 window.bootstrap.Toast = Toast;

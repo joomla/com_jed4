@@ -1,8 +1,8 @@
-import { B as BaseComponent, S as SelectorEngine, f as getSelectorFromElement, D as Data, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, r as reflow, g as getElementFromSelector, b as typeCheckConfig, h as isElement, M as Manipulator, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, S as SelectorEngine, c as getSelectorFromElement, D as Data, E as EventHandler, r as reflow, g as getElementFromSelector, a as typeCheckConfig, e as getElement, M as Manipulator, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): collapse.js
+ * Bootstrap (v5.0.1): collapse.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -79,8 +79,8 @@ class Collapse extends BaseComponent {
     return Default;
   }
 
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -172,9 +172,9 @@ class Collapse extends BaseComponent {
 
     const capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
     const scrollSize = `scroll${capitalizedDimension}`;
-    const transitionDuration = getTransitionDurationFromElement(this._element);
-    EventHandler.one(this._element, 'transitionend', complete);
-    emulateTransitionEnd(this._element, transitionDuration);
+
+    this._queueCallback(complete, this._element, true);
+
     this._element.style[dimension] = `${this._element[scrollSize]}px`;
   }
 
@@ -225,21 +225,12 @@ class Collapse extends BaseComponent {
     };
 
     this._element.style[dimension] = '';
-    const transitionDuration = getTransitionDurationFromElement(this._element);
-    EventHandler.one(this._element, 'transitionend', complete);
-    emulateTransitionEnd(this._element, transitionDuration);
+
+    this._queueCallback(complete, this._element, true);
   }
 
   setTransitioning(isTransitioning) {
     this._isTransitioning = isTransitioning;
-  }
-
-  dispose() {
-    super.dispose();
-    this._config = null;
-    this._parent = null;
-    this._triggerArray = null;
-    this._isTransitioning = null;
   } // Private
 
 
@@ -261,16 +252,7 @@ class Collapse extends BaseComponent {
     let {
       parent
     } = this._config;
-
-    if (isElement(parent)) {
-      // it's a jQuery object
-      if (typeof parent.jquery !== 'undefined' || typeof parent[0] !== 'undefined') {
-        parent = parent[0];
-      }
-    } else {
-      parent = SelectorEngine.findOne(parent);
-    }
-
+    parent = getElement(parent);
     const selector = `${SELECTOR_DATA_TOGGLE}[data-bs-parent="${parent}"]`;
     SelectorEngine.find(selector, parent).forEach(element => {
       const selected = getElementFromSelector(element);
@@ -371,7 +353,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
  * add .Collapse to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Collapse);
+defineJQueryPlugin(Collapse);
 
 window.bootstrap = window.bootstrap || {};
 window.bootstrap.Collapse = Collapse;

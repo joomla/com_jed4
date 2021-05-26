@@ -69,7 +69,7 @@
   }
 
   .sidebar-toggle {
-    background: var(--atum-link-color);
+    background: var(--atum-bg-dark-60);
 
     a {
       color: $white;
@@ -185,7 +185,7 @@
   .badge {
     align-self: center;
     margin: 0 .3rem .25rem;
-    background-color: var(--atum-bg-dark-50);
+    background-color: var(--atum-bg-dark-60);
   }
 }
 

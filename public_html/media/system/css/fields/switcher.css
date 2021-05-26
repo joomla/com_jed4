@@ -26,10 +26,12 @@
 }
 
 .switcher input:checked + label {
+  z-index: 0;
   opacity: 1;
 }
 
 .switcher input:not(:checked) + label {
+  z-index: 3;
   opacity: 0;
 }
 

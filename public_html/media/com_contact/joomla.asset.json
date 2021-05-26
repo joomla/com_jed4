@@ -6,6 +6,18 @@
   "license": "GPL-2.0-or-later",
   "assets": [
     {
+      "name": "com_contact.admin-contacts-modal",
+      "type": "script",
+      "uri": "com_contact/admin-contacts-modal.min.js",
+      "dependencies": [
+        "com_contact.admin-contacts-modal.es5"
+      ],
+      "attributes": {
+        "type": "module"
+      },
+      "version": "2e6f6c2f3eed9b1fefbdf2207295c015a5938344"
+    },
+    {
       "name": "com_contact.admin-contacts-modal.es5",
       "type": "script",
       "uri": "com_contact/admin-contacts-modal-es5.min.js",
@@ -17,18 +29,6 @@
         "defer": true
       },
       "version": "20c2fbe56d6b02c48d56e83e77775ffb81c16333"
-    },
-    {
-      "name": "com_contact.admin-contacts-modal",
-      "type": "script",
-      "uri": "com_contact/admin-contacts-modal.min.js",
-      "dependencies": [
-        "com_contact.admin-contacts-modal.es5"
-      ],
-      "attributes": {
-        "type": "module"
-      },
-      "version": "2e6f6c2f3eed9b1fefbdf2207295c015a5938344"
     },
     {
       "name": "com_contact.contacts-list.es5",

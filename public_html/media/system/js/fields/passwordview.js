@@ -54,7 +54,7 @@
             modifyButton.innerText = Joomla.Text._('JMODIFY');
           } else {
             // Remove lock
-            modifyButton.classList.remove('locked'); // Disable the field
+            modifyButton.classList.remove('locked'); // Enable the field
 
             input.removeAttribute('disabled'); // Focus the input field
 

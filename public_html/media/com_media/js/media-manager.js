@@ -10036,7 +10036,7 @@ var script$8 = {
 
       // Show preview
       if (this.item.extension
-        && !extensionWithPreview.includes(this.item.extension.toLowerCase())) {
+        && extensionWithPreview.includes(this.item.extension.toLowerCase())) {
         this.$store.commit(SHOW_PREVIEW_MODAL);
         this.$store.dispatch('getFullContents', this.item);
       }
@@ -11848,15 +11848,30 @@ const options = Joomla.getOptions('com_media', {});
 
 if (options.providers === undefined || options.providers.length === 0) {
   throw new TypeError('Media providers are not defined.');
-} // Load disks from options
+}
+/**
+ * Get the drives
+ *
+ * @param  {Array}  adapterNames
+ * @param  {String} provider
+ *
+ * @return {Array}
+ */
+
+
+const getDrives = (adapterNames, provider) => {
+  const drives = [];
+  adapterNames.map(name => drives.push({
+    root: `${provider}-${name}:/`,
+    displayName: name
+  }));
+  return drives;
+}; // Load disks from options
 
 
 const loadedDisks = options.providers.map(disk => ({
   displayName: disk.displayName,
-  drives: disk.adapterNames.map((account, index) => ({
-    root: `${disk.name}-${index}:/`,
-    displayName: account
-  }))
+  drives: getDrives(disk.adapterNames, disk.name)
 }));
 
 if (loadedDisks[0].drives[0] === undefined || loadedDisks[0].drives.length === 0) {

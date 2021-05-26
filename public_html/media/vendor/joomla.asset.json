@@ -94,6 +94,16 @@
       "version": "1.5.11"
     },
     {
+      "name": "diff",
+      "type": "script",
+      "uri": "vendor/diff/diff.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "diff",
+      "version": "4.0.2"
+    },
+    {
       "name": "choicesjs",
       "type": "style",
       "uri": "vendor/choicesjs/choices.min.css",
@@ -119,16 +129,6 @@
       ],
       "package": "choices.js",
       "version": "9.0.1"
-    },
-    {
-      "name": "diff",
-      "type": "script",
-      "uri": "vendor/diff/diff.js",
-      "attributes": {
-        "defer": true
-      },
-      "package": "diff",
-      "version": "4.0.2"
     },
     {
       "name": "dragula",
@@ -165,6 +165,13 @@
       "version": "5.2.0"
     },
     {
+      "name": "jquery",
+      "type": "script",
+      "uri": "vendor/jquery/jquery.min.js",
+      "package": "jquery",
+      "version": "3.6.0"
+    },
+    {
       "name": "jquery-migrate",
       "type": "script",
       "uri": "vendor/jquery-migrate/jquery-migrate.min.js",
@@ -173,13 +180,6 @@
       ],
       "package": "jquery-migrate",
       "version": "3.3.2"
-    },
-    {
-      "name": "jquery",
-      "type": "script",
-      "uri": "vendor/jquery/jquery.min.js",
-      "package": "jquery",
-      "version": "3.6.0"
     },
     {
       "name": "webcomponent.joomla-alert",
@@ -324,7 +324,7 @@
         "defer": true
       },
       "package": "skipto",
-      "version": "4.0.5"
+      "version": "4.1.0"
     },
     {
       "name": "qrcode",
@@ -376,7 +376,7 @@
       "type": "style",
       "uri": "vendor/bootstrap/bootstrap.min.css",
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.css.grid",
@@ -386,7 +386,7 @@
         "bootstrap.css"
       ],
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.es5",
@@ -400,7 +400,7 @@
         "defer": true
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.alert",
@@ -413,7 +413,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.button",
@@ -426,7 +426,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.carousel",
@@ -439,7 +439,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.collapse",
@@ -452,7 +452,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.dropdown",
@@ -465,7 +465,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.modal",
@@ -478,7 +478,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.offcanvas",
@@ -491,7 +491,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.popover",
@@ -504,7 +504,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.scrollspy",
@@ -517,7 +517,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.tab",
@@ -530,7 +530,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     },
     {
       "name": "bootstrap.toast",
@@ -543,7 +543,7 @@
         "type": "module"
       },
       "package": "bootstrap",
-      "version": "5.0.0"
+      "version": "5.0.1"
     }
   ]
 }

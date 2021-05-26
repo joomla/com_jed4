@@ -1,8 +1,8 @@
-import { B as BaseComponent, g as getElementFromSelector, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, D as Data, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, g as getElementFromSelector, E as EventHandler, D as Data, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): alert.js
+ * Bootstrap (v5.0.1): alert.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -31,8 +31,8 @@ const CLASS_NAME_SHOW = 'show';
 
 class Alert extends BaseComponent {
   // Getters
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -59,16 +59,9 @@ class Alert extends BaseComponent {
 
   _removeElement(element) {
     element.classList.remove(CLASS_NAME_SHOW);
+    const isAnimated = element.classList.contains(CLASS_NAME_FADE);
 
-    if (!element.classList.contains(CLASS_NAME_FADE)) {
-      this._destroyElement(element);
-
-      return;
-    }
-
-    const transitionDuration = getTransitionDurationFromElement(element);
-    EventHandler.one(element, 'transitionend', () => this._destroyElement(element));
-    emulateTransitionEnd(element, transitionDuration);
+    this._queueCallback(() => this._destroyElement(element), element, isAnimated);
   }
 
   _destroyElement(element) {
@@ -120,7 +113,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DISMISS, Alert.handleDi
  * add .Alert to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Alert);
+defineJQueryPlugin(Alert);
 
 window.bootstrap = window.bootstrap || {};
 window.bootstrap.Alert = Alert;

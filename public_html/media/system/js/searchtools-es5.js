@@ -9,7 +9,7 @@
      *
      * @param {HTMLElement}  element  The element that initiates the call
      * @returns {void}
-     * @since   4.0
+     * @since   4.0.0
      */
     Joomla.resetFilters = function (element) {
       var form = element.form;

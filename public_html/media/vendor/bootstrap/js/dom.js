@@ -1,9 +1,81 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): util/index.js
+ * Bootstrap (v5.0.1): dom/selector-engine.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
+
+/**
+ * ------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------
+ */
+const NODE_TEXT = 3;
+const SelectorEngine = {
+  find(selector, element = document.documentElement) {
+    return [].concat(...Element.prototype.querySelectorAll.call(element, selector));
+  },
+
+  findOne(selector, element = document.documentElement) {
+    return Element.prototype.querySelector.call(element, selector);
+  },
+
+  children(element, selector) {
+    return [].concat(...element.children).filter(child => child.matches(selector));
+  },
+
+  parents(element, selector) {
+    const parents = [];
+    let ancestor = element.parentNode;
+
+    while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
+      if (ancestor.matches(selector)) {
+        parents.push(ancestor);
+      }
+
+      ancestor = ancestor.parentNode;
+    }
+
+    return parents;
+  },
+
+  prev(element, selector) {
+    let previous = element.previousElementSibling;
+
+    while (previous) {
+      if (previous.matches(selector)) {
+        return [previous];
+      }
+
+      previous = previous.previousElementSibling;
+    }
+
+    return [];
+  },
+
+  next(element, selector) {
+    let next = element.nextElementSibling;
+
+    while (next) {
+      if (next.matches(selector)) {
+        return [next];
+      }
+
+      next = next.nextElementSibling;
+    }
+
+    return [];
+  }
+
+};
+
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.1): util/index.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
 const MAX_UID = 1000000;
 const MILLISECONDS_MULTIPLIER = 1000;
 const TRANSITION_END = 'transitionend'; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
@@ -96,7 +168,30 @@ const triggerTransitionEnd = element => {
   element.dispatchEvent(new Event(TRANSITION_END));
 };
 
-const isElement = obj => (obj[0] || obj).nodeType;
+const isElement = obj => {
+  if (!obj || typeof obj !== 'object') {
+    return false;
+  }
+
+  if (typeof obj.jquery !== 'undefined') {
+    obj = obj[0];
+  }
+
+  return typeof obj.nodeType !== 'undefined';
+};
+
+const getElement = obj => {
+  if (isElement(obj)) {
+    // it's a jQuery object or a node element
+    return obj.jquery ? obj[0] : obj;
+  }
+
+  if (typeof obj === 'string' && obj.length > 0) {
+    return SelectorEngine.findOne(obj);
+  }
+
+  return null;
+};
 
 const emulateTransitionEnd = (element, duration) => {
   let called = false;
@@ -207,12 +302,13 @@ const onDOMContentLoaded = callback => {
 
 const isRTL = () => document.documentElement.dir === 'rtl';
 
-const defineJQueryPlugin = (name, plugin) => {
+const defineJQueryPlugin = plugin => {
   onDOMContentLoaded(() => {
     const $ = getjQuery();
     /* istanbul ignore if */
 
     if ($) {
+      const name = plugin.NAME;
       const JQUERY_NO_CONFLICT = $.fn[name];
       $.fn[name] = plugin.jQueryInterface;
       $.fn[name].Constructor = plugin;
@@ -233,7 +329,7 @@ const execute = callback => {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): dom/data.js
+ * Bootstrap (v5.0.1): dom/data.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -287,7 +383,7 @@ var Data = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): dom/event-handler.js
+ * Bootstrap (v5.0.1): dom/event-handler.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -576,7 +672,7 @@ const EventHandler = {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): base-component.js
+ * Bootstrap (v5.0.1): base-component.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -586,11 +682,11 @@ const EventHandler = {
  * ------------------------------------------------------------------------
  */
 
-const VERSION = '5.0.0';
+const VERSION = '5.0.1';
 
 class BaseComponent {
   constructor(element) {
-    element = typeof element === 'string' ? document.querySelector(element) : element;
+    element = getElement(element);
 
     if (!element) {
       return;
@@ -602,8 +698,21 @@ class BaseComponent {
 
   dispose() {
     Data.remove(this._element, this.constructor.DATA_KEY);
-    EventHandler.off(this._element, `.${this.constructor.DATA_KEY}`);
-    this._element = null;
+    EventHandler.off(this._element, this.constructor.EVENT_KEY);
+    Object.getOwnPropertyNames(this).forEach(propertyName => {
+      this[propertyName] = null;
+    });
+  }
+
+  _queueCallback(callback, element, isAnimated = true) {
+    if (!isAnimated) {
+      execute(callback);
+      return;
+    }
+
+    const transitionDuration = getTransitionDurationFromElement(element);
+    EventHandler.one(element, 'transitionend', () => execute(callback));
+    emulateTransitionEnd(element, transitionDuration);
   }
   /** Static */
 
@@ -616,11 +725,23 @@ class BaseComponent {
     return VERSION;
   }
 
+  static get NAME() {
+    throw new Error('You have to implement the static method "NAME", for each component!');
+  }
+
+  static get DATA_KEY() {
+    return `bs.${this.NAME}`;
+  }
+
+  static get EVENT_KEY() {
+    return `.${this.DATA_KEY}`;
+  }
+
 }
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): dom/manipulator.js
+ * Bootstrap (v5.0.1): dom/manipulator.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -692,75 +813,4 @@ const Manipulator = {
 
 };
 
-/**
- * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): dom/selector-engine.js
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- * --------------------------------------------------------------------------
- */
-
-/**
- * ------------------------------------------------------------------------
- * Constants
- * ------------------------------------------------------------------------
- */
-const NODE_TEXT = 3;
-const SelectorEngine = {
-  find(selector, element = document.documentElement) {
-    return [].concat(...Element.prototype.querySelectorAll.call(element, selector));
-  },
-
-  findOne(selector, element = document.documentElement) {
-    return Element.prototype.querySelector.call(element, selector);
-  },
-
-  children(element, selector) {
-    return [].concat(...element.children).filter(child => child.matches(selector));
-  },
-
-  parents(element, selector) {
-    const parents = [];
-    let ancestor = element.parentNode;
-
-    while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
-      if (ancestor.matches(selector)) {
-        parents.push(ancestor);
-      }
-
-      ancestor = ancestor.parentNode;
-    }
-
-    return parents;
-  },
-
-  prev(element, selector) {
-    let previous = element.previousElementSibling;
-
-    while (previous) {
-      if (previous.matches(selector)) {
-        return [previous];
-      }
-
-      previous = previous.previousElementSibling;
-    }
-
-    return [];
-  },
-
-  next(element, selector) {
-    let next = element.nextElementSibling;
-
-    while (next) {
-      if (next.matches(selector)) {
-        return [next];
-      }
-
-      next = next.nextElementSibling;
-    }
-
-    return [];
-  }
-
-};
-
-export { BaseComponent as B, Data as D, EventHandler as E, Manipulator as M, SelectorEngine as S, getTransitionDurationFromElement as a, typeCheckConfig as b, isRTL as c, defineJQueryPlugin as d, emulateTransitionEnd as e, getSelectorFromElement as f, getElementFromSelector as g, isElement as h, isVisible as i, isDisabled as j, execute as k, findShadowRoot as l, getUID as m, noop as n, reflow as r, triggerTransitionEnd as t };
+export { BaseComponent as B, Data as D, EventHandler as E, Manipulator as M, SelectorEngine as S, typeCheckConfig as a, isRTL as b, getSelectorFromElement as c, defineJQueryPlugin as d, getElement as e, isDisabled as f, getElementFromSelector as g, isElement as h, isVisible as i, execute as j, getTransitionDurationFromElement as k, emulateTransitionEnd as l, findShadowRoot as m, noop as n, getUID as o, reflow as r, triggerTransitionEnd as t };

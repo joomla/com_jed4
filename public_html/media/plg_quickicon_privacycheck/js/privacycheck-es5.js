@@ -24,22 +24,25 @@
 
             if (request.data.number_urgent_requests) {
               // Quickicon on dashboard shows message
-              link.textContent = text.REQUESTFOUND + " " + request.data.number_urgent_requests; // Quickicon becomes red
+              var countBadge = document.createElement('span');
+              countBadge.classList.add('badge', 'text-dark', 'bg-light');
+              countBadge.textContent = request.data.number_urgent_requests;
+              link.textContent = text.REQUESTFOUND + " ";
+              link.appendChild(countBadge); // Quickicon becomes red
 
-              quickicon.classList.add('danger'); // Span in alert message
+              quickicon.classList.add('danger'); // Span in alert
 
               var countSpan = document.createElement('span');
               countSpan.classList.add('label', 'label-important');
-              countSpan.textContent = request.data.number_urgent_requests; // Button in alert to 'view requests'
+              countSpan.textContent = text.REQUESTFOUND_MESSAGE.replace('%s', request.data.number_urgent_requests) + " "; // Button in alert to 'view requests'
 
               var requestButton = document.createElement('button');
-              requestButton.classList.add('btn', 'btn-primary');
+              requestButton.classList.add('btn', 'btn-primary', 'btn-sm');
               requestButton.setAttribute('onclick', "document.location='" + url + "'");
               requestButton.textContent = text.REQUESTFOUND_BUTTON;
               var div = document.createElement('div');
               div.classList.add('alert', 'alert-error', 'alert-joomlaupdate');
               div.appendChild(countSpan);
-              div.insertAdjacentText('beforeend', " " + text.REQUESTFOUND_MESSAGE);
               div.appendChild(requestButton); // Add elements to container for alert messages
 
               var container = document.querySelector('#system-message-container');

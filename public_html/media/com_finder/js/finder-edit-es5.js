@@ -24,6 +24,14 @@
         if (count) {
           count.value = document.querySelectorAll('input[type="checkbox"]:checked').length;
         }
+      });
+      Array.from(document.querySelectorAll('.js-filter')).forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          var btn = event.currentTarget;
+          Array.from(document.querySelectorAll("." + btn.dataset.id)).map(function (el) {
+            return el.click();
+          });
+        });
       }); // Expand/collapse
 
       var expandAccordion = document.getElementById('expandAccordion');

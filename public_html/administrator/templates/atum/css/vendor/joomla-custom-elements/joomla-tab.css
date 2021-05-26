@@ -104,7 +104,7 @@ joomla-tab[orientation=vertical] a[role=tab] {
 }
 joomla-tab[orientation=vertical] a[role=tab][active], joomla-tab[orientation=vertical] a[role=tab]:hover {
   color: var(--atum-text-light);
-  background-color: var(--atum-link-color);
+  background-color: var(--atum-bg-dark-60);
   background-image: none;
   border-right: 0;
   box-shadow: none;
@@ -129,7 +129,7 @@ joomla-tab[orientation=vertical] > section {
 joomla-tab[view=accordion] > ul {
   flex-direction: column;
   white-space: normal;
-  background-color: var(--atum-link-color);
+  background-color: var(--atum-bg-dark-60);
   border-radius: 0;
   box-shadow: 0 1px #fff inset, 0 0 3px rgba(0, 0, 0, 0.04);
 }
@@ -236,5 +236,6 @@ joomla-tab[view=accordion] #permissions-sliders section[active] {
   }
 }
 .main-card-columns > * > joomla-tab {
+  height: 100%;
   border-left: 1px solid var(--atum-bg-dark-10);
 }

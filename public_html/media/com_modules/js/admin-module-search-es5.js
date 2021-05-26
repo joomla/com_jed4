@@ -35,21 +35,20 @@
    * probably going to be creating multiple instances of the same module, one after another, as is
    * typical when building a new Joomla! site.
    */
-  (function (document) {
-    var elSearch = document.getElementById('comModulesSelectSearch');
-    var elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
+  // Make sure the element exists i.e. a template override has not removed it.
+  var elSearch = document.getElementById('comModulesSelectSearch');
+  var elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
+  var elSearchHeader = document.getElementById('comModulesSelectTypeHeader');
+  var elSearchResults = document.getElementById('comModulesSelectResultsContainer');
+  var alertElement = document.querySelector('.modules-alert');
+  var elCards = [].slice.call(document.querySelectorAll('.comModulesSelectCard'));
 
-    if (!elSearch || !elSearchContainer) {
-      return;
-    } // Add the keyboard event listener which performs the live search in the cards
-
-
+  if (elSearch && elSearchContainer) {
+    // Add the keyboard event listener which performs the live search in the cards
     elSearch.addEventListener('keyup', function (event) {
       /** @type {KeyboardEvent} event */
       var partialSearch = event.target.value;
-      var alert = document.querySelector('.alert');
-      var elCards = document.querySelectorAll('.comModulesSelectCard');
-      var countOfMatchFound = 0; // Save the search string into session storage
+      var hasSearchResults = false; // Save the search string into session storage
 
       if (typeof sessionStorage !== 'undefined') {
         sessionStorage.setItem('Joomla.com_modules.new.search', partialSearch);
@@ -57,30 +56,33 @@
 
 
       elCards.forEach(function (card) {
-        var cardHeaderList = card.querySelectorAll('.card-header');
-        var cardBodyList = card.querySelectorAll('.card-body');
-        var title = cardHeaderList.length ? cardHeaderList[0].textContent : '';
-        var description = cardBodyList.length ? cardBodyList[0].textContent : ''; // First remove the classes which hide the module cards
+        // First remove the class which hide the module cards
+        card.classList.remove('d-none'); // An empty search string means that we should show everything
 
-        card.classList.remove('d-none');
-        countOfMatchFound += 1; // An empty search string means that we should show everything
-
-        if (partialSearch === '') {
-          countOfMatchFound = elCards.length;
+        if (!partialSearch) {
           return;
-        } // If the module title and description don’t match add a class to hide it.
+        }
 
+        var cardHeader = card.querySelector('.new-module-title');
+        var cardBody = card.querySelector('.card-body');
+        var title = cardHeader ? cardHeader.textContent : '';
+        var description = cardBody ? cardBody.textContent : ''; // If the module title and description don’t match add a class to hide it.
 
-        if (!title.toLowerCase().includes(partialSearch.toLowerCase()) && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
+        if (title && !title.toLowerCase().includes(partialSearch.toLowerCase()) && description && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
           card.classList.add('d-none');
-          countOfMatchFound -= 1;
+        } else {
+          hasSearchResults = true;
         }
       });
 
-      if (countOfMatchFound <= 0) {
-        alert.classList.remove('d-none');
+      if (hasSearchResults || !partialSearch) {
+        alertElement.classList.add('d-none');
+        elSearchHeader.classList.remove('d-none');
+        elSearchResults.classList.remove('d-none');
       } else {
-        alert.classList.add('d-none');
+        alertElement.classList.remove('d-none');
+        elSearchHeader.classList.add('d-none');
+        elSearchResults.classList.add('d-none');
       }
     }); // For reasons of progressive enhancement the search box is hidden by default.
 
@@ -97,6 +99,6 @@
       }
     } catch (e) {// This is probably Internet Explorer which doesn't support the KeyboardEvent constructor :(
     }
-  })(document);
+  }
 
 }());

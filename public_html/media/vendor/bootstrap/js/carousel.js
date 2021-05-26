@@ -1,8 +1,8 @@
-import { B as BaseComponent, S as SelectorEngine, i as isVisible, t as triggerTransitionEnd, E as EventHandler, b as typeCheckConfig, r as reflow, a as getTransitionDurationFromElement, e as emulateTransitionEnd, c as isRTL, D as Data, M as Manipulator, g as getElementFromSelector, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, S as SelectorEngine, i as isVisible, t as triggerTransitionEnd, E as EventHandler, a as typeCheckConfig, r as reflow, b as isRTL, D as Data, M as Manipulator, g as getElementFromSelector, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): carousel.js
+ * Bootstrap (v5.0.1): carousel.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -103,8 +103,8 @@ class Carousel extends BaseComponent {
     return Default;
   }
 
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -182,17 +182,6 @@ class Carousel extends BaseComponent {
     const order = index > activeIndex ? ORDER_NEXT : ORDER_PREV;
 
     this._slide(order, this._items[index]);
-  }
-
-  dispose() {
-    this._items = null;
-    this._config = null;
-    this._interval = null;
-    this._isPaused = null;
-    this._isSliding = null;
-    this._activeElement = null;
-    this._indicatorsElement = null;
-    super.dispose();
   } // Private
 
 
@@ -421,37 +410,35 @@ class Carousel extends BaseComponent {
 
     this._activeElement = nextElement;
 
-    if (this._element.classList.contains(CLASS_NAME_SLIDE)) {
-      nextElement.classList.add(orderClassName);
-      reflow(nextElement);
-      activeElement.classList.add(directionalClassName);
-      nextElement.classList.add(directionalClassName);
-      const transitionDuration = getTransitionDurationFromElement(activeElement);
-      EventHandler.one(activeElement, 'transitionend', () => {
-        nextElement.classList.remove(directionalClassName, orderClassName);
-        nextElement.classList.add(CLASS_NAME_ACTIVE);
-        activeElement.classList.remove(CLASS_NAME_ACTIVE, orderClassName, directionalClassName);
-        this._isSliding = false;
-        setTimeout(() => {
-          EventHandler.trigger(this._element, EVENT_SLID, {
-            relatedTarget: nextElement,
-            direction: eventDirectionName,
-            from: activeElementIndex,
-            to: nextElementIndex
-          });
-        }, 0);
-      });
-      emulateTransitionEnd(activeElement, transitionDuration);
-    } else {
-      activeElement.classList.remove(CLASS_NAME_ACTIVE);
-      nextElement.classList.add(CLASS_NAME_ACTIVE);
-      this._isSliding = false;
+    const triggerSlidEvent = () => {
       EventHandler.trigger(this._element, EVENT_SLID, {
         relatedTarget: nextElement,
         direction: eventDirectionName,
         from: activeElementIndex,
         to: nextElementIndex
       });
+    };
+
+    if (this._element.classList.contains(CLASS_NAME_SLIDE)) {
+      nextElement.classList.add(orderClassName);
+      reflow(nextElement);
+      activeElement.classList.add(directionalClassName);
+      nextElement.classList.add(directionalClassName);
+
+      const completeCallBack = () => {
+        nextElement.classList.remove(directionalClassName, orderClassName);
+        nextElement.classList.add(CLASS_NAME_ACTIVE);
+        activeElement.classList.remove(CLASS_NAME_ACTIVE, orderClassName, directionalClassName);
+        this._isSliding = false;
+        setTimeout(triggerSlidEvent, 0);
+      };
+
+      this._queueCallback(completeCallBack, activeElement, true);
+    } else {
+      activeElement.classList.remove(CLASS_NAME_ACTIVE);
+      nextElement.classList.add(CLASS_NAME_ACTIVE);
+      this._isSliding = false;
+      triggerSlidEvent();
     }
 
     if (isCycling) {
@@ -570,7 +557,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
  * add .Carousel to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Carousel);
+defineJQueryPlugin(Carousel);
 
 window.bootstrap = window.bootstrap || {};
 window.bootstrap.Carousel = Carousel;

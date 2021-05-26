@@ -30,13 +30,9 @@
       preview.height = height;
       preview.src = Joomla.MediaManager.Edit.current.contents; // Update the width input box
 
-      document.getElementById('jform_resize_width').value = parseInt(width, 10); // Update the width input range slider
+      document.getElementById('jform_resize_width').value = parseInt(width, 10); // Update the height input box
 
-      document.getElementById('jform_resize_w').value = parseInt(width, 10); // Update the height input box
-
-      document.getElementById('jform_resize_height').value = parseInt(height, 10); // Update the height input range slider
-
-      document.getElementById('jform_resize_h').value = parseInt(height, 10); // Notify the app that a change has been made
+      document.getElementById('jform_resize_height').value = parseInt(height, 10); // Notify the app that a change has been made
 
       window.dispatchEvent(new Event('mediaManager.history.point'));
     };
@@ -56,24 +52,6 @@
         });
         resizeHeightInputBox.addEventListener('change', function (_ref2) {
           var target = _ref2.target;
-          resize(parseInt(target.value, 10) * (image.width / image.height), parseInt(target.value, 10));
-        }); // Set the values for the range fields
-
-        var resizeWidth = document.getElementById('jform_resize_w');
-        var resizeHeight = document.getElementById('jform_resize_h');
-        resizeWidth.min = 0;
-        resizeWidth.max = image.width;
-        resizeWidth.value = image.width;
-        resizeHeight.min = 0;
-        resizeHeight.max = image.height;
-        resizeHeight.value = image.height; // The listeners
-
-        resizeWidth.addEventListener('input', function (_ref3) {
-          var target = _ref3.target;
-          resize(parseInt(target.value, 10), parseInt(target.value, 10) / (image.width / image.height));
-        });
-        resizeHeight.addEventListener('input', function (_ref4) {
-          var target = _ref4.target;
           resize(parseInt(target.value, 10) * (image.width / image.height), parseInt(target.value, 10));
         });
       };

@@ -1,8 +1,8 @@
-import { M as Manipulator, S as SelectorEngine, k as execute, r as reflow, b as typeCheckConfig, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, B as BaseComponent, c as isRTL, g as getElementFromSelector, i as isVisible, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { M as Manipulator, S as SelectorEngine, j as execute, r as reflow, a as typeCheckConfig, E as EventHandler, k as getTransitionDurationFromElement, l as emulateTransitionEnd, B as BaseComponent, b as isRTL, g as getElementFromSelector, i as isVisible, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): util/scrollBar.js
+ * Bootstrap (v5.0.1): util/scrollBar.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -76,7 +76,7 @@ const _resetElementAttributes = (selector, styleProp) => {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): util/backdrop.js
+ * Bootstrap (v5.0.1): util/backdrop.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -160,6 +160,7 @@ class Backdrop {
     config = { ...Default$1,
       ...(typeof config === 'object' ? config : {})
     };
+    config.rootElement = config.rootElement || document.body;
     typeCheckConfig(NAME$1, config, DefaultType$1);
     return config;
   }
@@ -204,7 +205,7 @@ class Backdrop {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): modal.js
+ * Bootstrap (v5.0.1): modal.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -271,8 +272,8 @@ class Modal extends BaseComponent {
     return Default;
   }
 
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -353,17 +354,14 @@ class Modal extends BaseComponent {
     EventHandler.off(this._element, EVENT_CLICK_DISMISS);
     EventHandler.off(this._dialog, EVENT_MOUSEDOWN_DISMISS);
 
-    if (isAnimated) {
-      const transitionDuration = getTransitionDurationFromElement(this._element);
-      EventHandler.one(this._element, 'transitionend', event => this._hideModal(event));
-      emulateTransitionEnd(this._element, transitionDuration);
-    } else {
-      this._hideModal();
-    }
+    this._queueCallback(() => this._hideModal(), this._element, isAnimated);
   }
 
   dispose() {
     [window, this._dialog].forEach(htmlElement => EventHandler.off(htmlElement, EVENT_KEY));
+
+    this._backdrop.dispose();
+
     super.dispose();
     /**
      * `document` has 2 events `EVENT_FOCUSIN` and `EVENT_CLICK_DATA_API`
@@ -372,15 +370,6 @@ class Modal extends BaseComponent {
      */
 
     EventHandler.off(document, EVENT_FOCUSIN);
-    this._config = null;
-    this._dialog = null;
-
-    this._backdrop.dispose();
-
-    this._backdrop = null;
-    this._isShown = null;
-    this._ignoreBackdropClick = null;
-    this._isTransitioning = null;
   }
 
   handleUpdate() {
@@ -450,13 +439,7 @@ class Modal extends BaseComponent {
       });
     };
 
-    if (isAnimated) {
-      const transitionDuration = getTransitionDurationFromElement(this._dialog);
-      EventHandler.one(this._dialog, 'transitionend', transitionComplete);
-      emulateTransitionEnd(this._dialog, transitionDuration);
-    } else {
-      transitionComplete();
-    }
+    this._queueCallback(transitionComplete, this._dialog, isAnimated);
   }
 
   _enforceFocus() {
@@ -646,7 +629,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
  * add .Modal to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Modal);
+defineJQueryPlugin(Modal);
 
 Joomla = Joomla || {};
 Joomla.Modal = Joomla.Modal || {};
@@ -768,7 +751,7 @@ Joomla.initialiseModal = (modal, options) => {
  *                             { iframeSelector: '', buttonSelector: '' }
  * @returns {boolean}
  *
- * @since   4.0
+ * @since   4.0.0
  */
 
 

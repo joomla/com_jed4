@@ -1,8 +1,8 @@
-import { B as BaseComponent, D as Data, E as EventHandler, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, D as Data, E as EventHandler, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): button.js
+ * Bootstrap (v5.0.1): button.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -27,8 +27,8 @@ const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
 
 class Button extends BaseComponent {
   // Getters
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -78,7 +78,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, event => {
  * add .Button to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Button);
+defineJQueryPlugin(Button);
 
 window.bootstrap = window.bootstrap || {};
 window.bootstrap.Button = Button;

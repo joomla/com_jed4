@@ -32,22 +32,20 @@
  * probably going to be creating multiple instances of the same module, one after another, as is
  * typical when building a new Joomla! site.
  */
-(document => {
+// Make sure the element exists i.e. a template override has not removed it.
+const elSearch = document.getElementById('comModulesSelectSearch');
+const elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
+const elSearchHeader = document.getElementById('comModulesSelectTypeHeader');
+const elSearchResults = document.getElementById('comModulesSelectResultsContainer');
+const alertElement = document.querySelector('.modules-alert');
+const elCards = [].slice.call(document.querySelectorAll('.comModulesSelectCard'));
 
-  const elSearch = document.getElementById('comModulesSelectSearch');
-  const elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
-
-  if (!elSearch || !elSearchContainer) {
-    return;
-  } // Add the keyboard event listener which performs the live search in the cards
-
-
+if (elSearch && elSearchContainer) {
+  // Add the keyboard event listener which performs the live search in the cards
   elSearch.addEventListener('keyup', event => {
     /** @type {KeyboardEvent} event */
     const partialSearch = event.target.value;
-    const alert = document.querySelector('.alert');
-    const elCards = document.querySelectorAll('.comModulesSelectCard');
-    let countOfMatchFound = 0; // Save the search string into session storage
+    let hasSearchResults = false; // Save the search string into session storage
 
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem('Joomla.com_modules.new.search', partialSearch);
@@ -55,30 +53,33 @@
 
 
     elCards.forEach(card => {
-      const cardHeaderList = card.querySelectorAll('.card-header');
-      const cardBodyList = card.querySelectorAll('.card-body');
-      const title = cardHeaderList.length ? cardHeaderList[0].textContent : '';
-      const description = cardBodyList.length ? cardBodyList[0].textContent : ''; // First remove the classes which hide the module cards
+      // First remove the class which hide the module cards
+      card.classList.remove('d-none'); // An empty search string means that we should show everything
 
-      card.classList.remove('d-none');
-      countOfMatchFound += 1; // An empty search string means that we should show everything
-
-      if (partialSearch === '') {
-        countOfMatchFound = elCards.length;
+      if (!partialSearch) {
         return;
-      } // If the module title and description don’t match add a class to hide it.
+      }
 
+      const cardHeader = card.querySelector('.new-module-title');
+      const cardBody = card.querySelector('.card-body');
+      const title = cardHeader ? cardHeader.textContent : '';
+      const description = cardBody ? cardBody.textContent : ''; // If the module title and description don’t match add a class to hide it.
 
-      if (!title.toLowerCase().includes(partialSearch.toLowerCase()) && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
+      if (title && !title.toLowerCase().includes(partialSearch.toLowerCase()) && description && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
         card.classList.add('d-none');
-        countOfMatchFound -= 1;
+      } else {
+        hasSearchResults = true;
       }
     });
 
-    if (countOfMatchFound <= 0) {
-      alert.classList.remove('d-none');
+    if (hasSearchResults || !partialSearch) {
+      alertElement.classList.add('d-none');
+      elSearchHeader.classList.remove('d-none');
+      elSearchResults.classList.remove('d-none');
     } else {
-      alert.classList.add('d-none');
+      alertElement.classList.remove('d-none');
+      elSearchHeader.classList.add('d-none');
+      elSearchResults.classList.add('d-none');
     }
   }); // For reasons of progressive enhancement the search box is hidden by default.
 
@@ -95,4 +96,4 @@
     }
   } catch (e) {// This is probably Internet Explorer which doesn't support the KeyboardEvent constructor :(
   }
-})(document);
+}

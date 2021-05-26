@@ -1,8 +1,8 @@
-import { B as BaseComponent, g as getElementFromSelector, S as SelectorEngine, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, r as reflow, D as Data, j as isDisabled, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, g as getElementFromSelector, S as SelectorEngine, E as EventHandler, r as reflow, D as Data, f as isDisabled, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): tab.js
+ * Bootstrap (v5.0.1): tab.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -40,8 +40,8 @@ const SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
 
 class Tab extends BaseComponent {
   // Getters
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
@@ -99,10 +99,9 @@ class Tab extends BaseComponent {
     const complete = () => this._transitionComplete(element, active, callback);
 
     if (active && isTransitioning) {
-      const transitionDuration = getTransitionDurationFromElement(active);
       active.classList.remove(CLASS_NAME_SHOW);
-      EventHandler.one(active, 'transitionend', complete);
-      emulateTransitionEnd(active, transitionDuration);
+
+      this._queueCallback(complete, element, true);
     } else {
       complete();
     }
@@ -197,7 +196,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
  * add .Tab to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Tab);
+defineJQueryPlugin(Tab);
 
 window.Joomla = window.Joomla || {};
 window.bootstrap = window.bootstrap || {};

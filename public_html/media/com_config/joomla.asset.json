@@ -6,9 +6,9 @@
   "license": "GPL-2.0-or-later",
   "assets": [
     {
-      "name": "com_config.modules.es5",
+      "name": "com_config.config.es5",
       "type": "script",
-      "uri": "com_config/modules-default-es5.min.js",
+      "uri": "com_config/config-default-es5.min.js",
       "dependencies": [
         "core"
       ],
@@ -16,7 +16,7 @@
         "nomodule": true,
         "defer": true
       },
-      "version": "d67a4c5a62bf0f3324872b74c7012ff77375a41b"
+      "version": "6295287ced42dc2ca09ce03d6922ebe7ad41d89d"
     },
     {
       "name": "com_config.config",
@@ -31,6 +31,19 @@
       "version": "27083290d09a19b33d9596fac69240c45a55656c"
     },
     {
+      "name": "com_config.modules.es5",
+      "type": "script",
+      "uri": "com_config/modules-default-es5.min.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "nomodule": true,
+        "defer": true
+      },
+      "version": "d67a4c5a62bf0f3324872b74c7012ff77375a41b"
+    },
+    {
       "name": "com_config.modules",
       "type": "script",
       "uri": "com_config/modules-default.min.js",
@@ -41,19 +54,6 @@
         "type": "module"
       },
       "version": "a1e461344086554012c3f7b55cb470b5b7352dc9"
-    },
-    {
-      "name": "com_config.config.es5",
-      "type": "script",
-      "uri": "com_config/config-default-es5.min.js",
-      "dependencies": [
-        "core"
-      ],
-      "attributes": {
-        "nomodule": true,
-        "defer": true
-      },
-      "version": "6295287ced42dc2ca09ce03d6922ebe7ad41d89d"
     },
     {
       "name": "com_config.templates.es5",

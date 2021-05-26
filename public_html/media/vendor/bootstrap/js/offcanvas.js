@@ -1,9 +1,9 @@
-import { B as BaseComponent, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, M as Manipulator, b as typeCheckConfig, D as Data, g as getElementFromSelector, j as isDisabled, i as isVisible, S as SelectorEngine, d as defineJQueryPlugin } from './dom.js?1620567725';
+import { B as BaseComponent, E as EventHandler, M as Manipulator, a as typeCheckConfig, D as Data, g as getElementFromSelector, f as isDisabled, i as isVisible, S as SelectorEngine, d as defineJQueryPlugin } from './dom.js?1621994459';
 import { h as hide, B as Backdrop, r as reset } from './modal.js';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0): offcanvas.js
+ * Bootstrap (v5.0.1): offcanvas.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -58,12 +58,12 @@ class Offcanvas extends BaseComponent {
   } // Getters
 
 
-  static get Default() {
-    return Default;
+  static get NAME() {
+    return NAME;
   }
 
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get Default() {
+    return Default;
   } // Public
 
 
@@ -109,9 +109,7 @@ class Offcanvas extends BaseComponent {
       });
     };
 
-    const transitionDuration = getTransitionDurationFromElement(this._element);
-    EventHandler.one(this._element, 'transitionend', completeCallBack);
-    emulateTransitionEnd(this._element, transitionDuration);
+    this._queueCallback(completeCallBack, this._element, true);
   }
 
   hide() {
@@ -151,9 +149,7 @@ class Offcanvas extends BaseComponent {
       EventHandler.trigger(this._element, EVENT_HIDDEN);
     };
 
-    const transitionDuration = getTransitionDurationFromElement(this._element);
-    EventHandler.one(this._element, 'transitionend', completeCallback);
-    emulateTransitionEnd(this._element, transitionDuration);
+    this._queueCallback(completeCallback, this._element, true);
   }
 
   dispose() {
@@ -161,8 +157,6 @@ class Offcanvas extends BaseComponent {
 
     super.dispose();
     EventHandler.off(document, EVENT_FOCUSIN);
-    this._config = null;
-    this._backdrop = null;
   } // Private
 
 
@@ -265,7 +259,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
  * ------------------------------------------------------------------------
  */
 
-defineJQueryPlugin(NAME, Offcanvas);
+defineJQueryPlugin(Offcanvas);
 
 window.bootstrap = window.bootstrap || {};
 window.bootstrap.Offcanvas = Offcanvas;

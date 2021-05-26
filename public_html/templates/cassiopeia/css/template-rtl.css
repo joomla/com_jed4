@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /*!
- * Bootstrap v5.0.0 (https://getbootstrap.com/)
+ * Bootstrap v5.0.1 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
@@ -1919,6 +1919,7 @@ progress {
 }
 .table {
   --table-bg: transparent;
+  --table-accent-bg: transparent;
   --table-striped-color: #22262a;
   --table-striped-bg: rgba(0, 0, 0, 0.05);
   --table-active-color: #22262a;
@@ -2167,10 +2168,7 @@ progress {
 .form-control[type=file] {
   overflow: hidden;
 }
-.form-control[type=file]:not(:disabled):not(:-moz-read-only) {
-  cursor: pointer;
-}
-.form-control[type=file]:not(:disabled):not(:read-only) {
+.form-control[type=file]:not(:disabled):not([readonly]) {
   cursor: pointer;
 }
 .form-control:focus {
@@ -2203,11 +2201,7 @@ progress {
   color: #6d757e;
   opacity: 1;
 }
-.form-control:-moz-read-only {
-  background-color: #eaedf0;
-  opacity: 1;
-}
-.form-control:disabled, .form-control:read-only {
+.form-control:disabled, .form-control[readonly] {
   background-color: #eaedf0;
   opacity: 1;
 }
@@ -2231,10 +2225,7 @@ progress {
     transition: none;
   }
 }
-.form-control:hover:not(:disabled):not(:-moz-read-only)::file-selector-button {
-  background-color: #dee1e4;
-}
-.form-control:hover:not(:disabled):not(:read-only)::file-selector-button {
+.form-control:hover:not(:disabled):not([readonly])::file-selector-button {
   background-color: #dee1e4;
 }
 .form-control::-webkit-file-upload-button {
@@ -2259,7 +2250,7 @@ progress {
     transition: none;
   }
 }
-.form-control:hover:not(:disabled):not(:read-only)::-webkit-file-upload-button {
+.form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
   background-color: #dee1e4;
 }
 
@@ -2332,10 +2323,7 @@ textarea.form-control-lg {
   height: auto;
   padding: 0.6rem;
 }
-.form-control-color:not(:disabled):not(:-moz-read-only) {
-  cursor: pointer;
-}
-.form-control-color:not(:disabled):not(:read-only) {
+.form-control-color:not(:disabled):not([readonly]) {
   cursor: pointer;
 }
 .form-control-color::-moz-color-swatch {
@@ -2848,6 +2836,13 @@ textarea.form-control-lg {
 .was-validated .input-group .custom-select:valid,
 .input-group .form-select.is-valid,
 .input-group .is-valid.custom-select {
+  z-index: 1;
+}
+.was-validated .input-group .form-control:valid:focus, .input-group .form-control.is-valid:focus,
+.was-validated .input-group .form-select:valid:focus,
+.was-validated .input-group .custom-select:valid:focus,
+.input-group .form-select.is-valid:focus,
+.input-group .is-valid.custom-select:focus {
   z-index: 3;
 }
 
@@ -2934,6 +2929,13 @@ textarea.form-control-lg {
 .was-validated .input-group .custom-select:invalid,
 .input-group .form-select.is-invalid,
 .input-group .is-invalid.custom-select {
+  z-index: 2;
+}
+.was-validated .input-group .form-control:invalid:focus, .input-group .form-control.is-invalid:focus,
+.was-validated .input-group .form-select:invalid:focus,
+.was-validated .input-group .custom-select:invalid:focus,
+.input-group .form-select.is-invalid:focus,
+.input-group .is-invalid.custom-select:focus {
   z-index: 3;
 }
 
@@ -5255,14 +5257,6 @@ textarea.form-control-lg {
   word-wrap: break-word;
 }
 
-.modal-open {
-  overflow: hidden;
-}
-.modal-open .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 .modal {
   position: fixed;
   top: 0;
@@ -5271,7 +5265,8 @@ textarea.form-control-lg {
   display: none;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   outline: 0;
 }
 
@@ -11048,12 +11043,11 @@ small,
 }
 
 dd {
-  padding: 0 0 0 2em;
-  margin-bottom: 0;
+  padding: 0;
+  word-wrap: break-word;
 }
 
 [dir=rtl] dd {
-  padding: 0 2em 0 0;
   margin-right: 0;
   margin-left: auto;
 }
@@ -11062,6 +11056,59 @@ th dd {
   font-weight: var(--cassiopeia-font-weight-normal, 400);
 }
 
+.com-contact__thumbnail {
+  text-align: left;
+}
+
+@media (min-width: 992px) {
+  dl.dl-horizontal {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  dl.dl-horizontal dt {
+    grid-column-start: 1;
+    grid-column-end: 2;
+  }
+  dl.dl-horizontal dd {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    padding: 0 0 0 1em;
+    margin-bottom: 0;
+  }
+
+  .com-contact__container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, auto);
+    grid-gap: 1rem;
+    margin-bottom: 1em;
+  }
+  .com-contact__container h3, .com-contact__container .h3 {
+    grid-column: 1/5;
+  }
+  .com-contact__container .com-contact__thumbnail {
+    grid-column: 3/5;
+    grid-row: 2/5;
+    margin-bottom: 1em;
+    text-align: right;
+  }
+  .com-contact__container .com-contact__position {
+    grid-column: 1/3;
+    grid-row: 2/3;
+  }
+  .com-contact__container .com-contact__info {
+    grid-column: 1/3;
+    grid-row: 3/4;
+  }
+
+  [dir=rtl] dl.dl-horizontal dd {
+    padding: 0 1em 0 0;
+  }
+
+  .com-users-profile dt {
+    min-width: 180px;
+  }
+}
 figure {
   margin: 0 0 2em;
 }
@@ -11712,10 +11759,12 @@ iframe {
   position: relative;
 }
 
-.container-topbar {
+.container-topbar,
+.container-below-top {
   color: white;
 }
-.container-topbar a {
+.container-topbar a,
+.container-below-top a {
   color: currentColor;
 }
 
@@ -11892,9 +11941,6 @@ iframe {
   width: auto;
 }
 
-.error_site {
-  height: 100vh;
-}
 .error_site .page-header {
   margin-top: 1em;
 }
@@ -12187,6 +12233,186 @@ joomla-alert {
   margin-bottom: 5px;
 }
 
+.subhead {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  width: auto;
+  min-height: 43px;
+  padding: 10px 0;
+  color: #495057;
+  background: white;
+  box-shadow: -3px -2px 22px #ddd;
+}
+.subhead .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+.subhead.noshadow {
+  box-shadow: none;
+}
+.subhead joomla-toolbar-button,
+.subhead .btn-group {
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+}
+.subhead joomla-toolbar-button:first-child,
+.subhead .btn-group:first-child {
+  -webkit-margin-start: 0;
+          margin-inline-start: 0;
+}
+.subhead joomla-toolbar-button .btn > span,
+.subhead joomla-toolbar-button .dropdown-item > span {
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
+  width: 1.25em;
+  text-align: center;
+}
+.subhead .btn {
+  --subhead-btn-accent: #495057;
+  padding: 0 1rem;
+  margin: 5px 0;
+  font-size: 1rem;
+  line-height: 2.45rem;
+  color: #495057;
+  background: white;
+  border-color: #adb5bd;
+}
+.subhead .btn > span {
+  display: inline-block;
+  color: var(--subhead-btn-accent);
+}
+.subhead .btn:not([disabled]):hover, .subhead .btn:not([disabled]):active, .subhead .btn:not([disabled]):focus {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: var(--subhead-btn-accent);
+  border-color: var(--subhead-btn-accent);
+}
+.subhead .btn:not([disabled]):hover > span, .subhead .btn:not([disabled]):active > span, .subhead .btn:not([disabled]):focus > span {
+  color: rgba(255, 255, 255, 0.9);
+}
+.subhead .btn.btn-success {
+  --subhead-btn-accent: var(--success);
+}
+.subhead .btn.btn-danger {
+  --subhead-btn-accent: var(--danger);
+}
+.subhead .btn.btn-primary {
+  --subhead-btn-accent: #2a69b8;
+}
+.subhead .btn.btn-secondary {
+  --subhead-btn-accent: #001b4c;
+}
+.subhead .btn.btn-info {
+  --subhead-btn-accent: #132f53;
+}
+.subhead .btn.btn-action {
+  --subhead-btn-accent: #132f53;
+  display: flex;
+  align-items: center;
+}
+.subhead .btn.btn-action::after {
+  width: 2.375rem;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "";
+  border: 0;
+}
+.subhead .btn[disabled], .subhead .btn.dropdown-toggle[disabled] {
+  --subhead-btn-accent: #132f53;
+  background: rgba(223, 227, 231, 0.8);
+  opacity: 0.5;
+}
+.subhead .btn[disabled]:hover, .subhead .btn[disabled]:active, .subhead .btn[disabled]:focus, .subhead .btn.dropdown-toggle[disabled]:hover, .subhead .btn.dropdown-toggle[disabled]:active, .subhead .btn.dropdown-toggle[disabled]:focus {
+  cursor: not-allowed;
+}
+.subhead .dropdown-toggle.btn {
+  -webkit-padding-end: 0;
+          padding-inline-end: 0;
+}
+.subhead .btn-group:not(:last-child) > .dropdown-toggle-split {
+  order: 1;
+  -webkit-margin-start: -0.25rem;
+          margin-inline-start: -0.25rem;
+}
+[dir=ltr] .subhead .btn-group:not(:last-child) > .dropdown-toggle-split {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+[dir=rtl] .subhead .btn-group:not(:last-child) > .dropdown-toggle-split {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+.subhead .dropdown-menu joomla-toolbar-button,
+.subhead .btn-group joomla-toolbar-button {
+  -webkit-margin-start: 0;
+          margin-inline-start: 0;
+}
+
+@media (max-width: 575.98px) {
+  joomla-tab[view=accordion] .col-md-9,
+joomla-tab[view=accordion] .col-md-3 {
+    padding: 0.5rem 1rem !important;
+  }
+
+  #myTab {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  joomla-tab[view=accordion] ul li {
+    width: 100%;
+  }
+
+  .toggler-toolbar {
+    top: 4px;
+    z-index: 1030;
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f0f4fb;
+  }
+  [dir=ltr] .toggler-toolbar {
+    right: 4px;
+  }
+  [dir=rtl] .toggler-toolbar {
+    left: 4px;
+  }
+  .toggler-toolbar .toggler-toolbar-icon::before {
+    font: normal normal 900 20px/1 "Font Awesome 5 Free";
+    color: white;
+    content: "";
+  }
+  .toggler-toolbar.collapsed .toggler-toolbar-icon::before {
+    display: inline-block;
+    content: "";
+    -webkit-transform: translate(-4px);
+            transform: translate(-4px);
+  }
+
+  .subhead joomla-toolbar-button,
+.subhead .btn-group,
+.subhead .btn {
+    width: 100%;
+    margin-left: 0;
+    text-align: left;
+  }
+  .subhead .btn-toolbar > .btn-group,
+.subhead .btn-toolbar > joomla-toolbar-button {
+    margin-left: 0;
+  }
+  .subhead .btn.btn-action::after {
+    text-align: center;
+    -webkit-margin-start: auto;
+            margin-inline-start: auto;
+  }
+  .subhead .dropdown-toggle-split {
+    width: auto;
+  }
+}
+@supports (-ms-ime-align: auto) {
+  [dir=rtl] .subhead {
+    position: relative;
+  }
+}
 .left.item-image {
   float: left;
 }
@@ -12380,6 +12606,10 @@ joomla-alert {
 @media (max-width: 767.98px) {
   .btn {
     margin-bottom: 0.25rem;
+  }
+
+  .input-group .btn {
+    margin-bottom: 0;
   }
 }
 .form-select, .custom-select {

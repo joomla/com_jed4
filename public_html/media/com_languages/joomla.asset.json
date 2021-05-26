@@ -39,18 +39,6 @@
       "version": "892d148c17eeb917af72a963fcc2b2975c04b34d"
     },
     {
-      "name": "com_languages.admin-override-edit-refresh-searchstring",
-      "type": "script",
-      "uri": "com_languages/admin-override-edit-refresh-searchstring.min.js",
-      "dependencies": [
-        "com_languages.admin-override-edit-refresh-searchstring.es5"
-      ],
-      "attributes": {
-        "type": "module"
-      },
-      "version": "870bfd3b9126b378477fe64915f8aa1979e52ff9"
-    },
-    {
       "name": "com_languages.admin-override-edit-refresh-searchstring.es5",
       "type": "script",
       "uri": "com_languages/admin-override-edit-refresh-searchstring-es5.min.js",
@@ -62,6 +50,18 @@
         "defer": true
       },
       "version": "d694b7e69a08d5dbbc34f04133bf2187292f970d"
+    },
+    {
+      "name": "com_languages.admin-override-edit-refresh-searchstring",
+      "type": "script",
+      "uri": "com_languages/admin-override-edit-refresh-searchstring.min.js",
+      "dependencies": [
+        "com_languages.admin-override-edit-refresh-searchstring.es5"
+      ],
+      "attributes": {
+        "type": "module"
+      },
+      "version": "870bfd3b9126b378477fe64915f8aa1979e52ff9"
     },
     {
       "name": "com_languages.overrider.es5",
@@ -78,12 +78,6 @@
     },
     {
       "name": "com_languages.overrider",
-      "type": "style",
-      "uri": "com_languages/overrider.min.css",
-      "version": "8acf771398c9cec5afebd410727c1d393cbd9779"
-    },
-    {
-      "name": "com_languages.overrider",
       "type": "script",
       "uri": "com_languages/overrider.min.js",
       "dependencies": [
@@ -93,6 +87,12 @@
         "type": "module"
       },
       "version": "9327f8a7065aaf50e6bee8384a3b3d02a0dc490d"
+    },
+    {
+      "name": "com_languages.overrider",
+      "type": "style",
+      "uri": "com_languages/overrider.min.css",
+      "version": "8acf771398c9cec5afebd410727c1d393cbd9779"
     }
   ]
 }

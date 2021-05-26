@@ -125,7 +125,7 @@
       "name": "switcher",
       "type": "style",
       "uri": "system/fields/switcher.min.css",
-      "version": "0969c7916b3b15f2df28d56524b064d0188852e1"
+      "version": "852c3c99beb07406033f85429263d74798ef3b15"
     },
     {
       "name": "form.validate",
@@ -162,7 +162,7 @@
       "dependencies": [
         "dragula"
       ],
-      "version": "ae7fa27185285318f85029084db17e0d48930b60"
+      "version": "cc006f12574ec8f0bf94000a410768ea0cc8fe2a"
     },
     {
       "name": "highlight-legacy",
@@ -202,12 +202,6 @@
       "version": "bae2911b22f836c780af199d956a1b22c8604694"
     },
     {
-      "name": "field.calendar",
-      "type": "style",
-      "uri": "system/fields/calendar.css",
-      "version": "f89a763bdbf7641a139d51def8b097fddf52352a"
-    },
-    {
       "name": "field.passwordstrength",
       "type": "script",
       "uri": "system/fields/passwordstrength.min.js",
@@ -219,6 +213,12 @@
         "form.validate"
       ],
       "version": "c7b8b8e596fb21e24d9792ca9741dc1364f958c5"
+    },
+    {
+      "name": "field.calendar",
+      "type": "style",
+      "uri": "system/fields/calendar.css",
+      "version": "f89a763bdbf7641a139d51def8b097fddf52352a"
     },
     {
       "name": "field.calendar-rtl",
@@ -406,6 +406,19 @@
       "version": "f4cd1c1da6b0cf3dca1da161a8ae6aeaff4cacc4"
     },
     {
+      "name": "webcomponent.field-send-test-mail-legacy",
+      "type": "script",
+      "uri": "system/fields/joomla-field-send-test-mail-es5.min.js",
+      "attributes": {
+        "nomodule": true,
+        "defer": true
+      },
+      "dependencies": [
+        "wcpolyfill"
+      ],
+      "version": "ad8138cb5a0e7bf5db229355b18a1e7e234cc952"
+    },
+    {
       "name": "webcomponent.field-send-test-mail",
       "type": "script",
       "uri": "system/fields/joomla-field-send-test-mail.min.js",
@@ -449,9 +462,9 @@
       "version": "148c5f166470a404e6d0ae6b833976c7be7078bd"
     },
     {
-      "name": "webcomponent.field-send-test-mail-legacy",
+      "name": "webcomponent.field-subform-legacy",
       "type": "script",
-      "uri": "system/fields/joomla-field-send-test-mail-es5.min.js",
+      "uri": "system/fields/joomla-field-subform-es5.min.js",
       "attributes": {
         "nomodule": true,
         "defer": true
@@ -459,7 +472,7 @@
       "dependencies": [
         "wcpolyfill"
       ],
-      "version": "ad8138cb5a0e7bf5db229355b18a1e7e234cc952"
+      "version": "7fd1902870a49ee76331d9c9719244fb655cd29c"
     },
     {
       "name": "webcomponent.field-subform",
@@ -472,19 +485,6 @@
         "webcomponent.field-subform-legacy"
       ],
       "version": "2c4db0fb5caf424c0b7846a85726d83d5ba18f41"
-    },
-    {
-      "name": "webcomponent.field-subform-legacy",
-      "type": "script",
-      "uri": "system/fields/joomla-field-subform-es5.min.js",
-      "attributes": {
-        "nomodule": true,
-        "defer": true
-      },
-      "dependencies": [
-        "wcpolyfill"
-      ],
-      "version": "7fd1902870a49ee76331d9c9719244fb655cd29c"
     },
     {
       "name": "webcomponent.field-user-legacy",
