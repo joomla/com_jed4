@@ -1,4 +1,4 @@
-/*! skipto - v4.0.1 - 2021-01-15
+/*! skipto - v4.1.0 - 2021-05-22
 * https://github.com/paypal/skipto
 * Copyright (c) 2021 PayPal Accessibility Team and University of Illinois; Licensed BSD */
  /*@cc_on @*/
@@ -16,25 +16,30 @@
 (function() {
   'use strict';
   var SkipTo = {
-    skipToId: 'is-skip-to-js-3',
+    skipToId: 'is-skip-to-js-4',
     domNode: null,
     buttonNode: null,
     menuNode: null,
+    tooltipNode: null,
     menuitemNodes: [],
     firstMenuitem: false,
     lastMenuitem: false,
     firstChars: [],
     headingLevels: [],
     skipToIdIndex: 1,
-    contentSelector: 'h1, h2, h3, h4, h5, h6, p, li, img, input, select, textarea',
     showAllLandmarksSelector: 'main, [role=main], [role=search], nav, [role=navigation], section[aria-label], section[aria-labelledby], section[title], [role=region][aria-label], [role=region][aria-labelledby], [role=region][title], form[aria-label], form[aria-labelledby], aside, [role=complementary], body > header, [role=banner], body > footer, [role=contentinfo]',
     showAllHeadingsSelector: 'h1, h2, h3, h4, h5, h6',
+    showTooltipFocus: false,
+    showTooltipHover: false,
+    tooltipTimerDelay: 500,  // in milliseconds
     // Default configuration values
     config: {
       // Feature switches
-      enableActions: true,
+      enableActions: false,
+      enableMofN: true,
       enableHeadingLevelShortcuts: true,
       enableHelp: true,
+      enableTooltip: true,
       // Customization of button and menu
       accesskey: '0', // default is the number zero
       attachElement: 'header',
@@ -45,9 +50,10 @@
       customClass: '',
 
       // Button labels and messages
-      accesskeyNotSupported: ' is not supported on this browser.',
-      buttonTitle: 'Keyboard Navigation',
-      buttonTitleWithAccesskey: 'Keyboard Navigation\nAccesskey is "$key"',
+      buttonTitle: '',   // deprecated in favor of buttonTooltip
+      buttonTitleWithAccesskey: '',  // deprecated in favor of buttonTooltipAccesskey
+      buttonTooltip: '',
+      buttonTooltipAccesskey: 'Shortcut Key: $key',
       buttonLabel: 'Skip To Content',
 
       // Menu labels and messages
@@ -87,79 +93,69 @@
 
       // Custom CSS position and colors
       colorTheme: '',
+      fontFamily: '',
+      fontSize: '',
       positionLeft: '',
-      buttonColor: '',
-      buttonBackgroundColor: '',
-      buttonBorderColor: '',
-      buttonColorFocus: '',
-      buttonFocusBackgroundColor: '',
-      buttonFocusBorderColor: '',
+      menuTextColor: '',
       menuBackgroundColor: '',
-      menuitemColor: '',
-      menuitemBackgroundColor: '',
-      menuitemFocusColor: '',
+      menuitemFocusTextColor: '',
       menuitemFocusBackgroundColor: '',
-      menuitemFocusBorderColor: '',
+      focusBorderColor: '',
+      buttonTextColor: '',
+      buttonBackgroundColor: '',
     },
     colorThemes: {
       'default': {
+        fontFamily: 'inherit',
+        fontSize: 'inherit',
         positionLeft: '46%',
-        buttonColor: '#1a1a1a',
-        buttonBackgroundColor: '#eeeeee',
-        buttonBorderColor: '#eeeeee',
-        buttonFocusColor: '#000000',
-        buttonFocusBackgroundColor: '#dcdcdc',
-        buttonFocusBorderColor: '#1a1a1a',
-        menuBackgroundColor: '#eeeeee',
-        menuBorderColor: '#1a1a1a',
-        menuitemColor: '#1a1a1a',
-        menuitemBackgroundColor: '#eeeeee',
-        menuitemFocusColor: '#eeeeee',
+        menuTextColor: '#1a1a1a',
+        menuBackgroundColor: '#dcdcdc',
+        menuitemFocusTextColor: '#eeeeee',
         menuitemFocusBackgroundColor: '#1a1a1a',
-        menuitemFocusBorderColor: '#1a1a1a',
+        focusBorderColor: '#1a1a1a',
+        buttonTextColor: '#1a1a1a',
+        buttonBackgroundColor: '#eeeeee',
       },
       'illinois': {
+        fontFamily: 'inherit',
+        fontSize: 'inherit',
         positionLeft: '46%',
-        buttonColor: '#00132c',
-        buttonBackgroundColor: '#dddede',
-        buttonBorderColor: '#dddede',
-        buttonFocusColor: '#00132c',
-        buttonFocusBackgroundColor: '#cad9ef',
-        buttonFocusBorderColor: '#ff552e',
+        menuTextColor: '#00132c',
         menuBackgroundColor: '#cad9ef',
-        menuitemLevelOpacity: '0.7',
-        menuBorderColor: '#ff552e',
-        menuitemColor: '#00132c',
-        menuitemBackgroundColor: '#cad9ef',
-        menuitemFocusColor: '#eeeeee',
+        menuitemFocusTextColor: '#eeeeee',
         menuitemFocusBackgroundColor: '#00132c',
-        menuitemFocusBorderColor: '#ff552e',
+        focusBorderColor: '#ff552e',
+        buttonTextColor: '#444444',
+        buttonBackgroundColor: '#dddede',
       },
       'aria': {
-        positionLeft: '',
-        buttonColor: '#005a9c;',
-        buttonBackgroundColor: '#def',
-        buttonBorderColor: '#def',
-        buttonFocusColor: '#fff',
-        buttonFocusBackgroundColor: '#005a9c',
-        buttonFocusBorderColor: '#005a9c;',
+        fontFamily: 'sans-serif',
+        fontSize: '10pt',
+        positionLeft: '7%',
+        menuTextColor: '#000',
         menuBackgroundColor: '#def',
-        menuBorderColor: '#005a9c',
-        menuitemColor: '#000',
-        menuitemBackgroundColor: '#def',
-        menuitemFocusColor: '#fff',
+        menuitemFocusTextColor: '#fff',
         menuitemFocusBackgroundColor: '#005a9c',
-        menuitemFocusBorderColor: '#005a9c',
+        focusBorderColor: '#005a9c',
+        buttonTextColor: '#005a9c',
+        buttonBackgroundColor: '#ddd',
       }
     },
-    defaultCSS: '.skip-to.popup{position:absolute;top:-30em;left:-3000em}.skip-to,.skip-to.popup.focus{position:absolute;top:0;left:$positionLeft}.skip-to.fixed{position:fixed}.skip-to button{position:relative;margin:0;padding:6px 8px 6px 8px;border-width:0 1px 1px 1px;border-style:solid;border-radius:0 0 6px 6px;background-color:$buttonBackgroundColor;border-color:$buttonBorderColor;color:$buttonColor;z-index:1000}.skip-to [role=menu]{position:absolute;min-width:17em;display:none;margin:0;padding:.25rem;background-color:$menuBackgroundColor;border-width:2px;border-style:solid;border-color:$menuBorderColor;border-radius:5px;z-index:1000}.skip-to [role=group]{display:grid;grid-auto-rows:min-content;grid-row-gap:1px}.skip-to [role=separator]:first-child{border-radius:5px 5px 0 0}.skip-to [role=menuitem]{padding:3px;display:block;width:auto;border-width:0;border-style:solid;color:$menuitemColor;background-color:$menuitemBackgroundColor;z-index:1000;display:grid;overflow-y:auto;grid-template-columns:repeat(6,1.2rem) 1fr;grid-column-gap:2px;font-size:1em}.skip-to [role=menuitem] .label:first-letter,.skip-to [role=menuitem] .level:first-letter{text-decoration:underline;text-transform:uppercase}.skip-to [role=menuitem] .level{text-align:right;padding-right:4px}.skip-to [role=menuitem] .label{margin:0;padding:0;display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.skip-to [role=menuitem].skip-to-h1 .level{grid-column:1}.skip-to [role=menuitem].skip-to-h2 .level{grid-column:2}.skip-to [role=menuitem].skip-to-h3 .level{grid-column:3}.skip-to [role=menuitem].skip-to-h4 .level{grid-column:4}.skip-to [role=menuitem].skip-to-h5 .level{grid-column:5}.skip-to [role=menuitem].skip-to-h6 .level{grid-column:8}.skip-to [role=menuitem].skip-to-h1 .label{grid-column:2/8}.skip-to [role=menuitem].skip-to-h2 .label{grid-column:3/8}.skip-to [role=menuitem].skip-to-h3 .label{grid-column:4/8}.skip-to [role=menuitem].skip-to-h4 .label{grid-column:5/8}.skip-to [role=menuitem].skip-to-h5 .label{grid-column:6/8}.skip-to [role=menuitem].skip-to-h6 .label{grid-column:7/8}.skip-to [role=menuitem].skip-to-h1.no-level .label{grid-column:1/8}.skip-to [role=menuitem].skip-to-h2.no-level .label{grid-column:2/8}.skip-to [role=menuitem].skip-to-h3.no-level .label{grid-column:3/8}.skip-to [role=menuitem].skip-to-h4.no-level .label{grid-column:4/8}.skip-to [role=menuitem].skip-to-h5.no-level .label{grid-column:5/8}.skip-to [role=menuitem].skip-to-h6.no-level .label{grid-column:6/8}.skip-to [role=menuitem].skip-to-nesting-level-1 .nesting{grid-column:1}.skip-to [role=menuitem].skip-to-nesting-level-2 .nesting{grid-column:2}.skip-to [role=menuitem].skip-to-nesting-level-3 .nesting{grid-column:3}.skip-to [role=menuitem].skip-to-nesting-level-0 .label{grid-column:1/8}.skip-to [role=menuitem].skip-to-nesting-level-1 .label{grid-column:2/8}.skip-to [role=menuitem].skip-to-nesting-level-2 .label{grid-column:3/8}.skip-to [role=menuitem].skip-to-nesting-level-3 .label{grid-column:4/8}.skip-to [role=menuitem].action .label,.skip-to [role=menuitem].no-items .label{grid-column:1/8}.skip-to [role=separator]{margin:1px 0 1px 0;padding:3px;display:block;width:auto;font-weight:700;text-align:left;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:$menuitemColor;background-color:$menuitemBackgroundColor;color:$menuitemColor;z-index:1000}.skip-to [role=separator] .mofn{font-weight:400;font-size:85%}.skip-to [role=separator]:first-child{border-radius:5px 5px 0 0}.skip-to [role=menuitem].last{border-radius:0 0 5px 5px}.skip-to.focus{display:block}.skip-to button:focus,.skip-to button:hover{background-color:$buttonFocusBackgroundColor;color:$buttonFocusColor;outline:0}.skip-to button:focus{padding:4px 7px 5px 7px;border-width:2px 2px 2px 2px;border-color:$buttonFocusBorderColor}.skip-to [role=menuitem]:focus{padding:1px;border-width:2px;border-style:solid;border-color:$menuitemFocusBorderColor;background-color:$menuitemFocusBackgroundColor;color:$menuitemFocusColor;outline:0}',
+    defaultCSS: '.skip-to.popup{position:absolute;top:-30em;left:0}.skip-to,.skip-to.popup.focus{position:absolute;top:0;left:$positionLeft;font-family:$fontFamily;font-size:$fontSize}.skip-to.fixed{position:fixed}.skip-to button{position:relative;margin:0;padding:6px 8px 6px 8px;border-width:0 1px 1px 1px;border-style:solid;border-radius:0 0 6px 6px;border-color:$buttonBackgroundColor;color:$menuTextColor;background-color:$buttonBackgroundColor;z-index:200;font-family:$fontFamily;font-size:$fontSize}.skip-to .skip-to-tooltip{position:absolute;top:2.25em;left:8em;margin:1px;padding:4px;border:1px solid #ccc;box-shadow:2px 3px 5px #ddd;background-color:#eee;color:#000;font-family:Helvetica,Arial,Sans-Serif;font-variant-numeric:slash-zero;font-size:9pt;width:auto;display:none;white-space:nowrap;z-index:201}.skip-to .skip-to-tooltip.skip-to-show-tooltip{display:block}.skip-to [aria-expanded=true]+.skip-to-tooltip.skip-to-show-tooltip{display:none}.skip-to [role=menu]{position:absolute;min-width:17em;display:none;margin:0;padding:.25rem;background-color:$menuBackgroundColor;border-width:2px;border-style:solid;border-color:$focusBorderColor;border-radius:5px;z-index:1000}.skip-to [role=group]{display:grid;grid-auto-rows:min-content;grid-row-gap:1px}.skip-to [role=separator]:first-child{border-radius:5px 5px 0 0}.skip-to [role=menuitem]{padding:3px;width:auto;border-width:0;border-style:solid;color:$menuTextColor;background-color:$menuBackgroundColor;z-index:1000;display:grid;overflow-y:auto;grid-template-columns:repeat(6,1.2rem) 1fr;grid-column-gap:2px;font-size:1em}.skip-to [role=menuitem] .label,.skip-to [role=menuitem] .level{font-size:100%;font-weight:400;color:$menuTextColor;display:inline-block;background-color:$menuBackgroundColor;line-height:inherit;display:inline-block}.skip-to [role=menuitem] .level{text-align:right;padding-right:4px}.skip-to [role=menuitem] .label{text-align:left;margin:0;padding:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.skip-to [role=menuitem] .label:first-letter,.skip-to [role=menuitem] .level:first-letter{text-decoration:underline;text-transform:uppercase}.skip-to [role=menuitem].skip-to-h1 .level{grid-column:1}.skip-to [role=menuitem].skip-to-h2 .level{grid-column:2}.skip-to [role=menuitem].skip-to-h3 .level{grid-column:3}.skip-to [role=menuitem].skip-to-h4 .level{grid-column:4}.skip-to [role=menuitem].skip-to-h5 .level{grid-column:5}.skip-to [role=menuitem].skip-to-h6 .level{grid-column:8}.skip-to [role=menuitem].skip-to-h1 .label{grid-column:2/8}.skip-to [role=menuitem].skip-to-h2 .label{grid-column:3/8}.skip-to [role=menuitem].skip-to-h3 .label{grid-column:4/8}.skip-to [role=menuitem].skip-to-h4 .label{grid-column:5/8}.skip-to [role=menuitem].skip-to-h5 .label{grid-column:6/8}.skip-to [role=menuitem].skip-to-h6 .label{grid-column:7/8}.skip-to [role=menuitem].skip-to-h1.no-level .label{grid-column:1/8}.skip-to [role=menuitem].skip-to-h2.no-level .label{grid-column:2/8}.skip-to [role=menuitem].skip-to-h3.no-level .label{grid-column:3/8}.skip-to [role=menuitem].skip-to-h4.no-level .label{grid-column:4/8}.skip-to [role=menuitem].skip-to-h5.no-level .label{grid-column:5/8}.skip-to [role=menuitem].skip-to-h6.no-level .label{grid-column:6/8}.skip-to [role=menuitem].skip-to-nesting-level-1 .nesting{grid-column:1}.skip-to [role=menuitem].skip-to-nesting-level-2 .nesting{grid-column:2}.skip-to [role=menuitem].skip-to-nesting-level-3 .nesting{grid-column:3}.skip-to [role=menuitem].skip-to-nesting-level-0 .label{grid-column:1/8}.skip-to [role=menuitem].skip-to-nesting-level-1 .label{grid-column:2/8}.skip-to [role=menuitem].skip-to-nesting-level-2 .label{grid-column:3/8}.skip-to [role=menuitem].skip-to-nesting-level-3 .label{grid-column:4/8}.skip-to [role=menuitem].action .label,.skip-to [role=menuitem].no-items .label{grid-column:1/8}.skip-to [role=separator]{margin:1px 0 1px 0;padding:3px;display:block;width:auto;font-weight:700;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:$menuTextColor;background-color:$menuBackgroundColor;color:$menuTextColor;z-index:1000}.skip-to [role=separator] .mofn{font-weight:400;font-size:85%}.skip-to [role=separator]:first-child{border-radius:5px 5px 0 0}.skip-to [role=menuitem].last{border-radius:0 0 5px 5px}.skip-to.focus{display:block}.skip-to button:focus,.skip-to button:hover{background-color:$menuBackgroundColor;color:$menuTextColor;outline:0}.skip-to button:focus{padding:6px 7px 5px 7px;border-width:0 2px 2px 2px;border-color:$focusBorderColor}.skip-to [role=menuitem]:focus{padding:1px;border-width:2px;border-style:solid;border-color:$focusBorderColor;background-color:$menuitemFocusBackgroundColor;color:$menuitemFocusTextColor;outline:0}.skip-to [role=menuitem]:focus .label,.skip-to [role=menuitem]:focus .level{background-color:$menuitemFocusBackgroundColor;color:$menuitemFocusTextColor}',
 
     //
     // Functions related to configuring the features
     // of skipTo
     //
-
+    isNotEmptyString: function(str) {
+      return (typeof str === 'string') && str.length;
+    },
+    isEmptyString: function(str) {
+      return (typeof str !== 'string') || str.length === 0;
+    },
     init: function(config) {
+      var node;
       // Check if skipto is already loaded
 
       if (document.querySelector('style#' + this.skipToId)) {
@@ -171,14 +167,18 @@
         this.setUpConfig(config);
       }
       if (typeof this.config.attachElement === 'string') {
-        var node = document.querySelector(this.config.attachElement);
+        node = document.querySelector(this.config.attachElement);
         if (node && node.nodeType === Node.ELEMENT_NODE) {
           attachElement = node;
         }
       }
       this.addCSSColors();
       this.renderStyleElement(this.defaultCSS);
-      this.domNode = document.createElement(this.config.containerElement);
+      var elem = this.config.containerElement.toLowerCase().trim();
+      if (!this.isNotEmptyString(elem)) {
+        elem = 'div';
+      }
+      this.domNode = document.createElement(elem);
       this.domNode.classList.add('skip-to');
       if (this.isNotEmptyString(this.config.customClass)) {
         this.domNode.classList.add(this.config.customClass);
@@ -215,26 +215,69 @@
       this.buttonNode.setAttribute('aria-expanded', 'false');
       this.buttonNode.setAttribute('accesskey', this.config.accesskey);
 
-      if (this.isNotEmptyString(this.config.buttonTitleWithAccesskey) &&
-        (this.config.accesskey.length === 1)) {
-        var title = this.config.buttonTitleWithAccesskey.replace('$key', this.getBrowserSpecificAccesskey(this.config.accesskey));
-        this.buttonNode.setAttribute('title', title);
-      } else {
-        if (this.isNotEmptyString(this.config.buttonTitle)) {
-          this.buttonNode.setAttribute('title', this.config.buttonTitle);
-        }
-      }
-
       this.domNode.appendChild(this.buttonNode);
+
+      this.renderTooltip(this.domNode, this.buttonNode);
+
       this.menuNode = document.createElement('div');
       this.menuNode.setAttribute('role', 'menu');
       this.domNode.appendChild(this.menuNode);
       this.buttonNode.addEventListener('keydown', this.handleButtonKeydown.bind(this));
       this.buttonNode.addEventListener('click', this.handleButtonClick.bind(this));
+      this.buttonNode.addEventListener('focus', this.handleButtonFocus.bind(this));
+      this.buttonNode.addEventListener('blur', this.handleButtonBlur.bind(this));
+      this.buttonNode.addEventListener('pointerenter', this.handleButtonPointerenter.bind(this));
+      this.buttonNode.addEventListener('pointerout', this.handleButtonPointerout.bind(this));
       this.domNode.addEventListener('focusin', this.handleFocusin.bind(this));
       this.domNode.addEventListener('focusout', this.handleFocusout.bind(this));
-      window.addEventListener('mousedown', this.handleBackgroundMousedown.bind(this), true);
+      window.addEventListener('pointerdown', this.handleBackgroundPointerdown.bind(this), true);
+
     },
+    renderTooltip: function(attachNode, buttonNode) {
+      var id = 'id-skip-to-tooltip';
+      var accesskey = this.getBrowserSpecificAccesskey(this.config.accesskey);
+
+      var tooltip = this.config.buttonTooltip;
+      // for backward compatibility, support 'this.config.buttonTitle' if defined
+      if (this.isNotEmptyString(this.config.buttonTitle)) {
+        tooltip = this.config.buttonTitle;
+      }
+
+      this.tooltipLeft = buttonNode.getBoundingClientRect().width;
+      this.tooltipTop  = buttonNode.getBoundingClientRect().height;
+
+      this.tooltipNode = document.createElement('div');
+      this.tooltipNode.setAttribute('role', 'tooltip');
+      this.tooltipNode.id = id;
+      this.tooltipNode.classList.add('skip-to-tooltip');
+
+      if (this.isNotEmptyString(accesskey)) {
+        tooltip = this.config.buttonTooltipAccesskey.replace('$key', accesskey);
+        // for backward compatibility support 'buttonTitleWithAccesskey' if defined
+        if (this.isNotEmptyString(this.config.buttonTitleWithAccesskey)) {
+          tooltip = this.config.buttonTitleWithAccesskey.replace('$key', accesskey);
+        }
+      }
+
+      if (this.isEmptyString(tooltip)) {
+        // if there is no tooltip information
+        // do not display tooltip
+        this.config.enableTooltip = false;
+      } else {
+        this.tooltipNode.textContent = tooltip;
+        buttonNode.setAttribute('aria-describedby', id);
+      }
+
+      attachNode.appendChild(this.tooltipNode);
+      this.tooltipNode.style.left = this.tooltipLeft + 'px';
+      this.tooltipNode.style.top = this.tooltipTop + 'px';
+
+      // Temporarily show the tooltip to get rendered height
+      this.tooltipNode.classList.add('skip-to-show-tooltip');
+      this.tooltipHeight = this.tooltipNode.getBoundingClientRect().height;
+      this.tooltipNode.classList.remove('skip-to-show-tooltip');
+    },
+
     updateStyle: function(stylePlaceholder, value, defaultValue) {
       if (typeof value !== 'string' || value.length === 0) {
         value = defaultValue;
@@ -252,51 +295,55 @@
       if (typeof this.colorThemes[this.config.colorTheme] === 'object') {
         theme = this.colorThemes[this.config.colorTheme];
       }
+      this.updateStyle('$fontFamily', this.config.fontFamily, theme.fontFamily);
+      this.updateStyle('$fontSize', this.config.fontSize, theme.fontSize);
+
       this.updateStyle('$positionLeft', this.config.positionLeft, theme.positionLeft);
-      this.updateStyle('$buttonColor', this.config.buttonColor, theme.buttonColor);
-      this.updateStyle('$buttonBackgroundColor', this.config.buttonBackgroundColor, theme.buttonBackgroundColor);
-      this.updateStyle('$buttonBorderColor', this.config.buttonBorderColor, theme.buttonBorderColor);
-      this.updateStyle('$buttonFocusColor', this.config.buttonFocusColor, theme.buttonFocusColor);
-      this.updateStyle('$buttonFocusBackgroundColor', this.config.buttonFocusBackgroundColor, theme.buttonFocusBackgroundColor);
-      this.updateStyle('$buttonFocusBorderColor', this.config.buttonFocusBorderColor, theme.buttonFocusBorderColor);
+
+      this.updateStyle('$menuTextColor', this.config.menuTextColor, theme.menuTextColor);
       this.updateStyle('$menuBackgroundColor', this.config.menuBackgroundColor, theme.menuBackgroundColor);
-      this.updateStyle('$menuBorderColor', this.config.menuBorderColor, theme.menuBorderColor);
-      this.updateStyle('$menuitemColor', this.config.menuitemColor, theme.menuitemColor);
-      this.updateStyle('$menuitemBackgroundColor', this.config.menuitemBackgroundColor, theme.menuitemBackgroundColor);
-      this.updateStyle('$menuitemFocusColor', this.config.menuitemFocusColor, theme.menuitemFocusColor);
+
+      this.updateStyle('$menuitemFocusTextColor', this.config.menuitemFocusTextColor, theme.menuitemFocusTextColor);
       this.updateStyle('$menuitemFocusBackgroundColor', this.config.menuitemFocusBackgroundColor, theme.menuitemFocusBackgroundColor);
-      this.updateStyle('$menuitemFocusBorderColor', this.config.menuitemFocusBorderColor, theme.menuitemFocusBorderColor);
+
+      this.updateStyle('$focusBorderColor', this.config.focusBorderColor, theme.focusBorderColor);
+
+      this.updateStyle('$buttonTextColor', this.config.buttonTextColor, theme.buttonTextColor);
+      this.updateStyle('$buttonBackgroundColor', this.config.buttonBackgroundColor, theme.buttonBackgroundColor);
     },
-    isNotEmptyString: function(str) {
-      return (typeof str === 'string') && str.length;
-    },
+
     getBrowserSpecificAccesskey: function (accesskey) {
       var userAgent = navigator.userAgent.toLowerCase();
       var platform =  navigator.platform.toLowerCase();
 
-      var hasWin = platform.indexOf('win') >= 0;
-      var hasMac     = platform.indexOf('mac') >= 0;
-      var hasLinux   = platform.indexOf('linux') >= 0 || platform.indexOf('bsd') >= 0;
+      var hasWin    = platform.indexOf('win') >= 0;
+      var hasMac    = platform.indexOf('mac') >= 0;
+      var hasLinux  = platform.indexOf('linux') >= 0 || platform.indexOf('bsd') >= 0;
 
+      var hasAndroid = userAgent.indexOf('android') >= 0;
       var hasFirefox = userAgent.indexOf('firefox') >= 0;
       var hasChrome = userAgent.indexOf('chrome') >= 0;
       var hasOpera = userAgent.indexOf('opr') >= 0;
 
-      if (hasWin || hasLinux) {
+      if (typeof accesskey !== 'string' || accesskey.length === 0) {
+        return '';
+      }
+
+      if (hasWin || (hasLinux && !hasAndroid)) {
         if (hasFirefox) {
-          return "Shift+Alt+" + accesskey;
+          return "Shift + Alt + " + accesskey;
         } else {
           if (hasChrome || hasOpera) {
-            return "Alt+" + accesskey;
+            return "Alt + " + accesskey;
           }
         }
       }
 
       if (hasMac) {
-        return "Control+Option+" + accesskey;
+        return "Ctrl + Option + " + accesskey;
       }
 
-      return accesskey + this.config.accesskeyNotSupported;
+      return '';
     },
     setUpConfig: function(appConfig) {
       var localConfig = this.config,
@@ -311,7 +358,7 @@
           ) {
           localConfig[name] = appConfigSettings[name];
         } else {
-          console.log('** SkipTo Problem with user configuration option "' + name + '".'); // jshint ignore:line
+          throw new Error('** SkipTo Problem with user configuration option "' + name + '".');
         }
       }
     },
@@ -335,7 +382,7 @@
     getFirstChar: function(menuitem) {
       var c = '';
       var label = menuitem.querySelector('.label');
-      if (label && label.textContent.length) {
+      if (label && this.isNotEmptyString(label.textContent)) {
         c = label.textContent.trim()[0].toLowerCase();
       }
       return c;
@@ -381,17 +428,19 @@
       var menuitemNode = document.createElement('div');
       menuitemNode.setAttribute('role', 'menuitem');
       menuitemNode.classList.add(mi.class);
-      menuitemNode.classList.add(mi.tagName);
+      if (this.isNotEmptyString(mi.tagName)) {
+        menuitemNode.classList.add('skip-to-' + mi.tagName.toLowerCase());
+      }
       menuitemNode.setAttribute('data-id', mi.dataId);
       menuitemNode.tabIndex = -1;
-      if (mi.ariaLabel) {
+      if (this.isNotEmptyString(mi.ariaLabel)) {
         menuitemNode.setAttribute('aria-label', mi.ariaLabel);
       }
 
       // add event handlers
       menuitemNode.addEventListener('keydown', this.handleMenuitemKeydown.bind(this));
       menuitemNode.addEventListener('click', this.handleMenuitemClick.bind(this));
-      menuitemNode.addEventListener('mouseover', this.handleMenuitemMouseover.bind(this));
+      menuitemNode.addEventListener('pointerenter', this.handleMenuitemPointerenter.bind(this));
 
       groupNode.appendChild(menuitemNode);
 
@@ -409,7 +458,7 @@
           menuitemNode.classList.add('no-level');
         }
         menuitemNode.setAttribute('data-level', mi.level);
-        if (mi.tagName && mi.tagName.length) {
+        if (this.isNotEmptyString(mi.tagName)) {
           menuitemNode.classList.add('skip-to-' + mi.tagName);
         }
       }
@@ -444,18 +493,20 @@
 
       titleNode.textContent = title;
 
-      if ((typeof m === 'number') && (typeof n === 'number')) {
-        s = this.config.mofnGroupLabel;
-        s = s.replace('$m', m);
-        s = s.replace('$n', n);
-        mofnNode.textContent = s;
+      if (this.config.enableActions && this.config.enableMofN) {
+        if ((typeof m === 'number') && (typeof n === 'number')) {
+          s = this.config.mofnGroupLabel;
+          s = s.replace('$m', m);
+          s = s.replace('$n', n);
+          mofnNode.textContent = s;
+        }
       }
     },
 
     renderMenuitemGroup: function(groupId, title) {
       var labelNode, groupNode, spanNode;
       var menuNode = this.menuNode;
-      if (title) {
+      if (this.isNotEmptyString(title)) {
         labelNode = document.createElement('div');
         labelNode.id = groupId + "-label";
         labelNode.setAttribute('role', 'separator');
@@ -494,7 +545,7 @@
       if (menuitems.length === 0) {
         var item = {};
         item.name = msgNoItemsFound;
-        item.tagName = 'no tag';
+        item.tagName = '';
         item.class = 'no-items';
         item.dataId = '';
         this.renderMenuitemToGroup(groupNode, item);
@@ -546,7 +597,7 @@
 
       if (!noAction) {
         item = {};
-        item.tagName = 'action';
+        item.tagName = '';
         item.role = 'menuitem';
         item.class = 'action';
         item.dataId = 'skip-to-more-headings';
@@ -645,7 +696,7 @@
 
       if (!noAction) {
         item = {};
-        item.tagName = 'action';
+        item.tagName = '';
         item.role = 'menuitem';
         item.class = 'action';
         item.dataId = 'skip-to-more-landmarks';
@@ -893,6 +944,7 @@
         case 'Escape':
           this.closePopup();
           this.buttonNode.focus();
+          this.hideTooltip();
           flag = true;
           break;
         case 'Up':
@@ -920,19 +972,88 @@
       event.stopPropagation();
       event.preventDefault();
     },
+    isTooltipHidden: function() {
+      return this.tooltipNode.className.indexOf('skip-to-show-tooltip') < 0;
+    },
+    displayTooltip: function() {
+      if (this.showTooltipFocus || this.showTooltipHover) {
+        this.tooltipNode.classList.add('skip-to-show-tooltip');
+      }
+    },
+    showTooltip: function() {
+      this.showTooltipFocus = true;
+      if (this.config.enableTooltip && this.isTooltipHidden()) {
+        this.tooltipNode.style.left = this.tooltipLeft + 'px';
+        this.tooltipNode.style.top = this.tooltipTop + 'px';
+        setTimeout(this.displayTooltip.bind(this), this.tooltipTimerDelay);
+      }
+    },
+    hideTooltip: function() {
+      this.showTooltipFocus = false;
+      if(this.config.enableTooltip) {
+        this.tooltipNode.classList.remove('skip-to-show-tooltip');
+      }
+    },
+    handleButtonFocus: function() {
+      this.showTooltip();
+    },
+    handleButtonBlur: function() {
+      this.hideTooltip();
+    },
+    handleButtonPointerenter: function(event) {
+      this.showTooltipHover = true;
+      if (this.config.enableTooltip && this.isTooltipHidden()) {
+        var rect = this.buttonNode.getBoundingClientRect();
+        var left = Math.min(this.tooltipLeft, event.pageX - rect.left + this.tooltipHeight);
+        this.tooltipNode.style.left = left + 'px';
+        var top = event.pageY - rect.top;
+        this.tooltipNode.style.top = top + 'px';
+        setTimeout(this.showTooltip. bind(this), this.tooltipTimerDelay);
+      }
+    },
+    handleButtonPointerout: function() {
+      this.showTooltipHover = false;
+      if(this.config.enableTooltip) {
+        this.tooltipNode.classList.remove('skip-to-show-tooltip');
+      }
+    },
     skipToElement: function(menuitem) {
+
+      var isVisible = this.isVisible;
       var focusNode = false;
       var scrollNode = false;
+      var elem;
+
+      function findVisibleElement(e, selectors) {
+        if (e) {
+          for (var j = 0; j < selectors.length; j += 1) {
+            var elems = e.querySelectorAll(selectors[j]);
+            for(var i = 0; i < elems.length; i +=1) {
+              if (isVisible(elems[i])) {
+                return elems[i];
+              }
+            }
+          }
+        }
+        return e;
+      }
+
+      var searchSelectors = ['input', 'button', 'input[type=button]', 'input[type=submit]', 'a'];
+      var navigationSelectors = ['a', 'input', 'button', 'input[type=button]', 'input[type=submit]'];
+      var landmarkSelectors = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'section', 'article', 'p', 'li', 'a'];
+
       var isLandmark = menuitem.classList.contains('landmark');
-      var isSearch = menuitem.classList.contains('search');
-      var isNav = menuitem.classList.contains('nav');
-      var node = document.querySelector('[data-skip-to-id="' + menuitem.getAttribute('data-id') + '"]');
-      if (node) {
+      var isSearch = menuitem.classList.contains('skip-to-search');
+      var isNav = menuitem.classList.contains('skip-to-nav');
+
+      elem = document.querySelector('[data-skip-to-id="' + menuitem.getAttribute('data-id') + '"]');
+
+      if (elem) {
         if (isSearch) {
-          focusNode = node.querySelector('input');
+          focusNode = findVisibleElement(elem, searchSelectors);
         }
         if (isNav) {
-          focusNode = node.querySelector('a');
+          focusNode = findVisibleElement(elem, navigationSelectors);
         }
         if (focusNode && this.isVisible(focusNode)) {
           focusNode.focus();
@@ -940,14 +1061,14 @@
         }
         else {
           if (isLandmark) {
-            scrollNode = node.querySelector(this.contentSelector);
+            scrollNode = findVisibleElement(elem, landmarkSelectors);
             if (scrollNode) {
-              node = scrollNode;
+              elem = scrollNode;
             }
           }
-          node.tabIndex = -1;
-          node.focus();
-          node.scrollIntoView({block: 'center'});
+          elem.tabIndex = -1;
+          elem.focus();
+          elem.scrollIntoView({block: 'center'});
         }
       }
     },
@@ -1049,11 +1170,11 @@
       event.stopPropagation();
       event.preventDefault();
     },
-    handleMenuitemMouseover: function(event) {
+    handleMenuitemPointerenter: function(event) {
       var tgt = event.currentTarget;
       tgt.focus();
     },
-    handleBackgroundMousedown: function(event) {
+    handleBackgroundPointerdown: function(event) {
       if (!this.domNode.contains(event.target)) {
         if (this.isOpen()) {
           this.closePopup();
@@ -1116,10 +1237,10 @@
         }
         name = strings.join(" ");
       } else {
-        if (label && label.length) {
+        if (this.isNotEmptyString(label)) {
           name = label;
         } else {
-          if (title && title.length) {
+          if (this.isNotEmptyString(title)) {
             name = title;
           }
         }
@@ -1298,7 +1419,7 @@
             tagName = 'main';
           }
           if (landmark.hasAttribute('aria-roledescription')) {
-            tagName = landmark.getAttribute('aria-roledescription');
+            tagName = landmark.getAttribute('aria-roledescription').trim().replace(' ', '-');
           }
           if (landmark.hasAttribute('data-skip-to-id')) {
             dataId = landmark.getAttribute('data-skip-to-id');
@@ -1355,7 +1476,6 @@
                 window.Wordpress ||
                 ((typeof window.Joomla === 'object' && typeof window.Joomla.getOptions === 'function') ? window.Joomla.getOptions('skipto-settings', {}) : {})
                 );
-    console.log('SkipTo loaded...'); // jshint ignore:line
   });
 })();
 /*@end @*/

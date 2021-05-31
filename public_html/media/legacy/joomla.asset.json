@@ -11,7 +11,8 @@
       "dependencies": [
         "jquery"
       ],
-      "uri": "legacy/jquery-noconflict.min.js"
+      "uri": "legacy/jquery-noconflict.min.js",
+      "version": "04499b98c0305b16b373dff09fe79d1290976288"
     },
     {
       "name": "joomla.treeselectmenu",
@@ -22,7 +23,8 @@
       "uri": "legacy/treeselectmenu.min.js",
       "attributes": {
         "defer": true
-      }
+      },
+      "version": "982e345b7e21fbac94a1cb1b08dceb2baf780ec2"
     }
   ]
 }

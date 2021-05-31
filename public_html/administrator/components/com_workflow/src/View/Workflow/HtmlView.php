@@ -104,7 +104,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Display the template
 		parent::display($tpl);
@@ -144,6 +144,10 @@ class HtmlView extends BaseHtmlView
 				$toolbarButtons,
 				'btn-success'
 			);
+
+			ToolbarHelper::cancel(
+				'workflow.cancel'
+			);
 		}
 		else
 		{
@@ -167,8 +171,11 @@ class HtmlView extends BaseHtmlView
 				$toolbarButtons,
 				'btn-success'
 			);
-		}
 
-		ToolbarHelper::cancel('workflow.cancel');
+			ToolbarHelper::cancel(
+				'workflow.cancel',
+				'JTOOLBAR_CLOSE'
+			);
+		}
 	}
 }

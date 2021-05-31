@@ -1,9 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -37,44 +32,55 @@
  * probably going to be creating multiple instances of the same module, one after another, as is
  * typical when building a new Joomla! site.
  */
-(function (document) {
-  'use strict'; // Make sure the element exists i.e. a template override has not removed it.
+// Make sure the element exists i.e. a template override has not removed it.
+const elSearch = document.getElementById('comModulesSelectSearch');
+const elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
+const elSearchHeader = document.getElementById('comModulesSelectTypeHeader');
+const elSearchResults = document.getElementById('comModulesSelectResultsContainer');
+const alertElement = document.querySelector('.modules-alert');
+const elCards = [].slice.call(document.querySelectorAll('.comModulesSelectCard'));
 
-  var elSearch = document.getElementById('comModulesSelectSearch');
-  var elSearchContainer = document.getElementById('comModulesSelectSearchContainer');
-
-  if (!elSearch || !elSearchContainer) {
-    return;
-  } // Add the keyboard event listener which performs the live search in the cards
-
-
-  elSearch.addEventListener('keyup', function (event) {
+if (elSearch && elSearchContainer) {
+  // Add the keyboard event listener which performs the live search in the cards
+  elSearch.addEventListener('keyup', event => {
     /** @type {KeyboardEvent} event */
-    var partialSearch = event.target.value;
-    var elCards = document.querySelectorAll('.comModulesSelectCard'); // Save the search string into session storage
+    const partialSearch = event.target.value;
+    let hasSearchResults = false; // Save the search string into session storage
 
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem('Joomla.com_modules.new.search', partialSearch);
     } // Iterate all the module cards
 
 
-    elCards.forEach(function (card) {
-      var cardHeaderList = card.querySelectorAll('.card-header');
-      var cardBodyList = card.querySelectorAll('.card-body');
-      var title = cardHeaderList.length ? cardHeaderList[0].textContent : '';
-      var description = cardBodyList.length ? cardBodyList[0].textContent : ''; // First remove the classes which hide the module cards
-
+    elCards.forEach(card => {
+      // First remove the class which hide the module cards
       card.classList.remove('d-none'); // An empty search string means that we should show everything
 
-      if (partialSearch === '') {
+      if (!partialSearch) {
         return;
-      } // If the module title and description don’t match add a class to hide it.
+      }
 
+      const cardHeader = card.querySelector('.new-module-title');
+      const cardBody = card.querySelector('.card-body');
+      const title = cardHeader ? cardHeader.textContent : '';
+      const description = cardBody ? cardBody.textContent : ''; // If the module title and description don’t match add a class to hide it.
 
-      if (!title.toLowerCase().includes(partialSearch.toLowerCase()) && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
+      if (title && !title.toLowerCase().includes(partialSearch.toLowerCase()) && description && !description.toLowerCase().includes(partialSearch.toLowerCase())) {
         card.classList.add('d-none');
+      } else {
+        hasSearchResults = true;
       }
     });
+
+    if (hasSearchResults || !partialSearch) {
+      alertElement.classList.add('d-none');
+      elSearchHeader.classList.remove('d-none');
+      elSearchResults.classList.remove('d-none');
+    } else {
+      alertElement.classList.remove('d-none');
+      elSearchHeader.classList.add('d-none');
+      elSearchResults.classList.add('d-none');
+    }
   }); // For reasons of progressive enhancement the search box is hidden by default.
 
   elSearchContainer.classList.remove('d-none'); // Focus the just show element
@@ -90,4 +96,4 @@
     }
   } catch (e) {// This is probably Internet Explorer which doesn't support the KeyboardEvent constructor :(
   }
-})(document);
+}

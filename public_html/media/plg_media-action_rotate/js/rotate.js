@@ -1,9 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -11,14 +6,13 @@ Joomla = window.Joomla || {};
 Joomla.MediaManager = Joomla.MediaManager || {};
 Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
 
-(function () {
-  'use strict'; // Update image
+(() => {
 
-  var rotate = function rotate(angle) {
+  const rotate = angle => {
     // The image element
-    var image = document.getElementById('image-source'); // The canvas where we will resize the image
+    const image = document.getElementById('image-source'); // The canvas where we will resize the image
 
-    var canvas = document.createElement('canvas'); // Pseudo rectangle calculation
+    const canvas = document.createElement('canvas'); // Pseudo rectangle calculation
 
     if (angle >= 0 && angle < 45 || angle >= 135 && angle < 225 || angle >= 315 && angle <= 360) {
       canvas.width = image.width;
@@ -29,18 +23,18 @@ Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
       canvas.height = image.width;
     }
 
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate(angle * Math.PI / 180);
     ctx.drawImage(image, -image.width / 2, -image.height / 2); // The format
 
-    var format = Joomla.MediaManager.Edit.original.extension === 'jpg' ? 'jpeg' : 'jpg'; // The quality
+    const format = Joomla.MediaManager.Edit.original.extension === 'jpg' ? 'jpeg' : 'jpg'; // The quality
 
-    var quality = document.getElementById('jform_rotate_quality').value; // Creating the data from the canvas
+    const quality = document.getElementById('jform_rotate_quality').value; // Creating the data from the canvas
 
-    Joomla.MediaManager.Edit.current.contents = canvas.toDataURL("image/".concat(format), quality); // Updating the preview element
+    Joomla.MediaManager.Edit.current.contents = canvas.toDataURL(`image/${format}`, quality); // Updating the preview element
 
-    var preview = document.getElementById('image-preview');
+    const preview = document.getElementById('image-preview');
     preview.width = canvas.width;
     preview.height = canvas.height;
     preview.src = Joomla.MediaManager.Edit.current.contents; // Update the height input box
@@ -50,25 +44,27 @@ Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
     window.dispatchEvent(new Event('mediaManager.history.point'));
   };
 
-  var initRotate = function initRotate() {
-    var funct = function funct() {
+  const initRotate = () => {
+    const funct = () => {
       // The number input listener
-      document.getElementById('jform_rotate_a').addEventListener('input', function (_ref) {
-        var target = _ref.target;
+      document.getElementById('jform_rotate_a').addEventListener('input', ({
+        target
+      }) => {
         rotate(parseInt(target.value, 10)); // Deselect all buttons
 
-        var elements = [].slice.call(document.querySelectorAll('#jform_rotate_distinct label'));
-        elements.forEach(function (element) {
+        const elements = [].slice.call(document.querySelectorAll('#jform_rotate_distinct label'));
+        elements.forEach(element => {
           element.classList.remove('active');
           element.classList.remove('focus');
         });
       }); // The 90 degree rotate buttons listeners
 
-      var elements = [].slice.call(document.querySelectorAll('#jform_rotate_distinct label'));
-      elements.forEach(function (element) {
-        element.addEventListener('click', function (_ref2) {
-          var target = _ref2.target;
-          var inputElement = target.querySelector('input');
+      const elements = [].slice.call(document.querySelectorAll('#jform_rotate_distinct label'));
+      elements.forEach(element => {
+        element.addEventListener('click', ({
+          target
+        }) => {
+          const inputElement = document.querySelector(`#${target.getAttribute('for')}`);
 
           if (inputElement) {
             rotate(parseInt(inputElement.value, 10));
@@ -82,10 +78,12 @@ Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
 
 
   Joomla.MediaManager.Edit.rotate = {
-    Activate: function Activate(mediaData) {
+    Activate(mediaData) {
       // Initialize
-      initRotate(mediaData);
+      initRotate();
     },
-    Deactivate: function Deactivate() {}
+
+    Deactivate() {}
+
   };
 })();

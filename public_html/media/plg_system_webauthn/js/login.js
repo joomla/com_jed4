@@ -1,23 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-/**
  * @package     Joomla.Plugin
  * @subpackage  System.webauthn
  *
@@ -26,8 +7,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
  */
 window.Joomla = window.Joomla || {};
 
-(function (Joomla, document) {
-  'use strict';
+((Joomla, document) => {
   /**
    * Converts a simple object containing query string parameters to a single, escaped query string.
    * This method is a necessary evil since Joomla.request can only accept data as a string.
@@ -38,26 +18,25 @@ window.Joomla = window.Joomla || {};
    * @returns  {string}
    */
 
-  var interpolateParameters = function interpolateParameters(object) {
-    var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var encodedString = '';
-    Object.keys(object).forEach(function (prop) {
-      if (_typeof(object[prop]) !== 'object') {
+  const interpolateParameters = (object, prefix = '') => {
+    let encodedString = '';
+    Object.keys(object).forEach(prop => {
+      if (typeof object[prop] !== 'object') {
         if (encodedString.length > 0) {
           encodedString += '&';
         }
 
         if (prefix === '') {
-          encodedString += "".concat(encodeURIComponent(prop), "=").concat(encodeURIComponent(object[prop]));
+          encodedString += `${encodeURIComponent(prop)}=${encodeURIComponent(object[prop])}`;
         } else {
-          encodedString += "".concat(encodeURIComponent(prefix), "[").concat(encodeURIComponent(prop), "]=").concat(encodeURIComponent(object[prop]));
+          encodedString += `${encodeURIComponent(prefix)}[${encodeURIComponent(prop)}]=${encodeURIComponent(object[prop])}`;
         }
 
         return;
       } // Objects need special handling
 
 
-      encodedString += "".concat(interpolateParameters(object[prop], prop));
+      encodedString += `${interpolateParameters(object[prop], prop)}`;
     });
     return encodedString;
   };
@@ -71,8 +50,8 @@ window.Joomla = window.Joomla || {};
    */
 
 
-  var findField = function findField(form, fieldSelector) {
-    var elInputs = form.querySelectorAll(fieldSelector);
+  const findField = (form, fieldSelector) => {
+    const elInputs = form.querySelectorAll(fieldSelector);
 
     if (!elInputs.length) {
       return null;
@@ -92,24 +71,24 @@ window.Joomla = window.Joomla || {};
    */
 
 
-  var lookForField = function lookForField(outerElement, fieldSelector) {
-    var elInput = null;
+  const lookForField = (outerElement, fieldSelector) => {
+    let elInput = null;
 
     if (!outerElement) {
       return elInput;
     }
 
-    var elElement = outerElement.parentElement;
+    const elElement = outerElement.parentElement;
 
     if (elElement.nodeName === 'FORM') {
       elInput = findField(elElement, fieldSelector);
       return elInput;
     }
 
-    var elForms = elElement.querySelectorAll('form');
+    const elForms = elElement.querySelectorAll('form');
 
     if (elForms.length) {
-      for (var i = 0; i < elForms.length; i += 1) {
+      for (let i = 0; i < elForms.length; i += 1) {
         elInput = findField(elForms[i], fieldSelector);
 
         if (elInput !== null) {
@@ -127,7 +106,7 @@ window.Joomla = window.Joomla || {};
    */
 
 
-  var handleLoginError = function handleLoginError(message) {
+  const handleLoginError = message => {
     Joomla.renderMessages({
       error: [message]
     });
@@ -142,14 +121,12 @@ window.Joomla = window.Joomla || {};
    */
 
 
-  var handleLoginChallenge = function handleLoginChallenge(publicKey, callbackUrl) {
-    var arrayToBase64String = function arrayToBase64String(a) {
-      return btoa(String.fromCharCode.apply(String, _toConsumableArray(a)));
-    };
+  const handleLoginChallenge = (publicKey, callbackUrl) => {
+    const arrayToBase64String = a => btoa(String.fromCharCode(...a));
 
-    var base64url2base64 = function base64url2base64(input) {
-      var output = input.replace(/-/g, '+').replace(/_/g, '/');
-      var pad = output.length % 4;
+    const base64url2base64 = input => {
+      let output = input.replace(/-/g, '+').replace(/_/g, '/');
+      const pad = output.length % 4;
 
       if (pad) {
         if (pad === 1) {
@@ -167,23 +144,19 @@ window.Joomla = window.Joomla || {};
       return;
     }
 
-    publicKey.challenge = Uint8Array.from(window.atob(base64url2base64(publicKey.challenge)), function (c) {
-      return c.charCodeAt(0);
-    });
+    publicKey.challenge = Uint8Array.from(window.atob(base64url2base64(publicKey.challenge)), c => c.charCodeAt(0));
 
     if (publicKey.allowCredentials) {
-      publicKey.allowCredentials = publicKey.allowCredentials.map(function (data) {
-        data.id = Uint8Array.from(window.atob(base64url2base64(data.id)), function (c) {
-          return c.charCodeAt(0);
-        });
+      publicKey.allowCredentials = publicKey.allowCredentials.map(data => {
+        data.id = Uint8Array.from(window.atob(base64url2base64(data.id)), c => c.charCodeAt(0));
         return data;
       });
     }
 
     navigator.credentials.get({
-      publicKey: publicKey
-    }).then(function (data) {
-      var publicKeyCredential = {
+      publicKey
+    }).then(data => {
+      const publicKeyCredential = {
         id: data.id,
         type: data.type,
         rawId: arrayToBase64String(new Uint8Array(data.rawId)),
@@ -195,8 +168,8 @@ window.Joomla = window.Joomla || {};
         }
       }; // Send the response to your server
 
-      window.location = "".concat(callbackUrl, "&option=com_ajax&group=system&plugin=webauthn&") + "format=raw&akaction=login&encoding=redirect&data=".concat(btoa(JSON.stringify(publicKeyCredential)));
-    }).catch(function (error) {
+      window.location = `${callbackUrl}&option=com_ajax&group=system&plugin=webauthn&` + `format=raw&akaction=login&encoding=redirect&data=${btoa(JSON.stringify(publicKeyCredential))}`;
+    }).catch(error => {
       // Example: timeout, interaction refused...
       handleLoginError(error);
     });
@@ -214,11 +187,11 @@ window.Joomla = window.Joomla || {};
   // eslint-disable-next-line no-unused-vars
 
 
-  Joomla.plgSystemWebauthnLogin = function (formId, callbackUrl) {
+  Joomla.plgSystemWebauthnLogin = (formId, callbackUrl) => {
     // Get the username
-    var elFormContainer = document.getElementById(formId);
-    var elUsername = lookForField(elFormContainer, 'input[name=username]');
-    var elReturn = lookForField(elFormContainer, 'input[name=return]');
+    const elFormContainer = document.getElementById(formId);
+    const elUsername = lookForField(elFormContainer, 'input[name=username]');
+    const elReturn = lookForField(elFormContainer, 'input[name=return]');
 
     if (elUsername === null) {
       Joomla.renderMessages({
@@ -227,8 +200,8 @@ window.Joomla = window.Joomla || {};
       return false;
     }
 
-    var username = elUsername.value;
-    var returnUrl = elReturn ? elReturn.value : null; // No username? We cannot proceed. We need a username to find the acceptable public keys :(
+    const username = elUsername.value;
+    const returnUrl = elReturn ? elReturn.value : null; // No username? We cannot proceed. We need a username to find the acceptable public keys :(
 
     if (username === '') {
       Joomla.renderMessages({
@@ -238,22 +211,23 @@ window.Joomla = window.Joomla || {};
     } // Get the Public Key Credential Request Options (challenge and acceptable public keys)
 
 
-    var postBackData = {
+    const postBackData = {
       option: 'com_ajax',
       group: 'system',
       plugin: 'webauthn',
       format: 'raw',
       akaction: 'challenge',
       encoding: 'raw',
-      username: username,
-      returnUrl: returnUrl
+      username,
+      returnUrl
     };
     Joomla.request({
       url: callbackUrl,
       method: 'POST',
       data: interpolateParameters(postBackData),
-      onSuccess: function onSuccess(rawResponse) {
-        var jsonData = {};
+
+      onSuccess(rawResponse) {
+        let jsonData = {};
 
         try {
           jsonData = JSON.parse(rawResponse);
@@ -266,20 +240,22 @@ window.Joomla = window.Joomla || {};
 
         handleLoginChallenge(jsonData, callbackUrl);
       },
-      onError: function onError(xhr) {
-        handleLoginError("".concat(xhr.status, " ").concat(xhr.statusText));
+
+      onError: xhr => {
+        handleLoginError(`${xhr.status} ${xhr.statusText}`);
       }
     });
     return false;
   }; // Initialization. Runs on DOM content loaded since this script is always loaded deferred.
 
 
-  var loginButtons = [].slice.call(document.querySelectorAll('.plg_system_webauthn_login_button'));
+  const loginButtons = [].slice.call(document.querySelectorAll('.plg_system_webauthn_login_button'));
 
   if (loginButtons.length) {
-    loginButtons.forEach(function (button) {
-      button.addEventListener('click', function (_ref) {
-        var currentTarget = _ref.currentTarget;
+    loginButtons.forEach(button => {
+      button.addEventListener('click', ({
+        currentTarget
+      }) => {
         Joomla.plgSystemWebauthnLogin(currentTarget.getAttribute('data-webauthn-form'), currentTarget.getAttribute('data-webauthn-url'));
       });
     });

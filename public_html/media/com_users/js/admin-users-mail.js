@@ -1,19 +1,13 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    Joomla.submitbutton = function (pressbutton) {
-      var form = document.adminForm;
-      var html = document.createElement('joomla-alert');
+  document.addEventListener('DOMContentLoaded', () => {
+    Joomla.submitbutton = pressbutton => {
+      const form = document.adminForm;
+      const html = document.createElement('joomla-alert');
 
       if (pressbutton === 'mail.cancel') {
         Joomla.submitform(pressbutton);

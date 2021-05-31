@@ -51,7 +51,7 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * That is object of Application
 	 *
-	 * @var     CMSApplication
+	 * @var    \Joomla\CMS\Application\CMSApplication
 	 * @since  4.0.0
 	 */
 	protected $app;
@@ -59,7 +59,7 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The application input object.
 	 *
-	 * @var    Input
+	 * @var    \Joomla\CMS\Input\Input
 	 * @since  4.0.0
 	 */
 	protected $input;
@@ -128,7 +128,7 @@ class HtmlView extends BaseHtmlView
 		$this->workflowID = $this->input->getCmd("workflow_id");
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Display the template
 		parent::display($tpl);
@@ -170,6 +170,10 @@ class HtmlView extends BaseHtmlView
 				$toolbarButtons,
 				'btn-success'
 			);
+
+			ToolbarHelper::cancel(
+				'transition.cancel'
+			);
 		}
 		else
 		{
@@ -200,9 +204,13 @@ class HtmlView extends BaseHtmlView
 			{
 				ToolbarHelper::save('transition.save');
 			}
+
+			ToolbarHelper::cancel(
+				'transition.cancel',
+				'JTOOLBAR_CLOSE'
+			);
 		}
 
-		ToolbarHelper::cancel('transition.cancel');
 		ToolbarHelper::divider();
 	}
 }

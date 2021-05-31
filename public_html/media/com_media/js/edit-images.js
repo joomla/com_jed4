@@ -1,19 +1,13 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 Joomla = window.Joomla || {};
 Joomla.MediaManager = Joomla.MediaManager || {};
 
-(function () {
-  'use strict'; // Get the options from Joomla.optionStorage
+(() => {
 
-  var options = Joomla.getOptions('com_media', {});
+  const options = Joomla.getOptions('com_media', {});
 
   if (!options) {
     throw new Error('Initialization error "edit-images.js"');
@@ -23,22 +17,22 @@ Joomla.MediaManager = Joomla.MediaManager || {};
   Joomla.MediaManager.Edit.original = {
     filename: options.uploadPath.split('/').pop(),
     extension: options.uploadPath.split('.').pop(),
-    contents: "data:image/".concat(options.uploadPath.split('.').pop(), ";base64,").concat(options.contents)
+    contents: `data:image/${options.uploadPath.split('.').pop()};base64,${options.contents}`
   };
   Joomla.MediaManager.Edit.history = {};
   Joomla.MediaManager.Edit.current = {};
 
-  var activate = function activate(name, data) {
+  const activate = (name, data) => {
     if (!data.contents) {
       return;
     } // Create the images for edit and preview
 
 
-    var baseContainer = document.getElementById('media-manager-edit-container');
-    var editContainer = document.createElement('div');
-    var previewContainer = document.createElement('div');
-    var imageSrc = document.createElement('img');
-    var imagePreview = document.createElement('img');
+    const baseContainer = document.getElementById('media-manager-edit-container');
+    const editContainer = document.createElement('div');
+    const previewContainer = document.createElement('div');
+    const imageSrc = document.createElement('img');
+    const imagePreview = document.createElement('img');
     baseContainer.innerHTML = '';
     imageSrc.src = data.contents;
     imageSrc.id = 'image-source';
@@ -56,29 +50,29 @@ Joomla.MediaManager = Joomla.MediaManager || {};
   }; // Reset the image to the initial state
 
 
-  Joomla.MediaManager.Edit.Reset = function (current) {
+  Joomla.MediaManager.Edit.Reset = current => {
     if (!current || current && current === 'initial') {
       Joomla.MediaManager.Edit.current.contents = Joomla.MediaManager.Edit.original.contents;
     } // Clear the DOM
 
 
-    var container = document.getElementById('media-manager-edit-container');
+    const container = document.getElementById('media-manager-edit-container');
     container.innerHTML = ''; // Reactivate the current plugin
 
-    var tabsUlElement = document.getElementById('myTab').firstElementChild;
+    const tabsUlElement = document.getElementById('myTab').firstElementChild;
 
     if (tabsUlElement.tagName !== 'UL') {
       return;
     }
 
-    var links = [].slice.call(tabsUlElement.querySelectorAll('a'));
-    links.forEach(function (link) {
+    const links = [].slice.call(tabsUlElement.querySelectorAll('a'));
+    links.forEach(link => {
       if (!link.hasAttribute('active')) {
         return;
       }
 
       Joomla.MediaManager.Edit[link.id.replace('tab-attrib-', '').toLowerCase()].Deactivate();
-      var data = Joomla.MediaManager.Edit.current;
+      let data = Joomla.MediaManager.Edit.current;
 
       if (!current || current && current !== true) {
         data = Joomla.MediaManager.Edit.original;
@@ -86,17 +80,17 @@ Joomla.MediaManager = Joomla.MediaManager || {};
 
       link.click(); // Move the container to the correct tab
 
-      var mediaContainer = document.getElementById('media-manager-edit-container');
-      var tab = document.getElementById(link.id.replace('tab-', ''));
+      const mediaContainer = document.getElementById('media-manager-edit-container');
+      const tab = document.getElementById(link.id.replace('tab-', ''));
       tab.insertAdjacentElement('beforeend', mediaContainer);
       activate(link.id.replace('tab-attrib-', ''), data);
     });
   }; // Create history entry
 
 
-  window.addEventListener('mediaManager.history.point', function () {
+  window.addEventListener('mediaManager.history.point', () => {
     if (Joomla.MediaManager.Edit.original !== Joomla.MediaManager.Edit.current.contents) {
-      var key = Object.keys(Joomla.MediaManager.Edit.history).length;
+      const key = Object.keys(Joomla.MediaManager.Edit.history).length;
 
       if (Joomla.MediaManager.Edit.history[key] && Joomla.MediaManager.Edit.history[key - 1] && Joomla.MediaManager.Edit.history[key] === Joomla.MediaManager.Edit.history[key - 1]) {
         return;
@@ -106,42 +100,42 @@ Joomla.MediaManager = Joomla.MediaManager || {};
     }
   }); // @TODO History
 
-  Joomla.MediaManager.Edit.Undo = function () {}; // @TODO History
+  Joomla.MediaManager.Edit.Undo = () => {}; // @TODO History
 
 
-  Joomla.MediaManager.Edit.Redo = function () {}; // @TODO Create the progress bar
+  Joomla.MediaManager.Edit.Redo = () => {}; // @TODO Create the progress bar
 
 
-  Joomla.MediaManager.Edit.createProgressBar = function () {}; // @TODO Update the progress bar
+  Joomla.MediaManager.Edit.createProgressBar = () => {}; // @TODO Update the progress bar
 
 
-  Joomla.MediaManager.Edit.updateProgressBar = function ()
+  Joomla.MediaManager.Edit.updateProgressBar = () =>
   /* position */
   {}; // @TODO Remove the progress bar
 
 
-  Joomla.MediaManager.Edit.removeProgressBar = function () {}; // Customize the buttons
+  Joomla.MediaManager.Edit.removeProgressBar = () => {}; // Customize the buttons
 
 
-  Joomla.submitbutton = function (task) {
-    var format = Joomla.MediaManager.Edit.original.extension === 'jpg' ? 'jpeg' : Joomla.MediaManager.Edit.original.extension;
-    var pathName = window.location.pathname.replace(/&view=file.*/g, '');
-    var name = options.uploadPath.split('/').pop();
-    var forUpload = {
-      name: name,
-      content: Joomla.MediaManager.Edit.current.contents.replace("data:image/".concat(format, ";base64,"), '')
+  Joomla.submitbutton = task => {
+    const format = Joomla.MediaManager.Edit.original.extension === 'jpg' ? 'jpeg' : Joomla.MediaManager.Edit.original.extension;
+    const pathName = window.location.pathname.replace(/&view=file.*/g, '');
+    const name = options.uploadPath.split('/').pop();
+    const forUpload = {
+      name,
+      content: Joomla.MediaManager.Edit.current.contents.replace(`data:image/${format};base64,`, '')
     }; // eslint-disable-next-line prefer-destructuring
 
-    var uploadPath = options.uploadPath;
-    var url = "".concat(options.apiBaseUrl, "&task=api.files&path=").concat(uploadPath);
-    var type = 'application/json';
+    const uploadPath = options.uploadPath;
+    const url = `${options.apiBaseUrl}&task=api.files&path=${uploadPath}`;
+    const type = 'application/json';
     forUpload[options.csrfToken] = '1';
-    var fileDirectory = uploadPath.split('/');
+    let fileDirectory = uploadPath.split('/');
     fileDirectory.pop();
     fileDirectory = fileDirectory.join('/'); // If we are in root add a backslash
 
     if (fileDirectory.endsWith(':')) {
-      fileDirectory = "".concat(fileDirectory, "/");
+      fileDirectory = `${fileDirectory}/`;
     }
 
     switch (task) {
@@ -155,9 +149,9 @@ Joomla.MediaManager = Joomla.MediaManager || {};
         Joomla.UploadFile.exec(name, JSON.stringify(forUpload), uploadPath, url, type, function () {
           if (this.readyState === XMLHttpRequest.DONE) {
             if (window.self !== window.top) {
-              window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory, "&tmpl=component");
+              window.location = `${pathName}?option=com_media&view=media&path=${fileDirectory}&tmpl=component`;
             } else {
-              window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory);
+              window.location = `${pathName}?option=com_media&view=media&path=${fileDirectory}`;
             }
           }
         });
@@ -165,26 +159,15 @@ Joomla.MediaManager = Joomla.MediaManager || {};
 
       case 'cancel':
         if (window.self !== window.top) {
-          window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory, "&tmpl=component");
+          window.location = `${pathName}?option=com_media&view=media&path=${fileDirectory}&tmpl=component`;
         } else {
-          window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory);
+          window.location = `${pathName}?option=com_media&view=media&path=${fileDirectory}`;
         }
 
         break;
 
       case 'reset':
         Joomla.MediaManager.Edit.Reset('initial');
-        break;
-
-      case 'undo':
-        // @TODO magic goes here
-        break;
-
-      case 'redo':
-        // @TODO other magic goes here
-        break;
-
-      default:
         break;
     }
   };
@@ -199,10 +182,10 @@ Joomla.MediaManager = Joomla.MediaManager || {};
    * @TODO Extend Joomla.request and drop this code!!!!
    */
 
-  Joomla.UploadFile.exec = function (name, data, uploadPath, url, type, stateChangeCallback) {
-    var xhr = new XMLHttpRequest();
+  Joomla.UploadFile.exec = (name, data, uploadPath, url, type, stateChangeCallback) => {
+    const xhr = new XMLHttpRequest();
 
-    xhr.upload.onprogress = function (e) {
+    xhr.upload.onprogress = e => {
       Joomla.MediaManager.Edit.updateProgressBar(e.loaded / e.total * 100);
     };
 
@@ -210,8 +193,8 @@ Joomla.MediaManager = Joomla.MediaManager || {};
       xhr.onreadystatechange = stateChangeCallback;
     }
 
-    xhr.onload = function () {
-      var resp;
+    xhr.onload = () => {
+      let resp;
 
       try {
         resp = JSON.parse(xhr.responseText);
@@ -237,7 +220,7 @@ Joomla.MediaManager = Joomla.MediaManager || {};
       }
     };
 
-    xhr.onerror = function () {
+    xhr.onerror = () => {
       Joomla.MediaManager.Edit.removeProgressBar();
     };
 
@@ -248,27 +231,28 @@ Joomla.MediaManager = Joomla.MediaManager || {};
   }; // Once the DOM is ready, initialize everything
 
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var func = function func() {
-      var tabsUlElement = document.getElementById('myTab').firstElementChild;
+  document.addEventListener('DOMContentLoaded', () => {
+    const func = () => {
+      const tabsUlElement = document.getElementById('myTab').firstElementChild;
 
       if (tabsUlElement.tagName !== 'UL') {
         setTimeout(func, 50);
         return;
       }
 
-      var links = [].slice.call(tabsUlElement.querySelectorAll('a'));
+      const links = [].slice.call(tabsUlElement.querySelectorAll('a'));
 
       if (links[0]) {
         activate(links[0].id.replace('tab-attrib-', ''), Joomla.MediaManager.Edit.original);
       } // Couple the tabs with the plugin objects
 
 
-      links.forEach(function (link) {
-        link.addEventListener('joomla.tab.shown', function (_ref) {
-          var relatedTarget = _ref.relatedTarget,
-              target = _ref.target;
-          var container = document.getElementById('media-manager-edit-container');
+      links.forEach(link => {
+        link.addEventListener('joomla.tab.shown', ({
+          relatedTarget,
+          target
+        }) => {
+          const container = document.getElementById('media-manager-edit-container');
 
           if (relatedTarget) {
             Joomla.MediaManager.Edit[relatedTarget.id.replace('tab-attrib-', '').toLowerCase()].Deactivate(); // Clear the DOM
@@ -276,14 +260,14 @@ Joomla.MediaManager = Joomla.MediaManager || {};
             container.innerHTML = '';
           }
 
-          var data = Joomla.MediaManager.Edit.current;
+          let data = Joomla.MediaManager.Edit.current;
 
           if (!('contents' in Joomla.MediaManager.Edit.current)) {
             data = Joomla.MediaManager.Edit.original;
           } // Move the container to the correct tab
 
 
-          var tab = document.getElementById(target.id.replace('tab-', ''));
+          const tab = document.getElementById(target.id.replace('tab-', ''));
           tab.insertAdjacentElement('beforeend', container);
           activate(target.id.replace('tab-attrib-', ''), data);
         });

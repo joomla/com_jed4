@@ -1,42 +1,27 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document) {
-  var isChecked = function isChecked(element) {
-    return element.checked;
-  };
+(document => {
+  const isChecked = element => element.checked;
 
-  var getTreeElements = function getTreeElements(element) {
-    return element.querySelectorAll('input[type="checkbox"]');
-  };
+  const getTreeElements = element => element.querySelectorAll('input[type="checkbox"]');
 
-  var getTreeRoot = function getTreeRoot(element) {
-    return element.parentElement.nextElementSibling;
-  };
+  const getTreeRoot = element => element.parentElement.nextElementSibling;
 
-  var check = function check(element) {
+  const check = element => {
     element.checked = true;
   };
 
-  var uncheck = function uncheck(element) {
+  const uncheck = element => {
     element.checked = false;
   };
 
-  var disable = function disable(element) {
-    return element.setAttribute('disabled', 'disabled');
-  };
+  const disable = element => element.setAttribute('disabled', 'disabled');
 
-  var enable = function enable(element) {
-    return element.removeAttribute('disabled');
-  };
+  const enable = element => element.removeAttribute('disabled');
 
-  var toggleState = function toggleState(element, rootChecked) {
+  const toggleState = (element, rootChecked) => {
     if (rootChecked === true) {
       disable(element);
       check(element);
@@ -47,19 +32,18 @@
     uncheck(element);
   };
 
-  var switchState = function switchState(_ref) {
-    var target = _ref.target;
-    var root = getTreeRoot(target);
-    var selfChecked = isChecked(target);
+  const switchState = ({
+    target
+  }) => {
+    const root = getTreeRoot(target);
+    const selfChecked = isChecked(target);
 
     if (root) {
-      getTreeElements(root).map(function (element) {
-        return toggleState(element, selfChecked);
-      });
+      getTreeElements(root).map(element => toggleState(element, selfChecked));
     }
   };
 
-  [].slice.call(document.querySelectorAll('.treeselect input[type="checkbox"]')).forEach(function (checkbox) {
+  [].slice.call(document.querySelectorAll('.treeselect input[type="checkbox"]')).forEach(checkbox => {
     checkbox.addEventListener('click', switchState);
   });
 })(document);

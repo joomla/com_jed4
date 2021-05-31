@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2021 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * APCu session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class ApcuHandler implements HandlerInterface
 {
@@ -21,7 +21,7 @@ class ApcuHandler implements HandlerInterface
 	 * Session ID prefix to avoid naming conflicts
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $prefix;
 
@@ -30,7 +30,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @param   array  $options  Associative array of options to configure the handler
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(array $options = [])
 	{
@@ -43,7 +43,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close()
 	{
@@ -57,9 +57,9 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
-	public function destroy($session_id)
+	public function destroy($session_id): bool
 	{
 		// The apcu_delete function returns false if the id does not exist
 		return apcu_delete($this->prefix . $session_id) || !apcu_exists($this->prefix . $session_id);
@@ -72,7 +72,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc($maxlifetime)
 	{
@@ -84,7 +84,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{
@@ -107,7 +107,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function open($save_path, $session_id)
 	{
@@ -121,7 +121,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function read($session_id)
 	{
@@ -136,7 +136,7 @@ class ApcuHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function write($session_id, $session_data)
 	{

@@ -1,25 +1,11 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
  * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document, Joomla) {
-  'use strict';
+((document, Joomla) => {
 
-  var EmailTemplateEdit = /*#__PURE__*/function () {
-    function EmailTemplateEdit(form, options) {
-      _classCallCheck(this, EmailTemplateEdit);
-
+  class EmailTemplateEdit {
+    constructor(form, options) {
       // Set elements
       this.form = form;
       this.inputSubject = this.form.querySelector('#jform_subject');
@@ -31,165 +17,85 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       this.form.EmailTemplateEdit = this;
     }
 
-    _createClass(EmailTemplateEdit, [{
-      key: "setBodyValue",
-      value: function setBodyValue(value) {
-        if (this.inputBody.disabled) {
-          return;
-        }
-
-        if (Joomla.editors.instances[this.inputBody.id]) {
-          Joomla.editors.instances[this.inputBody.id].setValue(value);
-        } else {
-          this.inputBody.value = value;
-        }
+    setBodyValue(value) {
+      if (Joomla.editors.instances[this.inputBody.id]) {
+        Joomla.editors.instances[this.inputBody.id].setValue(value);
+      } else {
+        this.inputBody.value = value;
       }
-    }, {
-      key: "setHtmlBodyValue",
-      value: function setHtmlBodyValue(value) {
-        if (this.inputHtmlBody.disabled) {
-          return;
-        }
+    }
 
-        if (Joomla.editors.instances[this.inputHtmlBody.id]) {
-          Joomla.editors.instances[this.inputHtmlBody.id].setValue(value);
-        } else {
-          this.inputHtmlBody.value = value;
-        }
+    setHtmlBodyValue(value) {
+      if (Joomla.editors.instances[this.inputHtmlBody.id]) {
+        Joomla.editors.instances[this.inputHtmlBody.id].setValue(value);
+      } else {
+        this.inputHtmlBody.value = value;
       }
-    }, {
-      key: "insertTag",
-      value: function insertTag(tag, targetField) {
-        if (!tag) return false;
-        var input;
+    }
 
-        switch (targetField) {
-          case 'body':
-            input = this.inputBody;
-            break;
+    insertTag(tag, targetField) {
+      if (!tag) return false;
+      let input;
 
-          case 'htmlbody':
-            input = this.inputHtmlBody;
-            break;
+      switch (targetField) {
+        case 'body':
+          input = this.inputBody;
+          break;
 
-          default:
-            return false;
-        }
+        case 'htmlbody':
+          input = this.inputHtmlBody;
+          break;
 
-        if (input.disabled) return false;
-
-        if (Joomla.editors.instances[input.id]) {
-          Joomla.editors.instances[input.id].replaceSelection(tag);
-        } else {
-          input.value += " ".concat(tag);
-        }
-
-        return true;
+        default:
+          return false;
       }
-    }, {
-      key: "bindListeners",
-      value: function bindListeners() {
-        var _this = this;
 
-        // To enable editing of specific input
-        var subjectSwitcher = document.querySelectorAll('input[type=radio][name="jform[subject_switcher]"]');
-        var bodySwitcher = document.querySelectorAll('input[type=radio][name="jform[body_switcher]"]');
-        var htmlBodySwitcher = document.querySelectorAll('input[type=radio][name="jform[htmlbody_switcher]"]');
+      if (Joomla.editors.instances[input.id]) {
+        Joomla.editors.instances[input.id].replaceSelection(tag);
+      } else {
+        input.value += ` ${tag}`;
+      }
 
-        var subjectSwitcherChangeHandler = function subjectSwitcherChangeHandler(_ref) {
-          var target = _ref.target;
+      return true;
+    }
 
-          if (target.value === '0') {
-            _this.inputSubject.disabled = true;
-            _this.inputSubject.value = _this.templateData.subject ? _this.templateData.subject.master : '';
-          } else if (target.value === '1') {
-            _this.inputSubject.disabled = false;
-            _this.inputSubject.value = _this.templateData.subject ? _this.templateData.subject.translated : '';
-          } else {
-            // eslint-disable-next-line no-console
-            console.error('unrecognised value');
-          }
-        };
+    bindListeners() {
+      document.querySelector('#btnResetSubject').addEventListener('click', event => {
+        event.preventDefault();
+        this.inputSubject.value = this.templateData.subject ? this.templateData.subject : '';
+      });
+      const btnResetBody = document.querySelector('#btnResetBody');
 
-        Array.prototype.forEach.call(subjectSwitcher, function (radio) {
-          radio.addEventListener('change', subjectSwitcherChangeHandler);
-        });
-
-        var bodySwitcherChangeHandler = function bodySwitcherChangeHandler(_ref2) {
-          var target = _ref2.target;
-
-          var tagsContainer = _this.form.querySelector('.tags-container-body');
-
-          if (target.value === '0') {
-            _this.setBodyValue(_this.templateData.body ? _this.templateData.body.master : '');
-
-            _this.inputBody.disabled = true;
-            tagsContainer.classList.add('hidden');
-          } else if (target.value === '1') {
-            _this.inputBody.disabled = false;
-            _this.inputBody.readOnly = false;
-
-            _this.setBodyValue(_this.templateData.body ? _this.templateData.body.translated : '');
-
-            tagsContainer.classList.remove('hidden');
-          } else {
-            // eslint-disable-next-line no-console
-            console.error('unrecognised value');
-          }
-        };
-
-        Array.prototype.forEach.call(bodySwitcher, function (radio) {
-          radio.addEventListener('change', bodySwitcherChangeHandler);
-        });
-
-        var htmlBodySwitcherChangeHandler = function htmlBodySwitcherChangeHandler(_ref3) {
-          var target = _ref3.target;
-
-          var tagsContainer = _this.form.querySelector('.tags-container-htmlbody');
-
-          if (target.value === '0') {
-            _this.setHtmlBodyValue(_this.templateData.htmlbody ? _this.templateData.htmlbody.master : '');
-
-            _this.inputHtmlBody.disabled = true;
-
-            Joomla.editors.instances[_this.inputHtmlBody.id].disable(true);
-
-            tagsContainer.classList.add('hidden');
-          } else if (target.value === '1') {
-            Joomla.editors.instances[_this.inputHtmlBody.id].disable(false);
-
-            _this.inputHtmlBody.disabled = false;
-            _this.inputHtmlBody.readOnly = false;
-
-            _this.setHtmlBodyValue(_this.templateData.htmlbody ? _this.templateData.htmlbody.translated : '');
-
-            tagsContainer.classList.remove('hidden');
-          } else {
-            // eslint-disable-next-line no-console
-            console.error('unrecognised value');
-          }
-        };
-
-        Array.prototype.forEach.call(htmlBodySwitcher, function (radio) {
-          radio.addEventListener('change', htmlBodySwitcherChangeHandler);
-        }); // Buttons for inserting a tag
-
-        this.form.querySelectorAll('.edit-action-add-tag').forEach(function (button) {
-          button.addEventListener('click', function (event) {
-            event.preventDefault();
-            var el = event.target;
-
-            _this.insertTag(el.dataset.tag, el.dataset.target);
-          });
+      if (btnResetBody) {
+        btnResetBody.addEventListener('click', event => {
+          event.preventDefault();
+          this.setBodyValue(this.templateData.body ? this.templateData.body : '');
         });
       }
-    }]);
 
-    return EmailTemplateEdit;
-  }();
+      const btnResetHtmlBody = document.querySelector('#btnResetHtmlBody');
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var editor = new EmailTemplateEdit(document.getElementById('item-form'), Joomla.getOptions('com_mails'));
+      if (btnResetHtmlBody) {
+        btnResetHtmlBody.addEventListener('click', event => {
+          event.preventDefault();
+          this.setHtmlBodyValue(this.templateData.htmlbody ? this.templateData.htmlbody : '');
+        });
+      } // Buttons for inserting a tag
+
+
+      this.form.querySelectorAll('.edit-action-add-tag').forEach(button => {
+        button.addEventListener('click', event => {
+          event.preventDefault();
+          const el = event.target;
+          this.insertTag(el.dataset.tag, el.dataset.target);
+        });
+      });
+    }
+
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const editor = new EmailTemplateEdit(document.getElementById('item-form'), Joomla.getOptions('com_mails'));
     editor.bindListeners();
   });
 })(document, Joomla);

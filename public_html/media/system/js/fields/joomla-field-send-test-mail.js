@@ -1,5 +1,3 @@
-"use strict";
-
 ((customElements, Joomla) => {
   class JoomlaFieldSendTestMail extends HTMLElement {
     // attributeChangedCallback(attr, oldValue, newValue) {}

@@ -1,24 +1,18 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document, submitForm) {
-  'use strict'; // Selectors used by this script
+((document, submitForm) => {
 
-  var buttonDataSelector = 'data-submit-task';
-  var formId = 'adminForm';
+  const buttonDataSelector = 'data-submit-task';
+  const formId = 'adminForm';
   /**
    * Submit the task
    * @param task
    */
 
-  var submitTask = function submitTask(task) {
-    var form = document.getElementById(formId);
+  const submitTask = task => {
+    const form = document.getElementById(formId);
 
     if (task === 'article.cancel' || document.formvalidator.isValid(form)) {
       submitForm(task, form);
@@ -26,12 +20,12 @@
   }; // Register events
 
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var buttons = [].slice.call(document.querySelectorAll("[".concat(buttonDataSelector, "]")));
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function (e) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = [].slice.call(document.querySelectorAll(`[${buttonDataSelector}]`));
+    buttons.forEach(button => {
+      button.addEventListener('click', e => {
         e.preventDefault();
-        var task = e.target.getAttribute(buttonDataSelector);
+        const task = e.target.getAttribute(buttonDataSelector);
         submitTask(task);
       });
     });

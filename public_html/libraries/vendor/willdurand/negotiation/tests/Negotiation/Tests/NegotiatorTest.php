@@ -6,7 +6,7 @@ use Negotiation\Exception\InvalidArgument;
 use Negotiation\Exception\InvalidMediaType;
 use Negotiation\Negotiator;
 use Negotiation\Accept;
-use Negotiation\Match;
+use Negotiation\AcceptMatch;
 
 class NegotiatorTest extends TestCase
 {
@@ -16,7 +16,7 @@ class NegotiatorTest extends TestCase
      */
     private $negotiator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->negotiator = new Negotiator();
     }
@@ -104,11 +104,69 @@ class NegotiatorTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider dataProviderForTestGetOrderedElements
+     */
+    public function testGetOrderedElements($header, $expected)
+    {
+        try {
+            $elements = $this->negotiator->getOrderedElements($header);
+        } catch (\Exception $e) {
+            $this->assertEquals($expected, $e);
+
+            return;
+        }
+
+        if (empty($elements)) {
+            $this->assertNull($expected);
+
+            return;
+        }
+
+        $this->assertInstanceOf('Negotiation\Accept', $elements[0]);
+
+        foreach ($expected as $key => $item) {
+            $this->assertSame($item, $elements[$key]->getValue());
+        }
+    }
+
+    public static function dataProviderForTestGetOrderedElements()
+    {
+        return array(
+            // error cases
+            array('', new InvalidArgument('The header string should not be empty.')),
+            array('/qwer', null),
+
+            // first one wins as no quality modifiers
+            array('text/html, text/xml', array('text/html', 'text/xml')),
+
+            // ordered by quality modifier
+            array(
+                'text/html;q=0.3, text/html;q=0.7',
+                array('text/html;q=0.7', 'text/html;q=0.3')
+            ),
+            // ordered by quality modifier - the one with no modifier wins, level not taken into account
+            array(
+                'text/*;q=0.3, text/html;q=0.7, text/html;level=1, text/html;level=2;q=0.4, */*;q=0.5',
+                array('text/html;level=1', 'text/html;q=0.7', '*/*;q=0.5', 'text/html;level=2;q=0.4', 'text/*;q=0.3')
+            ),
+        );
+    }
+
     public function testGetBestRespectsQualityOfSource()
     {
         $accept = $this->negotiator->getBest('text/html,text/*;q=0.7', array('text/html;q=0.5', 'text/plain;q=0.9'));
         $this->assertInstanceOf('Negotiation\Accept', $accept);
         $this->assertEquals('text/plain', $accept->getType());
+    }
+
+    public function testGetBestInvalidMediaType()
+    {
+        $this->expectException(\Negotiation\Exception\InvalidMediaType::class);
+        $header = 'sdlfkj20ff; wdf';
+        $priorities = array('foo/qwer');
+
+        $this->negotiator->getBest($header, $priorities, true);
     }
 
     /**
@@ -154,40 +212,40 @@ class NegotiatorTest extends TestCase
                 array(new Accept('text/html; charset=UTF-8'), new Accept('image/png; foo=bar; q=0.7'), new Accept('*/*; foo=bar; q=0.4')),
                 array(new Accept('text/html; charset=UTF-8'), new Accept('image/png; foo=bar'), new Accept('application/pdf')),
                 array(
-                    new Match(1.0, 111, 0),
-                    new Match(0.7, 111, 1),
-                    new Match(0.4, 1,   1),
+                    new AcceptMatch(1.0, 111, 0),
+                    new AcceptMatch(0.7, 111, 1),
+                    new AcceptMatch(0.4, 1,   1),
                 )
             ),
             array(
                 array(new Accept('text/html'), new Accept('image/*; q=0.7')),
                 array(new Accept('text/html; asfd=qwer'), new Accept('image/png'), new Accept('application/pdf')),
                 array(
-                    new Match(1.0, 110, 0),
-                    new Match(0.7, 100, 1),
+                    new AcceptMatch(1.0, 110, 0),
+                    new AcceptMatch(0.7, 100, 1),
                 )
             ),
             array( # https://tools.ietf.org/html/rfc7231#section-5.3.2
                 array(new Accept('text/*; q=0.3'), new Accept('text/html; q=0.7'), new Accept('text/html; level=1'), new Accept('text/html; level=2; q=0.4'), new Accept('*/*; q=0.5')),
                 array(new Accept('text/html; level=1'), new Accept('text/html'), new Accept('text/plain'), new Accept('image/jpeg'), new Accept('text/html; level=2'), new Accept('text/html; level=3')),
                 array(
-                    new Match(0.3,    100,    0),
-                    new Match(0.7,    110,    0),
-                    new Match(1.0,    111,    0),
-                    new Match(0.5,      0,    0),
-                    new Match(0.3,    100,    1),
-                    new Match(0.7,    110,    1),
-                    new Match(0.5,      0,    1),
-                    new Match(0.3,    100,    2),
-                    new Match(0.5,      0,    2),
-                    new Match(0.5,      0,    3),
-                    new Match(0.3,    100,    4),
-                    new Match(0.7,    110,    4),
-                    new Match(0.4,    111,    4),
-                    new Match(0.5,      0,    4),
-                    new Match(0.3,    100,    5),
-                    new Match(0.7,    110,    5),
-                    new Match(0.5,      0,    5),
+                    new AcceptMatch(0.3,    100,    0),
+                    new AcceptMatch(0.7,    110,    0),
+                    new AcceptMatch(1.0,    111,    0),
+                    new AcceptMatch(0.5,      0,    0),
+                    new AcceptMatch(0.3,    100,    1),
+                    new AcceptMatch(0.7,    110,    1),
+                    new AcceptMatch(0.5,      0,    1),
+                    new AcceptMatch(0.3,    100,    2),
+                    new AcceptMatch(0.5,      0,    2),
+                    new AcceptMatch(0.5,      0,    3),
+                    new AcceptMatch(0.3,    100,    4),
+                    new AcceptMatch(0.7,    110,    4),
+                    new AcceptMatch(0.4,    111,    4),
+                    new AcceptMatch(0.5,      0,    4),
+                    new AcceptMatch(0.3,    100,    5),
+                    new AcceptMatch(0.7,    110,    5),
+                    new AcceptMatch(0.5,      0,    5),
                 )
             )
         );

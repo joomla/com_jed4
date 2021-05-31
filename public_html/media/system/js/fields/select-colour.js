@@ -1,19 +1,14 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
 
-  var onChange = function onChange(_ref) {
-    var target = _ref.target;
-    var self = target;
-    var value = parseInt(self.value, 10);
+  const onChange = ({
+    target
+  }) => {
+    const self = target;
+    const value = parseInt(self.value, 10);
     self.classList.remove('form-select-success', 'form-select-danger');
 
     if (value === 1) {
@@ -23,10 +18,10 @@
     }
   };
 
-  var updateSelectboxColour = function updateSelectboxColour() {
-    var colourSelects = [].slice.call(document.querySelectorAll('.form-select-color-state'));
-    colourSelects.forEach(function (colourSelect) {
-      var value = parseInt(colourSelect.value, 10); // Add class on page load
+  const updateSelectboxColour = () => {
+    const colourSelects = [].slice.call(document.querySelectorAll('.form-select-color-state'));
+    colourSelects.forEach(colourSelect => {
+      const value = parseInt(colourSelect.value, 10); // Add class on page load
 
       if (value === 1) {
         colourSelect.classList.add('form-select-success');
@@ -39,7 +34,7 @@
     }); // Cleanup
 
     document.removeEventListener('DOMContentLoaded', updateSelectboxColour, true);
-  }; // On docunment loaded
+  }; // On document loaded
 
 
   document.addEventListener('DOMContentLoaded', updateSelectboxColour, true); // On Joomla updated

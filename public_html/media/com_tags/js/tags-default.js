@@ -1,24 +1,18 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document) {
-  'use strict';
+(document => {
 
-  var onClick = function onClick() {
-    var form = document.getElementById('adminForm');
+  const onClick = () => {
+    const form = document.getElementById('adminForm');
     document.getElementById('filter-search').value = '';
     form.submit();
   };
 
-  var onBoot = function onBoot() {
-    var form = document.getElementById('adminForm');
-    var element = form.querySelector('button[type="reset"]');
+  const onBoot = () => {
+    const form = document.getElementById('adminForm');
+    const element = form.querySelector('button[type="reset"]');
 
     if (element) {
       element.addEventListener('click', onClick);

@@ -1,41 +1,41 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 Joomla = window.Joomla || {};
 
-(function () {
-  'use strict';
+(() => {
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     // Handle toggle all
-    [].slice.call(document.querySelectorAll('.filter-toggle-all')).forEach(function (button) {
-      button.addEventListener('click', function () {
-        [].slice.call(document.querySelectorAll('.filter-node')).forEach(function (node) {
+    [].slice.call(document.querySelectorAll('.filter-toggle-all')).forEach(button => {
+      button.addEventListener('click', () => {
+        [].slice.call(document.querySelectorAll('.filter-node')).forEach(node => {
           node.click();
         });
       });
     }); // Update the count
 
-    [].slice.call(document.querySelectorAll('.filter-node')).forEach(function () {
-      var count = document.getElementById('jform_map_count');
+    [].slice.call(document.querySelectorAll('.filter-node')).forEach(() => {
+      const count = document.getElementById('jform_map_count');
 
       if (count) {
         count.value = document.querySelectorAll('input[type="checkbox"]:checked').length;
       }
+    });
+    Array.from(document.querySelectorAll('.js-filter')).forEach(button => {
+      button.addEventListener('click', event => {
+        const btn = event.currentTarget;
+        Array.from(document.querySelectorAll(`.${btn.dataset.id}`)).map(el => el.click());
+      });
     }); // Expand/collapse
 
-    var expandAccordion = document.getElementById('expandAccordion');
+    const expandAccordion = document.getElementById('expandAccordion');
 
     if (expandAccordion) {
-      expandAccordion.addEventListener('click', function (event) {
+      expandAccordion.addEventListener('click', event => {
         event.preventDefault();
-        var elements;
+        let elements;
 
         if (event.target.innerText === Joomla.JText._('COM_FINDER_FILTER_SHOW_ALL')) {
           event.target.innerText = Joomla.JText._('COM_FINDER_FILTER_HIDE_ALL');
@@ -46,7 +46,7 @@ Joomla = window.Joomla || {};
         }
 
         if (elements) {
-          elements.forEach(function (element) {
+          elements.forEach(element => {
             element.click();
           });
         }

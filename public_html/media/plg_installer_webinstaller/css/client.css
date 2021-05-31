@@ -55,7 +55,52 @@
 .com-apps-container .list-container .list-group-item .row {
   cursor: pointer;
 }
+.com-apps-container .item-view {
+  margin-top: 3rem;
+}
+.com-apps-container .item-view a[target=_blank] span.icon-download, .com-apps-container .item-view a[target=_blank] span.icon-list, .com-apps-container .item-view a[target=_blank] span.icon-share-alt {
+  display: none;
+}
+.com-apps-container .form-row {
+  display: flex;
+}
+.com-apps-container .form-row .col-md:first-child {
+  margin-right: 0.8rem;
+}
+.com-apps-container .form-row .input-group > input#com-apps-searchbox {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.com-apps-container .form-row .input-group .input-group-append button#search-extensions {
+  color: var(--atum-text-light);
+  background-color: var(--atum-link-color);
+  border-color: var(--atum-link-color);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.com-apps-container .form-row .input-group .input-group-append button#search-reset {
+  -webkit-margin-start: 0.8rem;
+          margin-inline-start: 0.8rem;
+  background-color: var(--atum-bg-dark);
+  border-radius: 0.25rem;
+}
 
+/* stylelint-disable selector-max-compound-selectors */
+html[dir=rtl] .com-apps-container .form-row .col-md:first-child {
+  margin-left: 0.8rem;
+}
+html[dir=rtl] .com-apps-container .form-row .input-group > input#com-apps-searchbox {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+html[dir=rtl] .com-apps-container .form-row .input-group .input-group-append button#search-extensions {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0.25rem;
+}
+
+/* stylelint-enable selector-max-compound-selectors */
 .ifw-busy {
   overflow: hidden;
 }

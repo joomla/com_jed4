@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * @package         Joomla.JavaScript
  * @copyright       (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>

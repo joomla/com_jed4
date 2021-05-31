@@ -28,7 +28,7 @@ class HtmlView extends BaseHtmlView
 	 * The model state
 	 *
 	 * @var     object
-	 * @since   4.0
+	 * @since   4.0.0
 	 */
 	protected $state;
 
@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
 	 * The name of current extension
 	 *
 	 * @var     string
-	 * @since   4.0
+	 * @since   4.0.0
 	 */
 	protected $extension;
 
@@ -98,7 +98,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Display the template
 		parent::display($tpl);
@@ -138,6 +138,10 @@ class HtmlView extends BaseHtmlView
 				$toolbarButtons,
 				'btn-success'
 			);
+
+			ToolbarHelper::cancel(
+				'stage.cancel'
+			);
 		}
 		else
 		{
@@ -161,9 +165,13 @@ class HtmlView extends BaseHtmlView
 				$toolbarButtons,
 				'btn-success'
 			);
+
+			ToolbarHelper::cancel(
+				'stage.cancel',
+				'JTOOLBAR_CLOSE'
+			);
 		}
 
-		ToolbarHelper::cancel('stage.cancel');
 		ToolbarHelper::divider();
 	}
 }

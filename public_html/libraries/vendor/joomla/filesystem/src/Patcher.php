@@ -54,7 +54,7 @@ class Patcher
 	 * @var    array
 	 * @since  1.0
 	 */
-	protected $sources = array();
+	protected $sources = [];
 
 	/**
 	 * Destination files
@@ -62,7 +62,7 @@ class Patcher
 	 * @var    array
 	 * @since  1.0
 	 */
-	protected $destinations = array();
+	protected $destinations = [];
 
 	/**
 	 * Removal files
@@ -70,7 +70,7 @@ class Patcher
 	 * @var    array
 	 * @since  1.0
 	 */
-	protected $removals = array();
+	protected $removals = [];
 
 	/**
 	 * Patches
@@ -78,7 +78,7 @@ class Patcher
 	 * @var    array
 	 * @since  1.0
 	 */
-	protected $patches = array();
+	protected $patches = [];
 
 	/**
 	 * Singleton instance of this class
@@ -125,10 +125,10 @@ class Patcher
 	 */
 	public function reset()
 	{
-		$this->sources      = array();
-		$this->destinations = array();
-		$this->removals     = array();
-		$this->patches      = array();
+		$this->sources      = [];
+		$this->destinations = [];
+		$this->removals     = [];
+		$this->patches      = [];
 
 		return $this;
 	}
@@ -215,13 +215,13 @@ class Patcher
 		}
 
 		// Clear the destinations cache
-		$this->destinations = array();
+		$this->destinations = [];
 
 		// Clear the removals
-		$this->removals = array();
+		$this->removals = [];
 
 		// Clear the patches
-		$this->patches = array();
+		$this->patches = [];
 
 		return $done;
 	}
@@ -237,7 +237,7 @@ class Patcher
 	 *
 	 * @since   1.0
 	 */
-	public function addFile($filename, $root = JPATH_ROOT, $strip = 0)
+	public function addFile($filename, $root, $strip = 0)
 	{
 		return $this->add(file_get_contents($filename), $root, $strip);
 	}
@@ -253,13 +253,13 @@ class Patcher
 	 *
 	 * @since   1.0
 	 */
-	public function add($udiff, $root = JPATH_ROOT, $strip = 0)
+	public function add($udiff, $root, $strip = 0)
 	{
-		$this->patches[] = array(
+		$this->patches[] = [
 			'udiff' => $udiff,
 			'root'  => isset($root) ? rtrim($root, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR : '',
 			'strip' => $strip,
-		);
+		];
 
 		return $this;
 	}
@@ -416,10 +416,10 @@ class Patcher
 		$line = current($lines);
 
 		// Source lines (old file)
-		$source = array();
+		$source = [];
 
 		// New lines (new file)
-		$destin  = array();
+		$destin  = [];
 		$srcLeft = $srcSize;
 		$dstLeft = $dstSize;
 

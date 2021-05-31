@@ -1,23 +1,17 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document) {
-  'use strict';
+(document => {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    [].slice.call(document.querySelectorAll('input[type="password"]')).forEach(function (input) {
-      var toggleButton = input.parentNode.querySelector('.input-password-toggle');
+  document.addEventListener('DOMContentLoaded', () => {
+    [].slice.call(document.querySelectorAll('input[type="password"]')).forEach(input => {
+      const toggleButton = input.parentNode.querySelector('.input-password-toggle');
 
       if (toggleButton) {
-        toggleButton.addEventListener('click', function () {
-          var icon = toggleButton.firstElementChild;
-          var srText = toggleButton.lastElementChild;
+        toggleButton.addEventListener('click', () => {
+          const icon = toggleButton.firstElementChild;
+          const srText = toggleButton.lastElementChild;
 
           if (input.type === 'password') {
             // Update the icon class
@@ -43,11 +37,11 @@
         });
       }
 
-      var modifyButton = input.parentNode.querySelector('.input-password-modify');
+      const modifyButton = input.parentNode.querySelector('.input-password-modify');
 
       if (modifyButton) {
-        modifyButton.addEventListener('click', function () {
-          var lock = !modifyButton.classList.contains('locked');
+        modifyButton.addEventListener('click', () => {
+          const lock = !modifyButton.classList.contains('locked');
 
           if (lock === true) {
             // Add lock
@@ -60,7 +54,7 @@
             modifyButton.innerText = Joomla.Text._('JMODIFY');
           } else {
             // Remove lock
-            modifyButton.classList.remove('locked'); // Disable the field
+            modifyButton.classList.remove('locked'); // Enable the field
 
             input.removeAttribute('disabled'); // Focus the input field
 

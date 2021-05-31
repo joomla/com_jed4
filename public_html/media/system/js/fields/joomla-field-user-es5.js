@@ -1,114 +1,142 @@
-"use strict";
+(function () {
+  'use strict';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+  function _inheritsLoose(subClass, superClass) {
+    subClass.prototype = Object.create(superClass.prototype);
+    subClass.prototype.constructor = subClass;
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+    _setPrototypeOf(subClass, superClass);
+  }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+      return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return _getPrototypeOf(o);
+  }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+    return _setPrototypeOf(o, p);
+  }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
 
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+    try {
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-(function (customElements, Joomla) {
-  var JoomlaFieldUser = /*#__PURE__*/function (_HTMLElement) {
-    _inherits(JoomlaFieldUser, _HTMLElement);
-
-    var _super = _createSuper(JoomlaFieldUser);
-
-    function JoomlaFieldUser() {
-      var _this;
-
-      _classCallCheck(this, JoomlaFieldUser);
-
-      _this = _super.call(this);
-      _this.onUserSelect = '';
-      _this.onchangeStr = ''; // Bind events
-
-      _this.buttonClick = _this.buttonClick.bind(_assertThisInitialized(_this));
-      _this.iframeLoad = _this.iframeLoad.bind(_assertThisInitialized(_this));
-      _this.modalClose = _this.modalClose.bind(_assertThisInitialized(_this));
-      _this.setValue = _this.setValue.bind(_assertThisInitialized(_this));
-      return _this;
+  function _construct(Parent, args, Class) {
+    if (_isNativeReflectConstruct()) {
+      _construct = Reflect.construct;
+    } else {
+      _construct = function _construct(Parent, args, Class) {
+        var a = [null];
+        a.push.apply(a, args);
+        var Constructor = Function.bind.apply(Parent, a);
+        var instance = new Constructor();
+        if (Class) _setPrototypeOf(instance, Class.prototype);
+        return instance;
+      };
     }
 
-    _createClass(JoomlaFieldUser, [{
-      key: "url",
-      get: function get() {
-        return this.getAttribute('url');
-      },
-      set: function set(value) {
-        this.setAttribute('url', value);
+    return _construct.apply(null, arguments);
+  }
+
+  function _isNativeFunction(fn) {
+    return Function.toString.call(fn).indexOf("[native code]") !== -1;
+  }
+
+  function _wrapNativeSuper(Class) {
+    var _cache = typeof Map === "function" ? new Map() : undefined;
+
+    _wrapNativeSuper = function _wrapNativeSuper(Class) {
+      if (Class === null || !_isNativeFunction(Class)) return Class;
+
+      if (typeof Class !== "function") {
+        throw new TypeError("Super expression must either be null or a function");
       }
-    }, {
-      key: "modalClass",
-      get: function get() {
-        return this.getAttribute('modal');
-      },
-      set: function set(value) {
-        this.setAttribute('modal', value);
+
+      if (typeof _cache !== "undefined") {
+        if (_cache.has(Class)) return _cache.get(Class);
+
+        _cache.set(Class, Wrapper);
       }
-    }, {
-      key: "modalWidth",
-      get: function get() {
-        return this.getAttribute('modal-width');
-      },
-      set: function set(value) {
-        this.setAttribute('modal-width', value);
+
+      function Wrapper() {
+        return _construct(Class, arguments, _getPrototypeOf(this).constructor);
       }
-    }, {
-      key: "modalHeight",
-      get: function get() {
-        return this.getAttribute('modal-height');
-      },
-      set: function set(value) {
-        this.setAttribute('modal-height', value);
+
+      Wrapper.prototype = Object.create(Class.prototype, {
+        constructor: {
+          value: Wrapper,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      });
+      return _setPrototypeOf(Wrapper, Class);
+    };
+
+    return _wrapNativeSuper(Class);
+  }
+
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return self;
+  }
+
+  (function (customElements, Joomla) {
+    var JoomlaFieldUser = /*#__PURE__*/function (_HTMLElement) {
+      _inheritsLoose(JoomlaFieldUser, _HTMLElement);
+
+      function JoomlaFieldUser() {
+        var _this;
+
+        _this = _HTMLElement.call(this) || this;
+        _this.onUserSelect = '';
+        _this.onchangeStr = ''; // Bind events
+
+        _this.buttonClick = _this.buttonClick.bind(_assertThisInitialized(_this));
+        _this.iframeLoad = _this.iframeLoad.bind(_assertThisInitialized(_this));
+        _this.modalClose = _this.modalClose.bind(_assertThisInitialized(_this));
+        _this.setValue = _this.setValue.bind(_assertThisInitialized(_this));
+        return _this;
       }
-    }, {
-      key: "inputId",
-      get: function get() {
-        return this.getAttribute('input');
-      },
-      set: function set(value) {
-        this.setAttribute('input', value);
-      }
-    }, {
-      key: "inputNameClass",
-      get: function get() {
-        return this.getAttribute('input-name');
-      },
-      set: function set(value) {
-        this.setAttribute('input-name', value);
-      }
-    }, {
-      key: "buttonSelectClass",
-      get: function get() {
-        return this.getAttribute('button-select');
-      },
-      set: function set(value) {
-        this.setAttribute('button-select', value);
-      }
-    }, {
-      key: "connectedCallback",
-      value: function connectedCallback() {
+
+      var _proto = JoomlaFieldUser.prototype;
+
+      _proto.connectedCallback = function connectedCallback() {
         // Set up elements
         this.modal = this.querySelector(this.modalClass);
         this.modalBody = this.querySelector('.modal-body');
@@ -116,7 +144,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         this.inputName = this.querySelector(this.inputNameClass);
         this.buttonSelect = this.querySelector(this.buttonSelectClass); // Bootstrap modal init
 
-        if (this.modal && window.bootstrap && window.bootstrap.Modal && window.bootstrap.Modal.getInstance(this.modal) === undefined) {
+        if (this.modal && window.bootstrap && window.bootstrap.Modal && !window.bootstrap.Modal.getInstance(this.modal)) {
           Joomla.initialiseModal(this.modal, {
             isJoomla: true
           });
@@ -135,10 +163,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             /* eslint-enable */
           }
         }
-      }
-    }, {
-      key: "disconnectedCallback",
-      value: function disconnectedCallback() {
+      };
+
+      _proto.disconnectedCallback = function disconnectedCallback() {
         if (this.onchangeStr && this.input) {
           this.input.removeEventListener('change', this.onUserSelect);
         }
@@ -150,17 +177,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         if (this.modal) {
           this.modal.removeEventListener('hide', this);
         }
-      }
-    }, {
-      key: "buttonClick",
-      value: function buttonClick(_ref) {
+      };
+
+      _proto.buttonClick = function buttonClick(_ref) {
         var target = _ref.target;
         this.setValue(target.getAttribute('data-user-value'), target.getAttribute('data-user-name'));
         this.modalClose();
-      }
-    }, {
-      key: "iframeLoad",
-      value: function iframeLoad() {
+      };
+
+      _proto.iframeLoad = function iframeLoad() {
         var _this2 = this;
 
         var iframeDoc = this.iframeEl.contentWindow.document;
@@ -169,10 +194,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           button.addEventListener('click', _this2.buttonClick);
         });
       } // Opens the modal
+      ;
 
-    }, {
-      key: "modalOpen",
-      value: function modalOpen() {
+      _proto.modalOpen = function modalOpen() {
         // Reconstruct the iframe
         this.removeIframe();
         var iframe = document.createElement('iframe');
@@ -186,23 +210,20 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
         this.iframeEl.addEventListener('load', this.iframeLoad);
       } // Closes the modal
+      ;
 
-    }, {
-      key: "modalClose",
-      value: function modalClose() {
+      _proto.modalClose = function modalClose() {
         Joomla.Modal.getCurrent().close();
         this.modalBody.innerHTML = '';
       } // Remove the iframe
+      ;
 
-    }, {
-      key: "removeIframe",
-      value: function removeIframe() {
+      _proto.removeIframe = function removeIframe() {
         this.modalBody.innerHTML = '';
       } // Sets the value
+      ;
 
-    }, {
-      key: "setValue",
-      value: function setValue(value, name) {
+      _proto.setValue = function setValue(value, name) {
         this.input.setAttribute('value', value);
         this.inputName.setAttribute('value', name || value); // trigger change event both on the input and on the custom element
 
@@ -214,16 +235,75 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           },
           bubbles: true
         }));
-      }
-    }], [{
-      key: "observedAttributes",
-      get: function get() {
-        return ['url', 'modal', 'modal-width', 'modal-height', 'input', 'input-name', 'button-select'];
-      }
-    }]);
+      };
 
-    return JoomlaFieldUser;
-  }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+      _createClass(JoomlaFieldUser, [{
+        key: "url",
+        get: function get() {
+          return this.getAttribute('url');
+        },
+        set: function set(value) {
+          this.setAttribute('url', value);
+        }
+      }, {
+        key: "modalClass",
+        get: function get() {
+          return this.getAttribute('modal');
+        },
+        set: function set(value) {
+          this.setAttribute('modal', value);
+        }
+      }, {
+        key: "modalWidth",
+        get: function get() {
+          return this.getAttribute('modal-width');
+        },
+        set: function set(value) {
+          this.setAttribute('modal-width', value);
+        }
+      }, {
+        key: "modalHeight",
+        get: function get() {
+          return this.getAttribute('modal-height');
+        },
+        set: function set(value) {
+          this.setAttribute('modal-height', value);
+        }
+      }, {
+        key: "inputId",
+        get: function get() {
+          return this.getAttribute('input');
+        },
+        set: function set(value) {
+          this.setAttribute('input', value);
+        }
+      }, {
+        key: "inputNameClass",
+        get: function get() {
+          return this.getAttribute('input-name');
+        },
+        set: function set(value) {
+          this.setAttribute('input-name', value);
+        }
+      }, {
+        key: "buttonSelectClass",
+        get: function get() {
+          return this.getAttribute('button-select');
+        },
+        set: function set(value) {
+          this.setAttribute('button-select', value);
+        }
+      }], [{
+        key: "observedAttributes",
+        get: function get() {
+          return ['url', 'modal', 'modal-width', 'modal-height', 'input', 'input-name', 'button-select'];
+        }
+      }]);
 
-  customElements.define('joomla-field-user', JoomlaFieldUser);
-})(customElements, Joomla);
+      return JoomlaFieldUser;
+    }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+    customElements.define('joomla-field-user', JoomlaFieldUser);
+  })(customElements, Joomla);
+
+}());

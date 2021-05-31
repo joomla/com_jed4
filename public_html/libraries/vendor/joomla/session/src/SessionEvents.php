@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2021 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -11,14 +11,14 @@ namespace Joomla\Session;
 /**
  * Class defining the events dispatched by the session API
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 final class SessionEvents
 {
 	/**
 	 * Private constructor to prevent instantiation of this class
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	private function __construct()
 	{
@@ -30,7 +30,7 @@ final class SessionEvents
 	 * Listeners to this event receive a `Joomla\Session\SessionEvent` object.
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	public const START = 'session.start';
 
@@ -40,7 +40,7 @@ final class SessionEvents
 	 * Listeners to this event receive a `Joomla\Session\SessionEvent` object.
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	public const RESTART = 'session.restart';
 }

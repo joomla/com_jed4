@@ -1,8 +1,8 @@
-import { B as BaseComponent, g as getElementFromSelector, S as SelectorEngine, E as EventHandler, a as getTransitionDurationFromElement, e as emulateTransitionEnd, r as reflow, D as Data, d as defineJQueryPlugin } from './dom.js?1614481245';
+import { B as BaseComponent, g as getElementFromSelector, S as SelectorEngine, E as EventHandler, r as reflow, D as Data, f as isDisabled, d as defineJQueryPlugin } from './dom.js?1621994459';
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.0.0-beta2): tab.js
+ * Bootstrap (v5.0.1): tab.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -12,27 +12,26 @@ import { B as BaseComponent, g as getElementFromSelector, S as SelectorEngine, E
  * ------------------------------------------------------------------------
  */
 
-var NAME = 'tab';
-var DATA_KEY = 'bs.tab';
-var EVENT_KEY = ".".concat(DATA_KEY);
-var DATA_API_KEY = '.data-api';
-var EVENT_HIDE = "hide".concat(EVENT_KEY);
-var EVENT_HIDDEN = "hidden".concat(EVENT_KEY);
-var EVENT_SHOW = "show".concat(EVENT_KEY);
-var EVENT_SHOWN = "shown".concat(EVENT_KEY);
-var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
-var CLASS_NAME_DROPDOWN_MENU = 'dropdown-menu';
-var CLASS_NAME_ACTIVE = 'active';
-var CLASS_NAME_DISABLED = 'disabled';
-var CLASS_NAME_FADE = 'fade';
-var CLASS_NAME_SHOW = 'show';
-var SELECTOR_DROPDOWN = '.dropdown';
-var SELECTOR_NAV_LIST_GROUP = '.nav, .list-group';
-var SELECTOR_ACTIVE = '.active';
-var SELECTOR_ACTIVE_UL = ':scope > li > .active';
-var SELECTOR_DATA_TOGGLE = '[data-bs-toggle="tab"], [data-bs-toggle="pill"], [data-bs-toggle="list"]';
-var SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle';
-var SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
+const NAME = 'tab';
+const DATA_KEY = 'bs.tab';
+const EVENT_KEY = `.${DATA_KEY}`;
+const DATA_API_KEY = '.data-api';
+const EVENT_HIDE = `hide${EVENT_KEY}`;
+const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOW = `show${EVENT_KEY}`;
+const EVENT_SHOWN = `shown${EVENT_KEY}`;
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
+const CLASS_NAME_DROPDOWN_MENU = 'dropdown-menu';
+const CLASS_NAME_ACTIVE = 'active';
+const CLASS_NAME_FADE = 'fade';
+const CLASS_NAME_SHOW = 'show';
+const SELECTOR_DROPDOWN = '.dropdown';
+const SELECTOR_NAV_LIST_GROUP = '.nav, .list-group';
+const SELECTOR_ACTIVE = '.active';
+const SELECTOR_ACTIVE_UL = ':scope > li > .active';
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="tab"], [data-bs-toggle="pill"], [data-bs-toggle="list"]';
+const SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle';
+const SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
 /**
  * ------------------------------------------------------------------------
  * Class Definition
@@ -41,31 +40,31 @@ var SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
 
 class Tab extends BaseComponent {
   // Getters
-  static get DATA_KEY() {
-    return DATA_KEY;
+  static get NAME() {
+    return NAME;
   } // Public
 
 
   show() {
-    if (this._element.parentNode && this._element.parentNode.nodeType === Node.ELEMENT_NODE && this._element.classList.contains(CLASS_NAME_ACTIVE) || this._element.classList.contains(CLASS_NAME_DISABLED)) {
+    if (this._element.parentNode && this._element.parentNode.nodeType === Node.ELEMENT_NODE && this._element.classList.contains(CLASS_NAME_ACTIVE)) {
       return;
     }
 
-    var previous;
-    var target = getElementFromSelector(this._element);
+    let previous;
+    const target = getElementFromSelector(this._element);
 
-    var listElement = this._element.closest(SELECTOR_NAV_LIST_GROUP);
+    const listElement = this._element.closest(SELECTOR_NAV_LIST_GROUP);
 
     if (listElement) {
-      var itemSelector = listElement.nodeName === 'UL' || listElement.nodeName === 'OL' ? SELECTOR_ACTIVE_UL : SELECTOR_ACTIVE;
+      const itemSelector = listElement.nodeName === 'UL' || listElement.nodeName === 'OL' ? SELECTOR_ACTIVE_UL : SELECTOR_ACTIVE;
       previous = SelectorEngine.find(itemSelector, listElement);
       previous = previous[previous.length - 1];
     }
 
-    var hideEvent = previous ? EventHandler.trigger(previous, EVENT_HIDE, {
+    const hideEvent = previous ? EventHandler.trigger(previous, EVENT_HIDE, {
       relatedTarget: this._element
     }) : null;
-    var showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
+    const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
       relatedTarget: previous
     });
 
@@ -75,7 +74,7 @@ class Tab extends BaseComponent {
 
     this._activate(this._element, listElement);
 
-    var complete = () => {
+    const complete = () => {
       EventHandler.trigger(previous, EVENT_HIDDEN, {
         relatedTarget: this._element
       });
@@ -93,17 +92,16 @@ class Tab extends BaseComponent {
 
 
   _activate(element, container, callback) {
-    var activeElements = container && (container.nodeName === 'UL' || container.nodeName === 'OL') ? SelectorEngine.find(SELECTOR_ACTIVE_UL, container) : SelectorEngine.children(container, SELECTOR_ACTIVE);
-    var active = activeElements[0];
-    var isTransitioning = callback && active && active.classList.contains(CLASS_NAME_FADE);
+    const activeElements = container && (container.nodeName === 'UL' || container.nodeName === 'OL') ? SelectorEngine.find(SELECTOR_ACTIVE_UL, container) : SelectorEngine.children(container, SELECTOR_ACTIVE);
+    const active = activeElements[0];
+    const isTransitioning = callback && active && active.classList.contains(CLASS_NAME_FADE);
 
-    var complete = () => this._transitionComplete(element, active, callback);
+    const complete = () => this._transitionComplete(element, active, callback);
 
     if (active && isTransitioning) {
-      var transitionDuration = getTransitionDurationFromElement(active);
       active.classList.remove(CLASS_NAME_SHOW);
-      EventHandler.one(active, 'transitionend', complete);
-      emulateTransitionEnd(active, transitionDuration);
+
+      this._queueCallback(complete, element, true);
     } else {
       complete();
     }
@@ -112,7 +110,7 @@ class Tab extends BaseComponent {
   _transitionComplete(element, active, callback) {
     if (active) {
       active.classList.remove(CLASS_NAME_ACTIVE);
-      var dropdownChild = SelectorEngine.findOne(SELECTOR_DROPDOWN_ACTIVE_CHILD, active.parentNode);
+      const dropdownChild = SelectorEngine.findOne(SELECTOR_DROPDOWN_ACTIVE_CHILD, active.parentNode);
 
       if (dropdownChild) {
         dropdownChild.classList.remove(CLASS_NAME_ACTIVE);
@@ -135,11 +133,17 @@ class Tab extends BaseComponent {
       element.classList.add(CLASS_NAME_SHOW);
     }
 
-    if (element.parentNode && element.parentNode.classList.contains(CLASS_NAME_DROPDOWN_MENU)) {
-      var dropdownElement = element.closest(SELECTOR_DROPDOWN);
+    let parent = element.parentNode;
+
+    if (parent && parent.nodeName === 'LI') {
+      parent = parent.parentNode;
+    }
+
+    if (parent && parent.classList.contains(CLASS_NAME_DROPDOWN_MENU)) {
+      const dropdownElement = element.closest(SELECTOR_DROPDOWN);
 
       if (dropdownElement) {
-        SelectorEngine.find(SELECTOR_DROPDOWN_TOGGLE).forEach(dropdown => dropdown.classList.add(CLASS_NAME_ACTIVE));
+        SelectorEngine.find(SELECTOR_DROPDOWN_TOGGLE, dropdownElement).forEach(dropdown => dropdown.classList.add(CLASS_NAME_ACTIVE));
       }
 
       element.setAttribute('aria-expanded', true);
@@ -153,11 +157,11 @@ class Tab extends BaseComponent {
 
   static jQueryInterface(config) {
     return this.each(function () {
-      var data = Data.getData(this, DATA_KEY) || new Tab(this);
+      const data = Data.get(this, DATA_KEY) || new Tab(this);
 
       if (typeof config === 'string') {
         if (typeof data[config] === 'undefined') {
-          throw new TypeError("No method named \"".concat(config, "\""));
+          throw new TypeError(`No method named "${config}"`);
         }
 
         data[config]();
@@ -174,8 +178,15 @@ class Tab extends BaseComponent {
 
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-  event.preventDefault();
-  var data = Data.getData(this, DATA_KEY) || new Tab(this);
+  if (['A', 'AREA'].includes(this.tagName)) {
+    event.preventDefault();
+  }
+
+  if (isDisabled(this)) {
+    return;
+  }
+
+  const data = Data.get(this, DATA_KEY) || new Tab(this);
   data.show();
 });
 /**
@@ -185,7 +196,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
  * add .Tab to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Tab);
+defineJQueryPlugin(Tab);
 
 window.Joomla = window.Joomla || {};
 window.bootstrap = window.bootstrap || {};
@@ -199,10 +210,10 @@ window.bootstrap.Tab = Tab;
 
 Joomla.initialiseTabs = (el, options) => {
   if (!(el instanceof Element) && options.isJoomla) {
-    var tab = document.querySelector("".concat(el, "Content"));
+    const tab = document.querySelector(`${el}Content`);
 
     if (tab) {
-      var related = Array.from(tab.children); // Build the navigation
+      const related = Array.from(tab.children); // Build the navigation
 
       if (related.length) {
         related.forEach(element => {
@@ -210,12 +221,12 @@ Joomla.initialiseTabs = (el, options) => {
             return;
           }
 
-          var isActive = element.dataset.active !== '';
-          var ul = document.querySelector("".concat(el, "Tabs"));
+          const isActive = element.dataset.active !== '';
+          const ul = document.querySelector(`${el}Tabs`);
 
           if (ul) {
-            var link = document.createElement('a');
-            link.href = "#".concat(element.dataset.id);
+            const link = document.createElement('a');
+            link.href = `#${element.dataset.id}`;
             link.classList.add('nav-link');
 
             if (isActive) {
@@ -232,7 +243,7 @@ Joomla.initialiseTabs = (el, options) => {
              */
 
             link.innerHTML = element.dataset.title;
-            var li = document.createElement('li');
+            const li = document.createElement('li');
             li.classList.add('nav-item');
             li.setAttribute('role', 'presentation');
             li.appendChild(link);
@@ -244,13 +255,13 @@ Joomla.initialiseTabs = (el, options) => {
       }
     }
   } else {
-    Array.from(document.querySelectorAll("".concat(el, " a"))).map(tab => new window.bootstrap.Tab(tab, options));
+    Array.from(document.querySelectorAll(`${el} a`)).map(tab => new window.bootstrap.Tab(tab, options));
   }
 };
 
 if (Joomla && Joomla.getOptions) {
   // Get the elements/configurations from the PHP
-  var tabs = Joomla.getOptions('bootstrap.tabs'); // Initialise the elements
+  const tabs = Joomla.getOptions('bootstrap.tabs'); // Initialise the elements
 
   if (typeof tabs === 'object' && tabs !== null) {
     Object.keys(tabs).map(tab => Joomla.initialiseTabs(tab, tabs[tab]));

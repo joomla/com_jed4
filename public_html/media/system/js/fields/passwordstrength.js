@@ -1,15 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
  * PasswordStrength script by Thomas Kjaergaard
  * License: MIT
  * Repo: https://github.com/tkjaergaard/Password-Strength
@@ -36,10 +25,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-var PasswordStrength = /*#__PURE__*/function () {
-  function PasswordStrength(settings) {
-    _classCallCheck(this, PasswordStrength);
-
+class PasswordStrength {
+  constructor(settings) {
     this.lowercase = parseInt(settings.lowercase, 10) || 0;
     this.uppercase = parseInt(settings.uppercase, 10) || 0;
     this.numbers = parseInt(settings.numbers, 10) || 0;
@@ -47,77 +34,70 @@ var PasswordStrength = /*#__PURE__*/function () {
     this.length = parseInt(settings.length, 10) || 12;
   }
 
-  _createClass(PasswordStrength, [{
-    key: "getScore",
-    value: function getScore(value) {
-      var _this = this;
-
-      var score = 0;
-      var mods = 0;
-      var sets = ['lowercase', 'uppercase', 'numbers', 'special', 'length'];
-      sets.forEach(function (set) {
-        if (_this[set] > 0) {
-          mods += 1;
-        }
-      });
-      score += this.constructor.calc(value, /[a-z]/g, this.lowercase, mods);
-      score += this.constructor.calc(value, /[A-Z]/g, this.uppercase, mods);
-      score += this.constructor.calc(value, /[0-9]/g, this.numbers, mods); // eslint-disable-next-line no-useless-escape
-
-      score += this.constructor.calc(value, /[\$\!\#\?\=\;\:\*\-\_\€\%\&\(\)\`\´]/g, this.special, mods);
-
-      if (mods === 1) {
-        score += value.length > this.length ? 100 : 100 / this.length * value.length;
-      } else {
-        score += value.length > this.length ? 100 / mods : 100 / mods / this.length * value.length;
+  getScore(value) {
+    let score = 0;
+    let mods = 0;
+    const sets = ['lowercase', 'uppercase', 'numbers', 'special', 'length'];
+    sets.forEach(set => {
+      if (this[set] > 0) {
+        mods += 1;
       }
+    });
+    score += this.constructor.calc(value, /[a-z]/g, this.lowercase, mods);
+    score += this.constructor.calc(value, /[A-Z]/g, this.uppercase, mods);
+    score += this.constructor.calc(value, /[0-9]/g, this.numbers, mods); // eslint-disable-next-line no-useless-escape
 
-      return score;
+    score += this.constructor.calc(value, /[\$\!\#\?\=\;\:\*\-\_\€\%\&\(\)\`\´]/g, this.special, mods);
+
+    if (mods === 1) {
+      score += value.length > this.length ? 100 : 100 / this.length * value.length;
+    } else {
+      score += value.length > this.length ? 100 / mods : 100 / mods / this.length * value.length;
     }
-  }], [{
-    key: "calc",
-    value: function calc(value, pattern, length, mods) {
-      var count = value.match(pattern);
 
-      if (count && count.length > length && length !== 0) {
-        return 100 / mods;
-      }
+    return score;
+  }
 
-      if (count && length > 0) {
-        return 100 / mods / length * count.length;
-      }
+  static calc(value, pattern, length, mods) {
+    const count = value.match(pattern);
 
-      return 0;
+    if (count && count.length > length && length !== 0) {
+      return 100 / mods;
     }
-  }]);
 
-  return PasswordStrength;
-}();
+    if (count && length > 0) {
+      return 100 / mods / length * count.length;
+    }
+
+    return 0;
+  }
+
+}
 /**
  * @copyright  (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
-(function (Joomla, document) {
+((Joomla, document) => {
   // Method to check the input and set the meter
-  var getMeter = function getMeter(element) {
-    var meter = document.querySelector('meter');
-    var minLength = element.getAttribute('data-min-length');
-    var minIntegers = element.getAttribute('data-min-integers');
-    var minSymbols = element.getAttribute('data-min-symbols');
-    var minUppercase = element.getAttribute('data-min-uppercase');
-    var minLowercase = element.getAttribute('data-min-lowercase');
-    var strength = new PasswordStrength({
+  const getMeter = element => {
+    const meter = document.querySelector('meter');
+    const minLength = element.getAttribute('data-min-length');
+    const minIntegers = element.getAttribute('data-min-integers');
+    const minSymbols = element.getAttribute('data-min-symbols');
+    const minUppercase = element.getAttribute('data-min-uppercase');
+    const minLowercase = element.getAttribute('data-min-lowercase');
+    const strength = new PasswordStrength({
       lowercase: minLowercase || 0,
       uppercase: minUppercase || 0,
       numbers: minIntegers || 0,
       special: minSymbols || 0,
       length: minLength || 12
     });
-    var score = strength.getScore(element.value);
-    var i = meter.getAttribute('id').replace(/^\D+/g, '');
-    var label = element.parentNode.parentNode.querySelector("#password-".concat(i));
+    const score = strength.getScore(element.value);
+    const i = meter.getAttribute('id').replace(/^\D+/g, '');
+    const label = element.parentNode.parentNode.querySelector(`#password-${i}`);
 
     if (score === 100) {
       label.innerText = Joomla.JText._('JFIELD_PASSWORD_INDICATE_COMPLETE');
@@ -133,28 +113,28 @@ var PasswordStrength = /*#__PURE__*/function () {
     }
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var fields = [].slice.call(document.querySelectorAll('.js-password-strength')); // Loop  through the fields
+  document.addEventListener('DOMContentLoaded', () => {
+    const fields = [].slice.call(document.querySelectorAll('.js-password-strength')); // Loop  through the fields
 
-    fields.forEach(function (field, index) {
-      var initialVal = '';
+    fields.forEach((field, index) => {
+      let initialVal = '';
 
       if (!field.value.length) {
         initialVal = 0;
       } // Create a progress meter and the label
 
 
-      var meter = document.createElement('meter');
-      meter.setAttribute('id', "progress-".concat(index));
+      const meter = document.createElement('meter');
+      meter.setAttribute('id', `progress-${index}`);
       meter.setAttribute('min', 0);
       meter.setAttribute('max', 100);
       meter.setAttribute('low', 40);
       meter.setAttribute('high', 99);
       meter.setAttribute('optimum', 100);
       meter.value = initialVal;
-      var label = document.createElement('div');
+      const label = document.createElement('div');
       label.setAttribute('class', 'text-center');
-      label.setAttribute('id', "password-".concat(index));
+      label.setAttribute('id', `password-${index}`);
       label.setAttribute('aria-live', 'polite');
       field.parentNode.insertAdjacentElement('afterEnd', label);
       field.parentNode.insertAdjacentElement('afterEnd', meter); // Add a data attribute for the required
@@ -164,28 +144,29 @@ var PasswordStrength = /*#__PURE__*/function () {
       } // Add a listener for input data change
 
 
-      field.addEventListener('keyup', function (_ref) {
-        var target = _ref.target;
+      field.addEventListener('keyup', ({
+        target
+      }) => {
         getMeter(target);
       });
     }); // Set a handler for the validation script
 
     if (fields[0]) {
-      document.formvalidator.setHandler('password-strength', function (value) {
-        var strengthElements = document.querySelectorAll('.js-password-strength');
-        var minLength = strengthElements[0].getAttribute('data-min-length');
-        var minIntegers = strengthElements[0].getAttribute('data-min-integers');
-        var minSymbols = strengthElements[0].getAttribute('data-min-symbols');
-        var minUppercase = strengthElements[0].getAttribute('data-min-uppercase');
-        var minLowercase = strengthElements[0].getAttribute('data-min-lowercase');
-        var strength = new PasswordStrength({
+      document.formvalidator.setHandler('password-strength', value => {
+        const strengthElements = document.querySelectorAll('.js-password-strength');
+        const minLength = strengthElements[0].getAttribute('data-min-length');
+        const minIntegers = strengthElements[0].getAttribute('data-min-integers');
+        const minSymbols = strengthElements[0].getAttribute('data-min-symbols');
+        const minUppercase = strengthElements[0].getAttribute('data-min-uppercase');
+        const minLowercase = strengthElements[0].getAttribute('data-min-lowercase');
+        const strength = new PasswordStrength({
           lowercase: minLowercase || 0,
           uppercase: minUppercase || 0,
           numbers: minIntegers || 0,
           special: minSymbols || 0,
           length: minLength || 12
         });
-        var score = strength.getScore(value);
+        const score = strength.getScore(value);
 
         if (score === 100) {
           return true;

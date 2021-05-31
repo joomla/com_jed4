@@ -6,6 +6,19 @@
   "license": "GPL-2.0-or-later",
   "assets": [
     {
+      "name": "com_users.admin-users-groups.es5",
+      "type": "script",
+      "uri": "com_users/admin-users-groups-es5.min.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "nomodule": true,
+        "defer": true
+      },
+      "version": "a2052c6a0a04436116e8015507f895b940824b2e"
+    },
+    {
       "name": "com_users.admin-users-groups",
       "type": "script",
       "uri": "com_users/admin-users-groups.min.js",
@@ -13,30 +26,59 @@
         "core"
       ],
       "attributes": {
+        "type": "module"
+      },
+      "version": "009a5952b7ecef0bf049ba693b452be4d19ad60b"
+    },
+    {
+      "name": "com_users.admin-users-mail.es5",
+      "type": "script",
+      "uri": "com_users/admin-users-mail-es5.min.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "nomodule": true,
         "defer": true
-      }
+      },
+      "version": "ea6a04d14f18e169dbe0f25a4dd5001e8748ea5f"
     },
     {
       "name": "com_users.admin-users-mail",
       "type": "script",
       "uri": "com_users/admin-users-mail.min.js",
       "dependencies": [
+        "com_users.admin-users-mail.es5"
+      ],
+      "attributes": {
+        "type": "module"
+      },
+      "version": "13a45fd1bdf9d55b8336fd50f4d9cc34f6626577"
+    },
+    {
+      "name": "com_users.two-factor-switcher.es5",
+      "type": "script",
+      "uri": "com_users/two-factor-switcher-es5.min.js",
+      "dependencies": [
         "core"
       ],
       "attributes": {
+        "nomodule": true,
         "defer": true
-      }
+      },
+      "version": "a14e187223fa7dfd18176df5296c7b5961783c38"
     },
     {
       "name": "com_users.two-factor-switcher",
       "type": "script",
       "uri": "com_users/two-factor-switcher.min.js",
       "dependencies": [
-        "core"
+        "com_users.two-factor-switcher.es5"
       ],
       "attributes": {
-        "defer": true
-      }
+        "type": "module"
+      },
+      "version": "829f461d24cbeee7c3f0bd47bf458ad3d128d3cf"
     }
   ]
 }

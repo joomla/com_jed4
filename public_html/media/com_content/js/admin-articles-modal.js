@@ -1,14 +1,8 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function () {
-  'use strict';
+(() => {
   /**
     * Javascript to insert the link
     * View element calls jSelectArticle when an article is clicked
@@ -16,8 +10,8 @@
     * and closes the select frame.
     * */
 
-  window.jSelectArticle = function (id, title, catid, object, link, lang) {
-    var hreflang = '';
+  window.jSelectArticle = (id, title, catid, object, link, lang) => {
+    let hreflang = '';
 
     if (!Joomla.getOptions('xtd-articles')) {
       // Something went wrong!
@@ -25,14 +19,15 @@
       return false;
     }
 
-    var _Joomla$getOptions = Joomla.getOptions('xtd-articles'),
-        editor = _Joomla$getOptions.editor;
+    const {
+      editor
+    } = Joomla.getOptions('xtd-articles');
 
     if (lang !== '') {
-      hreflang = "hreflang=\"".concat(lang, "\"");
+      hreflang = `hreflang="${lang}"`;
     }
 
-    var tag = "<a ".concat(hreflang, " href=\"").concat(link, "\">").concat(title, "</a>");
+    const tag = `<a ${hreflang} href="${link}">${title}</a>`;
     window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
 
     if (window.parent.Joomla.Modal) {
@@ -42,16 +37,18 @@
     return true;
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     // Get the elements
-    var elements = document.querySelectorAll('.select-link');
+    const elements = document.querySelectorAll('.select-link');
 
-    for (var i = 0, l = elements.length; l > i; i += 1) {
+    for (let i = 0, l = elements.length; l > i; i += 1) {
       // Listen for click event
-      elements[i].addEventListener('click', function (event) {
+      elements[i].addEventListener('click', event => {
         event.preventDefault();
-        var target = event.target;
-        var functionName = target.getAttribute('data-function');
+        const {
+          target
+        } = event;
+        const functionName = target.getAttribute('data-function');
 
         if (functionName === 'jSelectArticle') {
           // Used in xtd_contacts

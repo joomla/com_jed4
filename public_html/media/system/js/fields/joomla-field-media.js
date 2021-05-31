@@ -1,7 +1,4 @@
-"use strict";
-
 ((customElements, Joomla) => {
-  'use strict';
 
   if (!Joomla) {
     throw new Error('Joomla API is not properly initiated');
@@ -153,7 +150,7 @@
 
       this.button.addEventListener('click', this.show); // Bootstrap modal init
 
-      if (this.modalElement && window.bootstrap && window.bootstrap.Modal && window.bootstrap.Modal.getInstance(this.modalElement) === undefined) {
+      if (this.modalElement && window.bootstrap && window.bootstrap.Modal && !window.bootstrap.Modal.getInstance(this.modalElement)) {
         Joomla.initialiseModal(this.modalElement, {
           isJoomla: true
         });

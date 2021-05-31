@@ -1,9 +1,4 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -15,9 +10,9 @@ Joomla = window.Joomla || {};
  * @param {string}       className  The class name to be toggled
  */
 
-Joomla.toggleAllNextElements = function (element, className) {
-  var getNextSiblings = function getNextSiblings(el) {
-    var siblings = [];
+Joomla.toggleAllNextElements = (element, className) => {
+  const getNextSiblings = el => {
+    const siblings = [];
     /* eslint-disable no-cond-assign,no-param-reassign */
 
     do {
@@ -29,10 +24,10 @@ Joomla.toggleAllNextElements = function (element, className) {
     return siblings;
   };
 
-  var followingElements = getNextSiblings(element);
+  const followingElements = getNextSiblings(element);
 
   if (followingElements.length) {
-    followingElements.forEach(function (elem) {
+    followingElements.forEach(elem => {
       if (elem.classList.contains(className)) {
         elem.classList.remove(className);
       } else {
@@ -42,22 +37,21 @@ Joomla.toggleAllNextElements = function (element, className) {
   }
 };
 
-(function () {
-  'use strict';
+(() => {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var dropDownBtn = document.getElementById('toolbar-status-group');
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropDownBtn = document.getElementById('toolbar-status-group');
 
     if (!dropDownBtn) {
       return;
     }
 
-    var transitions = [].slice.call(dropDownBtn.querySelectorAll('.button-transition'));
-    var headline = dropDownBtn.querySelector('.button-transition-headline');
-    var separator = dropDownBtn.querySelector('.button-transition-separator');
-    var itemList = document.querySelector('table.itemList');
-    var itemListRows = [];
-    var transitionIds = [];
+    const transitions = [].slice.call(dropDownBtn.querySelectorAll('.button-transition'));
+    const headline = dropDownBtn.querySelector('.button-transition-headline');
+    const separator = dropDownBtn.querySelector('.button-transition-separator');
+    const itemList = document.querySelector('table.itemList');
+    let itemListRows = [];
+    let transitionIds = [];
 
     if (itemList) {
       itemListRows = [].slice.call(itemList.querySelectorAll('tbody tr'));
@@ -65,17 +59,11 @@ Joomla.toggleAllNextElements = function (element, className) {
 
     function enableTransitions() {
       if (transitionIds.length) {
-        var availableTrans = transitionIds.shift();
-
-        var _loop = function _loop() {
-          var compareTrans = transitionIds.shift();
-          availableTrans = availableTrans.filter(function (id) {
-            return compareTrans.indexOf(id) !== -1;
-          });
-        };
+        let availableTrans = transitionIds.shift();
 
         while (transitionIds.length) {
-          _loop();
+          const compareTrans = transitionIds.shift();
+          availableTrans = availableTrans.filter(id => compareTrans.indexOf(id) !== -1);
         }
 
         if (availableTrans.length) {
@@ -88,8 +76,8 @@ Joomla.toggleAllNextElements = function (element, className) {
           }
         }
 
-        availableTrans.forEach(function (trans) {
-          var elem = dropDownBtn.querySelector(".transition-".concat(trans));
+        availableTrans.forEach(trans => {
+          const elem = dropDownBtn.querySelector(`.transition-${trans}`);
 
           if (elem) {
             elem.parentNode.classList.remove('d-none');
@@ -106,8 +94,8 @@ Joomla.toggleAllNextElements = function (element, className) {
 
 
     if (itemList) {
-      itemList.addEventListener('click', function () {
-        transitions.forEach(function (trans) {
+      itemList.addEventListener('click', () => {
+        transitions.forEach(trans => {
           trans.parentNode.classList.add('d-none');
         });
 
@@ -120,11 +108,11 @@ Joomla.toggleAllNextElements = function (element, className) {
         }
 
         transitionIds = [];
-        itemListRows.forEach(function (el) {
-          var checkedBox = el.querySelector('input[type=checkbox]');
+        itemListRows.forEach(el => {
+          const checkedBox = el.querySelector('input[type=checkbox]');
 
           if (checkedBox.checked) {
-            var parentTr = checkedBox.closest('tr');
+            const parentTr = checkedBox.closest('tr');
             collectTransitions(parentTr);
           }
         });

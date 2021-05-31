@@ -1,0 +1,1 @@
+!function(){"use strict";Joomla.fieldsChangeContext=function(e){var n=new RegExp("([?;&])context[^&;]*[;&]?"),o=window.location.href.replace(n,"$1").replace(/&$/,"");window.location.href=(o.length>2?o+"&":"?")+(e?"context="+e:"")}}();

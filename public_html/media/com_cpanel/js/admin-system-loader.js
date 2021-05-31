@@ -1,31 +1,25 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-(function (document, Joomla) {
-  'use strict';
+((document, Joomla) => {
 
-  var init = function init() {
+  const init = () => {
     // Cleanup
     document.removeEventListener('DOMContentLoaded', init); // Get the elements
 
-    var elements = [].slice.call(document.querySelectorAll('.system-counter'));
+    const elements = [].slice.call(document.querySelectorAll('.system-counter'));
 
     if (elements.length) {
-      elements.forEach(function (element) {
-        var badgeurl = element.getAttribute('data-url');
+      elements.forEach(element => {
+        const badgeurl = element.getAttribute('data-url');
 
         if (badgeurl && Joomla && Joomla.request && typeof Joomla.request === 'function') {
           Joomla.request({
             url: badgeurl,
             method: 'POST',
-            onSuccess: function onSuccess(resp) {
-              var response;
+            onSuccess: resp => {
+              let response;
 
               try {
                 response = JSON.parse(resp);
@@ -39,7 +33,7 @@
                 element.classList.add('text-danger');
                 element.classList.add('icon-remove');
               } else if (response.data) {
-                var elem = document.createElement('span');
+                const elem = document.createElement('span');
                 elem.classList.add('float-end');
                 elem.classList.add('badge');
                 elem.classList.add('bg-warning', 'text-dark');
@@ -52,7 +46,7 @@
                 element.classList.add('text-success');
               }
             },
-            onError: function onError() {
+            onError: () => {
               element.classList.remove('icon-spin');
               element.classList.remove('icon-spinner');
               element.classList.add('text-danger');

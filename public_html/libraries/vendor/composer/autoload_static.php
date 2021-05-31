@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
+class ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -106,10 +106,6 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'PHPMailer\\PHPMailer\\' => 20,
-        ),
-        'O' => 
-        array (
-            'OzdemirBurak\\Iris\\' => 18,
         ),
         'N' => 
         array (
@@ -307,10 +303,6 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
-        ),
-        'OzdemirBurak\\Iris\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/ozdemirburak/iris/src',
         ),
         'Nyholm\\Psr7\\' => 
         array (
@@ -913,6 +905,9 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\CMS\\Console\\CheckUpdatesCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/CheckUpdatesCommand.php',
         'Joomla\\CMS\\Console\\CleanCacheCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/CleanCacheCommand.php',
         'Joomla\\CMS\\Console\\DeleteUserCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/DeleteUserCommand.php',
+        'Joomla\\CMS\\Console\\ExtensionDiscoverCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionDiscoverCommand.php',
+        'Joomla\\CMS\\Console\\ExtensionDiscoverInstallCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionDiscoverInstallCommand.php',
+        'Joomla\\CMS\\Console\\ExtensionDiscoverListCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionDiscoverListCommand.php',
         'Joomla\\CMS\\Console\\ExtensionInstallCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionInstallCommand.php',
         'Joomla\\CMS\\Console\\ExtensionRemoveCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionRemoveCommand.php',
         'Joomla\\CMS\\Console\\ExtensionsListCommand' => __DIR__ . '/../../..' . '/libraries/src/Console/ExtensionsListCommand.php',
@@ -1058,6 +1053,7 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\CMS\\Extension\\PluginInterface' => __DIR__ . '/../../..' . '/libraries/src/Extension/PluginInterface.php',
         'Joomla\\CMS\\Extension\\Service\\Provider\\CategoryFactory' => __DIR__ . '/../../..' . '/libraries/src/Extension/Service/Provider/CategoryFactory.php',
         'Joomla\\CMS\\Extension\\Service\\Provider\\ComponentDispatcherFactory' => __DIR__ . '/../../..' . '/libraries/src/Extension/Service/Provider/ComponentDispatcherFactory.php',
+        'Joomla\\CMS\\Extension\\Service\\Provider\\HelperFactory' => __DIR__ . '/../../..' . '/libraries/src/Extension/Service/Provider/HelperFactory.php',
         'Joomla\\CMS\\Extension\\Service\\Provider\\MVCFactory' => __DIR__ . '/../../..' . '/libraries/src/Extension/Service/Provider/MVCFactory.php',
         'Joomla\\CMS\\Extension\\Service\\Provider\\Module' => __DIR__ . '/../../..' . '/libraries/src/Extension/Service/Provider/Module.php',
         'Joomla\\CMS\\Extension\\Service\\Provider\\ModuleDispatcherFactory' => __DIR__ . '/../../..' . '/libraries/src/Extension/Service/Provider/ModuleDispatcherFactory.php',
@@ -1186,6 +1182,7 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\CMS\\Form\\Rule\\EqualsRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/EqualsRule.php',
         'Joomla\\CMS\\Form\\Rule\\ExistsRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/ExistsRule.php',
         'Joomla\\CMS\\Form\\Rule\\FilePathRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/FilePathRule.php',
+        'Joomla\\CMS\\Form\\Rule\\ModuleLayoutRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/ModuleLayoutRule.php',
         'Joomla\\CMS\\Form\\Rule\\NotequalsRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/NotequalsRule.php',
         'Joomla\\CMS\\Form\\Rule\\NumberRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/NumberRule.php',
         'Joomla\\CMS\\Form\\Rule\\OptionsRule' => __DIR__ . '/../../..' . '/libraries/src/Form/Rule/OptionsRule.php',
@@ -1237,6 +1234,8 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\CMS\\Helper\\AuthenticationHelper' => __DIR__ . '/../../..' . '/libraries/src/Helper/AuthenticationHelper.php',
         'Joomla\\CMS\\Helper\\CMSHelper' => __DIR__ . '/../../..' . '/libraries/src/Helper/CMSHelper.php',
         'Joomla\\CMS\\Helper\\ContentHelper' => __DIR__ . '/../../..' . '/libraries/src/Helper/ContentHelper.php',
+        'Joomla\\CMS\\Helper\\HelperFactory' => __DIR__ . '/../../..' . '/libraries/src/Helper/HelperFactory.php',
+        'Joomla\\CMS\\Helper\\HelperFactoryInterface' => __DIR__ . '/../../..' . '/libraries/src/Helper/HelperFactoryInterface.php',
         'Joomla\\CMS\\Helper\\LibraryHelper' => __DIR__ . '/../../..' . '/libraries/src/Helper/LibraryHelper.php',
         'Joomla\\CMS\\Helper\\MediaHelper' => __DIR__ . '/../../..' . '/libraries/src/Helper/MediaHelper.php',
         'Joomla\\CMS\\Helper\\ModuleHelper' => __DIR__ . '/../../..' . '/libraries/src/Helper/ModuleHelper.php',
@@ -1415,6 +1414,7 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\CMS\\Session\\MetadataManager' => __DIR__ . '/../../..' . '/libraries/src/Session/MetadataManager.php',
         'Joomla\\CMS\\Session\\Session' => __DIR__ . '/../../..' . '/libraries/src/Session/Session.php',
         'Joomla\\CMS\\Session\\SessionFactory' => __DIR__ . '/../../..' . '/libraries/src/Session/SessionFactory.php',
+        'Joomla\\CMS\\Session\\SessionManager' => __DIR__ . '/../../..' . '/libraries/src/Session/SessionManager.php',
         'Joomla\\CMS\\Session\\Storage\\JoomlaStorage' => __DIR__ . '/../../..' . '/libraries/src/Session/Storage/JoomlaStorage.php',
         'Joomla\\CMS\\String\\PunycodeHelper' => __DIR__ . '/../../..' . '/libraries/src/String/PunycodeHelper.php',
         'Joomla\\CMS\\Table\\Asset' => __DIR__ . '/../../..' . '/libraries/src/Table/Asset.php',
@@ -1437,6 +1437,7 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\CMS\\Table\\User' => __DIR__ . '/../../..' . '/libraries/src/Table/User.php',
         'Joomla\\CMS\\Table\\Usergroup' => __DIR__ . '/../../..' . '/libraries/src/Table/Usergroup.php',
         'Joomla\\CMS\\Table\\ViewLevel' => __DIR__ . '/../../..' . '/libraries/src/Table/ViewLevel.php',
+        'Joomla\\CMS\\Tag\\TagApiSerializerTrait' => __DIR__ . '/../../..' . '/libraries/src/Tag/TagApiSerializerTrait.php',
         'Joomla\\CMS\\Tag\\TagServiceInterface' => __DIR__ . '/../../..' . '/libraries/src/Tag/TagServiceInterface.php',
         'Joomla\\CMS\\Tag\\TagServiceTrait' => __DIR__ . '/../../..' . '/libraries/src/Tag/TagServiceTrait.php',
         'Joomla\\CMS\\Tag\\TaggableTableInterface' => __DIR__ . '/../../..' . '/libraries/src/Tag/TaggableTableInterface.php',
@@ -1620,7 +1621,6 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Joomla\\Filesystem\\Patcher' => __DIR__ . '/..' . '/joomla/filesystem/src/Patcher.php',
         'Joomla\\Filesystem\\Path' => __DIR__ . '/..' . '/joomla/filesystem/src/Path.php',
         'Joomla\\Filesystem\\Stream' => __DIR__ . '/..' . '/joomla/filesystem/src/Stream.php',
-        'Joomla\\Filesystem\\Stream\\String' => __DIR__ . '/..' . '/joomla/filesystem/src/Stream/String.php',
         'Joomla\\Filesystem\\Stream\\StringWrapper' => __DIR__ . '/..' . '/joomla/filesystem/src/Stream/StringWrapper.php',
         'Joomla\\Filesystem\\Support\\StringController' => __DIR__ . '/..' . '/joomla/filesystem/src/Support/StringController.php',
         'Joomla\\Filter\\InputFilter' => __DIR__ . '/..' . '/joomla/filter/src/InputFilter.php',
@@ -1746,6 +1746,7 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Negotiation\\AcceptEncoding' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/AcceptEncoding.php',
         'Negotiation\\AcceptHeader' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/AcceptHeader.php',
         'Negotiation\\AcceptLanguage' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/AcceptLanguage.php',
+        'Negotiation\\AcceptMatch' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/AcceptMatch.php',
         'Negotiation\\BaseAccept' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/BaseAccept.php',
         'Negotiation\\CharsetNegotiator' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/CharsetNegotiator.php',
         'Negotiation\\EncodingNegotiator' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/EncodingNegotiator.php',
@@ -1755,12 +1756,10 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Negotiation\\Exception\\InvalidLanguage' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/Exception/InvalidLanguage.php',
         'Negotiation\\Exception\\InvalidMediaType' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/Exception/InvalidMediaType.php',
         'Negotiation\\LanguageNegotiator' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/LanguageNegotiator.php',
-        'Negotiation\\Match' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/Match.php',
         'Negotiation\\Negotiator' => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation/Negotiator.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
         'Nyholm\\Psr7\\Factory\\HttplugFactory' => __DIR__ . '/..' . '/nyholm/psr7/src/Factory/HttplugFactory.php',
         'Nyholm\\Psr7\\Factory\\Psr17Factory' => __DIR__ . '/..' . '/nyholm/psr7/src/Factory/Psr17Factory.php',
-        'Nyholm\\Psr7\\LowercaseTrait' => __DIR__ . '/..' . '/nyholm/psr7/src/LowercaseTrait.php',
         'Nyholm\\Psr7\\MessageTrait' => __DIR__ . '/..' . '/nyholm/psr7/src/MessageTrait.php',
         'Nyholm\\Psr7\\Request' => __DIR__ . '/..' . '/nyholm/psr7/src/Request.php',
         'Nyholm\\Psr7\\RequestTrait' => __DIR__ . '/..' . '/nyholm/psr7/src/RequestTrait.php',
@@ -1769,21 +1768,6 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Nyholm\\Psr7\\Stream' => __DIR__ . '/..' . '/nyholm/psr7/src/Stream.php',
         'Nyholm\\Psr7\\UploadedFile' => __DIR__ . '/..' . '/nyholm/psr7/src/UploadedFile.php',
         'Nyholm\\Psr7\\Uri' => __DIR__ . '/..' . '/nyholm/psr7/src/Uri.php',
-        'OzdemirBurak\\Iris\\BaseColor' => __DIR__ . '/..' . '/ozdemirburak/iris/src/BaseColor.php',
-        'OzdemirBurak\\Iris\\Color\\Factory' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Factory.php',
-        'OzdemirBurak\\Iris\\Color\\Hex' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Hex.php',
-        'OzdemirBurak\\Iris\\Color\\Hsl' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Hsl.php',
-        'OzdemirBurak\\Iris\\Color\\Hsla' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Hsla.php',
-        'OzdemirBurak\\Iris\\Color\\Hsv' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Hsv.php',
-        'OzdemirBurak\\Iris\\Color\\Rgb' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Rgb.php',
-        'OzdemirBurak\\Iris\\Color\\Rgba' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Color/Rgba.php',
-        'OzdemirBurak\\Iris\\Exceptions\\AmbiguousColorString' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Exceptions/AmbiguousColorString.php',
-        'OzdemirBurak\\Iris\\Exceptions\\InvalidColorException' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Exceptions/InvalidColorException.php',
-        'OzdemirBurak\\Iris\\Helpers\\DefinedColor' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Helpers/DefinedColor.php',
-        'OzdemirBurak\\Iris\\Traits\\AlphaTrait' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Traits/AlphaTrait.php',
-        'OzdemirBurak\\Iris\\Traits\\HsTrait' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Traits/HsTrait.php',
-        'OzdemirBurak\\Iris\\Traits\\HslTrait' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Traits/HslTrait.php',
-        'OzdemirBurak\\Iris\\Traits\\RgbTrait' => __DIR__ . '/..' . '/ozdemirburak/iris/src/Traits/RgbTrait.php',
         'PHPMailer\\PHPMailer\\Exception' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/Exception.php',
         'PHPMailer\\PHPMailer\\OAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuth.php',
         'PHPMailer\\PHPMailer\\PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/PHPMailer.php',
@@ -2186,6 +2170,7 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
         'Wamania\\Snowball\\Stemmer\\Danish' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/Danish.php',
         'Wamania\\Snowball\\Stemmer\\Dutch' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/Dutch.php',
         'Wamania\\Snowball\\Stemmer\\English' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/English.php',
+        'Wamania\\Snowball\\Stemmer\\Finnish' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/Finnish.php',
         'Wamania\\Snowball\\Stemmer\\French' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/French.php',
         'Wamania\\Snowball\\Stemmer\\German' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/German.php',
         'Wamania\\Snowball\\Stemmer\\Italian' => __DIR__ . '/..' . '/wamania/php-stemmer/src/Stemmer/Italian.php',
@@ -2284,9 +2269,9 @@ class ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit1d94c52811dc0b112f3c143e167fc74d::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0ba99faa68e947bd9ddc4ff1d25a373d::$classMap;
 
         }, null, ClassLoader::class);
     }

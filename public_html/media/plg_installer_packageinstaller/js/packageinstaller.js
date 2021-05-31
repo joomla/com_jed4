@@ -1,20 +1,14 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 Joomla = window.Joomla || {};
 
-(function (Joomla) {
-  'use strict';
+(Joomla => {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    Joomla.submitbuttonpackage = function () {
-      var form = document.getElementById('adminForm'); // do field validation
+  document.addEventListener('DOMContentLoaded', () => {
+    Joomla.submitbuttonpackage = () => {
+      const form = document.getElementById('adminForm'); // do field validation
 
       if (form.install_package.value === '') {
         Joomla.renderMessages({
@@ -25,7 +19,7 @@ Joomla = window.Joomla || {};
           warning: [Joomla.Text._('COM_INSTALLER_MSG_WARNINGS_UPLOADFILETOOBIG')]
         });
       } else {
-        var loading = document.getElementById('loading');
+        const loading = document.getElementById('loading');
 
         if (loading) {
           loading.classList.remove('hidden');
@@ -42,21 +36,21 @@ Joomla = window.Joomla || {};
       return;
     }
 
-    var uploading = false;
-    var dragZone = document.querySelector('#dragarea');
-    var fileInput = document.querySelector('#install_package');
-    var fileSizeMax = document.querySelector('#max_upload_size').value;
-    var button = document.querySelector('#select-file-button');
-    var returnUrl = document.querySelector('#installer-return').value;
-    var progress = document.getElementById('upload-progress');
-    var progressBar = progress.querySelectorAll('.bar')[0];
-    var percentage = progress.querySelectorAll('.uploading-number')[0];
-    var uploadUrl = 'index.php?option=com_installer&task=install.ajax_upload';
+    let uploading = false;
+    const dragZone = document.querySelector('#dragarea');
+    const fileInput = document.querySelector('#install_package');
+    const fileSizeMax = document.querySelector('#max_upload_size').value;
+    const button = document.querySelector('#select-file-button');
+    const returnUrl = document.querySelector('#installer-return').value;
+    const progress = document.getElementById('upload-progress');
+    const progressBar = progress.querySelectorAll('.bar')[0];
+    const percentage = progress.querySelectorAll('.uploading-number')[0];
+    let uploadUrl = 'index.php?option=com_installer&task=install.ajax_upload';
 
     function showError(res) {
       dragZone.setAttribute('data-state', 'pending');
 
-      var message = Joomla.Text._('PLG_INSTALLER_PACKAGEINSTALLER_UPLOAD_ERROR_UNKNOWN');
+      let message = Joomla.Text._('PLG_INSTALLER_PACKAGEINSTALLER_UPLOAD_ERROR_UNKNOWN');
 
       if (res == null) {
         message = Joomla.Text._('PLG_INSTALLER_PACKAGEINSTALLER_UPLOAD_ERROR_EMPTY');
@@ -64,7 +58,9 @@ Joomla = window.Joomla || {};
         // Let's remove unnecessary HTML
         message = res.replace(/(<([^>]+)>|\s+)/g, ' ');
       } else if (res.message) {
-        message = res.message;
+        ({
+          message
+        } = res);
       }
 
       Joomla.renderMessages({
@@ -73,39 +69,39 @@ Joomla = window.Joomla || {};
     }
 
     if (returnUrl) {
-      uploadUrl += "&return=".concat(returnUrl);
+      uploadUrl += `&return=${returnUrl}`;
     }
 
-    button.addEventListener('click', function () {
+    button.addEventListener('click', () => {
       fileInput.click();
     });
-    fileInput.addEventListener('change', function () {
+    fileInput.addEventListener('change', () => {
       if (uploading) {
         return;
       }
 
       Joomla.submitbuttonpackage();
     });
-    dragZone.addEventListener('dragenter', function (event) {
+    dragZone.addEventListener('dragenter', event => {
       event.preventDefault();
       event.stopPropagation();
       dragZone.classList.add('hover');
       return false;
     }); // Notify user when file is over the drop area
 
-    dragZone.addEventListener('dragover', function (event) {
+    dragZone.addEventListener('dragover', event => {
       event.preventDefault();
       event.stopPropagation();
       dragZone.classList.add('hover');
       return false;
     });
-    dragZone.addEventListener('dragleave', function (event) {
+    dragZone.addEventListener('dragleave', event => {
       event.preventDefault();
       event.stopPropagation();
       dragZone.classList.remove('hover');
       return false;
     });
-    dragZone.addEventListener('drop', function (event) {
+    dragZone.addEventListener('drop', event => {
       event.preventDefault();
       event.stopPropagation();
 
@@ -114,14 +110,14 @@ Joomla = window.Joomla || {};
       }
 
       dragZone.classList.remove('hover');
-      var files = event.target.files || event.dataTransfer.files;
+      const files = event.target.files || event.dataTransfer.files;
 
       if (!files.length) {
         return;
       }
 
-      var file = files[0];
-      var data = new FormData();
+      const file = files[0];
+      const data = new FormData();
 
       if (file.size > fileSizeMax) {
         Joomla.renderMessages({
@@ -138,13 +134,13 @@ Joomla = window.Joomla || {};
       progressBar.style.width = 0;
       percentage.textContent = '0'; // Upload progress
 
-      var progressCallback = function progressCallback(evt) {
+      const progressCallback = evt => {
         if (evt.lengthComputable) {
-          var percentComplete = evt.loaded / evt.total;
-          var number = Math.round(percentComplete * 100);
-          progressBar.css('width', "".concat(number, "%"));
+          const percentComplete = evt.loaded / evt.total;
+          const number = Math.round(percentComplete * 100);
+          progressBar.css('width', `${number}%`);
           progressBar.setAttribute('aria-valuenow', number);
-          percentage.textContent = "".concat(number);
+          percentage.textContent = `${number}`;
 
           if (number === 100) {
             dragZone.setAttribute('data-state', 'installing');
@@ -156,18 +152,18 @@ Joomla = window.Joomla || {};
         url: uploadUrl,
         method: 'POST',
         perform: true,
-        data: data,
+        data,
         headers: {
           'Content-Type': 'false'
         },
         uploadProgressCallback: progressCallback,
-        onSuccess: function onSuccess(response) {
+        onSuccess: response => {
           if (!response) {
             showError(response);
             return;
           }
 
-          var res;
+          let res;
 
           try {
             res = JSON.parse(response);
@@ -188,11 +184,11 @@ Joomla = window.Joomla || {};
             window.location.href = 'index.php?option=com_installer&view=install';
           }
         },
-        onError: function onError(error) {
+        onError: error => {
           uploading = false;
 
           if (error.status === 200) {
-            var res = error.responseText || error.responseJSON;
+            const res = error.responseText || error.responseJSON;
             showError(res);
           } else {
             showError(error.statusText);
@@ -200,7 +196,7 @@ Joomla = window.Joomla || {};
         }
       });
     });
-    document.getElementById('installbutton_package').addEventListener('click', function (event) {
+    document.getElementById('installbutton_package').addEventListener('click', event => {
       event.preventDefault();
       Joomla.submitbuttonpackage();
     });

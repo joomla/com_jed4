@@ -1,202 +1,238 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-/**
- * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-(function (customElements) {
+(function () {
   'use strict';
 
-  var KEYCODE = {
-    SPACE: 32,
-    ESC: 27,
-    ENTER: 13
-  };
-  /**
-   * Helper for testing whether a selection modifier is pressed
-   * @param {Event} event
-   *
-   * @returns {boolean|*}
-   */
-
-  function hasModifier(event) {
-    return event.ctrlKey || event.metaKey || event.shiftKey;
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
   }
 
-  var JoomlaFieldSubform = /*#__PURE__*/function (_HTMLElement) {
-    _inherits(JoomlaFieldSubform, _HTMLElement);
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
 
-    var _super = _createSuper(JoomlaFieldSubform);
+  function _inheritsLoose(subClass, superClass) {
+    subClass.prototype = Object.create(superClass.prototype);
+    subClass.prototype.constructor = subClass;
 
-    function JoomlaFieldSubform() {
-      var _this;
+    _setPrototypeOf(subClass, superClass);
+  }
 
-      _classCallCheck(this, JoomlaFieldSubform);
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+      return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return _getPrototypeOf(o);
+  }
 
-      _this = _super.call(this);
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
 
-      var that = _assertThisInitialized(_this); // Get the rows container
+    return _setPrototypeOf(o, p);
+  }
 
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
 
-      _this.containerWithRows = _assertThisInitialized(_this);
+    try {
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
-      if (_this.rowsContainer) {
-        var allContainers = _this.querySelectorAll(_this.rowsContainer); // Find closest, and exclude nested
+  function _construct(Parent, args, Class) {
+    if (_isNativeReflectConstruct()) {
+      _construct = Reflect.construct;
+    } else {
+      _construct = function _construct(Parent, args, Class) {
+        var a = [null];
+        a.push.apply(a, args);
+        var Constructor = Function.bind.apply(Parent, a);
+        var instance = new Constructor();
+        if (Class) _setPrototypeOf(instance, Class.prototype);
+        return instance;
+      };
+    }
 
+    return _construct.apply(null, arguments);
+  }
 
-        Array.from(allContainers).forEach(function (container) {
-          if (container.closest('joomla-field-subform') === _assertThisInitialized(_this)) {
-            _this.containerWithRows = container;
-          }
-        });
-      } // Keep track of row index, this is important to avoid a name duplication
-      // Note: php side should reset the indexes each time, eg: $value = array_values($value);
+  function _isNativeFunction(fn) {
+    return Function.toString.call(fn).indexOf("[native code]") !== -1;
+  }
 
+  function _wrapNativeSuper(Class) {
+    var _cache = typeof Map === "function" ? new Map() : undefined;
 
-      _this.lastRowIndex = _this.getRows().length - 1; // Template for the repeating group
+    _wrapNativeSuper = function _wrapNativeSuper(Class) {
+      if (Class === null || !_isNativeFunction(Class)) return Class;
 
-      _this.template = ''; // Prepare a row template, and find available field names
-
-      _this.prepareTemplate(); // Bind buttons
-
-
-      if (_this.buttonAdd || _this.buttonRemove) {
-        _this.addEventListener('click', function (event) {
-          var btnAdd = null;
-          var btnRem = null;
-
-          if (that.buttonAdd) {
-            btnAdd = event.target.matches(that.buttonAdd) ? event.target : event.target.closest(that.buttonAdd);
-          }
-
-          if (that.buttonRemove) {
-            btnRem = event.target.matches(that.buttonRemove) ? event.target : event.target.closest(that.buttonRemove);
-          } // Check actine, with extra check for nested joomla-field-subform
-
-
-          if (btnAdd && btnAdd.closest('joomla-field-subform') === that) {
-            var row = btnAdd.closest('joomla-field-subform');
-            row = row.closest(that.repeatableElement) === that ? row : null;
-            that.addRow(row);
-            event.preventDefault();
-          } else if (btnRem && btnRem.closest('joomla-field-subform') === that) {
-            var _row = btnRem.closest(that.repeatableElement);
-
-            that.removeRow(_row);
-            event.preventDefault();
-          }
-        });
-
-        _this.addEventListener('keydown', function (event) {
-          if (event.keyCode !== KEYCODE.SPACE) return;
-          var isAdd = that.buttonAdd && event.target.matches(that.buttonAdd);
-          var isRem = that.buttonRemove && event.target.matches(that.buttonRemove);
-
-          if ((isAdd || isRem) && event.target.closest('joomla-field-subform') === that) {
-            var row = event.target.closest('joomla-field-subform');
-            row = row.closest(that.repeatableElement) === that ? row : null;
-
-            if (isRem && row) {
-              that.removeRow(row);
-            } else if (isAdd) {
-              that.addRow(row);
-            }
-
-            event.preventDefault();
-          }
-        });
-      } // Sorting
-
-
-      if (_this.buttonMove) {
-        _this.setUpDragSort();
+      if (typeof Class !== "function") {
+        throw new TypeError("Super expression must either be null or a function");
       }
 
-      return _this;
+      if (typeof _cache !== "undefined") {
+        if (_cache.has(Class)) return _cache.get(Class);
+
+        _cache.set(Class, Wrapper);
+      }
+
+      function Wrapper() {
+        return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+      }
+
+      Wrapper.prototype = Object.create(Class.prototype, {
+        constructor: {
+          value: Wrapper,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      });
+      return _setPrototypeOf(Wrapper, Class);
+    };
+
+    return _wrapNativeSuper(Class);
+  }
+
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
+
+    return self;
+  }
+
+  /**
+   * @copyright  (C) 2019 Open Source Matters, Inc. <https://www.joomla.org>
+   * @license    GNU General Public License version 2 or later; see LICENSE.txt
+   */
+  (function (customElements) {
+    var KEYCODE = {
+      SPACE: 32,
+      ESC: 27,
+      ENTER: 13
+    };
     /**
-     * Search for existing rows
-     * @returns {HTMLElement[]}
+     * Helper for testing whether a selection modifier is pressed
+     * @param {Event} event
+     *
+     * @returns {boolean|*}
      */
 
+    function hasModifier(event) {
+      return event.ctrlKey || event.metaKey || event.shiftKey;
+    }
 
-    _createClass(JoomlaFieldSubform, [{
-      key: "buttonAdd",
-      get: // Attribute getters
-      function get() {
-        return this.getAttribute('button-add');
+    var JoomlaFieldSubform = /*#__PURE__*/function (_HTMLElement) {
+      _inheritsLoose(JoomlaFieldSubform, _HTMLElement);
+
+      function JoomlaFieldSubform() {
+        var _this;
+
+        _this = _HTMLElement.call(this) || this;
+
+        var that = _assertThisInitialized(_this); // Get the rows container
+
+
+        _this.containerWithRows = _assertThisInitialized(_this);
+
+        if (_this.rowsContainer) {
+          var allContainers = _this.querySelectorAll(_this.rowsContainer); // Find closest, and exclude nested
+
+
+          Array.from(allContainers).forEach(function (container) {
+            if (container.closest('joomla-field-subform') === _assertThisInitialized(_this)) {
+              _this.containerWithRows = container;
+            }
+          });
+        } // Keep track of row index, this is important to avoid a name duplication
+        // Note: php side should reset the indexes each time, eg: $value = array_values($value);
+
+
+        _this.lastRowIndex = _this.getRows().length - 1; // Template for the repeating group
+
+        _this.template = ''; // Prepare a row template, and find available field names
+
+        _this.prepareTemplate(); // Bind buttons
+
+
+        if (_this.buttonAdd || _this.buttonRemove) {
+          _this.addEventListener('click', function (event) {
+            var btnAdd = null;
+            var btnRem = null;
+
+            if (that.buttonAdd) {
+              btnAdd = event.target.matches(that.buttonAdd) ? event.target : event.target.closest(that.buttonAdd);
+            }
+
+            if (that.buttonRemove) {
+              btnRem = event.target.matches(that.buttonRemove) ? event.target : event.target.closest(that.buttonRemove);
+            } // Check active, with extra check for nested joomla-field-subform
+
+
+            if (btnAdd && btnAdd.closest('joomla-field-subform') === that) {
+              var row = btnAdd.closest('joomla-field-subform');
+              row = row.closest(that.repeatableElement) === that ? row : null;
+              that.addRow(row);
+              event.preventDefault();
+            } else if (btnRem && btnRem.closest('joomla-field-subform') === that) {
+              var _row = btnRem.closest(that.repeatableElement);
+
+              that.removeRow(_row);
+              event.preventDefault();
+            }
+          });
+
+          _this.addEventListener('keydown', function (event) {
+            if (event.keyCode !== KEYCODE.SPACE) return;
+            var isAdd = that.buttonAdd && event.target.matches(that.buttonAdd);
+            var isRem = that.buttonRemove && event.target.matches(that.buttonRemove);
+
+            if ((isAdd || isRem) && event.target.closest('joomla-field-subform') === that) {
+              var row = event.target.closest('joomla-field-subform');
+              row = row.closest(that.repeatableElement) === that ? row : null;
+
+              if (isRem && row) {
+                that.removeRow(row);
+              } else if (isAdd) {
+                that.addRow(row);
+              }
+
+              event.preventDefault();
+            }
+          });
+        } // Sorting
+
+
+        if (_this.buttonMove) {
+          _this.setUpDragSort();
+        }
+
+        return _this;
       }
-    }, {
-      key: "buttonRemove",
-      get: function get() {
-        return this.getAttribute('button-remove');
-      }
-    }, {
-      key: "buttonMove",
-      get: function get() {
-        return this.getAttribute('button-move');
-      }
-    }, {
-      key: "rowsContainer",
-      get: function get() {
-        return this.getAttribute('rows-container');
-      }
-    }, {
-      key: "repeatableElement",
-      get: function get() {
-        return this.getAttribute('repeatable-element');
-      }
-    }, {
-      key: "minimum",
-      get: function get() {
-        return this.getAttribute('minimum');
-      }
-    }, {
-      key: "maximum",
-      get: function get() {
-        return this.getAttribute('maximum');
-      }
-    }, {
-      key: "name",
-      get: function get() {
-        return this.getAttribute('name');
-      },
-      set: function set(value) {
-        // Update the template
-        this.template = this.template.replace(new RegExp(" name=\"".concat(this.name.replace(/[[\]]/g, '\\$&')), 'g'), " name=\"".concat(value));
-        return this.setAttribute('name', value);
-      }
-    }, {
-      key: "getRows",
-      value: function getRows() {
+      /**
+       * Search for existing rows
+       * @returns {HTMLElement[]}
+       */
+
+
+      var _proto = JoomlaFieldSubform.prototype;
+
+      _proto.getRows = function getRows() {
         var _this2 = this;
 
         var rows = Array.from(this.containerWithRows.children);
@@ -212,10 +248,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       /**
        * Prepare a row template
        */
+      ;
 
-    }, {
-      key: "prepareTemplate",
-      value: function prepareTemplate() {
+      _proto.prepareTemplate = function prepareTemplate() {
         var tmplElement = [].slice.call(this.children).filter(function (el) {
           return el.classList.contains('subform-repeatable-template-section');
         });
@@ -225,7 +260,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         }
 
         if (!this.template) {
-          throw new Error('The row template are required to subform element to work');
+          throw new Error('The row template is required for the subform element to work');
         }
       }
       /**
@@ -233,11 +268,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
        * @param {HTMLElement} after
        * @returns {HTMLElement}
        */
+      ;
 
-    }, {
-      key: "addRow",
-      value: function addRow(after) {
-        // Count how much we already have
+      _proto.addRow = function addRow(after) {
+        // Count how many we already have
         var count = this.getRows().length;
 
         if (count >= this.maximum) {
@@ -280,21 +314,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           },
           bubbles: true
         }));
-
-        if (window.Joomla) {
-          Joomla.Event.dispatch(row, 'joomla:updated');
-        }
-
+        row.dispatchEvent(new CustomEvent('joomla:updated', {
+          bubbles: true,
+          cancelable: true
+        }));
         return row;
       }
       /**
        * Remove the row
        * @param {HTMLElement} row
        */
+      ;
 
-    }, {
-      key: "removeRow",
-      value: function removeRow(row) {
+      _proto.removeRow = function removeRow(row) {
         // Count how much we have
         var count = this.getRows().length;
 
@@ -309,22 +341,20 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           },
           bubbles: true
         }));
-
-        if (window.Joomla) {
-          Joomla.Event.dispatch(row, 'joomla:removed');
-        }
-
+        row.dispatchEvent(new CustomEvent('joomla:removed', {
+          bubbles: true,
+          cancelable: true
+        }));
         row.parentNode.removeChild(row);
       }
       /**
-       * Fix names ind id`s for field that in the row
+       * Fix name and id for fields that are in the row
        * @param {HTMLElement} row
        * @param {Number} count
        */
+      ;
 
-    }, {
-      key: "fixUniqueAttributes",
-      value: function fixUniqueAttributes(row, count) {
+      _proto.fixUniqueAttributes = function fixUniqueAttributes(row, count) {
         var _this3 = this;
 
         var countTmp = count || 0;
@@ -349,7 +379,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           var name = $el.getAttribute('name');
           var id = name.replace(/(\[\]$)/g, '').replace(/(\]\[)/g, '__').replace(/\[/g, '_').replace(/\]/g, ''); // id from name
 
-          var nameNew = name.replace("[".concat(group, "]["), "[".concat(groupnew, "][")); // New name
+          var nameNew = name.replace("[" + group + "][", "[" + groupnew + "]["); // New name
 
           var idNew = id.replace(group, groupnew).replace(/\W/g, '_'); // Count new id
 
@@ -365,7 +395,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             if (!countMulti) {
               // Set the id for fieldset and group label
               var fieldset = $el.closest('fieldset.checkboxes');
-              var elLbl = row.querySelector("label[for=\"".concat(id, "\"]"));
+              var elLbl = row.querySelector("label[for=\"" + id + "\"]");
 
               if (fieldset) {
                 fieldset.setAttribute('id', idNew);
@@ -373,7 +403,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
               if (elLbl) {
                 elLbl.setAttribute('for', idNew);
-                elLbl.setAttribute('id', "".concat(idNew, "-lbl"));
+                elLbl.setAttribute('id', idNew + "-lbl");
               }
             }
 
@@ -388,7 +418,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
               // Set the id for fieldset and group label
               var _fieldset = $el.closest('fieldset.radio');
 
-              var _elLbl = row.querySelector("label[for=\"".concat(id, "\"]"));
+              var _elLbl = row.querySelector("label[for=\"" + id + "\"]");
 
               if (_fieldset) {
                 _fieldset.setAttribute('id', idNew);
@@ -397,7 +427,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
               if (_elLbl) {
                 _elLbl.setAttribute('for', idNew);
 
-                _elLbl.setAttribute('id', "".concat(idNew, "-lbl"));
+                _elLbl.setAttribute('id', idNew + "-lbl");
               }
             }
 
@@ -417,14 +447,14 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
           if ($el.id) {
             $el.id = idNew;
-          } // Guess there a label for this input
+          } // Check if there is a label for this input
 
 
-          var lbl = row.querySelector("label[for=\"".concat(forOldAttr, "\"]"));
+          var lbl = row.querySelector("label[for=\"" + forOldAttr + "\"]");
 
           if (lbl) {
             lbl.setAttribute('for', idNew);
-            lbl.setAttribute('id', "".concat(idNew, "-lbl"));
+            lbl.setAttribute('id', idNew + "-lbl");
           }
         });
       }
@@ -433,10 +463,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
        * https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
        * https://www.sitepoint.com/accessible-drag-drop/
        */
+      ;
 
-    }, {
-      key: "setUpDragSort",
-      value: function setUpDragSort() {
+      _proto.setUpDragSort = function setUpDragSort() {
         var that = this; // Self reference
 
         var item = null; // Storing the selected item
@@ -454,7 +483,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         function getMoveHandler(element) {
           return !element.form // This need to test whether the element is :input
           && element.matches(that.buttonMove) ? element : element.closest(that.buttonMove);
-        } // Helper method to mover row to selected position
+        } // Helper method to move row to selected position
 
 
         function switchRowPositions(src, dest) {
@@ -478,7 +507,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         /**
          *  Touch interaction:
          *
-         *  - a touch of "move button" mark a row draggable / "selected",
+         *  - a touch of "move button" marks a row draggable / "selected",
          *     or deselect previous selected
          *
          *  - a touch of "move button" in the destination row will move
@@ -645,11 +674,60 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             item = null;
           }
         });
-      }
-    }]);
+      };
 
-    return JoomlaFieldSubform;
-  }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+      _createClass(JoomlaFieldSubform, [{
+        key: "buttonAdd",
+        get: // Attribute getters
+        function get() {
+          return this.getAttribute('button-add');
+        }
+      }, {
+        key: "buttonRemove",
+        get: function get() {
+          return this.getAttribute('button-remove');
+        }
+      }, {
+        key: "buttonMove",
+        get: function get() {
+          return this.getAttribute('button-move');
+        }
+      }, {
+        key: "rowsContainer",
+        get: function get() {
+          return this.getAttribute('rows-container');
+        }
+      }, {
+        key: "repeatableElement",
+        get: function get() {
+          return this.getAttribute('repeatable-element');
+        }
+      }, {
+        key: "minimum",
+        get: function get() {
+          return this.getAttribute('minimum');
+        }
+      }, {
+        key: "maximum",
+        get: function get() {
+          return this.getAttribute('maximum');
+        }
+      }, {
+        key: "name",
+        get: function get() {
+          return this.getAttribute('name');
+        },
+        set: function set(value) {
+          // Update the template
+          this.template = this.template.replace(new RegExp(" name=\"" + this.name.replace(/[[\]]/g, '\\$&'), 'g'), " name=\"" + value);
+          return this.setAttribute('name', value);
+        }
+      }]);
 
-  customElements.define('joomla-field-subform', JoomlaFieldSubform);
-})(customElements);
+      return JoomlaFieldSubform;
+    }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+    customElements.define('joomla-field-subform', JoomlaFieldSubform);
+  })(customElements);
+
+}());

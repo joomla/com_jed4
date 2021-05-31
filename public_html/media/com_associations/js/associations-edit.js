@@ -1,44 +1,38 @@
 /**
-* PLEASE DO NOT MODIFY THIS FILE. WORK ON THE ES6 VERSION.
-* OTHERWISE YOUR CHANGES WILL BE REPLACED ON THE NEXT BUILD.
-**/
-
-/**
  * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 Joomla = window.Joomla || {};
 
-(function (Joomla, document) {
-  'use strict';
+((Joomla, document) => {
 
-  Joomla.hideAssociation = function (formControl, languageCode) {
-    var controlGroup = [].slice.call(document.querySelectorAll('#associations .control-group'));
-    controlGroup.forEach(function (element) {
+  Joomla.hideAssociation = (formControl, languageCode) => {
+    const controlGroup = [].slice.call(document.querySelectorAll('#associations .control-group'));
+    controlGroup.forEach(element => {
       // Current selected language. Hide it
-      var el = element.querySelector('.control-label label');
+      const el = element.querySelector('.control-label label');
 
       if (el) {
-        var attribute = el.getAttribute('for');
+        const attribute = el.getAttribute('for');
 
-        if (attribute.replace(new RegExp('_name$'), '') === "".concat(formControl, "_associations_").concat(languageCode.replace('-', '_'))) {
+        if (attribute.replace(new RegExp('_name$'), '') === `${formControl}_associations_${languageCode.replace('-', '_')}`) {
           element.classList.add('hidden');
         }
       }
     });
   };
 
-  Joomla.showAssociationMessage = function () {
-    var controlGroup = [].slice.call(document.querySelectorAll('#associations .control-group'));
-    var associations = document.getElementById('associations');
+  Joomla.showAssociationMessage = () => {
+    const controlGroup = [].slice.call(document.querySelectorAll('#associations .control-group'));
+    const associations = document.getElementById('associations');
 
     if (associations) {
-      var html = document.createElement('joomla-alert');
+      const html = document.createElement('joomla-alert');
       html.innerHTML = Joomla.JText._('JGLOBAL_ASSOC_NOT_POSSIBLE');
       associations.insertAdjacentElement('afterbegin', html);
     }
 
-    controlGroup.forEach(function (element) {
+    controlGroup.forEach(element => {
       element.classList.add('hidden');
     });
   };
@@ -66,12 +60,12 @@ Joomla = window.Joomla || {};
    */
 
 
-  Joomla.injectAssociations = function (result, callbackFunctionPrefix) {
-    var functionName;
+  Joomla.injectAssociations = (result, callbackFunctionPrefix) => {
+    let functionName;
 
     if (result.success) {
       if (result.data.length !== 0) {
-        [].slice.call(Object.keys(result.data)).forEach(function (lang) {
+        [].slice.call(Object.keys(result.data)).forEach(lang => {
           functionName = callbackFunctionPrefix + lang.replace('-', '_'); // eslint-disable-next-line max-len
 
           window[functionName](result.data[lang].id, result.data[lang].title, result.data[lang].catid, null, null, lang);
@@ -115,36 +109,36 @@ Joomla = window.Joomla || {};
    */
 
 
-  Joomla.propagateAssociation = function (fieldPrefix, callbackFunctionPrefix) {
+  Joomla.propagateAssociation = (fieldPrefix, callbackFunctionPrefix) => {
     // Find the id of the record which has been set as an association
-    var assocId = document.getElementById("".concat(fieldPrefix, "_id")).value; // Find the language of the record being edited
+    const assocId = document.getElementById(`${fieldPrefix}_id`).value; // Find the language of the record being edited
 
-    var languageField = document.getElementById('jform_language');
-    var currentLang = languageField.options[languageField.selectedIndex].value;
-    var data = {
+    const languageField = document.getElementById('jform_language');
+    const currentLang = languageField.options[languageField.selectedIndex].value;
+    const data = {
       task: 'ajax.fetchAssociations',
       format: 'json',
-      assocId: assocId,
+      assocId,
       excludeLang: currentLang
     };
     data[Joomla.getOptions('csrf.token', '')] = 1;
-    var queryString = Object.keys(data).reduce(function (a, k) {
-      a.push("".concat(k, "=").concat(encodeURIComponent(data[k])));
+    const queryString = Object.keys(data).reduce((a, k) => {
+      a.push(`${k}=${encodeURIComponent(data[k])}`);
       return a;
     }, []).join('&');
-    var url = "".concat(document.forms.adminForm.action, "&").concat(queryString);
+    const url = `${document.forms.adminForm.action}&${queryString}`;
     Joomla.request({
       // Find the action url associated with the form - we need to add the token to this
-      url: url,
+      url,
       method: 'GET',
       data: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       },
-      onSuccess: function onSuccess(response) {
+      onSuccess: response => {
         Joomla.injectAssociations(JSON.parse(response), callbackFunctionPrefix);
       },
-      onError: function onError() {
+      onError: () => {
         Joomla.renderMessages({
           warning: [Joomla.JText._('JGLOBAL_ASSOCIATIONS_PROPAGATE_FAILED')]
         });
@@ -153,10 +147,10 @@ Joomla = window.Joomla || {};
     return false;
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var associationsEditOptions = Joomla.getOptions('system.associations.edit');
-    var formControl = associationsEditOptions.formControl || 'jform';
-    var formControlLanguage = document.getElementById("".concat(formControl, "_language")); // Hide the associations tab if needed
+  document.addEventListener('DOMContentLoaded', () => {
+    const associationsEditOptions = Joomla.getOptions('system.associations.edit');
+    const formControl = associationsEditOptions.formControl || 'jform';
+    const formControlLanguage = document.getElementById(`${formControl}_language`); // Hide the associations tab if needed
 
     if (parseInt(associationsEditOptions.hidden, 10) === 1) {
       Joomla.showAssociationMessage();
@@ -167,28 +161,29 @@ Joomla = window.Joomla || {};
 
 
     if (formControlLanguage) {
-      formControlLanguage.addEventListener('change', function (_ref) {
-        var target = _ref.target;
+      formControlLanguage.addEventListener('change', ({
+        target
+      }) => {
         // Remove message if any
         Joomla.removeMessages();
-        var existsAssociations = false;
+        let existsAssociations = false;
         /** For each language, remove the associations, ie,
          *  empty the associations fields and reset the buttons to Select/Create
          */
 
-        var controlGroup = [].slice.call(document.querySelectorAll('#associations .control-group'));
-        controlGroup.forEach(function (element) {
-          var attribute = element.querySelector('.control-label label').getAttribute('for');
-          var languageCode = attribute.replace('_name', '').replace('jform_associations_', ''); // Show the association fields
+        const controlGroup = [].slice.call(document.querySelectorAll('#associations .control-group'));
+        controlGroup.forEach(element => {
+          const attribute = element.querySelector('.control-label label').getAttribute('for');
+          const languageCode = attribute.replace('_name', '').replace('jform_associations_', ''); // Show the association fields
 
           element.classList.remove('hidden'); // Check if there was an association selected for this language
 
-          if (!existsAssociations && document.getElementById("".concat(formControl, "_associations_").concat(languageCode, "_id")).value !== '') {
+          if (!existsAssociations && document.getElementById(`${formControl}_associations_${languageCode}_id`).value !== '') {
             existsAssociations = true;
           } // Call the modal clear button
 
 
-          var clear = document.getElementById("".concat(formControl, "_associations_").concat(languageCode, "_clear"));
+          const clear = document.getElementById(`${formControl}_associations_${languageCode}_clear`);
 
           if (clear.onclick) {
             clear.onclick();
@@ -204,7 +199,7 @@ Joomla = window.Joomla || {};
         } // If the selected language is All hide the fields and add a message
 
 
-        var selectedLanguage = target.value;
+        const selectedLanguage = target.value;
 
         if (selectedLanguage === '*') {
           Joomla.showAssociationMessage();

@@ -15,7 +15,8 @@
       ],
       "attributes": {
         "defer": true
-      }
+      },
+      "version": "3d6c129acbaece9e88379bfb3adbb7c7e0c160c3"
     },
     {
       "name": "com_joomlaupdate.default",
@@ -27,7 +28,8 @@
       ],
       "attributes": {
         "defer": true
-      }
+      },
+      "version": "4f4d25ab616888edc99bebe4a08a8f6e7673ae95"
     },
     {
       "name": "com_joomlaupdate.encryption",
@@ -38,7 +40,8 @@
       ],
       "attributes": {
         "defer": true
-      }
+      },
+      "version": "a7dff7d44c6350fd0862533305561dbea34ad45c"
     },
     {
       "name": "com_joomlaupdate.update",
@@ -51,7 +54,8 @@
       ],
       "attributes": {
         "defer": true
-      }
+      },
+      "version": "7fb7aa971828d5ac4b31af2fac5168e4bb5cfa01"
     }
   ]
 }

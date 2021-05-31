@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Based on:
  * Very simple jQuery Color Picker
