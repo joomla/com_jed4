@@ -1,0 +1,8 @@
+The Email Templates are standard messages pulled from JED 3.
+As forms are filled out, these templates are used to send confirmation and other site messages to the user.
+
+SQL can be found in sql/jed_email_templates.sql
+
+This structure has been applied to testing server ID264608
+
+If you intend to run this branch on your local database server I suggest you run and install the files in administrator/sql
