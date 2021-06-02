@@ -13,9 +13,10 @@ defined('_JEXEC') or die;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Text; 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Jed\Component\Jed\Administrator\Model\HomeModel;
 use Joomla\Registry\Registry;
@@ -133,6 +134,20 @@ class HtmlView extends BaseHtmlView
 				'core.options', 'com_jed'
 			))
 		{
+			$bar = Toolbar::getInstance();
+
+			$configGroup = $bar->dropdownButton('config-group')
+				->text(Text::_('COM_JED_GENERAL_CONFIG_LABEL'))
+				->toggleSplit(false)
+				->icon('fa fa-cog')
+				->buttonClass('btn btn-action')
+				->listCheck(false);
+
+			$configChild = $configGroup->getChildToolbar();
+			$configChild->linkButton('emailtemplates')
+				->text('COM_JED_TITLE_EMAILTEMPLATES')
+				->icon('fa fa-envelope')
+				->url('index.php?option=com_jed&view=emailtemplates');
 			ToolbarHelper::preferences('com_jed');
 		}
 	}
