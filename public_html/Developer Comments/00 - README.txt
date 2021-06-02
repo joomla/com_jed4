@@ -1,0 +1,3 @@
+These comments are to compliment the assorted github commits made on this branch. Once merged to the main branch and the individual SQL files combined with the master install SQL file then they can be deleted.
+
+As a lot of the data inserts uses a local account from my testing server it's possible that on the development server or on your local server it won't exist. Not sure what it will display! :)
