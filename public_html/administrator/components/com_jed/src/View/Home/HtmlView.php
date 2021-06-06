@@ -11,87 +11,87 @@ namespace Jed\Component\Jed\Administrator\View\Home;
 defined('_JEXEC') or die;
 
 use Exception;
+use Jed\Component\Jed\Administrator\Helper\JedHelper;
+use Jed\Component\Jed\Administrator\Model\HomeModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Jed\Component\Jed\Administrator\Model\HomeModel;
 use Joomla\Registry\Registry;
-
 use function defined;
 
 /**
  * View for JED Home.
  *
- * @package   JED
  * @since     4.0.0
+ * @package   JED
  */
 class HtmlView extends BaseHtmlView
 {
 	/**
 	 * The form filter
 	 *
-	 * @var    Form|null
 	 * @since  4.0.0
+	 * @var    Form|null
 	 */
 	public ?Form $filterForm;
 
 	/**
 	 * The active filters
 	 *
-	 * @var    array
 	 * @since  4.0.0
+	 * @var    array
 	 */
 	public array $activeFilters = [];
 
 	/**
 	 * List of items to show
 	 *
-	 * @var    array
 	 * @since  4.0.0
+	 * @var    array
 	 */
 	protected array $items = [];
 
 	/**
 	 * Pagination object
 	 *
-	 * @var    Pagination
 	 * @since  4.0.0
+	 * @var    Pagination
 	 */
 	protected Pagination $pagination;
 
 	/**
 	 * The model state
 	 *
-	 * @var    Registry
 	 * @since  4.0.0
+	 * @var    Registry
 	 */
 	protected Registry $state;
 
 	/**
 	 * List of total statistics
 	 *
-	 * @var    array
 	 * @since  4.0.0
+	 * @var    array
 	 */
 	protected array $totals = [];
 
 	/**
 	 * Last 5 reviews
 	 *
-	 * @var    array
 	 * @since  4.0.0
+	 * @var    array
 	 */
 	protected array $reviews = [];
 
 	/**
 	 * Last 5 tickets
 	 *
-	 * @var    array
 	 * @since  4.0.0
+	 * @var    array
 	 */
 	protected array $tickets = [];
 
@@ -136,18 +136,9 @@ class HtmlView extends BaseHtmlView
 		{
 			$bar = Toolbar::getInstance();
 
-			$configGroup = $bar->dropdownButton('config-group')
-				->text(Text::_('COM_JED_GENERAL_CONFIG_LABEL'))
-				->toggleSplit(false)
-				->icon('fa fa-cog')
-				->buttonClass('btn btn-action')
-				->listCheck(false);
+			JedHelper::addConfigToolbar($bar);
 
-			$configChild = $configGroup->getChildToolbar();
-			$configChild->linkButton('emailtemplates')
-				->text('COM_JED_TITLE_EMAILTEMPLATES')
-				->icon('fa fa-envelope')
-				->url('index.php?option=com_jed&view=emailtemplates');
+
 			ToolbarHelper::preferences('com_jed');
 		}
 	}

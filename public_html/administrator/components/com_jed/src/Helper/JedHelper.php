@@ -10,9 +10,10 @@ namespace Jed\Component\Jed\Administrator\Helper;
 
 defined('_JEXEC') or die;
 
-use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Toolbar\Toolbar;
 use function defined;
 
 /**
@@ -23,28 +24,72 @@ use function defined;
  */
 class JedHelper
 {
-
-
 	/**
-	 * Checks whether or not a user is manager or super user
-	 *
-	 * @return bool
-	 *
-	 * @since 4.0.0
+	 * Add config toolbar to admin pages
+	 * @since 4.0.0s
 	 */
-	static public function isAdminOrSuperUser(): bool
+	public static function addConfigToolbar(Toolbar $bar)
 	{
-		try
-		{
-			$user = Factory::getUser();
 
-			return in_array("8", $user->groups) || in_array("7", $user->groups);
-		}
-		catch (Exception $exc)
-		{
-			return false;
-		}
+		$newbutton = $bar->linkButton('tickets')
+			->text(Text::_('COM_JED_TITLE_TICKETS'))
+			->url('index.php?option=com_jed&view=tickets')
+			->icon('fa fa-ticket-alt');
+
+		$newbutton = $bar->linkButton('extensions')
+			->text(Text::_('COM_JED_TITLE_EXTENSIONS'))
+			->url('index.php?option=com_jed&view=extensions')
+			->icon('fa fa-puzzle-piece');
+
+
+		$newbutton = $bar->linkButton('reviews')
+			->text(Text::_('COM_JED_TITLE_REVIEWS'))
+			->url('index.php?option=com_jed&view=reviews')
+			->icon('fa fa-comments');
+
+
+		$newbutton = $bar->linkButton('vulnerable')
+			->text('Vulnerable Items')
+			->url('index.php?option=com_jed&view=vel')
+			->icon('fa fa-bug');
+
+		$newbutton = $bar->customHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+
+		$configGroup = $bar->dropdownButton('config-group')
+			->text(Text::_('COM_JED_GENERAL_CONFIG_LABEL'))
+			->toggleSplit(false)
+			->icon('fa fa-cog')
+			->buttonClass('btn btn-action')
+			->listCheck(false);
+
+		$configChild = $configGroup->getChildToolbar();
+
+		$configChild->linkButton('emailtemplates')
+			->text('COM_JED_TITLE_EMAILTEMPLATES')
+			->icon('fa fa-envelope')
+			->url('index.php?option=com_jed&view=emailtemplates');
+
+		$configChild->linkButton('messagetemplates')
+			->text('COM_JED_TITLE_MESSAGETEMPLATES')
+			->icon('fa fa-comment')
+			->url('index.php?option=com_jed&view=messagetemplates');
+
+		$configChild->linkButton('ticketgroups')
+			->text('COM_JED_TITLE_ALLOCATEDGROUPS')
+			->icon('fa fa-user-friends')
+			->url('index.php?option=com_jed&view=ticketallocatedgroups');
+
+		$configChild->linkButton('ticketcategories')
+			->text('COM_JED_TITLE_TICKET_CATEGORIES')
+			->icon('fa fa-folder')
+			->url('index.php?option=com_jed&view=ticketcategories');
+
+		$configChild->linkButton('ticketlinkeditemtypes')
+			->text('COM_JED_TITLE_LINKED_ITEM_TYPES')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=ticketlinkeditemtypes');
 	}
+
 
 	/**
 	 * Gets a list of the actions that can be performed.

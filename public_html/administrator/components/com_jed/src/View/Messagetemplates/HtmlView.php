@@ -2,13 +2,13 @@
 /**
  * @package       JED
  *
- * @subpackage    Ticket
+ * @subpackage    Tickets
  *
  * @copyright     Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Jed\Component\Jed\Administrator\View\Emailtemplates;
+namespace Jed\Component\Jed\Administrator\View\Messagetemplates;
 // No direct access
 defined('_JEXEC') or die;
 
@@ -24,7 +24,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 
 /**
- * View class for a list of Email Templates.
+ * View class for a list of Message Templates.
  *
  * @since  4.0.0
  */
@@ -99,32 +99,25 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @return void
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 */
 	protected function addToolbar()
 	{
 		$canDo = JedHelper::getActions();
 
-		$customIcon = '';
-
-		if (file_exists(JPATH_COMPONENT_ADMINISTRATOR . '/assets/images/l_emailtemplates.png'))
-		{
-			$customIcon = 'emailtemplates';
-		}
-
-		ToolbarHelper::title(Text::_('COM_JED_TITLE_EMAILTEMPLATES'), $customIcon);
+		ToolbarHelper::title(Text::_('COM_JED_TITLE_MESSAGETEMPLATES'), "generic");
 
 		$toolbar = Toolbar::getInstance();
 
 
 		// Check if the form exists before showing the add/edit buttons
-		$formPath = JPATH_COMPONENT_ADMINISTRATOR . '/src/View/Emailtemplates';
+		$formPath = JPATH_COMPONENT_ADMINISTRATOR . '/src/View/Messagetemplates';
 
 		if (file_exists($formPath))
 		{
 			if ($canDo->get('core.create'))
 			{
-				$toolbar->addNew('emailtemplate.add');
+				$toolbar->addNew('messagetemplate.add');
 			}
 		}
 
@@ -141,14 +134,14 @@ class HtmlView extends BaseHtmlView
 
 			if (isset($this->items[0]->state))
 			{
-				$childBar->publish('emailtemplates.publish')->listCheck(true);
-				$childBar->unpublish('emailtemplates.unpublish')->listCheck(true);
-				$childBar->archive('emailtemplates.archive')->listCheck(true);
+				$childBar->publish('messagetemplates.publish')->listCheck(true);
+				$childBar->unpublish('messagetemplates.unpublish')->listCheck(true);
+				$childBar->archive('messagetemplates.archive')->listCheck(true);
 			}
 			elseif (isset($this->items[0]))
 			{
 				// If this component does not use state then show a direct delete button as we can not trash
-				$toolbar->delete('emailtemplates.delete')
+				$toolbar->delete('messagetemplates.delete')
 					->text('JTOOLBAR_EMPTY_TRASH')
 					->message('JGLOBAL_CONFIRM_DELETE')
 					->listCheck(true);
@@ -156,12 +149,12 @@ class HtmlView extends BaseHtmlView
 
 			if (isset($this->items[0]->checked_out))
 			{
-				$childBar->checkin('emailtemplates.checkin')->listCheck(true);
+				$childBar->checkin('messagetemplates.checkin')->listCheck(true);
 			}
 
 			if (isset($this->items[0]->state))
 			{
-				$childBar->trash('emailtemplates.trash')->listCheck(true);
+				$childBar->trash('messagetemplates.trash')->listCheck(true);
 			}
 		}
 
@@ -172,7 +165,7 @@ class HtmlView extends BaseHtmlView
 
 			if ($this->state->get('filter.state') == ContentComponent::CONDITION_TRASHED && $canDo->get('core.delete'))
 			{
-				$toolbar->delete('emailtemplates.delete')
+				$toolbar->delete('messagetemplates.delete')
 					->text('JTOOLBAR_EMPTY_TRASH')
 					->message('JGLOBAL_CONFIRM_DELETE')
 					->listCheck(true);
@@ -184,8 +177,8 @@ class HtmlView extends BaseHtmlView
 			$toolbar->preferences('com_jed');
 		}
 
-		// Set sidebar action - New in 3.0
-		Sidebar::setAction('index.php?option=com_jed&view=emailtemplates');
+		// Set sidebar action
+		Sidebar::setAction('index.php?option=com_jed&view=messagetemplates');
 	}
 
 	/**
@@ -213,13 +206,13 @@ class HtmlView extends BaseHtmlView
 	{
 		return array(
 			'a.`id`'          => Text::_('JGRID_HEADING_ID'),
-			'a.`title`'       => Text::_('COM_JED_EMAILTEMPLATES_FIELD_TITLE_LABEL'),
-			'a.`subject`'     => Text::_('COM_JED_EMAILTEMPLATES_FIELD_SUBJECT_LABEL'),
-			'a.`email_type`'  => Text::_('COM_JED_EMAILTEMPLATES_FIELD_EMAIL_TYPE_LABEL'),
-			'a.`created_by`'  => Text::_('COM_JED_GENERAL_FIELD_CREATED_ON_LABEL_BY'),
-			'a.`modified_by`' => Text::_('COM_JED_EMAILTEMPLATES_FIELD_MODIFIED_ON_LABEL_BY'),
+			'a.`title`'       => Text::_('COM_JED_MESSAGETEMPLATES_FIELD_TITLE_LABEL'),
+			'a.`subject`'     => Text::_('COM_JED_MESSAGETEMPLATES_FIELD_SUBJECT_LABEL'),
+			'a.`email_type`'  => Text::_('COM_JED_MESSAGETEMPLATES_FIELD_EMAIL_TYPE_LABEL'),
+			'a.`created_by`'  => Text::_('JGLOBAL_FIELD_CREATED_BY_LABEL'),
+			'a.`modified_by`' => Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL'),
 			'a.`created`'     => Text::_('COM_JED_GENERAL_FIELD_CREATED_ON_LABEL'),
-			'a.`modified`'    => Text::_('COM_JED_EMAILTEMPLATES_FIELD_MODIFIED_ON_LABEL'),
+			'a.`modified`'    => Text::_('COM_JED_MESSAGETEMPLATES_FIELD_MODIFIED_ON_LABEL'),
 			'a.`state`'       => Text::_('JSTATUS'),
 		);
 	}

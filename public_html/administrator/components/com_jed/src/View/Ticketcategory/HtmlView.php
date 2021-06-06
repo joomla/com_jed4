@@ -2,13 +2,13 @@
 /**
  * @package       JED
  *
- * @subpackage    Ticket
+ * @subpackage    Tickets
  *
  * @copyright     Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Jed\Component\Jed\Administrator\View\Emailtemplate;
+namespace Jed\Component\Jed\Administrator\View\Ticketcategory;
 // No direct access
 defined('_JEXEC') or die;
 
@@ -20,7 +20,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
- * View class for a single Email Template.
+ * View class for a single Ticket Category
  *
  * @since  4.0.0
  */
@@ -85,41 +85,34 @@ class HtmlView extends BaseHtmlView
 
 		$canDo = JedHelper::getActions();
 
-		$customIcon = '';
-
-		if (file_exists(JPATH_COMPONENT_ADMINISTRATOR . '/assets/images/f_emailtemplate.png'))
-		{
-			$customIcon = 'emailtemplate';
-		}
-
-		ToolbarHelper::title(Text::_('COM_JED_TITLE_EMAILTEMPLATE'), $customIcon);
+		ToolbarHelper::title(Text::_('COM_JED_TITLE_TICKETCATEGORY'), "generic");
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && ($canDo->get('core.edit') || ($canDo->get('core.create'))))
 		{
-			ToolbarHelper::apply('emailtemplate.apply', 'JTOOLBAR_APPLY');
-			ToolbarHelper::save('emailtemplate.save', 'JTOOLBAR_SAVE');
+			ToolbarHelper::apply('ticketcategory.apply', 'JTOOLBAR_APPLY');
+			ToolbarHelper::save('ticketcategory.save', 'JTOOLBAR_SAVE');
 		}
 
 		if (!$checkedOut && ($canDo->get('core.create')))
 		{
-			ToolbarHelper::custom('emailtemplate.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			ToolbarHelper::custom('ticketcategory.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 		}
 
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create'))
 		{
-			ToolbarHelper::custom('emailtemplate.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			ToolbarHelper::custom('ticketcategory.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 		}
 
 
 		if (empty($this->item->id))
 		{
-			ToolbarHelper::cancel('emailtemplate.cancel', 'JTOOLBAR_CANCEL');
+			ToolbarHelper::cancel('ticketcategory.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
-			ToolbarHelper::cancel('emailtemplate.cancel', 'JTOOLBAR_CLOSE');
+			ToolbarHelper::cancel('ticketcategory.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 }

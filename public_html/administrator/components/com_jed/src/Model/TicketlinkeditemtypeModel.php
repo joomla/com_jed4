@@ -2,6 +2,7 @@
 /**
  * @package       JED
  *
+ * @subpackage    Tickets
  *
  * @copyright     Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,27 +19,46 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 
 /**
- * Email Template model class.
+ * Ticket Linked Item Type model.
  *
  * @since  4.0.0
  */
-class EmailtemplateModel extends AdminModel
+class TicketlinkeditemtypeModel extends AdminModel
 {
 	/**
 	 * @since   4.0.0
 	 * @var    string    Alias to manage history control
 	 */
-	public $typeAlias = 'com_jed.emailtemplate';
+	public $typeAlias = 'com_jed.ticketlinkeditemtype';
 	/**
-	 * @since    4.0.0
+	 * @since  4.0.0
 	 * @var      string    The prefix to use with controller messages.
 	 */
 	protected $text_prefix = 'COM_JED';
 	/**
-	 * @since    4.0.0
+	 * @since  4.0.0
 	 * @var null  Item data
 	 */
 	protected $item = null;
+
+
+	/**
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param   string  $name
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $options
+	 *
+	 * @return    Table    A database object
+	 *
+	 * @since  4.0.0
+	 *
+	 * @throws Exception
+	 */
+	public function getTable($name = 'Ticketlinkeditemtype', $prefix = 'Administrator', $options = array()): Table
+	{
+		return parent::getTable($name, $prefix, $options);
+	}
 
 	/**
 	 * Method to get the record form.
@@ -48,15 +68,16 @@ class EmailtemplateModel extends AdminModel
 	 *
 	 * @return  mixed  A JForm object on success, false on failure
 	 *
-	 * @since    4.0.0
+	 * @since  4.0.0
 	 *
 	 * @throws
 	 */
 	public function getForm($data = array(), $loadData = true): Form
 	{
+
 		// Get the form.
 		$form = $this->loadForm(
-			'com_jed.emailtemplate', 'emailtemplate',
+			'com_jed.ticketlinkeditemtype', 'ticketlinkeditemtype',
 			array('control'   => 'jform',
 			      'load_data' => $loadData
 			)
@@ -73,35 +94,18 @@ class EmailtemplateModel extends AdminModel
 
 
 	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param   string  $name     The table type to instantiate
-	 * @param   string  $prefix   A prefix for the table class name. Optional.
-	 * @param   array   $options  Configuration array for model. Optional.
-	 *
-	 * @return    Table    A database object
-	 *
-	 * @since    4.0.0
-	 * @throws Exception
-	 */
-	public function getTable($name = 'Emailtemplate', $prefix = 'Administrator', $options = array()): Table
-	{
-		return parent::getTable($name, $prefix, $options);
-	}
-
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return   mixed  The data for the form.
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 *
 	 * @throws
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_jed.edit.emailtemplate.data', array());
+		$data = Factory::getApplication()->getUserState('com_jed.edit.ticketlinkeditemtype.data', array());
 
 		if (empty($data))
 		{
@@ -112,22 +116,6 @@ class EmailtemplateModel extends AdminModel
 
 			$data = $this->item;
 
-
-			// Support for multiple or not foreign key field: email_type
-			$array = array();
-
-			foreach ((array) $data->email_type as $value)
-			{
-				if (!is_array($value))
-				{
-					$array[] = $value;
-				}
-			}
-			if (!empty($array))
-			{
-
-				$data->email_type = $array;
-			}
 		}
 
 		return $data;
@@ -138,12 +126,12 @@ class EmailtemplateModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  object|bool    Object on success, false on failure.
+	 * @return  object|boolean    Object on success, false on failure.
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 * @throws Exception
 	 */
-	public function getItem($pk = null)
+	public function getItem($pk = null): object
 	{
 		return parent::getItem($pk);
 	}

@@ -2,6 +2,7 @@
 /**
  * @package       JED
  *
+ * @subpackage    Tickets
  *
  * @copyright     Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,11 +20,11 @@ use Joomla\Database\QueryInterface;
 
 
 /**
- * Email Templates model class.
+ * Message Templates model class
  *
- * @since 4.0.0
+ * @since  4.0.0
  */
-class EmailtemplatesModel extends ListModel
+class MessagetemplatesModel extends ListModel
 {
 
 
@@ -71,7 +72,7 @@ class EmailtemplatesModel extends ListModel
 
 		foreach ($items as $oneItem)
 		{
-			$oneItem->email_type = Text::_('COM_JED_EMAILTEMPLATES_FIELD_EMAIL_TYPE_LABEL_OPTION_' . strtoupper($oneItem->email_type));
+			$oneItem->email_type = Text::_('COM_JED_MESSAGETEMPLATES_FIELD_EMAIL_TYPE_OPTION_' . strtoupper($oneItem->email_type));
 		}
 
 		return $items;
@@ -94,7 +95,7 @@ class EmailtemplatesModel extends ListModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// List state information.
-		parent::populateState('id', 'ASC');
+		parent::populateState('created', 'ASC');
 
 		$context = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $context);
@@ -120,7 +121,7 @@ class EmailtemplatesModel extends ListModel
 	 *
 	 * @return   string A store id.
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 */
 	protected function getStoreId($id = ''): string
 	{
@@ -138,7 +139,7 @@ class EmailtemplatesModel extends ListModel
 	 *
 	 * @return   QueryInterface
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 */
 	protected function getListQuery(): QueryInterface
 	{
@@ -152,8 +153,7 @@ class EmailtemplatesModel extends ListModel
 				'list.select', 'DISTINCT a.*'
 			)
 		);
-		$query->from('`#__jed_email_templates` AS a');
-
+		$query->from('`#__jed_message_templates` AS a');
 
 		// Join over the user field 'created_by'
 		$query->select('`created_by`.name AS `created_by`');
