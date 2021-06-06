@@ -74,7 +74,7 @@ class EmailtemplateTable extends Table
      * @since   4.0.0
      * @see     Table:bind
      */
-    public function bind($src, $ignore = '')
+    public function bind($src, $ignore = '') : ?string
     {
         $date = Factory::getDate();
         $task = Factory::getApplication()->input->get('task');
@@ -153,9 +153,9 @@ class EmailtemplateTable extends Table
     }
 
     /**
-     * This function convert an array of JAccessRule objects into an rules array.
+     * This function convert an array of Access objects into an rules array.
      *
-     * @param array $jaccessrules An array of JAccessRule objects.
+     * @param array $jaccessrules An array of Access objects.
      *
      * @return  array
      * @since 4.0.0
@@ -198,22 +198,6 @@ class EmailtemplateTable extends Table
     }
 
     /**
-     * Delete a record by id
-     *
-     * @param mixed $pk Primary key value to delete. Optional
-     *
-     * @return bool
-     *
-     * @since 4.0.0
-     */
-    public function delete($pk = null): bool
-    {
-        $this->load($pk);
-
-        return parent::delete($pk);
-    }
-
-    /**
      * Define a namespaced asset name for inclusion in the #__assets table
      *
      * @return string The asset name
@@ -229,7 +213,6 @@ class EmailtemplateTable extends Table
         return 'com_jed.emailtemplate.' . (int)$this->$k;
     }
 
-
     /**
      * Returns the parent asset's id. If you have a tree structure, retrieve the parent's id using the external key field
      *
@@ -239,6 +222,7 @@ class EmailtemplateTable extends Table
      * @return mixed The id on success, false on failure.
      * @since 4.0.0
      * @see   Table::_getAssetParentId
+     *
      */
     protected function _getAssetParentId(Table $table = null, int $id = null)
     {
@@ -257,5 +241,20 @@ class EmailtemplateTable extends Table
         }
 
         return $assetParentId;
+    }
+    /**
+     * Delete a record by id
+     *
+     * @param mixed $pk Primary key value to delete. Optional
+     *
+     * @return bool
+     *
+     * @since 4.0.0
+     */
+    public function delete($pk = null): bool
+    {
+        $this->load($pk);
+
+        return parent::delete($pk);
     }
 }

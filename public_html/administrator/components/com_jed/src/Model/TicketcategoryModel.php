@@ -2,6 +2,7 @@
 /**
  * @package       JED
  *
+ * @subpackage    Tickets
  *
  * @copyright     Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,27 +19,46 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 
 /**
- * Email Template model class.
+ * Ticket Category model class
  *
  * @since  4.0.0
  */
-class EmailtemplateModel extends AdminModel
+class TicketcategoryModel extends AdminModel
 {
 	/**
 	 * @since   4.0.0
 	 * @var    string    Alias to manage history control
 	 */
-	public $typeAlias = 'com_jed.emailtemplate';
+	public $typeAlias = 'com_jed.ticketcategory';
 	/**
-	 * @since    4.0.0
-	 * @var      string    The prefix to use with controller messages.
+	 * @since  4.0.0
+	 *
+	 * @var    string    Alias to manage history control
 	 */
 	protected $text_prefix = 'COM_JED';
 	/**
-	 * @since    4.0.0
+	 * @since  4.0.0
 	 * @var null  Item data
 	 */
 	protected $item = null;
+
+
+	/**
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param   string  $name     The table type to instantiate
+	 * @param   string  $prefix   A prefix for the table class name. Optional.
+	 * @param   array   $options  Configuration array for model. Optional.
+	 *
+	 * @return    Table    A database object
+	 *
+	 * @since  4.0.0
+	 * @throws Exception
+	 */
+	public function getTable($name = 'Ticketcategory', $prefix = 'Administrator', $options = array()): Table
+	{
+		return parent::getTable($name, $prefix, $options);
+	}
 
 	/**
 	 * Method to get the record form.
@@ -46,9 +66,9 @@ class EmailtemplateModel extends AdminModel
 	 * @param   array    $data      An optional array of data for the form to interogate.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  Form|bool  A Form object on success, false on failure
 	 *
-	 * @since    4.0.0
+	 * @since  4.0.0
 	 *
 	 * @throws
 	 */
@@ -56,7 +76,7 @@ class EmailtemplateModel extends AdminModel
 	{
 		// Get the form.
 		$form = $this->loadForm(
-			'com_jed.emailtemplate', 'emailtemplate',
+			'com_jed.ticketcategory', 'ticketcategory',
 			array('control'   => 'jform',
 			      'load_data' => $loadData
 			)
@@ -71,37 +91,19 @@ class EmailtemplateModel extends AdminModel
 		return $form;
 	}
 
-
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param   string  $name     The table type to instantiate
-	 * @param   string  $prefix   A prefix for the table class name. Optional.
-	 * @param   array   $options  Configuration array for model. Optional.
-	 *
-	 * @return    Table    A database object
-	 *
-	 * @since    4.0.0
-	 * @throws Exception
-	 */
-	public function getTable($name = 'Emailtemplate', $prefix = 'Administrator', $options = array()): Table
-	{
-		return parent::getTable($name, $prefix, $options);
-	}
-
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return   mixed  The data for the form.
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 *
 	 * @throws
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_jed.edit.emailtemplate.data', array());
+		$data = Factory::getApplication()->getUserState('com_jed.edit.ticketcategory.data', array());
 
 		if (empty($data))
 		{
@@ -112,22 +114,6 @@ class EmailtemplateModel extends AdminModel
 
 			$data = $this->item;
 
-
-			// Support for multiple or not foreign key field: email_type
-			$array = array();
-
-			foreach ((array) $data->email_type as $value)
-			{
-				if (!is_array($value))
-				{
-					$array[] = $value;
-				}
-			}
-			if (!empty($array))
-			{
-
-				$data->email_type = $array;
-			}
 		}
 
 		return $data;
@@ -138,9 +124,9 @@ class EmailtemplateModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  object|bool    Object on success, false on failure.
+	 * @return  Object|bool    Object on success, false on failure.
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 * @throws Exception
 	 */
 	public function getItem($pk = null)

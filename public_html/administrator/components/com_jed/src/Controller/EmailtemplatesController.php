@@ -25,42 +25,7 @@ use Joomla\Utilities\ArrayHelper;
  */
 class EmailtemplatesController extends AdminController
 {
-	/**
-	 * Method to clone existing Emailtemplates
-	 *
-	 * @return void
-	 *
-	 * @since 4.0.0
-	 * @throws Exception
-	 *
-	 */
-	public function duplicate()
-	{
-		// Check for request forgeries
-		$this->checkToken();
 
-		// Get id(s)
-		$pks = $this->input->post->get('cid', array(), 'array');
-
-		try
-		{
-			if (empty($pks))
-			{
-				throw new Exception(Text::_('COM_JED_GENERAL_NO_ELEMENT_SELECTED'));
-			}
-
-			ArrayHelper::toInteger($pks);
-			$model = $this->getModel();
-			$model->duplicate($pks);
-			$this->setMessage(Text::_('COM_JED_GENERAL_ITEMS_SUCCESS_DUPLICATED'));
-		}
-		catch (Exception $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
-		}
-
-		$this->setRedirect('index.php?option=com_jed&view=emailtemplates');
-	}
 
 	/**
 	 * Proxy for getModel.

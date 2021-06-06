@@ -2,6 +2,7 @@
 /**
  * @package       JED
  *
+ * @subpackage    Tickets
  *
  * @copyright     Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license       GNU General Public License version 2 or later; see LICENSE.txt
@@ -12,18 +13,17 @@ namespace Jed\Component\Jed\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Exception;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 use Joomla\Database\QueryInterface;
 
 
 /**
- * Email Templates model class.
+ * Ticket Categories model class
  *
- * @since 4.0.0
+ * @since  4.0.0
  */
-class EmailtemplatesModel extends ListModel
+class TicketcategoriesModel extends ListModel
 {
 
 
@@ -42,15 +42,10 @@ class EmailtemplatesModel extends ListModel
 		{
 			$config['filter_fields'] = array(
 				'id', 'a.`id`',
-				'title', 'a.`title`',
-				'subject', 'a.`subject`',
-				'template', 'a.`template`',
-				'email_type', 'a.`email_type`',
+				'state', 'a.`state`',
 				'created_by', 'a.`created_by`',
 				'modified_by', 'a.`modified_by`',
-				'created', 'a.`created`',
-				'modified', 'a.`modified`',
-				'state', 'a.`state`',
+				'categorytype', 'a.`categorytype`',
 			);
 		}
 
@@ -61,20 +56,15 @@ class EmailtemplatesModel extends ListModel
 	/**
 	 * Get an array of data items
 	 *
-	 * @return mixed Array of data items on success, false on failure.
+	 * @return array|bool Array of data items on success, false on failure.
 	 *
 	 * @since 4.0.0
 	 */
 	public function getItems()
 	{
-		$items = parent::getItems();
+		return parent::getItems();
 
-		foreach ($items as $oneItem)
-		{
-			$oneItem->email_type = Text::_('COM_JED_EMAILTEMPLATES_FIELD_EMAIL_TYPE_LABEL_OPTION_' . strtoupper($oneItem->email_type));
-		}
 
-		return $items;
 	}
 
 	/**
@@ -120,7 +110,7 @@ class EmailtemplatesModel extends ListModel
 	 *
 	 * @return   string A store id.
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 */
 	protected function getStoreId($id = ''): string
 	{
@@ -138,7 +128,7 @@ class EmailtemplatesModel extends ListModel
 	 *
 	 * @return   QueryInterface
 	 *
-	 * @since 4.0.0
+	 * @since  4.0.0
 	 */
 	protected function getListQuery(): QueryInterface
 	{
@@ -152,7 +142,11 @@ class EmailtemplatesModel extends ListModel
 				'list.select', 'DISTINCT a.*'
 			)
 		);
-		$query->from('`#__jed_email_templates` AS a');
+		$query->from('`#__jed_ticket_categories` AS a');
+
+		// Join over the users for the checked out user
+		$query->select("uc.name AS uEditor");
+		$query->join("LEFT", "#__users AS uc ON uc.id=a.checked_out");
 
 
 		// Join over the user field 'created_by'
@@ -188,7 +182,7 @@ class EmailtemplatesModel extends ListModel
 			else
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
-				$query->where('( a.title LIKE ' . $search . '  OR  a.subject LIKE ' . $search . ' )');
+				$query->where('( a.categorytype LIKE ' . $search . ' )');
 			}
 		}
 
@@ -203,4 +197,5 @@ class EmailtemplatesModel extends ListModel
 
 		return $query;
 	}
+
 }

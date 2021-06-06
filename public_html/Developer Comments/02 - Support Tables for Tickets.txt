@@ -1,0 +1,18 @@
+Support tables are to allow JED Tickets to be expandable. Addition of a Config menu to JED Home to allow access to support tables. A few updates to email_templates from commit 01.
+
+The tables consist of:
+Message Templates (to allow for template based messaging in tickets).
+
+Ticket Groups (ticket allocation - Team Leadership, Listing Specialist, Review Specialist, Support Specialist, VEL Specialist).
+
+Ticket Categories (Unknown, Extension, Review, Joomla Site Issue, New Listing Support, Current Listing Support, Site Technical Issues, Unpublished Support, Reported Review, Reported Extension, Vulnerable Item Report, VEL Developer Update, VEL Abandonware Report).
+
+Ticket Linked Items (A table of models so that a ticket can have an Abandonware report linked and displayed within the ticket. Currently includes Extension, Review, Vulnerable Item Initial Report, Vulnerable Item Developer Update, VEL Abandonware Report).
+
+
+
+SQL can be found in sql/jed_ticket_support.sql
+
+This structure has been applied to testing server ID264608
+
+If you intend to run this branch on your local database server I suggest you run and install the files in administrator/sql
