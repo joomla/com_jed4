@@ -88,6 +88,32 @@ class JedHelper
 			->text('COM_JED_TITLE_LINKED_ITEM_TYPES')
 			->icon('fa fa-link')
 			->url('index.php?option=com_jed&view=ticketlinkeditemtypes');
+        
+        	$newbutton = $bar->customHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        
+        $debugGroup = $bar->dropdownButton('debug-group')
+			->text('Debug')
+			->toggleSplit(false)
+			->icon('fa fa-cog')
+			->buttonClass('btn btn-action')
+			->listCheck(false);
+        
+        $debugChild = $debugGroup->getChildToolbar();
+        
+        $debugChild->linkButton('ticketmessages')
+			->text('Ticket Messages')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=ticketmessages');
+        
+        $debugChild->linkButton('ticketinternalnotes')
+			->text('Ticket Internal Notes')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=ticketinternalnotes');
+        
+        $debugChild->linkButton('jedtickets')
+			->text('JED Tickets')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=jedtickets');
 	}
 
 

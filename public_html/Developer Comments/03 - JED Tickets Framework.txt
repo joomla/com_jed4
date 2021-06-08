@@ -1,0 +1,9 @@
+Framework structure for JED Tickets including linked tables for messages and internal notes.
+
+This will be extended with the user view/edit after VEL code is uploaded.
+
+SQL can be found in sql/jed_ticket.sql
+
+This structure has been applied to testing server ID264608
+
+If you intend to run this branch on your local database server I suggest you run and install the files in administrator/sql

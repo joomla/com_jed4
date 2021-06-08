@@ -256,7 +256,7 @@ abstract class FormField
 	 * @var    string
 	 * @since  1.7.0
 	 */
-	protected $type;
+	protected string $type;
 
 	/**
 	 * The validation method for the form field.  This value will determine which method is used
@@ -361,7 +361,7 @@ abstract class FormField
 	 * @var    string
 	 * @since  3.5
 	 */
-	protected $layout;
+	protected string $layout;
 
 	/**
 	 * Layout to render the form field
