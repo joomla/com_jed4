@@ -35,7 +35,7 @@ class ListField extends FormField
 	 * @var    string
 	 * @since  1.7.0
 	 */
-	protected $type = 'List';
+	protected string $type = 'List';
 
 	/**
 	 * Name of the layout being used to render the field
@@ -43,7 +43,7 @@ class ListField extends FormField
 	 * @var    string
 	 * @since  4.0.0
 	 */
-	protected $layout = 'joomla.form.field.list';
+	protected string $layout = 'joomla.form.field.list';
 
 	/**
 	 * Method to get the field input markup for a generic list.

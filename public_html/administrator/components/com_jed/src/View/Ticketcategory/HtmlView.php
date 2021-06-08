@@ -26,11 +26,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class HtmlView extends BaseHtmlView
 {
-	protected $state;
+	protected CMSObject $state;
 
-	protected $item;
+	protected CMSObject $item;
 
-	protected $form;
+	protected Form $form;
 
 	/**
 	 * Display the view

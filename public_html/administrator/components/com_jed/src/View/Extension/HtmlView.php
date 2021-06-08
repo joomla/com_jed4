@@ -47,7 +47,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    object
 	 * @since  4.0.0
 	 */
-	protected $item;
+	protected CMSObject $item;
 
 	/**
 	 * The model state

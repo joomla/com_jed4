@@ -1,19 +1,21 @@
 /* This file is for later merging with install.mysql.uft8.sql */
 /* It has been applied to the testing server ID264608 */
 
-CREATE TABLE IF NOT EXISTS `#__jed_message_templates` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `template` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_type` tinyint NOT NULL DEFAULT '0',
-  `created_by` int NOT NULL DEFAULT '0',
-  `modified_by` int NOT NULL DEFAULT '0',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `state` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS `#__jed_message_templates`
+(
+    `id`          int unsigned                                                  NOT NULL AUTO_INCREMENT,
+    `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    `subject`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    `template`    text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL,
+    `email_type`  tinyint                                                       NOT NULL DEFAULT '0',
+    `created_by`  int                                                           NOT NULL DEFAULT '0',
+    `modified_by` int                                                           NOT NULL DEFAULT '0',
+    `created`     datetime                                                      NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified`    datetime                                                      NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `state`       tinyint(1)                                                    NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 
 insert  into `#__jed_message_templates`(`id`,`title`,`subject`,`template`,`email_type`,`created_by`,`modified_by`,`created`,`modified`,`state`) values (1,'Extension - JED Checker Errors','Extension - JED Checker Errors','<p>Hi,<br /><br />Your extension has been flagged with [XXX] errors. Please correct these issues and upload an amended zip file to your listing. The JED checker can be used to identify which files have issues - http://extensions.joomla.org/extension/jedchecker<br /><br />When you\'ve finished your changes, please open a ticket under “New Listing Support” and ask for your extension to be checked again.<br /><br />Kind Regards</p>',2,652,652,'2021-05-13 14:40:36','2021-05-13 14:40:36',1);
 insert  into `#__jed_message_templates`(`id`,`title`,`subject`,`template`,`email_type`,`created_by`,`modified_by`,`created`,`modified`,`state`) values (2,'Extension: ER1 - error_reporting(0) Found','Extension: ER1 - error_reporting(0) Found','<p>Hi,<br /><br />Please remove any use of error_reporting(0) from your files, use of this is discouraged because Joomla provides an error reporting options in the Global Configuration. <br /><br />When you\'ve finished your changes, please upload an amended zip file to your listing and then open a ticket under “New Listing Support” and ask for your extension to be checked again.<br /><br />Kind Regards</p>',2,652,652,'2021-05-13 14:40:36','2021-05-13 14:40:36',1);
@@ -39,19 +41,19 @@ insert  into `#__jed_message_templates`(`id`,`title`,`subject`,`template`,`email
 
 
 
-
-
-CREATE TABLE IF NOT EXISTS `#__jed_ticket_categories` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `categorytype` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `ordering` int DEFAULT '0',
-  `state` tinyint(1) DEFAULT '1',
-  `checked_out` int unsigned DEFAULT NULL,
-  `checked_out_time` datetime DEFAULT NULL,
-  `created_by` int DEFAULT '0',
-  `modified_by` int DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS `#__jed_ticket_categories`
+(
+    `id`               int unsigned NOT NULL AUTO_INCREMENT,
+    `categorytype`     varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+    `ordering`         int                                     DEFAULT '0',
+    `state`            tinyint(1)                              DEFAULT '1',
+    `checked_out`      int unsigned                            DEFAULT NULL,
+    `checked_out_time` datetime                                DEFAULT NULL,
+    `created_by`       int                                     DEFAULT '0',
+    `modified_by`      int                                     DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 
 insert  into `#__jed_ticket_categories`(`id`,`categorytype`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (1,'Unknown',0,1,NULL,NULL,652,652);
 insert  into `#__jed_ticket_categories`(`id`,`categorytype`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (2,'Extension',0,1,NULL,NULL,652,652);
@@ -67,17 +69,19 @@ insert  into `#__jed_ticket_categories`(`id`,`categorytype`,`ordering`,`state`,`
 insert  into `#__jed_ticket_categories`(`id`,`categorytype`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (12,'VEL Developer Update',0,1,NULL,NULL,652,652);
 insert  into `#__jed_ticket_categories`(`id`,`categorytype`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (13,'VEL Abandonware Report',0,1,NULL,NULL,652,652);
 
-CREATE TABLE IF NOT EXISTS  `#__jed_ticket_groups` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `ordering` int DEFAULT '0',
-  `state` tinyint(1) DEFAULT '1',
-  `checked_out` int unsigned DEFAULT NULL,
-  `checked_out_time` datetime DEFAULT NULL,
-  `created_by` int DEFAULT '0',
-  `modified_by` int DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS `#__jed_ticket_groups`
+(
+    `id`               int unsigned NOT NULL AUTO_INCREMENT,
+    `name`             varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+    `ordering`         int                                     DEFAULT '0',
+    `state`            tinyint(1)                              DEFAULT '1',
+    `checked_out`      int unsigned                            DEFAULT NULL,
+    `checked_out_time` datetime                                DEFAULT NULL,
+    `created_by`       int                                     DEFAULT '0',
+    `modified_by`      int                                     DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 
 insert  into `#__jed_ticket_groups`(`id`,`name`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (1,'Any',0,1,NULL,NULL,652,652);
 insert  into `#__jed_ticket_groups`(`id`,`name`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (2,'Team Leadership',0,1,0,'0000-00-00 00:00:00',652,652);
@@ -88,18 +92,20 @@ insert  into `#__jed_ticket_groups`(`id`,`name`,`ordering`,`state`,`checked_out`
 
 
 
-CREATE TABLE IF NOT EXISTS `#__jed_ticket_linked_item_types` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `model` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `ordering` int DEFAULT '0',
-  `state` tinyint(1) DEFAULT '1',
-  `checked_out` int unsigned DEFAULT NULL,
-  `checked_out_time` datetime DEFAULT NULL,
-  `created_by` int DEFAULT '0',
-  `modified_by` int DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS `#__jed_ticket_linked_item_types`
+(
+    `id`               int unsigned NOT NULL AUTO_INCREMENT,
+    `title`            varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+    `model`            varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+    `ordering`         int                                     DEFAULT '0',
+    `state`            tinyint(1)                              DEFAULT '1',
+    `checked_out`      int unsigned                            DEFAULT NULL,
+    `checked_out_time` datetime                                DEFAULT NULL,
+    `created_by`       int                                     DEFAULT '0',
+    `modified_by`      int                                     DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 
 insert  into `#__jed_ticket_linked_item_types`(`id`,`title`,`model`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (1,'Unknown','unknown',0,1,NULL,NULL,652,652);
 insert  into `#__jed_ticket_linked_item_types`(`id`,`title`,`model`,`ordering`,`state`,`checked_out`,`checked_out_time`,`created_by`,`modified_by`) values (2,'Extension','Extension',1,1,NULL,NULL,652,652);
