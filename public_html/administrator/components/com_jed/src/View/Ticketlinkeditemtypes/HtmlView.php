@@ -61,7 +61,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Pagination
 	 */
 	protected Pagination $pagination;
-	protected CMSObject $state;
+	protected $state;
 
 	/**
 	 * Display the view

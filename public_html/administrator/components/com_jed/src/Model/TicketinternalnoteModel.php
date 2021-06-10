@@ -32,7 +32,7 @@ class TicketinternalnoteModel extends AdminModel
 	protected $text_prefix = 'COM_JED';
 
 	/**
-	 * @since   3.2
+	 * @since  4.0.0
 	 * @var    string    Alias to manage history control
 	 */
 	public $typeAlias = 'com_jed.ticketinternalnote';

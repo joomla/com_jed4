@@ -28,7 +28,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class HtmlView extends BaseHtmlView
 {
-    protected CMSObject $state;
+    protected $state;
 
     protected CMSObject $item;
 

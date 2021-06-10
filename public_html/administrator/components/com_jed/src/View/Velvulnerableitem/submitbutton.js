@@ -1,0 +1,50 @@
+*/
+
+Joomla.submitbutton = function (task) {
+    if (task == '') {
+        return false;
+    } else {
+        var action = task.split('.');
+        if (action[1] == 'buildTitle') {
+
+
+            var com_title = document.getElementById('jform_vulnerable_item_name').value;
+            var com_version = document.getElementById('jform_vulnerable_item_version').value;
+            var com_exploit = document.getElementById('mf_exploit_type').value;
+            document.getElementById('jform_title').value = com_title.concat(', ', com_version, ', ', com_exploit);
+            return false;
+        }
+        if (action[1] == 'buildInternalDescription') {
+            document.getElementById('jform_internal_description'
+        ].
+            value('Sorry not implmented yet');
+
+            return false;
+        }
+        if (action[1] == 'buildPublicDescription') {
+
+            var com_text = '<p>';
+            var com_ntitle = document.getElementById('jform_vulnerable_item_name').value;
+            var com_oldversion = document.getElementById('jform_start_version').value;
+            var com_newversion = document.getElementById('jform_patch_version').value;
+            var com_updateurl = document.getElementById('jform_update_notice').value;
+            var com_descript = com_text.concat('Name: ', com_ntitle, ' Old: ', com_oldversion, ' / New: ', com_newversion, '</p> \r\n <p>Update details: </p> \r\n <p>Update URL: ', com_updateurl, '</p>');
+            //Joomla.editors.instances['jform_description'].setValue(com_descript);
+            document.getElementById('jform_public_description_ifr').value = "HELLO";//com_descript
+            return false;
+
+        }
+        if (action[1] == 'contactDeveloper') {
+            document.getElementById('emailModal').showModal();
+
+        }
+
+        if (action[1] == 'cancel' || action[1] == 'close' || document.formvalidator.isValid(document.getElementById("adminForm"))) {
+            Joomla.submitform(task, document.getElementById("adminForm"));
+            return true;
+        } else {
+            alert(Joomla.JText._('vulnerable_item, some values are not acceptable.', 'Some values are unacceptable'));
+            return false;
+        }
+    }
+}

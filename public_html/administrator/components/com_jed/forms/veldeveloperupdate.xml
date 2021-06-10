@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Jed\Component\Jed\Administrator\Field">
+    <fieldset>
+        <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+        <field name="contact_fullname" filter="safehtml" type="text" required="true" message="Please enter your name."
+               label="COM_JED_GENERAL_FIELD_CONTACT_FULLNAME_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CONTACT_FULLNAME_DESCR"
+               hint="COM_JED_GENERAL_FIELD_CONTACT_FULLNAME_LABEL"/>
+        <field name="contact_organisation" filter="safehtml" type="text" required="true"
+               message="Please enter your organisation / company name"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CONTACT_ORGANISATION_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CONTACT_ORGANISATION_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CONTACT_ORGANISATION_LABEL"/>
+        <field name="contact_email" validate="email" type="email" required="true" message="Invalid email address."
+               label="COM_JED_GENERAL_FIELD_CONTACT_EMAIL_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CONTACT_EMAIL_DESCR"
+               hint="COM_JED_GENERAL_FIELD_CONTACT_EMAIL_LABEL"/>
+        <field name="vulnerable_item_name" filter="safehtml" type="text" required="true" message="Invalid Input"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_NAME_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_NAME_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_NAME_LABEL"/>
+        <field name="vulnerable_item_version" filter="safehtml" type="text" required="true" message="Invalid Input"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_VERSION_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_VERSION_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_VERSION_LABEL"/>
+        <field name="extension_update" filter="safehtml" type="text"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_EXTENSION_UPDATE_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_EXTENSION_UPDATE_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_EXTENSION_UPDATE_LABEL"/>
+        <field name="new_version_number" filter="safehtml" type="text"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_NEW_VERSION_NUMBER_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_NEW_VERSION_NUMBER_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_NEW_VERSION_NUMBER_LABEL"/>
+        <field name="update_notice_url" validate="url" type="url" required="true" message="Invalid Input"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_NOTICE_URL_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_NOTICE_URL_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_NOTICE_URL_LABEL"/>
+        <field name="changelog_url" validate="url" type="url" required="true"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CHANGELOG_URL_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CHANGELOG_URL_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CHANGELOG_URL_LABEL"/>
+        <field name="download_url" validate="url" type="url" required="true" message="Invalid Input"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_DOWNLOAD_URL_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_DOWNLOAD_URL_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_DOWNLOAD_URL_LABEL"/>
+        <field name="consent_to_process" default="0" type="list" required="true"
+               message="COM_JED_GENERAL_PLEASE_SELECT_PROCEED_NO"
+               label="COM_JED_VEL_GENERAL_FIELD_CONSENT_TO_PROCESS_NOTIFICATION_LABEL"
+               description="COM_JED_GENERAL_FIELD_CONSENT_TO_PROCESS_DESCR"
+               hint="COM_JED_VEL_GENERAL_FIELD_CONSENT_TO_PROCESS_NOTIFICATION_LABEL">
+            <option value="1">COM_JED_GENERAL_CONSENT_TO_PROCESS_OPTION_1</option>
+            <option value="0">COM_JED_GENERAL_CONSENT_TO_PROCESS_OPTION_0</option>
+        </field>
+        <field name="vel_item_id" default="0" label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VEL_ITEM_ID_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VEL_ITEM_ID_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VEL_ITEM_ID_LABEL"/>
+        <field name="update_data_source" default="0" type="list"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_DATA_SOURCE_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_DATA_SOURCE_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_DATA_SOURCE_LABEL">
+            <option value="0">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_0</option>
+            <option value="1">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_1</option>
+            <option value="5">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_5</option>
+            <option value="7">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_7</option>
+            <option value="9">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_9</option>
+            <option value="10">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_10</option>
+            <option value="11">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_11</option>
+            <option value="12">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_12</option>
+            <option value="13">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_13</option>
+            <option value="14">COM_JED_VEL_DEVELOPERUPDATE_FIELD_UPDATE_DATA_SOURCE_LABEL_OPTION_14</option>
+        </field>
+        <field name="update_date_submitted" class="inputbox" format="%Y-%m-%d"
+               timeformat="12" filter="user_utc" translateformat="false" showtime="false" singleheader="false"
+               todaybutton="false" weeknumbers="false" filltable="false" type="calendar"
+               label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_DATE_SUBMITTED_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_DATE_SUBMITTED_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_DATE_SUBMITTED_LABEL"/>
+        <field name="update_user_ip" type="text" label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_USER_IP_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_USER_IP_DESCR"
+               hint="COM_JED_VEL_DEVELOPERUPDATES_FIELD_UPDATE_USER_IP_LABEL"/>
+        <field name="created_by" type="createdby" default="0" label="JGLOBAL_FIELD_CREATED_BY_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CREATED_BY_DESCR"
+               hint="JGLOBAL_FIELD_CREATED_BY_LABEL"/>
+        <field name="modified_by" type="modifiedby" default="0" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_MODIFIED_BY_DESCR"
+               hint="JGLOBAL_FIELD_MODIFIED_BY_LABEL"/>
+        <field name="created" default="0000-00-00" type="timecreated"
+               label="JGLOBAL_CREATED"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_CREATED_DESCR"
+               hint="JGLOBAL_CREATED"/>
+        <field name="modified" default="0000-00-00" type="timeupdated"
+               label="JGLOBAL_MODIFIED"
+               description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_MODIFIED_DESCR"
+               hint="JGLOBAL_MODIFIED"/>
+        <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
+               description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+    </fieldset>
+</form>

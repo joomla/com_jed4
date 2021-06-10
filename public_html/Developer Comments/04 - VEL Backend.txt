@@ -1,0 +1,8 @@
+Backend Structure and fields for VEL
+
+This will be updated once front end and backend and tickets are updated. This is the db structure and php code basic MVC for VEL.
+SQL can be found in sql/jed_vel-backend.sql
+
+This structure has been applied to testing server ID264608 and had data installed from JED 3
+
+

@@ -35,7 +35,7 @@ class HtmlView extends BaseHtmlView
 
     protected Pagination $pagination;
 
-    protected CMSObject $state;
+    protected $state;
 
 	public ?Form $filterForm;
 

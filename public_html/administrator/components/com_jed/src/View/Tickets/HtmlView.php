@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected CMSObject $state;
+	protected $state;
 
 	/**
 	 * Display method of reviews view

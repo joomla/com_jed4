@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected CMSObject $state;
+	protected $state;
 
 	/**
 	 * Access rights of a user

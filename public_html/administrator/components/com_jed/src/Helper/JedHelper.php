@@ -33,7 +33,7 @@ class JedHelper
 
 		$newbutton = $bar->linkButton('tickets')
 			->text(Text::_('COM_JED_TITLE_TICKETS'))
-			->url('index.php?option=com_jed&view=tickets')
+			->url('index.php?option=com_jed&view=jedtickets')
 			->icon('fa fa-ticket-alt');
 
 		$newbutton = $bar->linkButton('extensions')
@@ -88,32 +88,52 @@ class JedHelper
 			->text('COM_JED_TITLE_LINKED_ITEM_TYPES')
 			->icon('fa fa-link')
 			->url('index.php?option=com_jed&view=ticketlinkeditemtypes');
-        
-        	$newbutton = $bar->customHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-        
-        $debugGroup = $bar->dropdownButton('debug-group')
+
+		$newbutton = $bar->customHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+
+		$debugGroup = $bar->dropdownButton('debug-group')
 			->text('Debug')
 			->toggleSplit(false)
 			->icon('fa fa-cog')
 			->buttonClass('btn btn-action')
 			->listCheck(false);
-        
-        $debugChild = $debugGroup->getChildToolbar();
-        
-        $debugChild->linkButton('ticketmessages')
+
+		$debugChild = $debugGroup->getChildToolbar();
+
+		$debugChild->linkButton('ticketmessages')
 			->text('Ticket Messages')
 			->icon('fa fa-link')
 			->url('index.php?option=com_jed&view=ticketmessages');
-        
-        $debugChild->linkButton('ticketinternalnotes')
+
+		$debugChild->linkButton('ticketinternalnotes')
 			->text('Ticket Internal Notes')
 			->icon('fa fa-link')
 			->url('index.php?option=com_jed&view=ticketinternalnotes');
-        
-        $debugChild->linkButton('jedtickets')
+
+		$debugChild->linkButton('jedtickets')
 			->text('JED Tickets')
 			->icon('fa fa-link')
 			->url('index.php?option=com_jed&view=jedtickets');
+        
+        $debugChild->linkButton('velabandonedreports')
+			->text('VEL Abandoned Reports')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=velreports');
+        
+        $debugChild->linkButton('velreports')
+			->text('VEL Reports')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=velreports');
+        
+        $debugChild->linkButton('veldeveloperupdates')
+			->text('VEL Developer Updates')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=veldeveloperupdates');
+        
+        $debugChild->linkButton('velvulnerableitems')
+			->text('VEL Vulnerable Items')
+			->icon('fa fa-link')
+			->url('index.php?option=com_jed&view=velvulnerableitems');
 	}
 
 
@@ -143,5 +163,32 @@ class JedHelper
 		return $result;
 	}
 
+	/**
+	 * Gets the files attached to an item
+	 *
+	 * @param   int     $pk     The item's id
+	 *
+	 * @param   string  $table  The table's name
+	 *
+	 * @param   string  $field  The field's name
+	 *
+	 * @return  array  The files
+	 *
+	 * @since 4.0.0
+	 */
+	public static function getFiles(int $pk, string $table, string $field): array
+	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query
+			->select($field)
+			->from($table)
+			->where('id = ' . $pk);
+
+		$db->setQuery($query);
+
+		return explode(',', $db->loadResult());
+	}
 }
 

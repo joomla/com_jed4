@@ -51,9 +51,9 @@
                 name="created_by"
                 type="createdby"
                 default="0"
-                label="JGLOBAL_CREATED_BY"
+                label="JGLOBAL_FIELD_CREATED_BY_LABEL"
                 description="COM_JED_EMAILTEMPLATES_FIELD_CREATED_ON_DESCR_BY"
-                hint="JGLOBAL_CREATED_BY"/>
+                hint="JGLOBAL_FIELD_CREATED_BY_LABEL"/>
         <field
                 name="modified_by"
                 type="modifiedby"
