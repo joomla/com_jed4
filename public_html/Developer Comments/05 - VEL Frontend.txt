@@ -1,0 +1,14 @@
+Frontend forms and display for VEL
+
+This covers:
+    the display of Vulnerable Items (Live and Patched)
+    Report a Vulnerable Item Form
+    Report an abandoned Item Form
+    Developer Report Update Form 
+    Show Lists of My Reports, My Abandoned Reports, My Developer Updates
+    
+TODO: 
+    Add functionality so that a link can be sent from Ticket for developers to fill out Developer Updates form that then links back to the Ticket and the Vulnerable Item list.
+
+    Add Ticket view / edit / messaging and embed view my submissions into ticket view.
+
