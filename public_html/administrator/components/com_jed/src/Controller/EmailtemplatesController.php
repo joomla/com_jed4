@@ -14,7 +14,6 @@ defined('_JEXEC') or die;
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\Utilities\ArrayHelper;
 

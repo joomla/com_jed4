@@ -61,13 +61,13 @@ class JedComponent extends MVCComponent implements BootableExtensionInterface, C
 	/**
 	 * Returns the table for the count items functions for the given section.
 	 *
-	 * @param   string  $section  The section
+	 * @param   string|null  $section  The section
 	 *
 	 * @return  string|null
 	 *
 	 * @since   4.0.0
 	 */
-	protected function getTableNameForSection(string $section = null)
+	protected function getTableNameForSection(string $section = null) : string
 	{
 		return 'jed.extensions';
 	}

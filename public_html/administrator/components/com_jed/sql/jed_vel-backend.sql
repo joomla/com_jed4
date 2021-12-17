@@ -68,6 +68,8 @@ CREATE TABLE `#__jed_vel_developer_update`
 CREATE TABLE `#__jed_vel_vulnerable_item`
 (
     `id`                        int unsigned  NOT NULL AUTO_INCREMENT,
+    `vulnerable_item_name`    	varchar(255) NOT NULL DEFAULT '',
+    `vulnerable_item_version` 	varchar(255) NOT NULL DEFAULT '',
     `title`                     varchar(255)  NOT NULL DEFAULT '',
     `internal_description`      text          NOT NULL,
     `status`                    int           NOT NULL DEFAULT '0',

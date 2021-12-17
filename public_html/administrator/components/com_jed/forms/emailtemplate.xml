@@ -28,7 +28,7 @@
                 hint="COM_JED_EMAILTEMPLATES_FIELD_SUBJECT_LABEL"/>
         <field
                 name="template"
-                editor="jce|codemirror|none"
+                editor="tinymce"
                 buttons="false"
                 filter="JComponentHelper::filterText"
                 type="editor"

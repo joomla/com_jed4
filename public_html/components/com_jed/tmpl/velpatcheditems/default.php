@@ -30,12 +30,11 @@ $listDirn  = $this->state->get('list.direction');
 //$wa->useStyle('com_jed.list');
 ?>
 
-<h2><?php echo Text::_('COM_JED_VEL_PATCHEDITEMS_LIST_HEADER'); ?></h2>
-<p><?php echo Text::_('COM_JED_VEL_PATCHEDITEMS_LIST_BODY'); ?></p>
+
 
 <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post"
       name="adminForm" id="adminForm">
-
+ <?php echo '<fieldset class="patcheditems"><legend>' . Text::_('COM_JED_VEL_PATCHEDITEMS_LIST_HEADER') . '</legend>'.Text::_('COM_JED_VEL_PATCHEDITEMS_LIST_BODY') .'</fieldset>'; ?>
 	<?php if (!empty($this->filterForm))
 	{
 		echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));

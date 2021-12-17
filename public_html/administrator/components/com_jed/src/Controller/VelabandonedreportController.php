@@ -65,7 +65,7 @@ class VelabandonedreportController extends FormController
 				->set(array($db->qn('passed_to_vel') . ' = 1',
 					($db->qn('vel_item_id') . ' = ' . $newVel)))
 				->where($db->qn('id') . ' = ' . $reportId);
-//echo $queryUpdate->__toString();exit();
+
 			$db->setQuery($queryUpdate);
 			$db->execute();
 
@@ -77,7 +77,7 @@ class VelabandonedreportController extends FormController
 				->columns($db->qn($insertColumns))
 				->values(implode(',', $insertVals));
 
-			// echo $queryInsertCommunicationRecord->__toString();exit();
+
 			$db->setQuery($queryInsertCommunicationRecord);
 			$db->execute();
 

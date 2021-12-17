@@ -1,0 +1,7 @@
+VEL Backend and JED Tickets Admin Work and Tidy Up
+
+Reviewing all JED code so far.
+Add backend functionality for all VEL Reports, Vulnerable Items, Developer Updates
+Added backend ticket functionality and added layouts, linked ticket objects and javascript functionality
+General code tidy up using PHPStorm rules.
+Rewrote Vulnerable Item Publish as had SQL errors. Now all fixed. 

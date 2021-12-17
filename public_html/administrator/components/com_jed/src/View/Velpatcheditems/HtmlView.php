@@ -41,6 +41,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @return void
 	 *
+	 * @since 4.0.0
+	 *
 	 * @throws Exception
 	 */
 	public function display($tpl = null)
@@ -154,12 +156,13 @@ class HtmlView extends BaseHtmlView
 		// Set sidebar action - New in 3.0
 		JHtmlSidebar::setAction('index.php?option=com_jed&view=velpatcheditems');
 	}
-// XXX_GET_SORT_FIELDS_XXX;
 
 	/**
 	 * Check if state is set
 	 *
 	 * @param   mixed  $state  State
+	 *
+	 * @since 4.0.0
 	 *
 	 * @return bool
 	 */

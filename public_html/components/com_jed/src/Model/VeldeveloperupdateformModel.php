@@ -11,15 +11,18 @@
 namespace Jed\Component\Jed\Site\Model;
 // No direct access.
 defined('_JEXEC') or die;
-
+ 
 use Exception;
+use Jed\Component\Jed\Site\Helper\JedemailHelper;
 use Jed\Component\Jed\Site\Helper\JedHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use function defined;
 
 /**
@@ -31,6 +34,10 @@ class VeldeveloperupdateformModel extends FormModel
 {
 	private $item = null;
 
+    /** Data Table
+	 * @since 4.0.0
+	 **/
+    private string $dbtable="#__jed_vel_developer_update";
 	/**
 	 * Method to get the profile form.
 	 *
@@ -74,9 +81,10 @@ class VeldeveloperupdateformModel extends FormModel
 	public function save(array $data): bool
 	{
 		$id              = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('veldeveloperupdate.id');
+
 		$data['user_ip'] = $_SERVER['REMOTE_ADDR'];
 		$isLoggedIn      = JedHelper::IsLoggedIn();
-
+        $user = Factory::getUser();
 
 		if ((!$id || JedHelper::isAdminOrSuperUser()) && $isLoggedIn)
 		{
@@ -87,7 +95,39 @@ class VeldeveloperupdateformModel extends FormModel
 
 			if ($table->save($data) === true)
 			{
-				JedHelper::CreateVELReportTicket(2, $table->id);
+                $ticket = JedHelper::CreateVELTicket(2, $table->id);
+                $ticket_message = JedHelper::CreateVELTicketMessage(3,$table->id);
+                $ticket_message['subject'] = $ticket['ticket_subject'];
+                $ticket_message['message']           = $ticket['ticket_text'];
+                $ticket_message['message_direction'] = 1; /*  1 for coming in, 0 for going out */
+                 
+                
+                $ticket_model = BaseDatabaseModel::getInstance('Jedticketform', 'JedModel', ['ignore_request' => true]);
+				$ticket_model->save($ticket);
+                $ticket_id = $ticket_model->getId();
+                /* We need to store the incoming ticket message */
+                $ticket_message['ticket_id'] = $ticket_id;
+
+                $ticket_message_model =  BaseDatabaseModel::getInstance('Ticketmessageform', 'JedModel', ['ignore_request' => true]);
+                //$ticket_message_model = $this->getModel('Ticketmessageform', 'Site');
+
+                $ticket_message_model->save($ticket_message);
+               
+                /* We need to email standard message to user and store message in ticket */
+                $message_out = JedHelper::GetMessageTemplate(1000);
+                if (isset($message_out->subject))
+                {
+                    JedemailHelper::sendEmail($message_out->subject, $message_out->template, $user, 'mark@burninglight.co.uk');
+
+                    $ticket_message['id'] = 0;
+                    $ticket_message['subject']           = $message_out->subject;
+                    $ticket_message['message']           = $message_out->template;
+                    $ticket_message['message_direction'] = 0; /* 1 for coming in, 0 for going out */
+                    $ticket['created_by']       = -1;
+                    $ticket['modified_by']      = -1;
+                $ticket_message_model->save($ticket_message);
+
+                }
 
 				return $table->id;
 			}
@@ -149,7 +189,7 @@ class VeldeveloperupdateformModel extends FormModel
 	{
 		// Get the id.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('veldeveloperupdate.id');
-		if (!$pk || $this->userIDItem($pk) || JedHelper::isAdminOrSuperUser())
+		if (!$pk || JedHelper::userIDItem($pk,$this->dbtable) || JedHelper::isAdminOrSuperUser())
 		{
 			if ($pk)
 			{
@@ -174,45 +214,7 @@ class VeldeveloperupdateformModel extends FormModel
 		}
 	}
 
-	/**
-	 * This method revises if the $id of the item belongs to the current user
-	 *
-	 * @param   integer  $id  The id of the item
-	 *
-	 * @return  boolean             true if the user is the owner of the row, false if not.
-	 *
-	 * @since 4.0.0
-	 */
-	public function userIDItem(int $id): bool
-	{
-		try
-		{
-			$user = Factory::getUser();
-			$db   = Factory::getDbo();
-
-			$query = $db->getQuery(true);
-			$query->select("id")
-				->from($db->quoteName('#__jed_vel_developer_update'))
-				->where("id = " . $db->escape($id))
-				->where("created_by = " . $user->id);
-
-			$db->setQuery($query);
-
-			$results = $db->loadObject();
-			if ($results)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		catch (Exception $exc)
-		{
-			return false;
-		}
-	}
+	
 
 	/**
 	 * Method to check out an item for editing.
@@ -228,7 +230,7 @@ class VeldeveloperupdateformModel extends FormModel
 	{
 		// Get the user id.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('veldeveloperupdate.id');
-		if (!$pk || $this->userIDItem($pk) || JedHelper::isAdminOrSuperUser())
+		if (!$pk || JedHelper::userIDItem($pk,$this->dbtable) || JedHelper::isAdminOrSuperUser())
 		{
 			if ($pk)
 			{
@@ -369,7 +371,7 @@ class VeldeveloperupdateformModel extends FormModel
 	{
 		/*$user = Factory::getUser();
 
-		if (!$pk || $this->userIDItem($pk) || JedHelper::isAdminOrSuperUser())
+		if (!$pk || JedHelper::userIDItem($pk,$this->dbtable) || JedHelper::isAdminOrSuperUser())
 		{
 			if (empty($pk))
 			{

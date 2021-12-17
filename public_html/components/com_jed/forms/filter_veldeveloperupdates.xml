@@ -11,8 +11,8 @@
 
         <field name="fullordering"
                type="list"
-               label="COM_JED_LIST_FULL_ORDERING"
-               description="COM_JED_LIST_FULL_ORDERING_DESC"
+               label="COM_JED_GENERAL_FILTER_FULL_ORDERING_LABEL"
+               description="COM_JED_GENERAL_FILTER_FULL_ORDERING_LABEL_DESC"
                onchange="this.form.submit();"
                default="a.id DESC"
         >
@@ -30,8 +30,8 @@
 
         <field name="limit"
                type="limitbox"
-               label="COM_JED_LIST_LIMIT"
-               description="COM_JED_LIST_LIMIT_DESC"
+               label="COM_JED_GENERAL_FILTER_LIMIT_LABEL"
+               description="COM_JED_GENERAL_FILTER_LIMIT_LABEL_DESC"
                class="input-mini"
                default="25"
                onchange="this.form.submit();"

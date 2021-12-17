@@ -46,7 +46,7 @@ class VelreportController extends FormController
 
 			$reportId = $_POST["jform"]['linked_item_id'];
 
-			$exploit_string = Text::_('COM_JED_GENERAL_CONSENT_TO_PROCESS_OPTION_' . $_POST["jform"]['exploit_type']);
+			$exploit_string = Text::_('COM_JED_VEL_GENERAL_FIELD_EXPLOIT_TYPE_LABEL_OPTION_' . $_POST["jform"]['exploit_type']);
 
 			//  var_dump($_POST);
 			$querySelect = $db->getQuery(true)
@@ -60,7 +60,7 @@ class VelreportController extends FormController
 				->columns($db->qn(array('id', 'title', 'internal_description', 'status', 'report_id', 'jed', 'risk_level', 'start_version', 'vulnerable_version', 'patch_version', 'recommendation',
 					'update_notice', 'exploit_type', 'exploit_other_description', 'xml_manifest', 'manifest_location', 'install_data', 'discovered_by', 'public_description')))
 				->values($querySelect);
-			//   echo $queryInsert->__toString();exit();
+
 			$db->setQuery($queryInsert);
 			$db->execute();
 
@@ -81,7 +81,7 @@ class VelreportController extends FormController
 				->columns($db->qn($insertColumns))
 				->values(implode(',', $insertVals));
 			$db->setQuery($queryInsertCommunicationRecord);
-			//  echo $queryInsertCommunicationRecord->__toString();exit();
+
 			$db->execute();
 
 

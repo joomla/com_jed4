@@ -11,7 +11,6 @@ namespace Jed\Component\Jed\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Table;
 
 use function defined;
 

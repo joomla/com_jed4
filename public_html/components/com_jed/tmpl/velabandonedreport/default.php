@@ -69,7 +69,7 @@ if (!$canEdit && Factory::getUser()->authorise('core.edit.own', 'com_jed'))
         </tr>
 
         <tr>
-            <th><?php echo Text::_('COM_JED_VEL_ABANDONEDREPORTS_FIELD_ABANDONED_REASON_LABEL_LABEL'); ?></th>
+            <th><?php echo Text::_('COM_JED_VEL_ABANDONEDREPORTS_FIELD_ABANDONED_REASON_LABEL'); ?></th>
             <td><?php echo nl2br($this->item->abandoned_reason); ?></td>
         </tr>
 

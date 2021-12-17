@@ -240,4 +240,6 @@ class VelvulnerableitemsModel extends ListModel
 
 		return $query;
 	}
+    
+ 
 }

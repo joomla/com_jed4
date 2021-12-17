@@ -31,7 +31,7 @@
                description="COM_JED_VEL_ABANDONEDREPORTS_FIELD_EXTENSION_URL_DESCR"
         />
         <field name="abandoned_reason" filter="safehtml" type="textarea"
-               label="COM_JED_VEL_ABANDONEDREPORTS_FIELD_ABANDONED_REASON_LABEL_LABEL"
+               label="COM_JED_VEL_ABANDONEDREPORTS_FIELD_ABANDONED_REASON_LABEL"
                description="COM_JED_VEL_ABANDONEDREPORTS_FIELD_ABANDONED_REASON_DESCR"
         />
         <field name="consent_to_process" default="0" type="list" required="true"

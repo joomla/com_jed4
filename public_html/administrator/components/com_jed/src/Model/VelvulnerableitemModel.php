@@ -15,7 +15,9 @@ defined('_JEXEC') or die;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 
 /**
@@ -85,134 +87,22 @@ class VelvulnerableitemModel extends AdminModel
 		return $form;
 	}
 
-	public function getVelReportData()
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  object|bool    Object on success, false on failure.
+	 *
+	 * @throws Exception
+	 * @since  4.0.0
+	 */
+	public function getItem($pk = null)
 	{
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
 
-		// Create a new query object.
-		$db    = Factory::getDBO();
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('a.*');
-
-		// From the vel_report table
-		$query->from($db->quoteName('#__jed_vel_report', 'a'));
-
-		// Filter by idVelReport global.
-
-		$idVelReport = $this->idVelReport;
-		if (is_numeric($idVelReport))
-		{
-			$query->where('a.id = ' . (int) $idVelReport);
-		}
-		elseif (is_string($idVelReport))
-		{
-			$query->where('a.id = ' . $db->quote($idVelReport));
-		}
-		else
-		{
-			$query->where('a.id = -5');
-		}
-
-
-		// Load the items
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows())
-		{
-			$items = $db->loadObjectList();
-
-
-			// set selection value to a translatable value
-			/*if (VelHelper::checkArray($items))
-			{
-				foreach ($items as $nr => &$item)
-				{
-					// convert pass_details_ok
-					$item->pass_details_ok = $this->selectionTranslationVelReport($item->pass_details_ok, 'pass_details_ok');
-					// convert vulnerability_type
-					$item->vulnerability_type = $this->selectionTranslationVelReport($item->vulnerability_type, 'vulnerability_type');
-					// convert exploit_type
-					$item->exploit_type = $this->selectionTranslationVelReport($item->exploit_type, 'exploit_type');
-					// convert data_source
-					$item->data_source = $this->selectionTranslationVelReport($item->data_source, 'data_source');
-					// convert consent_to_process
-					$item->consent_to_process = $this->selectionTranslationVelReport($item->consent_to_process, 'consent_to_process');
-					// convert passed_to_vel
-					$item->passed_to_vel = $this->selectionTranslationVelReport($item->passed_to_vel, 'passed_to_vel');
-				}
-			}*/
-
-			return $items;
-		}
-
-		return false;
+		return parent::getItem($pk);
 	}
-
-	public function getVelDeveloperUpdateData()
-	{
-
-		// Create a new query object.
-		$db    = Factory::getDBO();
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('a.*');
-
-		// From the vel_report table
-		$query->from($db->quoteName('#__jed_vel_developer_update', 'a'));
-
-		// Filter by idVelDevUpdate global.
-
-		$idVelDevUpdate = $this->linked_item_id;
-		if (is_numeric($idVelDevUpdate))
-		{
-			$query->where('a.id = ' . (int) $idVelDevUpdate);
-		}
-		elseif (is_string($idVelDevUpdate))
-		{
-			$query->where('a.id = ' . $db->quote($idVelDevUpdate));
-		}
-		else
-		{
-			$query->where('a.id = -5');
-		}
-
-
-		// Load the items
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows())
-		{
-			$items = $db->loadObjectList();
-
-
-			// set selection value to a translatable value
-			/*if (VelHelper::checkArray($items))
-			{
-				foreach ($items as $nr => &$item)
-				{
-					// convert pass_details_ok
-					$item->pass_details_ok = $this->selectionTranslationVelReport($item->pass_details_ok, 'pass_details_ok');
-					// convert vulnerability_type
-					$item->vulnerability_type = $this->selectionTranslationVelReport($item->vulnerability_type, 'vulnerability_type');
-					// convert exploit_type
-					$item->exploit_type = $this->selectionTranslationVelReport($item->exploit_type, 'exploit_type');
-					// convert data_source
-					$item->data_source = $this->selectionTranslationVelReport($item->data_source, 'data_source');
-					// convert consent_to_process
-					$item->consent_to_process = $this->selectionTranslationVelReport($item->consent_to_process, 'consent_to_process');
-					// convert passed_to_vel
-					$item->passed_to_vel = $this->selectionTranslationVelReport($item->passed_to_vel, 'passed_to_vel');
-				}
-			}*/
-
-			return $items;
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -229,6 +119,161 @@ class VelvulnerableitemModel extends AdminModel
 	public function getTable($name = 'Velvulnerableitem', $prefix = 'Administrator', $options = array()): Table
 	{
 		return parent::getTable($name, $prefix, $options);
+	}
+
+
+	/**
+	 * Gets VEL Linked Reports
+	 * @return array
+	 *
+	 * @throws Exception
+	 * @since version
+	 */
+	public function getVELLinkedReports() : array
+	{
+
+		$input = Factory::getApplication()->input;
+
+		$vel_item_id = $input->get('id');
+
+
+		$output['velreport']          = null;
+		$output['veldeveloperupdate'] = null;
+		$output['velabandonware']     = null;
+
+		$velReportData  = $this->getVelReportData($vel_item_id);
+		$velReportModel = BaseDatabaseModel::getInstance('Velreport', 'JedModel', ['ignore_request' => true]);
+		$velReportForm  = $velReportModel->getForm($velReportData, false);
+		$velReportForm->bind($velReportData);
+
+		$output['velreport']['data']  = $velReportData;
+		$output['velreport']['model'] = $velReportModel;
+		$output['velreport']['form']  = $velReportForm;
+
+		$velDeveloperUpdateData  = $this->getvelDeveloperUpdateData($vel_item_id);
+		$velDeveloperUpdateModel = BaseDatabaseModel::getInstance('Veldeveloperupdate', 'JedModel', ['ignore_request' => true]);
+		$velDeveloperUpdateForm  = $velDeveloperUpdateModel->getForm($velDeveloperUpdateData, false);
+		$velDeveloperUpdateForm->bind($velDeveloperUpdateData);
+
+		$output['veldeveloperupdate']['data']  = $velDeveloperUpdateData;
+		$output['veldeveloperupdate']['model'] = $velDeveloperUpdateModel;
+		$output['veldeveloperupdate']['form']  = $velDeveloperUpdateForm;
+
+		$velAbandonwareDataData  = $this->getvelAbandonwareData($vel_item_id);
+		$velAbandonwareDataModel = BaseDatabaseModel::getInstance('Velabandonedreport', 'JedModel', ['ignore_request' => true]);
+		$velAbandonwareDataForm  = $velAbandonwareDataModel->getForm($velAbandonwareDataData, false);
+		$velAbandonwareDataForm->bind($velAbandonwareDataData);
+
+		$output['velabandonware']['data']  = $velAbandonwareDataData;
+		$output['velabandonware']['model'] = $velAbandonwareDataModel;
+		$output['velabandonware']['form']  = $velAbandonwareDataForm;
+
+		return $output;
+	}
+
+	public function getVelAbandonwareData(int $vel_item_id)
+	{
+
+		// Create a new query object.
+		$db    = Factory::getDBO();
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('a.*');
+
+		// From the vel_report table
+		$query->from($db->quoteName('#__jed_vel_abandoned_report', 'a'));
+
+		if (is_numeric($vel_item_id))
+		{
+			$query->where('a.vel_item_id = ' . (int) $vel_item_id);
+		}
+		else
+		{
+			$query->where('a.vel_item_id = -5');
+		}
+
+
+		// Load the items
+		$db->setQuery($query);
+		$db->execute();
+		if ($db->getNumRows())
+		{
+			return $db->loadObjectList();
+
+		}
+
+		return array();
+	}
+
+	public function getVelDeveloperUpdateData(int $vel_item_id)
+	{
+
+		// Create a new query object.
+		$db    = Factory::getDBO();
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('a.*');
+
+		// From the vel_report table
+		$query->from($db->quoteName('#__jed_vel_developer_update', 'a'));
+
+		if (is_numeric($vel_item_id))
+		{
+			$query->where('a.vel_item_id = ' . (int) $vel_item_id);
+		}
+		else
+		{
+			$query->where('a.vel_item_id = -5');
+		}
+
+
+		// Load the items
+		$db->setQuery($query);
+		$db->execute();
+		if ($db->getNumRows())
+		{
+			return $db->loadObjectList();
+
+		}
+
+		return array();
+	}
+
+	public function getVelReportData(int $vel_item_id)
+	{
+
+		// Create a new query object.
+		$db    = Factory::getDBO();
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('a.*');
+
+		// From the vel_report table
+		$query->from($db->quoteName('#__jed_vel_report', 'a'));
+
+
+		if (is_numeric($vel_item_id))
+		{
+			$query->where('a.vel_item_id = ' . (int) $vel_item_id);
+		}
+		else
+		{
+			$query->where('a.vel_item_id = -5');
+		}
+
+
+		// Load the items
+		$db->setQuery($query);
+		$db->execute();
+		if ($db->getNumRows())
+		{
+			return $db->loadObjectList();
+		}
+
+		return array();
 	}
 
 	/**
@@ -324,18 +369,42 @@ class VelvulnerableitemModel extends AdminModel
 	}
 
 	/**
-	 * Method to get a single record.
+	 * Publish the element
 	 *
-	 * @param   integer  $pk  The id of the primary key.
+	 * @param   int  $pks    Item id
+	 * @param   int  $value  Publish state
 	 *
-	 * @return  object|bool    Object on success, false on failure.
-	 *
+	 * @return  boolean
 	 * @throws Exception
-	 * @since  4.0.0
+	 * @since 4.0.0
 	 */
-	public function getItem($pk = null)
+	public function publish(&$pks = array(), int $value = 1): bool
 	{
-		return parent::getItem($pk);
+
+		if (!Factory::getUser()->authorise('core.edit.state', 'com_jed'))
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'error');
+
+			return false;
+		}
+
+		$result = true;
+		if (!is_array($pks))
+		{
+			$pks = array($pks);
+		}
+		$table = $this->getTable();
+
+
+		if (!$table->publish($pks, $value))
+		{
+			$this->setError($table->getError());
+			$result = false;
+		}
+
+
+		return $result;
+
 	}
 
 }

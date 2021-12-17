@@ -157,7 +157,7 @@ class VelpatcheditemsModel extends ListModel
 
 		$query->from($db->qn('#__jed_vel_vulnerable_item', 'a'));
 
-		$query->where('a.status = 2 AND a.state=1'); //Status 0 = reported, 1 = live, 2 = patched
+		$query->where('a.status = 2 AND a.state=1'); //Status 0 = reported, 1 = live, 2 = patched, 3 = Abandoned
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');

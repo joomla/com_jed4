@@ -73,7 +73,7 @@ if (!is_null($this->item))
             </tr>
 
             <tr>
-                <th><?php echo Text::_('COM_JED_VEL_GENERAL_FIELD_WNLOAD_URL_LABEL_LABEL'); ?></th>
+                <th><?php echo Text::_('COM_JED_VEL_GENERAL_FIELD_DOWNLOAD_URL_LABEL'); ?></th>
                 <td><?php echo $this->item->download_url; ?></td>
             </tr>
 

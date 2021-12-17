@@ -41,6 +41,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @return void
 	 *
+	 * @since 4.0.0
+	 *
 	 * @throws Exception
 	 */
 	public function display($tpl = null)
@@ -160,6 +162,8 @@ class HtmlView extends BaseHtmlView
 	 * Check if state is set
 	 *
 	 * @param   mixed  $state  State
+	 *
+	 * @since 4.0.0
 	 *
 	 * @return bool
 	 */

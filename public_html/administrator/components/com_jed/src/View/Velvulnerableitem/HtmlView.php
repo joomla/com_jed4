@@ -15,11 +15,8 @@ defined('_JEXEC') or die;
 use Exception;
 use Jed\Component\Jed\Administrator\Helper\JedHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -31,13 +28,11 @@ class HtmlView extends BaseHtmlView
 {
 	protected $state;
 
-	protected CMSObject $item;
+	protected $item;
 
-	protected Form $form;
+	protected $form;
 
-	protected $VelReportData;
-	protected $VelReportModel;
-	protected Form $VelReportForm;
+    protected $VELLinkedReports;
 
 	/**
 	 * Display the view
@@ -55,17 +50,8 @@ class HtmlView extends BaseHtmlView
 		$this->state         = $this->get('State');
 		$this->item          = $this->get('Item');
 		$this->form          = $this->get('Form');
-		$this->VelReportData = $this->get('VelReportData');
-		//     echo "<pre>";var_dump($this->VelReportData);echo "</pre>";
-		$this->VelReportModel = BaseDatabaseModel::getInstance('Velreport', 'JedModel', ['ignore_request' => true]);
-		$this->VelReportForm  = $this->VelReportModel->getForm($this->VelReportData, false);
-		$this->VelReportForm->bind($this->VelReportData);
-
-		//  var_dump($this->item);exit();
-		/*	$this->CommunicationsListData  = $this->get('CommunicationsListData');
-			$this->CommunicationsListModel = BaseDatabaseModel::getInstance('Communications', 'JedModel', ['ignore_request' => true]);
-			$this->CommunicationsListForm  = $this->CommunicationsListModel->getForm($this->CommunicationsListData, false);
-			$this->CommunicationsListForm->bind($this->CommunicationsListData);*/
+        $this->VELLinkedReports = $this->get('VELLinkedReports');
+		
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -125,13 +111,13 @@ class HtmlView extends BaseHtmlView
 
 
 		// add Build Title button.
-		ToolBarHelper::custom('velvulnerableitem.buildTitle', 'joomla custom-button-buildtitle', '', 'COM_JED_VEL_GENERAL_BUTTON_BUILD_TITLE', false);
+		//ToolBarHelper::custom('velvulnerableitem.buildTitle', 'joomla custom-button-buildtitle', '', 'COM_JED_VEL_GENERAL_BUTTON_BUILD_TITLE', false);
 
 		// add Build Internal Description button.
-		ToolBarHelper::custom('velvulnerableitem.buildInternalDescription', 'joomla custom-button-buildinternaldescription', '', 'COM_JED_VEL_GENERAL_BUTTON_BUILD_INTERNAL_DESCRIPTION', false);
+		//ToolBarHelper::custom('velvulnerableitem.buildInternalDescription', 'joomla custom-button-buildinternaldescription', '', 'COM_JED_VEL_GENERAL_BUTTON_BUILD_INTERNAL_DESCRIPTION', false);
 
 		// add Build Public Description button.
-		ToolBarHelper::custom('velvulnerableitem.buildPublicDescription', 'joomla custom-button-buildpublicdescription', '', 'COM_JED_VEL_GENERAL_BUTTON_BUILD_PUBLIC_DESCRIPTION', false);
+		//ToolBarHelper::custom('velvulnerableitem.buildPublicDescription', 'joomla custom-button-buildpublicdescription', '', 'COM_JED_VEL_GENERAL_BUTTON_BUILD_PUBLIC_DESCRIPTION', false);
 
 		// add Contact Developer button.
 		ToolBarHelper::custom('velvulnerableitem.contactDeveloper', 'joomla custom-button-contactdeveloper', '', 'COM_JED_VEL_GENERAL_BUTTON_CONTACT_DEVELOPER', false);

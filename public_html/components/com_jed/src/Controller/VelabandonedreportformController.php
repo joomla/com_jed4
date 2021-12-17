@@ -155,11 +155,11 @@ class VelabandonedreportformController extends FormController
 		// Clear the profile id from the session.
 		$app->setUserState('com_jed.edit.velabandonedreport.id', null);
 
-		// Redirect to the list screen.
+		// Redirect to the list of Tickets screen.
 		$this->setMessage(Text::_('COM_JED_VEL_ABANDONEDREPORT_SAVED_SUCCESSFULLY'));
 		$menu = Factory::getApplication()->getMenu();
 		$item = $menu->getActive();
-		$url  = (empty($item->link) ? 'index.php?option=com_jed&view=velabandonedreports' : $item->link);
+		$url  = 'index.php?option=com_jed&view=jedtickets';
 		$this->setRedirect(Route::_($url, false));
 
 		// Flush the data from the session.

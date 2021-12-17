@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 use Jed\Component\Jed\Administrator\View\Extension\HtmlView;
+use Joomla\Component\Actionlogs\Administrator\Helper\ActionlogsHelper;
 
 /** @var HtmlView $this */
 

@@ -28,9 +28,9 @@ class HtmlView extends BaseHtmlView
 {
 	protected $state;
 
-	protected CMSObject $item;
+	protected $item;
 
-	protected Form $form;
+	protected $form;
 
 	/**
 	 * Display the view

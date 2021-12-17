@@ -5,8 +5,8 @@
         <field name="ticket_origin" default="0" type="list" label="COM_JED_JEDTICKETS_FIELD_TICKET_ORIGIN_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_TICKET_ORIGIN_DESCR"
                hint="COM_JED_JEDTICKETS_FIELD_TICKET_ORIGIN_LABEL">
-            <option value="0">COM_JED_JEDTICKETS_FILTER_SORT_TICKET_ORIGIN_OPTION_0</option>
-            <option value="1">COM_JED_JEDTICKETS_FILTER_SORT_TICKET_ORIGIN_OPTION_1</option>
+            <option value="0">COM_JED_JEDTICKETS_FIELD_TICKET_ORIGIN_OPTION_0</option>
+            <option value="1">COM_JED_JEDTICKETS_FIELD_TICKET_ORIGIN_OPTION_1</option>
         </field>
         <field name="ticket_category_type" type="foreignkey" label="COM_JED_JEDTICKETS_FIELD_TICKET_CATEGORY_TYPE_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_TICKET_CATEGORY_TYPE_DESCR" input_type="list"
@@ -14,14 +14,15 @@
         <field name="ticket_subject" filter="safehtml" type="text" label="COM_JED_JEDTICKETS_FIELD_TICKET_SUBJECT_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_TICKET_SUBJECT_DESCR"
                hint="COM_JED_JEDTICKETS_FIELD_TICKET_SUBJECT_LABEL"/>
-        <field name="ticket_text" editor="|" buttons="false" filter="JComponentHelper::filterText" type="editor"
+        <field name="ticket_text" editor="tinymce" buttons="false" filter="JComponentHelper::filterText" type="editor"
                label="COM_JED_JEDTICKETS_FIELD_TICKET_TEXT_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_TICKET_TEXT_DESCR"
                hint="COM_JED_JEDTICKETS_FIELD_TICKET_TEXT_LABEL"/>
-        <field name="internal_notes" editor="|" buttons="false" filter="JComponentHelper::filterText" type="editor"
+        <field name="internal_notes" editor="tinymce" buttons="false" filter="JComponentHelper::filterText" type="editor"
                label="COM_JED_JEDTICKETS_FIELD_INTERNAL_NOTES_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_INTERNAL_NOTES_DESCR"
-               hint="COM_JED_JEDTICKETS_FIELD_INTERNAL_NOTES_LABEL"/>
+               hint="COM_JED_JEDTICKETS_FIELD_INTERNAL_NOTES_LABEL"
+               />
         <field name="uploaded_files_preview" type="editor" buttons="true" class="inputbox" filter="safehtml"
                label="COM_JED_JEDTICKETS_FIELD_UPLOADED_FILES_PREVIEW_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_UPLOADED_FILES_PREVIEW_DESCR"
@@ -29,10 +30,10 @@
         <field name="uploaded_files_location" filter="safehtml" type="text"
                label="COM_JED_JEDTICKETS_FIELD_UPLOADED_FILES_LOCATION_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_UPLOADED_FILES_LOCATION_DESCR"
-               hint="COM_JED_JEDTICKETS_FIELD_UPLOADED_FILES_LOCATION_LABEL"/>
+               hint="COM_JED_JEDTICKETS_FIELD_UPLOADED_FILES_LOCATION_LABEL"/> 
         <field name="allocated_group" type="foreignkey" label="COM_JED_JEDTICKETS_FIELD_ALLOCATED_GROUP_LABEL"
-               description="COM_JED_JEDTICKETS_FIELD_ALLOCATED_GROUP_DESCR" input_type="list" table="#__jed_ticket_grps"
-               key_field="id" value_field="role" default="0"/>
+               description="COM_JED_JEDTICKETS_FIELD_ALLOCATED_GROUP_DESCR" input_type="list" table="#__jed_ticket_groups"
+               key_field="id" value_field="name" default="0"/>
         <field name="allocated_to" type="user" label="COM_JED_JEDTICKETS_FIELD_ALLOCATED_TO_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_ALLOCATED_TO_DESCR"
                hint="COM_JED_JEDTICKETS_FIELD_ALLOCATED_TO_LABEL"/>
@@ -62,15 +63,15 @@
             <option value="-2">JTRASHED</option>
         </field>
         <field name="ordering"/>
-        <field name="created_by" type="createdby" label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-               description="JGLOBAL_FIELD_CREATED_BY_DESC" hint="JGLOBAL_FIELD_CREATED_BY_LABEL"/>
-        <field name="created_on" default="0000-00-00" type="timecreated"
+        <field name="created_by" type="createdby" label="JGLOBAL_FIELD_CREATED_BY_LABEL"/>
+        <field name="created_by_num" type="number" label="JGLOBAL_FIELD_CREATED_BY_LABEL"/>
+        <field name="created_on" default="0000-00-00" type="timecreated" 
                label="COM_JED_JEDTICKETS_FIELD_CREATED_ON_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_CREATED_ON_DESCR"
                hint="COM_JED_JEDTICKETS_FIELD_CREATED_ON_LABEL"/>
         <field name="modified_by" type="modifiedby" default="0" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
                description="JGLOBAL_FIELD_MODIFIED_BY_DESC" hint="JGLOBAL_FIELD_MODIFIED_BY_LABEL"/>
-        <field name="modified_on" default="0000-00-00" type="timeupdated"
+        <field name="modified_on" default="0000-00-00" type="timecreated"
                label="COM_JED_JEDTICKETS_FIELD_MODIFIED_ON_LABEL"
                description="COM_JED_JEDTICKETS_FIELD_MODIFIED_ON_DESCR"
                hint="COM_JED_JEDTICKETS_FIELD_MODIFIED_ON_LABEL"/>
@@ -78,5 +79,12 @@
         <field name="checked_out_time" default="0000-00-00" type="hidden" filter="unset"/>
         <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
                description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+        <field name="messagetemplates" key_field="id" value_field="title" header="-Select-" type="sql" query="SELECT id,title FROM #__jed_message_templates order by id asc"  label="COM_JED_MESSAGETEMPLATES_FIELD_TEMPLATE_LABEL" />
+          <field name="message_subject" filter="safehtml" type="text" label="COM_JED_JEDTICKETS_FIELD_TICKET_SUBJECT_LABEL"
+               description="COM_JED_JEDTICKETS_FIELD_TICKET_SUBJECT_DESCR"
+               hint="COM_JED_JEDTICKETS_FIELD_TICKET_SUBJECT_LABEL"/>
+         <field name="message_text" editor="tinymce" buttons="false" filter="JComponentHelper::filterText" type="editor"
+               label="Message"
+               />
     </fieldset>
 </form>

@@ -11,8 +11,6 @@ use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
-/** @var JedViewHome $this */
-
 ?>
 <div id="j-main-container" class="span12">
     <div class="pull-left">

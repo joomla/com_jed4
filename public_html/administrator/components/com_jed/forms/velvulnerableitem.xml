@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form addfieldprefix="Jed\Component\Jed\Administrator\Field">
     <fieldset>
-        <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+        <field name="id" type="hidden"  default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+		<field name="vulnerable_item_name" filter="safehtml" type="text" required="true"
+               message="COM_JED_GENERAL_INVALID_INPUT"
+               label="COM_JED_VEL_REPORTS_FIELD_VULNERABLE_ITEM_NAME_LABEL"
+               description="COM_JED_VEL_REPORTS_FIELD_VULNERABLE_ITEM_NAME_DESCR"
+               hint=""/>
+        <field name="vulnerable_item_version" filter="safehtml" type="text" required="true"
+               message="COM_JED_GENERAL_INVALID_INPUT" label="COM_JED_VEL_DEVELOPERUPDATES_FIELD_VULNERABLE_ITEM_VERSION_LABEL"
+               description="COM_JED_VEL_REPORTS_FIELD_VULNERABLE_ITEM_VERSION_DESCR"
+               hint=""/> 
         <field name="title" filter="safehtml" type="text" required="true" message="Invalid Input"
                label="COM_JED_VEL_VULNERABLEITEMS_FIELD_TITLE_LABEL"
                description="COM_JED_VEL_VULNERABLEITEMS_FIELD_TITLE_DESCR" hint=""/>
-        <field name="internal_description" type="textarea"
+        <field name="internal_description" type="editor" editor="tinymce"
                label="COM_JED_VEL_VULNERABLEITEMS_FIELD_INTERNAL_DESCRIPTION_LABEL"
                description="COM_JED_VEL_VULNERABLEITEMS_FIELD_INTERNAL_DESCRIPTION_DESCR" hint=""/>
         <field name="status" default="0" type="list" label="JSTATUS"
@@ -51,9 +60,9 @@
             <option value="4">COM_JED_VEL_GENERAL_FIELD_EXPLOIT_TYPE_OPTION_4</option>
             <option value="9">COM_JED_VEL_GENERAL_FIELD_EXPLOIT_TYPE_OPTION_9</option>
         </field>
-        <field name="exploit_other_description" filter="safehtml" type="textarea"
+        <field name="exploit_other_description" filter="safehtml" type="textarea" showon="exploit_type:9"
                label="COM_JED_VEL_VULNERABLEITEMS_FIELD_EXPLOIT_OTHER_DESCRIPTION_LABEL"
-               description="COM_JED_VEL_VULNERABLEITEMS_FIELD_EXPLOIT_OTHER_DESCRIPTION_DESCR" hint=""/>
+               description="COM_JED_VEL_VULNERABLEITEMS_FIELD_EXPLOIT_OTHER_DESCRIPTION_DESCR" hint="" />
         <field name="xml_manifest" type="FileMultiple" label="COM_JED_VEL_VULNERABLEITEMS_FIELD_XML_MANIFEST_LABEL"
                description="COM_JED_VEL_VULNERABLEITEMS_FIELD_XML_MANIFEST_DESCR" hint=""/>
         <field name="manifest_location" filter="safehtml" type="text"
@@ -96,7 +105,7 @@
                description="COM_JED_VEL_VULNERABLEITEMS_FIELD_CVSSTHIRTY_ENV_DESCR" hint=""/>
         <field name="cvssthirty_env_score" default="0.00" label="COM_JED_TICKETS_TICKET_CATEGORY_TYPE_OPTION_8"
                description="COM_JED_VEL_VULNERABLEITEMS_FIELD_CVSSTHIRTY_ENV_DESCR_SCORE" hint=""/>
-        <field name="public_description" editor="jce|none" buttons="false" filter="JComponentHelper::filterText"
+        <field name="public_description" editor="tinymce" buttons="false" filter="JComponentHelper::filterText"
                type="editor" label="COM_JED_VEL_VULNERABLEITEMS_FIELD_PUBLIC_DESCRIPTION_LABEL"
                description="COM_JED_VEL_VULNERABLEITEMS_FIELD_PUBLIC_DESCRIPTION_DESCR" hint=""/>
         <field name="alias" type="text" label="COM_JED_VEL_VULNERABLEITEMS_FIELD_ALIAS_LABEL"
@@ -118,7 +127,5 @@
             <option value="2">JARCHIVED</option>
             <option value="-2">JTRASHED</option>
         </field>
-        <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
-               description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
-    </fieldset>
+            </fieldset>
 </form>

@@ -42,7 +42,7 @@
             <option value="a.`subject` DESC">COM_JED_TICKETMESSAGE_FILTER_SORT_SUBJECT_DESC</option>
             <option value="a.`ticket_id` ASC">COM_JED_TICKET_INTERNAL_NOTE_FILTER_SORT_TICKET_ID_ASC</option>
             <option value="a.`ticket_id` DESC">COM_JED_TICKET_INTERNAL_NOTE_FILTER_SORT_TICKET_ID_DESC</option>
-
+<option value="a.message_direction ASC">COM_JED_TICKETMESSAGE_FILTER_SORT_MESSAGE_DIRECTION_ASC</option><option value="a.message_direction DESC">COM_JED_TICKETMESSAGE_FILTER_SORT_MESSAGE_DIRECTION_DESC</option>
         </field>
 
         <field name="limit"

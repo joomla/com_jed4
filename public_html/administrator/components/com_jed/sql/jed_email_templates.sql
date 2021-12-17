@@ -17,7 +17,7 @@ CREATE TABLE `#__jed_email_templates` (
   `state` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;;
+  DEFAULT CHARSET = utf8mb4;
 
 /*Data for the table `#__jed_email_templates` */
 

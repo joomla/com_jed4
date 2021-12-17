@@ -68,6 +68,8 @@ class TicketmessageTable extends Table
 	 */
 	public function bind($src, $ignore = ''): ?string
 	{
+		$date = Factory::getDate();
+      
 		$input = Factory::getApplication()->input;
 		$task  = $input->getString('task', '');
 
@@ -85,24 +87,13 @@ class TicketmessageTable extends Table
 		{
 			$src['modified_by'] = Factory::getUser()->id;
 		}
-
-		// Support for multiple or not foreign key field: ticket_id
-		if (!empty($src['ticket_id']))
+		if ($src['id'] == 0)
 		{
-			if (is_array($src['ticket_id']))
-			{
-				$src['ticket_id'] = implode(',', $src['ticket_id']);
-			}
-			else if (strrpos($src['ticket_id'], ',') != false)
-			{
-				$src['ticket_id'] = explode(',', $src['ticket_id']);
-			}
-		}
-		else
-		{
-			$src['ticket_id'] = 0;
+			$src['created_on'] = $date->toSql();
 		}
 
+		
+ 
 		if (!Factory::getUser()->authorise('core.admin', 'com_jed.ticketmessage.' . $src['id']))
 		{
 			$actions         = Access::getActionsFromFile(

@@ -18,7 +18,6 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -58,6 +57,7 @@ class HtmlView extends BaseHtmlView
     {
         $this->state = $this->get('State');
         $this->items = $this->get('Items');
+     //   echo "<pre>".var_dump($this->items)."</pre>";exit;
         $this->pagination = $this->get('Pagination');
         $this->filterForm = $this->get('FilterForm');
         $this->activeFilters = $this->get('ActiveFilters');

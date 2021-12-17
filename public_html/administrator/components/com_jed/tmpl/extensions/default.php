@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
 $wa->getRegistry()
 	->addExtensionRegistryFile('com_jed');
-$wa->usePreset('autoComplete')
+$wa->usePreset('com_jed.autoComplete')
 	->addInlineScript(<<<JS
     window.addEventListener('DOMContentLoaded', () => {
         jed.filterDeveloperAutocomplete();

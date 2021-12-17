@@ -13,13 +13,14 @@ defined('_JEXEC') or die;
 use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
+use Jed\Component\Jed\Administrator\Helper\JedHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Jed\Component\Jed\Administrator\Model\ReviewsModel;
-use Joomla\Registry\Registry;
 use RuntimeException;
 
 use function defined;
@@ -125,5 +126,7 @@ class HtmlView extends BaseHtmlView
 				'reviews.unpublish', 'JTOOLBAR_UNPUBLISH', true
 			);
 		}
+            $toolbar = Toolbar::getInstance();    
+JedHelper::addConfigToolbar($toolbar);
 	}
 }

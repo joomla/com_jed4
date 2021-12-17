@@ -10,6 +10,9 @@ namespace Jed\Component\Jed\Administrator\Helper;
 
 defined('_JEXEC') or die;
 
+
+use DateTime;
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
@@ -31,7 +34,7 @@ class JedHelper
 	public static function addConfigToolbar(Toolbar $bar)
 	{
 
-		$newbutton = $bar->linkButton('tickets')
+	 	$newbutton = $bar->linkButton('tickets')
 			->text(Text::_('COM_JED_TITLE_TICKETS'))
 			->url('index.php?option=com_jed&view=jedtickets')
 			->icon('fa fa-ticket-alt');
@@ -50,7 +53,7 @@ class JedHelper
 
 		$newbutton = $bar->linkButton('vulnerable')
 			->text('Vulnerable Items')
-			->url('index.php?option=com_jed&view=vel')
+			->url('index.php?option=com_jed&view=velvulnerableitems')
 			->icon('fa fa-bug');
 
 		$newbutton = $bar->customHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
@@ -190,5 +193,30 @@ class JedHelper
 
 		return explode(',', $db->loadResult());
 	}
+
+
+	/**
+	 * Prettyfy a Data
+	 *
+	 * @param   string  $datestr  A String Date
+	 *
+	 * @throws Exception
+	 * @since 4.0.0
+	 **/
+    public static function prettyDate(string $datestr) : string
+    {
+       
+        try
+        {
+            $d = new DateTime($datestr);
+            return $d->format("d M y H:i");
+        }
+        catch (Exception $e)
+        {
+            return 'Sorry an error occured';
+        }
+
+        
+    }
 }
 

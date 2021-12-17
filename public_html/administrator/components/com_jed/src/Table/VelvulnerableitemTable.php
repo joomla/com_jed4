@@ -29,8 +29,8 @@ use Joomla\Database\DatabaseDriver;
  */
 class VelvulnerableitemTable extends Table
 {
-	protected int $id=-1;
-	protected $xml_manifest="";
+	protected int $id = -1;
+	protected $xml_manifest = "";
 
 	/**
 	 * Constructor
@@ -48,15 +48,80 @@ class VelvulnerableitemTable extends Table
 	}
 
 	/**
-	 * Get the type alias for the history table
+	 * This function convert an array of Access objects into an rules array.
 	 *
-	 * @return  string  The alias as described above
+	 * @param   array  $jaccessrules  An array of Access objects.
 	 *
-	 * @since   4.0.0
+	 * @return  array
+	 * @since 4.0.0
 	 */
-	public function getTypeAlias(): string
+	private function JAccessRulestoArray(array $jaccessrules): array
 	{
-		return $this->typeAlias;
+		$rules = array();
+
+		foreach ($jaccessrules as $action => $jaccess)
+		{
+			$actions = array();
+
+			if ($jaccess)
+			{
+				foreach ($jaccess->getData() as $group => $allow)
+				{
+					$actions[$group] = ((bool) $allow);
+				}
+			}
+
+			$rules[$action] = $actions;
+		}
+
+		return $rules;
+	}
+
+	/**
+	 * Define a namespaced asset name for inclusion in the #__assets table
+	 *
+	 * @return string The asset name
+	 *
+	 * @since    4.0.0
+	 *
+	 * @see      Table::_getAssetName
+	 */
+	protected function _getAssetName(): string
+	{
+		$k = $this->_tbl_key;
+
+		return $this->typeAlias . '.' . (int) $this->$k;
+	}
+
+	/**
+	 * Returns the parent asset's id. If you have a tree structure, retrieve the parent's id using the external key field
+	 *
+	 * @param   Table|null  $table  Table name
+	 * @param   int|null    $id     Id
+	 *
+	 * @return mixed The id on success, false on failure.
+	 * @since 4.0.0
+	 * @see   Table::_getAssetParentId
+	 *
+	 */
+	protected function _getAssetParentId(Table $table = null, int $id = null)
+	{
+		// We will retrieve the parent-asset from the Asset-table
+		$assetParent = Table::getInstance('Asset');
+
+		// Default: if no asset-parent can be found we take the global asset
+		$assetParentId = $assetParent->getRootId();
+
+		// The item has the component as asset-parent
+		$assetParent->loadByName('com_jed');
+
+		// Return the found asset-parent-id
+		if ($assetParent->id)
+		{
+			$assetParentId = $assetParent->id;
+		}
+
+		return $assetParentId;
 	}
 
 	/**
@@ -67,8 +132,8 @@ class VelvulnerableitemTable extends Table
 	 *
 	 * @return  null|string  null is operation was satisfactory, otherwise returns an error
 	 *
-	 * @since   4.0.0
 	 * @throws Exception
+	 * @since   4.0.0
 	 * @see     Table:bind
 	 */
 	public function bind($src, $ignore = ''): ?string
@@ -251,42 +316,12 @@ class VelvulnerableitemTable extends Table
 	}
 
 	/**
-	 * This function convert an array of Access objects into an rules array.
-	 *
-	 * @param   array  $jaccessrules  An array of Access objects.
-	 *
-	 * @return  array
-	 * @since 4.0.0
-	 */
-	private function JAccessRulestoArray(array $jaccessrules): array
-	{
-		$rules = array();
-
-		foreach ($jaccessrules as $action => $jaccess)
-		{
-			$actions = array();
-
-			if ($jaccess)
-			{
-				foreach ($jaccess->getData() as $group => $allow)
-				{
-					$actions[$group] = ((bool) $allow);
-				}
-			}
-
-			$rules[$action] = $actions;
-		}
-
-		return $rules;
-	}
-
-	/**
 	 * Overloaded check function
 	 *
 	 * @return bool
 	 *
-	 * @since 4.0.0
 	 * @throws Exception
+	 * @since 4.0.0
 	 */
 	public function check(): bool
 	{
@@ -432,49 +467,16 @@ class VelvulnerableitemTable extends Table
 	}
 
 	/**
-	 * Define a namespaced asset name for inclusion in the #__assets table
+	 * Get the type alias for the history table
 	 *
-	 * @return string The asset name
+	 * @return  string  The alias as described above
 	 *
-	 * @since    4.0.0
-	 *
-	 * @see      Table::_getAssetName
+	 * @since   4.0.0
 	 */
-	protected function _getAssetName(): string
+	public function getTypeAlias(): string
 	{
-		$k = $this->_tbl_key;
-
-		return $this->typeAlias . '.' . (int) $this->$k;
+		return $this->typeAlias;
 	}
 
-	/**
-	 * Returns the parent asset's id. If you have a tree structure, retrieve the parent's id using the external key field
-	 *
-	 * @param   Table|null  $table  Table name
-	 * @param   int|null    $id     Id
-	 *
-	 * @return mixed The id on success, false on failure.
-	 * @since 4.0.0
-	 * @see   Table::_getAssetParentId
-	 *
-	 */
-	protected function _getAssetParentId(Table $table = null, int $id = null)
-	{
-		// We will retrieve the parent-asset from the Asset-table
-		$assetParent = Table::getInstance('Asset');
 
-		// Default: if no asset-parent can be found we take the global asset
-		$assetParentId = $assetParent->getRootId();
-
-		// The item has the component as asset-parent
-		$assetParent->loadByName('com_jed');
-
-		// Return the found asset-parent-id
-		if ($assetParent->id)
-		{
-			$assetParentId = $assetParent->id;
-		}
-
-		return $assetParentId;
-	}
 }

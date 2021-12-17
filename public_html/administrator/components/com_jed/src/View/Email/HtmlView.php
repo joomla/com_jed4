@@ -19,7 +19,6 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\object\CMSObject;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Jed\Component\Jed\Administrator\Model\EmailModel;
-use Joomla\Registry\Registry;
 
 use function defined;
 
@@ -44,7 +43,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected CMSObject $item;
+	protected $item;
 
 	/**
 	 * Get the state

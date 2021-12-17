@@ -13,7 +13,6 @@ namespace Jed\Component\Jed\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Exception;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
@@ -146,24 +145,24 @@ class JedticketsModel extends ListModel
 			)
 		);
 		$query->from('`#__jed_jedtickets` AS a');
-
+        $query->select("unix_timestamp(a.created_on) as created_time");
 		// Join over the users for the checked out user
 		$query->select("uc.name AS uEditor");
 		$query->join("LEFT", "#__users AS uc ON uc.id=a.checked_out");
 
 		// Join over the foreign key 'ticket_category_type'
-		$query->select('`#__jed_ticket_categories_3583656`.`categorytype` AS ticketcategories_fk_value_3583656');
-		$query->join('LEFT', '#__jed_ticket_categories AS #__jed_ticket_categories_3583656 ON #__jed_ticket_categories_3583656.`id` = a.`ticket_category_type`');
+		$query->select('`jtc`.`categorytype` AS categorytype_string');
+		$query->join('LEFT', '#__jed_ticket_categories AS jtc ON jtc.`id` = a.`ticket_category_type`');
 		// Join over the foreign key 'allocated_group'
-		$query->select('`#__jed_ticket_groups_3583668`.`name` AS ticketallocatedgroups_fk_value_3583668');
-		$query->join('LEFT', '#__jed_ticket_groups AS #__jed_ticket_groups_3583668 ON #__jed_ticket_groups_3583668.`id` = a.`allocated_group`');
+		$query->select('`jtg`.`name` AS ticketallocatedgroup_string');
+		$query->join('LEFT', '#__jed_ticket_groups AS jtg ON jtg.`id` = a.`allocated_group`');
 
 		// Join over the user field 'allocated_to'
 		$query->select('`allocated_to`.name AS `allocated_to`');
 		$query->join('LEFT', '#__users AS `allocated_to` ON `allocated_to`.id = a.`allocated_to`');
 		// Join over the foreign key 'linked_item_type'
-		$query->select('`#__jed_ticket_linked_item_types_3583670`.`title` AS ticketlinkeditemtypes_fk_value_3583670');
-		$query->join('LEFT', '#__jed_ticket_linked_item_types AS #__jed_ticket_linked_item_types_3583670 ON #__jed_ticket_linked_item_types_3583670.`id` = a.`linked_item_type`');
+		$query->select('`jt_linked_item_types`.`title` AS ticketlinkeditemtypes_string');
+		$query->join('LEFT', '#__jed_ticket_linked_item_types AS jt_linked_item_types ON jt_linked_item_types.`id` = a.`linked_item_type`');
 
 		// Join over the user field 'created_by'
 		$query->select('`created_by`.name AS `created_by`');
@@ -198,7 +197,7 @@ class JedticketsModel extends ListModel
 			else
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
-				$query->where('(#__jed_ticket_categories_3583656.categorytype LIKE ' . $search . '  OR  a.ticket_subject LIKE ' . $search . ' )');
+				$query->where('(jtc.categorytype LIKE ' . $search . '  OR  a.ticket_subject LIKE ' . $search . ' )');
 			}
 		}
 
@@ -226,7 +225,7 @@ class JedticketsModel extends ListModel
 		{
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
-
+//echo($query->__toString());exit();
 		return $query;
 	}
 
@@ -245,7 +244,7 @@ class JedticketsModel extends ListModel
 		{
 			$oneItem->ticket_origin = Text::_('COM_JED_JEDTICKETS_FIELD_TICKET_ORIGIN_OPTION_' . strtoupper($oneItem->ticket_origin));
 
-			if (isset($oneItem->ticket_category_type))
+		/*	if (isset($oneItem->ticket_category_type))
 			{
 				$values    = explode(',', $oneItem->ticket_category_type);
 				$textValue = array();
@@ -255,9 +254,9 @@ class JedticketsModel extends ListModel
 					$db    = Factory::getDbo();
 					$query = $db->getQuery(true);
 					$query
-						->select('`#__jed_ticket_categories_3583656`.`categorytype`')
-						->from($db->quoteName('#__jed_ticket_categories', '#__jed_ticket_categories_3583656'))
-						->where($db->quoteName('#__jed_ticket_categories_3583656.id') . ' = ' . $db->quote($db->escape($value)));
+						->select('`jtc`.`categorytype`')
+						->from($db->quoteName('#__jed_ticket_categories', 'jtc'))
+						->where($db->quoteName('jtc.id') . ' = ' . $db->quote($db->escape($value)));
 
 					$db->setQuery($query);
 					$results = $db->loadObject();
@@ -269,9 +268,9 @@ class JedticketsModel extends ListModel
 				}
 
 				$oneItem->ticket_category_type = !empty($textValue) ? implode(', ', $textValue) : $oneItem->ticket_category_type;
-			}
+			} */
 
-			if (isset($oneItem->allocated_group))
+			/*if (isset($oneItem->allocated_group))
 			{
 				$values    = explode(',', $oneItem->allocated_group);
 				$textValue = array();
@@ -281,9 +280,9 @@ class JedticketsModel extends ListModel
 					$db    = Factory::getDbo();
 					$query = $db->getQuery(true);
 					$query
-						->select('`#__jed_ticket_groups_3583668`.`name`')
-						->from($db->quoteName('#__jed_ticket_groups', '#__jed_ticket_groups_3583668'))
-						->where($db->quoteName('#__jed_ticket_groups_3583668.id') . ' = ' . $db->quote($db->escape($value)));
+						->select('`jtg`.`name`')
+						->from($db->quoteName('#__jed_ticket_groups', 'jtg'))
+						->where($db->quoteName('jtg.id') . ' = ' . $db->quote($db->escape($value)));
 
 					$db->setQuery($query);
 					$results = $db->loadObject();
@@ -295,9 +294,9 @@ class JedticketsModel extends ListModel
 				}
 
 				$oneItem->allocated_group = !empty($textValue) ? implode(', ', $textValue) : $oneItem->allocated_group;
-			}
+			}*/
 
-			if (isset($oneItem->linked_item_type))
+			/*if (isset($oneItem->linked_item_type))
 			{
 				$values    = explode(',', $oneItem->linked_item_type);
 				$textValue = array();
@@ -307,9 +306,9 @@ class JedticketsModel extends ListModel
 					$db    = Factory::getDbo();
 					$query = $db->getQuery(true);
 					$query
-						->select('`#__jed_ticket_linked_item_types_3583670`.`title`')
-						->from($db->quoteName('#__jed_ticket_linked_item_types', '#__jed_ticket_linked_item_types_3583670'))
-						->where($db->quoteName('#__jed_ticket_linked_item_types_3583670.id') . ' = ' . $db->quote($db->escape($value)));
+						->select('`jt_linked_item_types`.`title`')
+						->from($db->quoteName('#__jed_ticket_linked_item_types', 'jt_linked_item_types'))
+						->where($db->quoteName('jt_linked_item_types.id') . ' = ' . $db->quote($db->escape($value)));
 
 					$db->setQuery($query);
 					$results = $db->loadObject();
@@ -321,7 +320,7 @@ class JedticketsModel extends ListModel
 				}
 
 				$oneItem->linked_item_type = !empty($textValue) ? implode(', ', $textValue) : $oneItem->linked_item_type;
-			}
+			}*/
 			$oneItem->ticket_status = Text::_('COM_JED_JEDTICKETS_FIELD_TICKET_STATUS_OPTION_' . strtoupper($oneItem->ticket_status));
 		}
 

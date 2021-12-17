@@ -13,102 +13,32 @@ namespace Jed\Component\Jed\Site\Model;
 defined('_JEXEC') or die;
 
 use Exception;
-use Jed\Component\Jed\Site\Helper\JedHelper;
+use Jed\Component\Jed\Site\Helper\JedemailHelper;
+use Jed\Component\Jed\Site\Helper\JedHelper; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Table; 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use function defined;
-
+ 
 /**
- * Jed model.
+ * VEL Abandoned Report Form Model Class.
  *
- * @since  1.6
+ * @since  4.0.0
  */
 class VelabandonedreportformModel extends FormModel
 {
 	private $item = null;
-
-	/**
-	 * Method to check in an item.
-	 *
-	 * @param   int|null  $pk  The id of the row to check out.
-	 *
-	 * @return  boolean True on success, false on failure.
-	 *
-	 * @throws Exception
+	/** Data Table
 	 * @since 4.0.0
-	 */
-	public function checkin(int $pk = null): bool
-	{
-		// Get the id.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('velabandonedreport.id');
-		if (!$pk || $this->userIDItem($pk) || JedHelper::isAdminOrSuperUser())
-		{
-			if ($pk)
-			{
-				// Initialise the table
-				$table = $this->getTable();
+	 **/
+	private string $dbtable = "#__jed_vel_abandoned_report";
 
-				// Attempt to check the row in.
-				if (method_exists($table, 'checkin'))
-				{
-					if (!$table->checkin($pk))
-					{
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
-		else
-		{
-			throw new Exception(Text::_("JERROR_ALERTNOAUTHOR"), 401);
-		}
-	}
-
-	/**
-	 * This method revises if the $id of the item belongs to the current user
-	 *
-	 * @param   integer  $id  The id of the item
-	 *
-	 * @return  boolean             true if the user is the owner of the row, false if not.
-	 * @since 4.0.0
-	 */
-	public function userIDItem(int $id): bool
-	{
-		try
-		{
-			$user = Factory::getUser();
-			$db   = Factory::getDbo();
-
-			$query = $db->getQuery(true);
-			$query->select("id")
-				->from($db->quoteName('#__jed_vel_abandoned_report'))
-				->where("id = " . $db->escape($id))
-				->where("created_by = " . $user->id);
-
-			$db->setQuery($query);
-
-			$results = $db->loadObject();
-			if ($results)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		catch (Exception $exc)
-		{
-			return false;
-		}
-	}
+	
 
 	/**
 	 * Method to get the table
@@ -128,47 +58,7 @@ class VelabandonedreportformModel extends FormModel
 		return parent::getTable($name, $prefix, $options);
 	}
 
-	/**
-	 * Method to check out an item for editing.
-	 *
-	 * @param   integer  $pk  The id of the row to check out.
-	 *
-	 * @return  boolean True on success, false on failure.
-	 *
-	 * @throws Exception
-	 * @since 4.0.0
-	 */
-	public function checkout($pk = null): bool
-	{
-		// Get the user id.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('velabandonedreport.id');
-		if (!$pk || $this->userIDItem($pk) || JedHelper::isAdminOrSuperUser())
-		{
-			if ($pk)
-			{
-				// Initialise the table
-				$table = $this->getTable();
-
-				// Get the current user object.
-				$user = Factory::getUser();
-
-				// Attempt to check the row out.
-				if (method_exists($table, 'checkout'))
-				{
-					if (!$table->checkout($user->get('id'), $pk))
-					{
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
-		else
-		{
-			throw new Exception(Text::_("JERROR_ALERTNOAUTHOR"), 401);
-		}
-	}
+	
 
 	/**
 	 * Method to get the profile form.
@@ -208,7 +98,7 @@ class VelabandonedreportformModel extends FormModel
 	 * @return bool
 	 *
 	 * @throws Exception
-	 * @since 1.6
+	 * @since 4.0.0
 	 */
 	public function save(array $data): bool
 	{
@@ -220,8 +110,8 @@ class VelabandonedreportformModel extends FormModel
 		$data['passed_to_vel'] = 0;
 
 		$isLoggedIn = JedHelper::IsLoggedIn();
-
-
+        $user = Factory::getUser();
+ 
 		if ((!$id || JedHelper::isAdminOrSuperUser()) && $isLoggedIn)
 		{
 
@@ -231,8 +121,41 @@ class VelabandonedreportformModel extends FormModel
 
 			if ($table->save($data) === true)
 			{
-				JedHelper::CreateVELReportTicket(3, $table->id);
+                $ticket = JedHelper::CreateVELTicket(3, $table->id);
+                $ticket_message = JedHelper::CreateVELTicketMessage(3,$table->id);
+                $ticket_message['subject'] = $ticket['ticket_subject'];
+                $ticket_message['message']           = $ticket['ticket_text'];
+                $ticket_message['message_direction'] = 1; /*  1 for coming in, 0 for going out */
+                 
+              
+                $ticket_model = BaseDatabaseModel::getInstance('Jedticketform', 'JedModel', ['ignore_request' => true]);
+				$ticket_model->save($ticket);
+                $ticket_id = $ticket_model->getId();
+                /* We need to store the incoming ticket message */
+                $ticket_message['ticket_id'] = $ticket_id;
 
+                $ticket_message_model =  BaseDatabaseModel::getInstance('Ticketmessageform', 'JedModel', ['ignore_request' => true]);
+                //$ticket_message_model = $this->getModel('Ticketmessageform', 'Site');
+
+                $ticket_message_model->save($ticket_message);
+               
+                /* We need to email standard message to user and store message in ticket */
+                $message_out = JedHelper::GetMessageTemplate(1000);
+                if (isset($message_out->subject))
+                {
+                    JedemailHelper::sendEmail($message_out->subject, $message_out->template, $user, 'mark@burninglight.co.uk');
+                    
+                    $ticket_message['id'] = 0;
+                    $ticket_message['subject']           = $message_out->subject;
+                    $ticket_message['message']           = $message_out->template;
+                    $ticket_message['message_direction'] = 0; /* 1 for coming in, 0 for going out */
+                    $ticket['created_by']       = -1;
+                    $ticket['modified_by']      = -1;
+                    $ticket_message_model->save($ticket_message);
+                    
+                }
+               
+		    // exit();
 				return $table->id;
 			}
 			else
@@ -261,7 +184,7 @@ class VelabandonedreportformModel extends FormModel
 	{
 		$user = Factory::getUser();
 
-		if (!$pk || $this->userIDItem($pk) || JedHelper::isAdminOrSuperUser())
+		if (!$pk || JedHelper::userIDItem($pk,$this->dbtable) || JedHelper::isAdminOrSuperUser())
 		{
 			if (empty($pk))
 			{

@@ -12,8 +12,8 @@
 
         <field name="limit"
                type="limitbox"
-               label="COM_JED_LIST_LIMIT"
-               description="COM_JED_LIST_LIMIT_DESC"
+               label="COM_JED_GENERAL_FILTER_LIMIT_LABEL"
+               description="COM_JED_GENERAL_FILTER_LIMIT_LABEL_DESC"
                class="input-mini"
                default="25"
                onchange="this.form.submit();"

@@ -49,7 +49,7 @@ Factory::getApplication()->getDocument()->getWebAssetManager()
                         <tbody>
                             <?php foreach ($this->items as $i => $item) : ?>
                                 <?php
-	                            $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || is_null($item->checked_out);
+	                            $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || is_null($item->checked_out);
                                 ?>
                                 <tr>
                                     <td class="w-1 text-center">

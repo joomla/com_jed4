@@ -182,20 +182,7 @@ else
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
 
-	<?php if ($canDelete) : ?>
-    <script type="text/javascript">
-
-        jQuery(document).ready(function () {
-            jQuery('.delete-button').click(deleteItem);
-        });
-
-        function deleteItem() {
-
-            if (!confirm("<?php echo Text::_('COM_JED_DELETE_MESSAGE'); ?>")) {
-                return false;
-            }
-        }
-    </script>
-<?php endif;
+	
+<?php 
 }
 ?>

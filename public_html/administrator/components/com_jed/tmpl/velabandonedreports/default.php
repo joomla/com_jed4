@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
@@ -24,10 +23,8 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/src/Helper/');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
-// Import CSS
-$document = Factory::getDocument();
-$document->addStyleSheet(Uri::root() . 'administrator/components/com_jed/assets/css/jed.css');
-$document->addStyleSheet(Uri::root() . 'media/com_jed/css/list.css');
+
+
 
 $user      = Factory::getUser();
 $userId    = $user->get('id');

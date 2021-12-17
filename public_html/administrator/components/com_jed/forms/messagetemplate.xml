@@ -6,7 +6,7 @@
                description="JGLOBAL_FIELD_FIELD_ORDERING_DESC" hint="COM_JED_MESSAGETEMPLATES_FIELD_TITLE_LABEL"/>
         <field name="subject" filter="safehtml" type="text" label="COM_JED_MESSAGETEMPLATES_FIELD_SUBJECT_LABEL"
                description="COM_JED_MESSAGETEMPLATES_FIELD_SUBJECT_DESCR" hint="COM_JED_MESSAGETEMPLATES_FIELD_SUBJECT_LABEL"/>
-        <field name="template" editor="jce|" buttons="false" filter="JComponentHelper::filterText" type="editor"
+        <field name="template" editor="tinymce" buttons="false" filter="JComponentHelper::filterText" type="editor"
                label="COM_JED_MESSAGETEMPLATES_FIELD_TEMPLATE_LABEL"
                description="COM_JED_MESSAGETEMPLATES_FIELD_TEMPLATE_DESCR"
                hint="COM_JED_MESSAGETEMPLATES_FIELD_TEMPLATE_LABEL"/>

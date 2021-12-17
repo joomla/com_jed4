@@ -81,7 +81,7 @@
                 type="url"
                 required="true"
                 message="COM_JED_GENERAL_INVALID_INPUT"
-                label="COM_JED_VEL_GENERAL_FIELD_WNLOAD_URL_LABEL_LABEL"
+                label="COM_JED_VEL_GENERAL_FIELD_DOWNLOAD_URL_LABEL"
                 description="COM_JED_VEL_DEVELOPERUPDATES_FIELD_DOWNLOAD_URL_DESCR"/>
         <field
                 name="consent_to_process"

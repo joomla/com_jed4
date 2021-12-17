@@ -14,14 +14,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Jed\Component\Jed\Administrator\Model\ExtensionModel;
-use Joomla\Registry\Registry;
 
 use function defined;
 
@@ -39,7 +36,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  4.0.0
 	 */
-	protected Form $form;
+	protected $form;
 
 	/**
 	 * The item object
@@ -47,7 +44,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    object
 	 * @since  4.0.0
 	 */
-	protected CMSObject $item;
+	protected $item;
 
 	/**
 	 * The model state

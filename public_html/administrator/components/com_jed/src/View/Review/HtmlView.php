@@ -37,7 +37,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    Form
 	 * @since  4.0.0
 	 */
-	protected Form $form;
+	protected $form;
 
 	/**
 	 * The item data.
@@ -45,7 +45,7 @@ class HtmlView extends BaseHtmlView
 	 * @var    CMSObject
 	 * @since  4.0.0
 	 */
-	protected CMSObject $item;
+	protected $item;
 
 	/**
 	 * The model state.

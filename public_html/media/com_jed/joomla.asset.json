@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
-  "name": "jed",
+  "name": "com_jed",
   "version": "4.0.0",
   "description": "Joomla Extension Directory",
   "license": "GPL-2.0-or-later",
   "assets": [
     {
-      "name": "jed",
+      "name": "com_jed.jed",
       "type": "script",
       "uri": "media/com_jed/js/jed.js",
       "attributes": {
@@ -16,7 +16,7 @@
       "version": "4.0.0"
     },
     {
-      "name": "autoComplete",
+      "name": "com_jed.autoComplete",
       "type": "script",
       "uri": "media/com_jed/js/autoComplete.js",
       "attributes": {
@@ -26,22 +26,90 @@
       "version": "8.3.2"
     },
     {
-      "name": "autoComplete",
+      "name": "com_jed.autoComplete",
       "type": "style",
       "uri": "media/com_jed/css/autoComplete.css",
       "package": "autoComplete",
       "version": "8.3.2"
     },
     {
-      "name": "autoComplete",
+      "name": "com_jed.autoComplete",
       "type": "preset",
       "dependencies": [
-        "autoComplete#style",
-        "autoComplete#script",
-        "jed#script"
+        "com_jed.autoComplete#style",
+        "com_jed.autoComplete#script",
+        "com_jed.jed#script"
       ],
       "package": "autocComplete",
       "version": "8.3.2"
-    }
+    },
+    {
+      "name": "com_jed.jedTickets",
+      "type": "style",
+      "uri": "media/com_jed/css/jedtickets.css"
+     
+    },
+       {
+      "name": "com_jed.modalbox",
+      "type": "script",
+      "uri": "media/com_jed/js/modalbox.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    },
+       {
+      "name": "com_jed.ticketGetmessagetemplate",
+      "type": "script",
+      "uri": "media/com_jed/js/ticketGetmessagetemplate.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    },
+       {
+      "name": "com_jed.ticketVELDeveloperUpdateActionButton",
+      "type": "script",
+      "uri": "media/com_jed/js/ticketVELDeveloperUpdateActionButton.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    },
+       {
+      "name": "com_jed.vulnerableItemBuildTitle",
+      "type": "script",
+      "uri": "media/com_jed/js/vulnerableItemBuildTitle.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    },
+       {
+      "name": "com_jed.vulnerableItemBuildPublicDescription",
+      "type": "script",
+      "uri": "media/com_jed/js/vulnerableItemBuildPublicDescription.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    },
+       {
+      "name": "com_jed.vulnerableItemhideshowOtherbox",
+      "type": "script",
+      "uri": "media/com_jed/js/vulnerableItemhideshowOtherbox.js",
+      "attributes": {
+        "defer": false
+      },
+      "package": "jed",
+      "version": "4.0.0"
+    }  
+	
+	  
   ]
 }

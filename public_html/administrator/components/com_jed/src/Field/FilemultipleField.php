@@ -26,7 +26,7 @@ class FileMultipleField extends FormField
 	 * @since  4.0.0
 	 * @var        string
 	 */
-	protected string $type = 'file';
+	protected $type = 'file';
 
 	/**
 	 * Method to get the field input markup.

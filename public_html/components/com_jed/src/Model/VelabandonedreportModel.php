@@ -31,6 +31,10 @@ class VelabandonedreportModel extends ItemModel
 {
 	public $_item;
 
+    /** Data Table
+	 * @since 4.0.0
+	 **/
+    private string $dbtable="#__jed_vel_abandoned_report";
 	/**
 	 * Method to get a single record.
 	 *
@@ -155,7 +159,7 @@ class VelabandonedreportModel extends ItemModel
 	{
 		// Get the id.
 		$id = (!empty($id)) ? $id : (int) $this->getState('velabandonedreport.id');
-		if ($id || $this->userIDItem($id) || JedHelper::isAdminOrSuperUser())
+		if ($id || JedHelper::userIDItem($id,$this->dbtable) || JedHelper::isAdminOrSuperUser())
 		{
 			if ($id)
 			{
@@ -180,45 +184,7 @@ class VelabandonedreportModel extends ItemModel
 		}
 	}
 
-	/**
-	 * This method revises if the $id of the item belongs to the current user
-	 *
-	 * @param   integer  $id  The id of the item
-	 *
-	 * @return  boolean             true if the user is the owner of the row, false if not.
-	 *
-	 * @since 4.0.0
-	 */
-	public function userIDItem(int $id): bool
-	{
-		try
-		{
-			$user = Factory::getUser();
-			$db   = Factory::getDbo();
-
-			$query = $db->getQuery(true);
-			$query->select("id")
-				->from($db->quoteName('#__jed_vel_report'))
-				->where("id = " . $db->escape($id))
-				->where("created_by = " . $user->id);
-
-			$db->setQuery($query);
-
-			$results = $db->loadObject();
-			if ($results)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		catch (Exception $exc)
-		{
-			return false;
-		}
-	}
+	
 
 	/**
 	 * Method to check out an item for editing.
@@ -236,7 +202,7 @@ class VelabandonedreportModel extends ItemModel
 		// Get the user id.
 		$id = (!empty($id)) ? $id : (int) $this->getState('velabandonedreport.id');
 
-		if ($id || $this->userIDItem($id) || JedHelper::isAdminOrSuperUser())
+		if ($id || JedHelper::userIDItem($id,$this->dbtable) || JedHelper::isAdminOrSuperUser())
 		{
 			if ($id)
 			{

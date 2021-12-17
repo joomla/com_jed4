@@ -17,16 +17,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/src/Helper/');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
-// Import CSS
-$document = Factory::getDocument();
-$document->addStyleSheet(Uri::root() . 'administrator/components/com_jed/assets/css/jed.css');
-$document->addStyleSheet(Uri::root() . 'media/com_jed/css/list.css');
 
 $user      = Factory::getUser();
 $userId    = $user->get('id');
@@ -242,7 +237,7 @@ if ($saveOrder)
     (function (window, Joomla) {
         Joomla.toggleField = function (id, task, field) {
 
-            var f = document.adminForm, i = 0, cbx, cb = f[id];
+            let f = document.adminForm, i = 0, cbx, cb = f[id];
 
             if (!cb) return false;
 
@@ -255,7 +250,7 @@ if ($saveOrder)
                 i++;
             }
 
-            var inputField = document.createElement('input');
+            let inputField = document.createElement('input');
 
             inputField.type = 'hidden';
             inputField.name = 'field';
